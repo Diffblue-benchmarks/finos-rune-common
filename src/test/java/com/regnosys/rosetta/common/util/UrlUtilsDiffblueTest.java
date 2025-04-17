@@ -189,7 +189,7 @@ public class UrlUtilsDiffblueTest {
     // Assert
     String expectedToStringResult = String.join("", "file:",
         Paths.get(System.getProperty("user.home"), "Desktop", "GitHub").toString(),
-        "%20Clone's/finos-rune-common/config");
+        "Clones/finos-rune-common/config");
     assertEquals(expectedToStringResult, actualToUrlResult.toString());
   }
 
