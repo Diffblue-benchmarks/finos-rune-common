@@ -20,22 +20,25 @@ package com.regnosys.rosetta.common.serialisation.mixin;
  * ==============
  */
 
-import static org.junit.Assert.assertEquals;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
-import org.junit.Test;
-import org.junit.experimental.categories.Category;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
 
-public class DateExtendedDiffblueTest {
+class DateExtendedDiffblueTest {
   /**
    * Test {@link DateExtended#DateExtended(int, int, int)}.
-   * <p>
-   * Method under test: {@link DateExtended#DateExtended(int, int, int)}
+   *
+   * <p>Method under test: {@link DateExtended#DateExtended(int, int, int)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @DisplayName("Test new DateExtended(int, int, int)")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"void DateExtended.<init>(int, int, int)"})
-  public void testNewDateExtended() {
+  void testNewDateExtended() {
     // Arrange and Act
     DateExtended actualDateExtended = new DateExtended(1, 1, 1);
 
@@ -47,13 +50,15 @@ public class DateExtendedDiffblueTest {
 
   /**
    * Test {@link DateExtended#DateExtended(String)}.
-   * <p>
-   * Method under test: {@link DateExtended#DateExtended(String)}
+   *
+   * <p>Method under test: {@link DateExtended#DateExtended(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @DisplayName("Test new DateExtended(String)")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"void DateExtended.<init>(String)"})
-  public void testNewDateExtended2() {
+  void testNewDateExtended2() {
     // Arrange and Act
     DateExtended actualDateExtended = new DateExtended("2020-03-01");
 

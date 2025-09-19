@@ -20,16 +20,16 @@ package com.regnosys.rosetta.common.util;
  * ==============
  */
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.ArgumentMatchers.eq;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.anyInt;
 import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
+import com.fasterxml.jackson.databind.ser.BeanPropertyWriter;
 import com.regnosys.rosetta.common.merger.BarBuilder;
 import com.regnosys.rosetta.common.util.PathCollectorBuilderProcessor.PathReport;
 import com.rosetta.model.lib.RosettaModelObject;
@@ -39,63 +39,85 @@ import com.rosetta.model.lib.process.AttributeMeta;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import org.junit.Test;
-import org.junit.experimental.categories.Category;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
 
-public class PathCollectorBuilderProcessorDiffblueTest {
+class PathCollectorBuilderProcessorDiffblueTest {
   /**
    * Test PathReport getters and setters.
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>default or parameterless constructor of {@link PathReport}
    *   <li>{@link PathReport#getCollectedPaths()}
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @DisplayName("Test PathReport getters and setters")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"void PathReport.<init>()", "java.util.Map PathReport.getCollectedPaths()"})
-  public void testPathReportGettersAndSetters() {
+  void testPathReportGettersAndSetters() {
     // Arrange, Act and Assert
-    assertTrue((new PathReport()).getCollectedPaths().isEmpty());
+    assertTrue(new PathReport().getCollectedPaths().isEmpty());
   }
 
   /**
-   * Test {@link PathCollectorBuilderProcessor#processRosetta(RosettaPath, Class, RosettaModelObject, RosettaModelObject, AttributeMeta[])} with {@code path}, {@code rosettaType}, {@code builder}, {@code parent}, {@code meta}.
-   * <p>
-   * Method under test: {@link PathCollectorBuilderProcessor#processRosetta(RosettaPath, Class, RosettaModelObject, RosettaModelObject, AttributeMeta[])}
+   * Test {@link PathCollectorBuilderProcessor#processRosetta(RosettaPath, Class,
+   * RosettaModelObject, RosettaModelObject, AttributeMeta[])} with {@code path}, {@code
+   * rosettaType}, {@code builder}, {@code parent}, {@code meta}.
+   *
+   * <p>Method under test: {@link PathCollectorBuilderProcessor#processRosetta(RosettaPath, Class,
+   * RosettaModelObject, RosettaModelObject, AttributeMeta[])}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @DisplayName(
+      "Test processRosetta(RosettaPath, Class, RosettaModelObject, RosettaModelObject, AttributeMeta[]) with 'path', 'rosettaType', 'builder', 'parent', 'meta'")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({
-      "boolean PathCollectorBuilderProcessor.processRosetta(RosettaPath, Class, RosettaModelObject, RosettaModelObject, AttributeMeta[])"})
-  public void testProcessRosettaWithPathRosettaTypeBuilderParentMeta() {
+    "boolean PathCollectorBuilderProcessor.processRosetta(RosettaPath, Class, RosettaModelObject, RosettaModelObject, AttributeMeta[])"
+  })
+  void testProcessRosettaWithPathRosettaTypeBuilderParentMeta() {
     // Arrange
-    PathCollectorBuilderProcessor pathCollectorBuilderProcessor = new PathCollectorBuilderProcessor();
+    PathCollectorBuilderProcessor pathCollectorBuilderProcessor =
+        new PathCollectorBuilderProcessor();
     RosettaPath path = mock(RosettaPath.class);
     Class<RosettaModelObject> rosettaType = RosettaModelObject.class;
     BarBuilder barBuilder = new BarBuilder();
 
     // Act and Assert
-    assertTrue(pathCollectorBuilderProcessor.processRosetta(path, rosettaType, barBuilder, new BarBuilder(),
-        AttributeMeta.META));
+    assertTrue(
+        pathCollectorBuilderProcessor.processRosetta(
+            path, rosettaType, barBuilder, new BarBuilder(), AttributeMeta.META));
   }
 
   /**
-   * Test {@link PathCollectorBuilderProcessor#processRosetta(RosettaPath, Class, List, RosettaModelObject, AttributeMeta[])} with {@code path}, {@code rosettaType}, {@code builders}, {@code parent}, {@code meta}.
+   * Test {@link PathCollectorBuilderProcessor#processRosetta(RosettaPath, Class, List,
+   * RosettaModelObject, AttributeMeta[])} with {@code path}, {@code rosettaType}, {@code builders},
+   * {@code parent}, {@code meta}.
+   *
    * <ul>
-   *   <li>Given {@link BarBuilder} (default constructor).</li>
+   *   <li>Given {@link BarBuilder} (default constructor).
    * </ul>
-   * <p>
-   * Method under test: {@link PathCollectorBuilderProcessor#processRosetta(RosettaPath, Class, List, RosettaModelObject, AttributeMeta[])}
+   *
+   * <p>Method under test: {@link PathCollectorBuilderProcessor#processRosetta(RosettaPath, Class,
+   * List, RosettaModelObject, AttributeMeta[])}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @DisplayName(
+      "Test processRosetta(RosettaPath, Class, List, RosettaModelObject, AttributeMeta[]) with 'path', 'rosettaType', 'builders', 'parent', 'meta'; given BarBuilder (default constructor)")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({
-      "boolean PathCollectorBuilderProcessor.processRosetta(RosettaPath, Class, List, RosettaModelObject, AttributeMeta[])"})
-  public void testProcessRosettaWithPathRosettaTypeBuildersParentMeta_givenBarBuilder() {
+    "boolean PathCollectorBuilderProcessor.processRosetta(RosettaPath, Class, List, RosettaModelObject, AttributeMeta[])"
+  })
+  void testProcessRosettaWithPathRosettaTypeBuildersParentMeta_givenBarBuilder() {
     // Arrange
-    PathCollectorBuilderProcessor pathCollectorBuilderProcessor = new PathCollectorBuilderProcessor();
+    PathCollectorBuilderProcessor pathCollectorBuilderProcessor =
+        new PathCollectorBuilderProcessor();
     RosettaPath path = mock(RosettaPath.class);
     Class<RosettaModelObject> rosettaType = RosettaModelObject.class;
 
@@ -103,25 +125,35 @@ public class PathCollectorBuilderProcessorDiffblueTest {
     builders.add(new BarBuilder());
 
     // Act and Assert
-    assertTrue(pathCollectorBuilderProcessor.processRosetta(path, rosettaType, builders, new BarBuilder(),
-        AttributeMeta.META));
+    assertTrue(
+        pathCollectorBuilderProcessor.processRosetta(
+            path, rosettaType, builders, new BarBuilder(), AttributeMeta.META));
   }
 
   /**
-   * Test {@link PathCollectorBuilderProcessor#processRosetta(RosettaPath, Class, List, RosettaModelObject, AttributeMeta[])} with {@code path}, {@code rosettaType}, {@code builders}, {@code parent}, {@code meta}.
+   * Test {@link PathCollectorBuilderProcessor#processRosetta(RosettaPath, Class, List,
+   * RosettaModelObject, AttributeMeta[])} with {@code path}, {@code rosettaType}, {@code builders},
+   * {@code parent}, {@code meta}.
+   *
    * <ul>
-   *   <li>Given {@link BarBuilder} (default constructor).</li>
+   *   <li>Given {@link BarBuilder} (default constructor).
    * </ul>
-   * <p>
-   * Method under test: {@link PathCollectorBuilderProcessor#processRosetta(RosettaPath, Class, List, RosettaModelObject, AttributeMeta[])}
+   *
+   * <p>Method under test: {@link PathCollectorBuilderProcessor#processRosetta(RosettaPath, Class,
+   * List, RosettaModelObject, AttributeMeta[])}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @DisplayName(
+      "Test processRosetta(RosettaPath, Class, List, RosettaModelObject, AttributeMeta[]) with 'path', 'rosettaType', 'builders', 'parent', 'meta'; given BarBuilder (default constructor)")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({
-      "boolean PathCollectorBuilderProcessor.processRosetta(RosettaPath, Class, List, RosettaModelObject, AttributeMeta[])"})
-  public void testProcessRosettaWithPathRosettaTypeBuildersParentMeta_givenBarBuilder2() {
+    "boolean PathCollectorBuilderProcessor.processRosetta(RosettaPath, Class, List, RosettaModelObject, AttributeMeta[])"
+  })
+  void testProcessRosettaWithPathRosettaTypeBuildersParentMeta_givenBarBuilder2() {
     // Arrange
-    PathCollectorBuilderProcessor pathCollectorBuilderProcessor = new PathCollectorBuilderProcessor();
+    PathCollectorBuilderProcessor pathCollectorBuilderProcessor =
+        new PathCollectorBuilderProcessor();
     RosettaPath path = mock(RosettaPath.class);
     Class<RosettaModelObject> rosettaType = RosettaModelObject.class;
 
@@ -130,132 +162,177 @@ public class PathCollectorBuilderProcessorDiffblueTest {
     builders.add(new BarBuilder());
 
     // Act and Assert
-    assertTrue(pathCollectorBuilderProcessor.processRosetta(path, rosettaType, builders, new BarBuilder(),
-        AttributeMeta.META));
+    assertTrue(
+        pathCollectorBuilderProcessor.processRosetta(
+            path, rosettaType, builders, new BarBuilder(), AttributeMeta.META));
   }
 
   /**
-   * Test {@link PathCollectorBuilderProcessor#processRosetta(RosettaPath, Class, List, RosettaModelObject, AttributeMeta[])} with {@code path}, {@code rosettaType}, {@code builders}, {@code parent}, {@code meta}.
+   * Test {@link PathCollectorBuilderProcessor#processRosetta(RosettaPath, Class, List,
+   * RosettaModelObject, AttributeMeta[])} with {@code path}, {@code rosettaType}, {@code builders},
+   * {@code parent}, {@code meta}.
+   *
    * <ul>
-   *   <li>When {@link ArrayList#ArrayList()}.</li>
+   *   <li>When {@link ArrayList#ArrayList()}.
    * </ul>
-   * <p>
-   * Method under test: {@link PathCollectorBuilderProcessor#processRosetta(RosettaPath, Class, List, RosettaModelObject, AttributeMeta[])}
+   *
+   * <p>Method under test: {@link PathCollectorBuilderProcessor#processRosetta(RosettaPath, Class,
+   * List, RosettaModelObject, AttributeMeta[])}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @DisplayName(
+      "Test processRosetta(RosettaPath, Class, List, RosettaModelObject, AttributeMeta[]) with 'path', 'rosettaType', 'builders', 'parent', 'meta'; when ArrayList()")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({
-      "boolean PathCollectorBuilderProcessor.processRosetta(RosettaPath, Class, List, RosettaModelObject, AttributeMeta[])"})
-  public void testProcessRosettaWithPathRosettaTypeBuildersParentMeta_whenArrayList() {
+    "boolean PathCollectorBuilderProcessor.processRosetta(RosettaPath, Class, List, RosettaModelObject, AttributeMeta[])"
+  })
+  void testProcessRosettaWithPathRosettaTypeBuildersParentMeta_whenArrayList() {
     // Arrange
-    PathCollectorBuilderProcessor pathCollectorBuilderProcessor = new PathCollectorBuilderProcessor();
+    PathCollectorBuilderProcessor pathCollectorBuilderProcessor =
+        new PathCollectorBuilderProcessor();
     RosettaPath path = mock(RosettaPath.class);
     Class<RosettaModelObject> rosettaType = RosettaModelObject.class;
     ArrayList<RosettaModelObject> builders = new ArrayList<>();
 
     // Act and Assert
-    assertTrue(pathCollectorBuilderProcessor.processRosetta(path, rosettaType, builders, new BarBuilder(),
-        AttributeMeta.META));
+    assertTrue(
+        pathCollectorBuilderProcessor.processRosetta(
+            path, rosettaType, builders, new BarBuilder(), AttributeMeta.META));
   }
 
   /**
-   * Test {@link PathCollectorBuilderProcessor#processBasic(RosettaPath, Class, Collection, RosettaModelObject, AttributeMeta[])} with {@code RosettaPath}, {@code Class}, {@code Collection}, {@code RosettaModelObject}, {@code AttributeMeta[]}.
-   * <p>
-   * Method under test: {@link PathCollectorBuilderProcessor#processBasic(RosettaPath, Class, Collection, RosettaModelObject, AttributeMeta[])}
+   * Test {@link PathCollectorBuilderProcessor#processBasic(RosettaPath, Class, Collection,
+   * RosettaModelObject, AttributeMeta[])} with {@code RosettaPath}, {@code Class}, {@code
+   * Collection}, {@code RosettaModelObject}, {@code AttributeMeta[]}.
+   *
+   * <p>Method under test: {@link PathCollectorBuilderProcessor#processBasic(RosettaPath, Class,
+   * Collection, RosettaModelObject, AttributeMeta[])}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @DisplayName(
+      "Test processBasic(RosettaPath, Class, Collection, RosettaModelObject, AttributeMeta[]) with 'RosettaPath', 'Class', 'Collection', 'RosettaModelObject', 'AttributeMeta[]'")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({
-      "void PathCollectorBuilderProcessor.processBasic(RosettaPath, Class, Collection, RosettaModelObject, AttributeMeta[])"})
-  public void testProcessBasicWithRosettaPathClassCollectionRosettaModelObjectAttributeMeta() {
+    "void PathCollectorBuilderProcessor.processBasic(RosettaPath, Class, Collection, RosettaModelObject, AttributeMeta[])"
+  })
+  void testProcessBasicWithRosettaPathClassCollectionRosettaModelObjectAttributeMeta() {
     // Arrange
-    PathCollectorBuilderProcessor pathCollectorBuilderProcessor = new PathCollectorBuilderProcessor();
+    PathCollectorBuilderProcessor pathCollectorBuilderProcessor =
+        new PathCollectorBuilderProcessor();
     RosettaPath path = mock(RosettaPath.class);
     Class<Object> rosettaType = Object.class;
     ArrayList<Object> instance = new ArrayList<>();
 
     // Act
-    pathCollectorBuilderProcessor.processBasic(path, rosettaType, (Collection<?>) instance, new BarBuilder(),
-        AttributeMeta.META);
+    pathCollectorBuilderProcessor.processBasic(
+        path, rosettaType, (Collection<?>) instance, new BarBuilder(), AttributeMeta.META);
 
     // Assert that nothing has changed
     assertTrue(pathCollectorBuilderProcessor.report().getCollectedPaths().isEmpty());
   }
 
   /**
-   * Test {@link PathCollectorBuilderProcessor#processBasic(RosettaPath, Class, Collection, RosettaModelObject, AttributeMeta[])} with {@code RosettaPath}, {@code Class}, {@code Collection}, {@code RosettaModelObject}, {@code AttributeMeta[]}.
-   * <p>
-   * Method under test: {@link PathCollectorBuilderProcessor#processBasic(RosettaPath, Class, Collection, RosettaModelObject, AttributeMeta[])}
+   * Test {@link PathCollectorBuilderProcessor#processBasic(RosettaPath, Class, Collection,
+   * RosettaModelObject, AttributeMeta[])} with {@code RosettaPath}, {@code Class}, {@code
+   * Collection}, {@code RosettaModelObject}, {@code AttributeMeta[]}.
+   *
+   * <p>Method under test: {@link PathCollectorBuilderProcessor#processBasic(RosettaPath, Class,
+   * Collection, RosettaModelObject, AttributeMeta[])}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @DisplayName(
+      "Test processBasic(RosettaPath, Class, Collection, RosettaModelObject, AttributeMeta[]) with 'RosettaPath', 'Class', 'Collection', 'RosettaModelObject', 'AttributeMeta[]'")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({
-      "void PathCollectorBuilderProcessor.processBasic(RosettaPath, Class, Collection, RosettaModelObject, AttributeMeta[])"})
-  public void testProcessBasicWithRosettaPathClassCollectionRosettaModelObjectAttributeMeta2() {
+    "void PathCollectorBuilderProcessor.processBasic(RosettaPath, Class, Collection, RosettaModelObject, AttributeMeta[])"
+  })
+  void testProcessBasicWithRosettaPathClassCollectionRosettaModelObjectAttributeMeta2() {
     // Arrange
-    PathCollectorBuilderProcessor pathCollectorBuilderProcessor = new PathCollectorBuilderProcessor();
+    PathCollectorBuilderProcessor pathCollectorBuilderProcessor =
+        new PathCollectorBuilderProcessor();
     RosettaPath path = mock(RosettaPath.class);
     Class<Object> rosettaType = Object.class;
 
     // Act
-    pathCollectorBuilderProcessor.processBasic(path, rosettaType, (Collection<?>) null, new BarBuilder(),
-        AttributeMeta.META);
+    pathCollectorBuilderProcessor.processBasic(
+        path, rosettaType, (Collection<?>) null, new BarBuilder(), AttributeMeta.META);
 
     // Assert that nothing has changed
     assertTrue(pathCollectorBuilderProcessor.report().getCollectedPaths().isEmpty());
   }
 
   /**
-   * Test {@link PathCollectorBuilderProcessor#processBasic(RosettaPath, Class, Collection, RosettaModelObject, AttributeMeta[])} with {@code RosettaPath}, {@code Class}, {@code Collection}, {@code RosettaModelObject}, {@code AttributeMeta[]}.
-   * <p>
-   * Method under test: {@link PathCollectorBuilderProcessor#processBasic(RosettaPath, Class, Collection, RosettaModelObject, AttributeMeta[])}
+   * Test {@link PathCollectorBuilderProcessor#processBasic(RosettaPath, Class, Collection,
+   * RosettaModelObject, AttributeMeta[])} with {@code RosettaPath}, {@code Class}, {@code
+   * Collection}, {@code RosettaModelObject}, {@code AttributeMeta[]}.
+   *
+   * <p>Method under test: {@link PathCollectorBuilderProcessor#processBasic(RosettaPath, Class,
+   * Collection, RosettaModelObject, AttributeMeta[])}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @DisplayName(
+      "Test processBasic(RosettaPath, Class, Collection, RosettaModelObject, AttributeMeta[]) with 'RosettaPath', 'Class', 'Collection', 'RosettaModelObject', 'AttributeMeta[]'")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({
-      "void PathCollectorBuilderProcessor.processBasic(RosettaPath, Class, Collection, RosettaModelObject, AttributeMeta[])"})
-  public void testProcessBasicWithRosettaPathClassCollectionRosettaModelObjectAttributeMeta3() {
+    "void PathCollectorBuilderProcessor.processBasic(RosettaPath, Class, Collection, RosettaModelObject, AttributeMeta[])"
+  })
+  void testProcessBasicWithRosettaPathClassCollectionRosettaModelObjectAttributeMeta3() {
     // Arrange
-    PathCollectorBuilderProcessor pathCollectorBuilderProcessor = new PathCollectorBuilderProcessor();
+    PathCollectorBuilderProcessor pathCollectorBuilderProcessor =
+        new PathCollectorBuilderProcessor();
+
     RosettaPath path = mock(RosettaPath.class);
     when(path.withIndex(anyInt())).thenReturn(mock(RosettaPath.class));
     Class<Object> rosettaType = Object.class;
 
     ArrayList<Object> instance = new ArrayList<>();
-    instance.add("42");
+    instance.add(BeanPropertyWriter.MARKER_FOR_EMPTY);
 
     // Act
-    pathCollectorBuilderProcessor.processBasic(path, rosettaType, (Collection<?>) instance, new BarBuilder(),
-        AttributeMeta.META);
+    pathCollectorBuilderProcessor.processBasic(
+        path, rosettaType, (Collection<?>) instance, new BarBuilder(), AttributeMeta.META);
 
     // Assert
-    verify(path).withIndex(eq(0));
+    verify(path).withIndex(0);
     assertEquals(1, pathCollectorBuilderProcessor.report().getCollectedPaths().size());
   }
 
   /**
-   * Test {@link PathCollectorBuilderProcessor#processBasic(RosettaPath, Class, Collection, RosettaModelObject, AttributeMeta[])} with {@code RosettaPath}, {@code Class}, {@code Collection}, {@code RosettaModelObject}, {@code AttributeMeta[]}.
-   * <p>
-   * Method under test: {@link PathCollectorBuilderProcessor#processBasic(RosettaPath, Class, Collection, RosettaModelObject, AttributeMeta[])}
+   * Test {@link PathCollectorBuilderProcessor#processBasic(RosettaPath, Class, Collection,
+   * RosettaModelObject, AttributeMeta[])} with {@code RosettaPath}, {@code Class}, {@code
+   * Collection}, {@code RosettaModelObject}, {@code AttributeMeta[]}.
+   *
+   * <p>Method under test: {@link PathCollectorBuilderProcessor#processBasic(RosettaPath, Class,
+   * Collection, RosettaModelObject, AttributeMeta[])}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @DisplayName(
+      "Test processBasic(RosettaPath, Class, Collection, RosettaModelObject, AttributeMeta[]) with 'RosettaPath', 'Class', 'Collection', 'RosettaModelObject', 'AttributeMeta[]'")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({
-      "void PathCollectorBuilderProcessor.processBasic(RosettaPath, Class, Collection, RosettaModelObject, AttributeMeta[])"})
-  public void testProcessBasicWithRosettaPathClassCollectionRosettaModelObjectAttributeMeta4() {
+    "void PathCollectorBuilderProcessor.processBasic(RosettaPath, Class, Collection, RosettaModelObject, AttributeMeta[])"
+  })
+  void testProcessBasicWithRosettaPathClassCollectionRosettaModelObjectAttributeMeta4() {
     // Arrange
-    PathCollectorBuilderProcessor pathCollectorBuilderProcessor = new PathCollectorBuilderProcessor();
+    PathCollectorBuilderProcessor pathCollectorBuilderProcessor =
+        new PathCollectorBuilderProcessor();
+
     RosettaPath path = mock(RosettaPath.class);
     when(path.withIndex(anyInt())).thenReturn(mock(RosettaPath.class));
     Class<Object> rosettaType = Object.class;
 
     ArrayList<Object> instance = new ArrayList<>();
-    instance.add("42");
-    instance.add("42");
+    instance.add(BeanPropertyWriter.MARKER_FOR_EMPTY);
+    instance.add(BeanPropertyWriter.MARKER_FOR_EMPTY);
 
     // Act
-    pathCollectorBuilderProcessor.processBasic(path, rosettaType, (Collection<?>) instance, new BarBuilder(),
-        AttributeMeta.META);
+    pathCollectorBuilderProcessor.processBasic(
+        path, rosettaType, (Collection<?>) instance, new BarBuilder(), AttributeMeta.META);
 
     // Assert
     verify(path, atLeast(1)).withIndex(anyInt());
@@ -263,66 +340,101 @@ public class PathCollectorBuilderProcessorDiffblueTest {
   }
 
   /**
-   * Test {@link PathCollectorBuilderProcessor#processBasic(RosettaPath, Class, Object, RosettaModelObject, AttributeMeta[])} with {@code RosettaPath}, {@code Class}, {@code Object}, {@code RosettaModelObject}, {@code AttributeMeta[]}.
-   * <p>
-   * Method under test: {@link PathCollectorBuilderProcessor#processBasic(RosettaPath, Class, Object, RosettaModelObject, AttributeMeta[])}
+   * Test {@link PathCollectorBuilderProcessor#processBasic(RosettaPath, Class, Object,
+   * RosettaModelObject, AttributeMeta[])} with {@code RosettaPath}, {@code Class}, {@code Object},
+   * {@code RosettaModelObject}, {@code AttributeMeta[]}.
+   *
+   * <p>Method under test: {@link PathCollectorBuilderProcessor#processBasic(RosettaPath, Class,
+   * Object, RosettaModelObject, AttributeMeta[])}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @DisplayName(
+      "Test processBasic(RosettaPath, Class, Object, RosettaModelObject, AttributeMeta[]) with 'RosettaPath', 'Class', 'Object', 'RosettaModelObject', 'AttributeMeta[]'")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({
-      "void PathCollectorBuilderProcessor.processBasic(RosettaPath, Class, Object, RosettaModelObject, AttributeMeta[])"})
-  public void testProcessBasicWithRosettaPathClassObjectRosettaModelObjectAttributeMeta() {
+    "void PathCollectorBuilderProcessor.processBasic(RosettaPath, Class, Object, RosettaModelObject, AttributeMeta[])"
+  })
+  void testProcessBasicWithRosettaPathClassObjectRosettaModelObjectAttributeMeta() {
     // Arrange
-    PathCollectorBuilderProcessor pathCollectorBuilderProcessor = new PathCollectorBuilderProcessor();
+    PathCollectorBuilderProcessor pathCollectorBuilderProcessor =
+        new PathCollectorBuilderProcessor();
     RosettaPath path = mock(RosettaPath.class);
     Class<Object> rosettaType = Object.class;
 
     // Act
-    pathCollectorBuilderProcessor.processBasic(path, rosettaType, "Instance", new BarBuilder(), AttributeMeta.META);
+    pathCollectorBuilderProcessor.processBasic(
+        path,
+        rosettaType,
+        BeanPropertyWriter.MARKER_FOR_EMPTY,
+        new BarBuilder(),
+        AttributeMeta.META);
 
     // Assert
     assertEquals(1, pathCollectorBuilderProcessor.report().getCollectedPaths().size());
   }
 
   /**
-   * Test {@link PathCollectorBuilderProcessor#processBasic(RosettaPath, Class, Object, RosettaModelObject, AttributeMeta[])} with {@code RosettaPath}, {@code Class}, {@code Object}, {@code RosettaModelObject}, {@code AttributeMeta[]}.
-   * <p>
-   * Method under test: {@link PathCollectorBuilderProcessor#processBasic(RosettaPath, Class, Object, RosettaModelObject, AttributeMeta[])}
+   * Test {@link PathCollectorBuilderProcessor#processBasic(RosettaPath, Class, Object,
+   * RosettaModelObject, AttributeMeta[])} with {@code RosettaPath}, {@code Class}, {@code Object},
+   * {@code RosettaModelObject}, {@code AttributeMeta[]}.
+   *
+   * <p>Method under test: {@link PathCollectorBuilderProcessor#processBasic(RosettaPath, Class,
+   * Object, RosettaModelObject, AttributeMeta[])}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @DisplayName(
+      "Test processBasic(RosettaPath, Class, Object, RosettaModelObject, AttributeMeta[]) with 'RosettaPath', 'Class', 'Object', 'RosettaModelObject', 'AttributeMeta[]'")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({
-      "void PathCollectorBuilderProcessor.processBasic(RosettaPath, Class, Object, RosettaModelObject, AttributeMeta[])"})
-  public void testProcessBasicWithRosettaPathClassObjectRosettaModelObjectAttributeMeta2() {
+    "void PathCollectorBuilderProcessor.processBasic(RosettaPath, Class, Object, RosettaModelObject, AttributeMeta[])"
+  })
+  void testProcessBasicWithRosettaPathClassObjectRosettaModelObjectAttributeMeta2() {
     // Arrange
-    PathCollectorBuilderProcessor pathCollectorBuilderProcessor = new PathCollectorBuilderProcessor();
+    PathCollectorBuilderProcessor pathCollectorBuilderProcessor =
+        new PathCollectorBuilderProcessor();
     RosettaPath path = mock(RosettaPath.class);
     Class<Object> rosettaType = Object.class;
 
     // Act
-    pathCollectorBuilderProcessor.processBasic(path, rosettaType, (Object) null, new BarBuilder(), AttributeMeta.META);
+    pathCollectorBuilderProcessor.processBasic(
+        path, rosettaType, (Object) null, new BarBuilder(), AttributeMeta.META);
 
     // Assert that nothing has changed
     assertTrue(pathCollectorBuilderProcessor.report().getCollectedPaths().isEmpty());
   }
 
   /**
-   * Test {@link PathCollectorBuilderProcessor#processBasic(RosettaPath, Class, Object, RosettaModelObject, AttributeMeta[])} with {@code RosettaPath}, {@code Class}, {@code Object}, {@code RosettaModelObject}, {@code AttributeMeta[]}.
-   * <p>
-   * Method under test: {@link PathCollectorBuilderProcessor#processBasic(RosettaPath, Class, Object, RosettaModelObject, AttributeMeta[])}
+   * Test {@link PathCollectorBuilderProcessor#processBasic(RosettaPath, Class, Object,
+   * RosettaModelObject, AttributeMeta[])} with {@code RosettaPath}, {@code Class}, {@code Object},
+   * {@code RosettaModelObject}, {@code AttributeMeta[]}.
+   *
+   * <p>Method under test: {@link PathCollectorBuilderProcessor#processBasic(RosettaPath, Class,
+   * Object, RosettaModelObject, AttributeMeta[])}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @DisplayName(
+      "Test processBasic(RosettaPath, Class, Object, RosettaModelObject, AttributeMeta[]) with 'RosettaPath', 'Class', 'Object', 'RosettaModelObject', 'AttributeMeta[]'")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({
-      "void PathCollectorBuilderProcessor.processBasic(RosettaPath, Class, Object, RosettaModelObject, AttributeMeta[])"})
-  public void testProcessBasicWithRosettaPathClassObjectRosettaModelObjectAttributeMeta3() {
+    "void PathCollectorBuilderProcessor.processBasic(RosettaPath, Class, Object, RosettaModelObject, AttributeMeta[])"
+  })
+  void testProcessBasicWithRosettaPathClassObjectRosettaModelObjectAttributeMeta3() {
     // Arrange
-    PathCollectorBuilderProcessor pathCollectorBuilderProcessor = new PathCollectorBuilderProcessor();
+    PathCollectorBuilderProcessor pathCollectorBuilderProcessor =
+        new PathCollectorBuilderProcessor();
     NullPath path = new NullPath();
     Class<Object> rosettaType = Object.class;
 
     // Act
-    pathCollectorBuilderProcessor.processBasic(path, rosettaType, "Instance", new BarBuilder(), AttributeMeta.META);
+    pathCollectorBuilderProcessor.processBasic(
+        path,
+        rosettaType,
+        BeanPropertyWriter.MARKER_FOR_EMPTY,
+        new BarBuilder(),
+        AttributeMeta.META);
 
     // Assert
     assertEquals(1, pathCollectorBuilderProcessor.report().getCollectedPaths().size());
@@ -330,27 +442,32 @@ public class PathCollectorBuilderProcessorDiffblueTest {
 
   /**
    * Test {@link PathCollectorBuilderProcessor#report()}.
-   * <p>
-   * Method under test: {@link PathCollectorBuilderProcessor#report()}
+   *
+   * <p>Method under test: {@link PathCollectorBuilderProcessor#report()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @DisplayName("Test report()")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"PathReport PathCollectorBuilderProcessor.report()"})
-  public void testReport() {
+  void testReport() {
     // Arrange, Act and Assert
-    assertTrue((new PathCollectorBuilderProcessor()).report().getCollectedPaths().isEmpty());
+    assertTrue(new PathCollectorBuilderProcessor().report().getCollectedPaths().isEmpty());
   }
 
   /**
    * Test new {@link PathCollectorBuilderProcessor} (default constructor).
-   * <p>
-   * Method under test: default or parameterless constructor of {@link PathCollectorBuilderProcessor}
+   *
+   * <p>Method under test: default or parameterless constructor of {@link
+   * PathCollectorBuilderProcessor}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @DisplayName("Test new PathCollectorBuilderProcessor (default constructor)")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"void PathCollectorBuilderProcessor.<init>()"})
-  public void testNewPathCollectorBuilderProcessor() {
+  void testNewPathCollectorBuilderProcessor() {
     // Arrange, Act and Assert
-    assertTrue((new PathCollectorBuilderProcessor()).report().getCollectedPaths().isEmpty());
+    assertTrue(new PathCollectorBuilderProcessor().report().getCollectedPaths().isEmpty());
   }
 }

@@ -20,26 +20,29 @@ package com.regnosys.rosetta.common.translation;
  * ==============
  */
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNull;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.awt.Component;
 import java.awt.Component.BaselineResizeBehavior;
 import java.util.HashMap;
-import org.junit.Test;
-import org.junit.experimental.categories.Category;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
 
-public class SynonymToEnumMapDiffblueTest {
+class SynonymToEnumMapDiffblueTest {
   /**
    * Test {@link SynonymToEnumMap#getEnumValue(Class, String)}.
-   * <p>
-   * Method under test: {@link SynonymToEnumMap#getEnumValue(Class, String)}
+   *
+   * <p>Method under test: {@link SynonymToEnumMap#getEnumValue(Class, String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @DisplayName("Test getEnumValue(Class, String)")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"java.lang.Enum SynonymToEnumMap.getEnumValue(Class, String)"})
-  public void testGetEnumValue() {
+  void testGetEnumValue() {
     // Arrange
     SynonymToEnumMap synonymToEnumMap = new SynonymToEnumMap(new HashMap<>());
     Class<BaselineResizeBehavior> enumClass = BaselineResizeBehavior.class;
@@ -50,13 +53,15 @@ public class SynonymToEnumMapDiffblueTest {
 
   /**
    * Test {@link SynonymToEnumMap#getEnumValueOptional(Class, String)}.
-   * <p>
-   * Method under test: {@link SynonymToEnumMap#getEnumValueOptional(Class, String)}
+   *
+   * <p>Method under test: {@link SynonymToEnumMap#getEnumValueOptional(Class, String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @DisplayName("Test getEnumValueOptional(Class, String)")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"java.util.Optional SynonymToEnumMap.getEnumValueOptional(Class, String)"})
-  public void testGetEnumValueOptional() {
+  void testGetEnumValueOptional() {
     // Arrange
     SynonymToEnumMap synonymToEnumMap = new SynonymToEnumMap(new HashMap<>());
     Class<BaselineResizeBehavior> enumClass = BaselineResizeBehavior.class;

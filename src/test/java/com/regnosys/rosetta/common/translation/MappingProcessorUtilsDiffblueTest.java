@@ -20,89 +20,114 @@ package com.regnosys.rosetta.common.translation;
  * ==============
  */
 
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.ArgumentMatchers.eq;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.fasterxml.jackson.databind.ser.BeanPropertyWriter;
 import com.regnosys.rosetta.common.hashing.ScopeReferenceHelper;
 import com.regnosys.rosetta.common.translation.Path.PathElement;
 import com.rosetta.model.lib.path.RosettaPath;
+import com.rosetta.model.lib.path.RosettaPath.NullPath;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Function;
-import org.junit.Test;
-import org.junit.experimental.categories.Category;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
-public class MappingProcessorUtilsDiffblueTest {
+class MappingProcessorUtilsDiffblueTest {
   /**
    * Test {@link MappingProcessorUtils#getValueAndUpdateMappings(Path, List, RosettaPath)}.
+   *
    * <ul>
-   *   <li>Then {@link ArrayList#ArrayList()} first RosettaPath Elements size is one.</li>
+   *   <li>Then {@link ArrayList#ArrayList()} first Error is {@code An error occurred}.
    * </ul>
-   * <p>
-   * Method under test: {@link MappingProcessorUtils#getValueAndUpdateMappings(Path, List, RosettaPath)}
+   *
+   * <p>Method under test: {@link MappingProcessorUtils#getValueAndUpdateMappings(Path, List,
+   * RosettaPath)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"Optional MappingProcessorUtils.getValueAndUpdateMappings(Path, List, RosettaPath)"})
-  public void testGetValueAndUpdateMappings_thenArrayListFirstRosettaPathElementsSizeIsOne() {
-    // Arrange
-    Path synonymPath = new Path();
-
-    ArrayList<Mapping> mappings = new ArrayList<>();
-    mappings.add(new Mapping(ScopeReferenceHelper.EMPTY_SCOPE, "Xml Value", ScopeReferenceHelper.EMPTY_SCOPE,
-        "Rosetta Value", "An error occurred", true, true, true));
-
-    // Act
-    Optional<String> actualValueAndUpdateMappings = MappingProcessorUtils.getValueAndUpdateMappings(synonymPath,
-        mappings, mock(RosettaPath.class));
-
-    // Assert
-    assertEquals(1, mappings.size());
-    Mapping getResult = mappings.get(0);
-    assertEquals("An error occurred", getResult.getError());
-    Path rosettaPath = getResult.getRosettaPath();
-    assertEquals(1, rosettaPath.getElements().size());
-    assertEquals(1, rosettaPath.getPathNames().length);
-    assertFalse(actualValueAndUpdateMappings.isPresent());
-    assertTrue(getResult.isDuplicate());
-  }
-
-  /**
-   * Test {@link MappingProcessorUtils#getValueAndUpdateMappings(Path, List, RosettaPath)}.
-   * <ul>
-   *   <li>Then {@link ArrayList#ArrayList()} first RosettaPath is {@link ScopeReferenceHelper#EMPTY_SCOPE}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link MappingProcessorUtils#getValueAndUpdateMappings(Path, List, RosettaPath)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"Optional MappingProcessorUtils.getValueAndUpdateMappings(Path, List, RosettaPath)"})
-  public void testGetValueAndUpdateMappings_thenArrayListFirstRosettaPathIsEmpty_scope() {
+  @DisplayName(
+      "Test getValueAndUpdateMappings(Path, List, RosettaPath); then ArrayList() first Error is 'An error occurred'")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "Optional MappingProcessorUtils.getValueAndUpdateMappings(Path, List, RosettaPath)"
+  })
+  void testGetValueAndUpdateMappings_thenArrayListFirstErrorIsAnErrorOccurred() {
     // Arrange
     Path synonymPath = ScopeReferenceHelper.EMPTY_SCOPE;
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+
+    Path xmlPath = new Path();
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    Mapping mapping =
+        new Mapping(
+            xmlPath,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            "An error occurred",
+            true,
+            true,
+            true);
 
     ArrayList<Mapping> mappings = new ArrayList<>();
-    mappings.add(new Mapping(new Path(), "Xml Value", ScopeReferenceHelper.EMPTY_SCOPE, "Rosetta Value",
-        "An error occurred", true, true, true));
+    mappings.add(mapping);
 
     // Act
-    Optional<String> actualValueAndUpdateMappings = MappingProcessorUtils.getValueAndUpdateMappings(synonymPath,
-        mappings, mock(RosettaPath.class));
+    Optional<String> actualValueAndUpdateMappings =
+        MappingProcessorUtils.getValueAndUpdateMappings(
+            synonymPath, mappings, mock(RosettaPath.class));
 
     // Assert
     assertEquals(1, mappings.size());
@@ -115,97 +140,83 @@ public class MappingProcessorUtilsDiffblueTest {
 
   /**
    * Test {@link MappingProcessorUtils#getValueAndUpdateMappings(Path, List, RosettaPath)}.
+   *
    * <ul>
-   *   <li>Then {@link ArrayList#ArrayList()} first RosettaPath is {@link Path#Path()}.</li>
+   *   <li>Then return {@link Optional#get()} is {@code emptyScope}.
    * </ul>
-   * <p>
-   * Method under test: {@link MappingProcessorUtils#getValueAndUpdateMappings(Path, List, RosettaPath)}
+   *
+   * <p>Method under test: {@link MappingProcessorUtils#getValueAndUpdateMappings(Path, List,
+   * RosettaPath)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"Optional MappingProcessorUtils.getValueAndUpdateMappings(Path, List, RosettaPath)"})
-  public void testGetValueAndUpdateMappings_thenArrayListFirstRosettaPathIsPath() {
+  @DisplayName(
+      "Test getValueAndUpdateMappings(Path, List, RosettaPath); then return get() is 'emptyScope'")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "Optional MappingProcessorUtils.getValueAndUpdateMappings(Path, List, RosettaPath)"
+  })
+  void testGetValueAndUpdateMappings_thenReturnGetIsEmptyScope() {
     // Arrange
-    Path synonymPath = new Path();
+    Path synonymPath = ScopeReferenceHelper.EMPTY_SCOPE;
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+
+    Path xmlPath = ScopeReferenceHelper.EMPTY_SCOPE;
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    Mapping mapping =
+        new Mapping(
+            xmlPath,
+            PathElement.parse("emptyScope", true),
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            "An error occurred",
+            true,
+            true,
+            true);
 
     ArrayList<Mapping> mappings = new ArrayList<>();
-    mappings.add(new Mapping(new Path(), "Xml Value", ScopeReferenceHelper.EMPTY_SCOPE, "Rosetta Value",
-        "An error occurred", true, true, true));
+    mappings.add(mapping);
+
     RosettaPath rosettaPath = mock(RosettaPath.class);
     when(rosettaPath.allElements()).thenReturn(new LinkedList<>());
 
     // Act
-    Optional<String> actualValueAndUpdateMappings = MappingProcessorUtils.getValueAndUpdateMappings(synonymPath,
-        mappings, rosettaPath);
-
-    // Assert
-    verify(rosettaPath).allElements();
-    assertEquals(1, mappings.size());
-    assertEquals("Xml Value", actualValueAndUpdateMappings.get());
-    Mapping getResult = mappings.get(0);
-    assertNull(getResult.getError());
-    assertFalse(getResult.isDuplicate());
-    assertTrue(actualValueAndUpdateMappings.isPresent());
-    assertEquals(synonymPath, getResult.getRosettaPath());
-  }
-
-  /**
-   * Test {@link MappingProcessorUtils#getValueAndUpdateMappings(Path, List, RosettaPath)}.
-   * <ul>
-   *   <li>Then {@link ArrayList#ArrayList()} size is two.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link MappingProcessorUtils#getValueAndUpdateMappings(Path, List, RosettaPath)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"Optional MappingProcessorUtils.getValueAndUpdateMappings(Path, List, RosettaPath)"})
-  public void testGetValueAndUpdateMappings_thenArrayListSizeIsTwo() {
-    // Arrange
-    ArrayList<Mapping> mappings = new ArrayList<>();
-    mappings.add(new Mapping(ScopeReferenceHelper.EMPTY_SCOPE, "Xml Value", ScopeReferenceHelper.EMPTY_SCOPE,
-        "Rosetta Value", "An error occurred", true, true, true));
-    mappings.add(new Mapping(ScopeReferenceHelper.EMPTY_SCOPE, "Xml Value", ScopeReferenceHelper.EMPTY_SCOPE,
-        "Rosetta Value", "An error occurred", true, true, true));
-    RosettaPath rosettaPath = mock(RosettaPath.class);
-    when(rosettaPath.allElements()).thenReturn(new LinkedList<>());
-
-    // Act
-    Optional<String> actualValueAndUpdateMappings = MappingProcessorUtils
-        .getValueAndUpdateMappings(ScopeReferenceHelper.EMPTY_SCOPE, mappings, rosettaPath);
-
-    // Assert
-    verify(rosettaPath, atLeast(1)).allElements();
-    assertEquals(2, mappings.size());
-    assertEquals("Xml Value", actualValueAndUpdateMappings.get());
-    Mapping getResult = mappings.get(0);
-    assertNull(getResult.getError());
-    assertFalse(getResult.isDuplicate());
-    assertTrue(actualValueAndUpdateMappings.isPresent());
-  }
-
-  /**
-   * Test {@link MappingProcessorUtils#getValueAndUpdateMappings(Path, List, RosettaPath)}.
-   * <ul>
-   *   <li>Then return {@link Optional#get()} is {@code emptyScope}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link MappingProcessorUtils#getValueAndUpdateMappings(Path, List, RosettaPath)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"Optional MappingProcessorUtils.getValueAndUpdateMappings(Path, List, RosettaPath)"})
-  public void testGetValueAndUpdateMappings_thenReturnGetIsEmptyScope() {
-    // Arrange
-    ArrayList<Mapping> mappings = new ArrayList<>();
-    mappings.add(new Mapping(ScopeReferenceHelper.EMPTY_SCOPE, new PathElement("emptyScope"),
-        ScopeReferenceHelper.EMPTY_SCOPE, "Rosetta Value", "An error occurred", true, true, true));
-    RosettaPath rosettaPath = mock(RosettaPath.class);
-    when(rosettaPath.allElements()).thenReturn(new LinkedList<>());
-
-    // Act
-    Optional<String> actualValueAndUpdateMappings = MappingProcessorUtils
-        .getValueAndUpdateMappings(ScopeReferenceHelper.EMPTY_SCOPE, mappings, rosettaPath);
+    Optional<String> actualValueAndUpdateMappings =
+        MappingProcessorUtils.getValueAndUpdateMappings(synonymPath, mappings, rosettaPath);
 
     // Assert
     verify(rosettaPath).allElements();
@@ -219,26 +230,83 @@ public class MappingProcessorUtilsDiffblueTest {
 
   /**
    * Test {@link MappingProcessorUtils#getValueAndUpdateMappings(Path, List, RosettaPath)}.
+   *
    * <ul>
-   *   <li>Then return {@link Optional#get()} is {@code emptyScope(1)}.</li>
+   *   <li>Then return {@link Optional#get()} is {@code emptyScope(1)}.
    * </ul>
-   * <p>
-   * Method under test: {@link MappingProcessorUtils#getValueAndUpdateMappings(Path, List, RosettaPath)}
+   *
+   * <p>Method under test: {@link MappingProcessorUtils#getValueAndUpdateMappings(Path, List,
+   * RosettaPath)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"Optional MappingProcessorUtils.getValueAndUpdateMappings(Path, List, RosettaPath)"})
-  public void testGetValueAndUpdateMappings_thenReturnGetIsEmptyScope1() {
+  @DisplayName(
+      "Test getValueAndUpdateMappings(Path, List, RosettaPath); then return get() is 'emptyScope(1)'")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "Optional MappingProcessorUtils.getValueAndUpdateMappings(Path, List, RosettaPath)"
+  })
+  void testGetValueAndUpdateMappings_thenReturnGetIsEmptyScope1() {
     // Arrange
+    Path synonymPath = ScopeReferenceHelper.EMPTY_SCOPE;
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+
+    Path xmlPath = ScopeReferenceHelper.EMPTY_SCOPE;
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    Mapping mapping =
+        new Mapping(
+            xmlPath,
+            new PathElement("emptyScope", 1),
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            "An error occurred",
+            true,
+            true,
+            true);
+
     ArrayList<Mapping> mappings = new ArrayList<>();
-    mappings.add(new Mapping(ScopeReferenceHelper.EMPTY_SCOPE, new PathElement("emptyScope", 1),
-        ScopeReferenceHelper.EMPTY_SCOPE, "Rosetta Value", "An error occurred", true, true, true));
+    mappings.add(mapping);
+
     RosettaPath rosettaPath = mock(RosettaPath.class);
     when(rosettaPath.allElements()).thenReturn(new LinkedList<>());
 
     // Act
-    Optional<String> actualValueAndUpdateMappings = MappingProcessorUtils
-        .getValueAndUpdateMappings(ScopeReferenceHelper.EMPTY_SCOPE, mappings, rosettaPath);
+    Optional<String> actualValueAndUpdateMappings =
+        MappingProcessorUtils.getValueAndUpdateMappings(synonymPath, mappings, rosettaPath);
 
     // Assert
     verify(rosettaPath).allElements();
@@ -252,31 +320,88 @@ public class MappingProcessorUtilsDiffblueTest {
 
   /**
    * Test {@link MappingProcessorUtils#getValueAndUpdateMappings(Path, List, RosettaPath)}.
+   *
    * <ul>
-   *   <li>Then return {@link Optional#get()} is {@code Xml Value}.</li>
+   *   <li>Then return {@link Optional#get()} is {@code NON_EMPTY}.
    * </ul>
-   * <p>
-   * Method under test: {@link MappingProcessorUtils#getValueAndUpdateMappings(Path, List, RosettaPath)}
+   *
+   * <p>Method under test: {@link MappingProcessorUtils#getValueAndUpdateMappings(Path, List,
+   * RosettaPath)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"Optional MappingProcessorUtils.getValueAndUpdateMappings(Path, List, RosettaPath)"})
-  public void testGetValueAndUpdateMappings_thenReturnGetIsXmlValue() {
+  @DisplayName(
+      "Test getValueAndUpdateMappings(Path, List, RosettaPath); then return get() is 'NON_EMPTY'")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "Optional MappingProcessorUtils.getValueAndUpdateMappings(Path, List, RosettaPath)"
+  })
+  void testGetValueAndUpdateMappings_thenReturnGetIsNonEmpty() {
     // Arrange
+    Path synonymPath = ScopeReferenceHelper.EMPTY_SCOPE;
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+
+    Path xmlPath = ScopeReferenceHelper.EMPTY_SCOPE;
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    Mapping mapping =
+        new Mapping(
+            xmlPath,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            "An error occurred",
+            true,
+            true,
+            true);
+
     ArrayList<Mapping> mappings = new ArrayList<>();
-    mappings.add(new Mapping(ScopeReferenceHelper.EMPTY_SCOPE, "Xml Value", ScopeReferenceHelper.EMPTY_SCOPE,
-        "Rosetta Value", "An error occurred", true, true, true));
+    mappings.add(mapping);
+
     RosettaPath rosettaPath = mock(RosettaPath.class);
     when(rosettaPath.allElements()).thenReturn(new LinkedList<>());
 
     // Act
-    Optional<String> actualValueAndUpdateMappings = MappingProcessorUtils
-        .getValueAndUpdateMappings(ScopeReferenceHelper.EMPTY_SCOPE, mappings, rosettaPath);
+    Optional<String> actualValueAndUpdateMappings =
+        MappingProcessorUtils.getValueAndUpdateMappings(synonymPath, mappings, rosettaPath);
 
     // Assert
     verify(rosettaPath).allElements();
     assertEquals(1, mappings.size());
-    assertEquals("Xml Value", actualValueAndUpdateMappings.get());
+    assertEquals("NON_EMPTY", actualValueAndUpdateMappings.get());
     Mapping getResult = mappings.get(0);
     assertNull(getResult.getError());
     assertFalse(getResult.isDuplicate());
@@ -285,81 +410,72 @@ public class MappingProcessorUtilsDiffblueTest {
 
   /**
    * Test {@link MappingProcessorUtils#getValueAndUpdateMappings(Path, List, RosettaPath)}.
+   *
    * <ul>
-   *   <li>When {@link ArrayList#ArrayList()}.</li>
-   *   <li>Then return not Present.</li>
+   *   <li>When {@link ScopeReferenceHelper#EMPTY_SCOPE}.
+   *   <li>Then return not Present.
    * </ul>
-   * <p>
-   * Method under test: {@link MappingProcessorUtils#getValueAndUpdateMappings(Path, List, RosettaPath)}
+   *
+   * <p>Method under test: {@link MappingProcessorUtils#getValueAndUpdateMappings(Path, List,
+   * RosettaPath)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"Optional MappingProcessorUtils.getValueAndUpdateMappings(Path, List, RosettaPath)"})
-  public void testGetValueAndUpdateMappings_whenArrayList_thenReturnNotPresent() {
+  @DisplayName(
+      "Test getValueAndUpdateMappings(Path, List, RosettaPath); when EMPTY_SCOPE; then return not Present")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "Optional MappingProcessorUtils.getValueAndUpdateMappings(Path, List, RosettaPath)"
+  })
+  void testGetValueAndUpdateMappings_whenEmpty_scope_thenReturnNotPresent() {
     // Arrange and Act
-    Optional<String> actualValueAndUpdateMappings = MappingProcessorUtils
-        .getValueAndUpdateMappings(ScopeReferenceHelper.EMPTY_SCOPE, new ArrayList<>(), mock(RosettaPath.class));
+    Optional<String> actualValueAndUpdateMappings =
+        MappingProcessorUtils.getValueAndUpdateMappings(
+            ScopeReferenceHelper.EMPTY_SCOPE, new ArrayList<>(), mock(RosettaPath.class));
 
     // Assert
     assertFalse(actualValueAndUpdateMappings.isPresent());
-  }
-
-  /**
-   * Test {@link MappingProcessorUtils#getValueAndUpdateMappings(Path, List, RosettaPath)}.
-   * <ul>
-   *   <li>When valueOf {@code Path}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link MappingProcessorUtils#getValueAndUpdateMappings(Path, List, RosettaPath)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"Optional MappingProcessorUtils.getValueAndUpdateMappings(Path, List, RosettaPath)"})
-  public void testGetValueAndUpdateMappings_whenValueOfPath() {
-    // Arrange
-    Path synonymPath = Path.valueOf("Path");
-
-    ArrayList<Mapping> mappings = new ArrayList<>();
-    mappings.add(new Mapping(ScopeReferenceHelper.EMPTY_SCOPE, "Xml Value", ScopeReferenceHelper.EMPTY_SCOPE,
-        "Rosetta Value", "An error occurred", true, true, true));
-
-    // Act
-    Optional<String> actualValueAndUpdateMappings = MappingProcessorUtils.getValueAndUpdateMappings(synonymPath,
-        mappings, mock(RosettaPath.class));
-
-    // Assert
-    assertEquals(1, mappings.size());
-    Mapping getResult = mappings.get(0);
-    assertEquals("An error occurred", getResult.getError());
-    Path rosettaPath = getResult.getRosettaPath();
-    assertEquals(1, rosettaPath.getElements().size());
-    assertEquals(1, rosettaPath.getPathNames().length);
-    assertFalse(actualValueAndUpdateMappings.isPresent());
-    assertTrue(getResult.isDuplicate());
   }
 
   /**
    * Test {@link MappingProcessorUtils#getValueListAndUpdateMappings(Path, List, RosettaPath)}.
+   *
    * <ul>
-   *   <li>Then {@link ArrayList#ArrayList()} first Error is {@code An error occurred}.</li>
+   *   <li>Then {@link ArrayList#ArrayList()} first Error is {@code An error occurred}.
    * </ul>
-   * <p>
-   * Method under test: {@link MappingProcessorUtils#getValueListAndUpdateMappings(Path, List, RosettaPath)}
+   *
+   * <p>Method under test: {@link MappingProcessorUtils#getValueListAndUpdateMappings(Path, List,
+   * RosettaPath)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"List MappingProcessorUtils.getValueListAndUpdateMappings(Path, List, RosettaPath)"})
-  public void testGetValueListAndUpdateMappings_thenArrayListFirstErrorIsAnErrorOccurred() {
+  @DisplayName(
+      "Test getValueListAndUpdateMappings(Path, List, RosettaPath); then ArrayList() first Error is 'An error occurred'")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "List MappingProcessorUtils.getValueListAndUpdateMappings(Path, List, RosettaPath)"
+  })
+  void testGetValueListAndUpdateMappings_thenArrayListFirstErrorIsAnErrorOccurred() {
     // Arrange
     Path synonymPath = new Path();
 
     ArrayList<Mapping> mappings = new ArrayList<>();
-    mappings.add(new Mapping(ScopeReferenceHelper.EMPTY_SCOPE, "Xml Value", ScopeReferenceHelper.EMPTY_SCOPE,
-        "Rosetta Value", "An error occurred", true, true, true));
+    Mapping mapping =
+        new Mapping(
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            "An error occurred",
+            true,
+            true,
+            true);
+    mappings.add(mapping);
 
     // Act
-    List<String> actualValueListAndUpdateMappings = MappingProcessorUtils.getValueListAndUpdateMappings(synonymPath,
-        mappings, mock(RosettaPath.class));
+    List<String> actualValueListAndUpdateMappings =
+        MappingProcessorUtils.getValueListAndUpdateMappings(
+            synonymPath, mappings, mock(RosettaPath.class));
 
     // Assert
     assertEquals(1, mappings.size());
@@ -374,35 +490,62 @@ public class MappingProcessorUtilsDiffblueTest {
 
   /**
    * Test {@link MappingProcessorUtils#getValueListAndUpdateMappings(Path, List, RosettaPath)}.
+   *
    * <ul>
-   *   <li>Then {@link ArrayList#ArrayList()} size is two.</li>
+   *   <li>Then {@link ArrayList#ArrayList()} size is two.
    * </ul>
-   * <p>
-   * Method under test: {@link MappingProcessorUtils#getValueListAndUpdateMappings(Path, List, RosettaPath)}
+   *
+   * <p>Method under test: {@link MappingProcessorUtils#getValueListAndUpdateMappings(Path, List,
+   * RosettaPath)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"List MappingProcessorUtils.getValueListAndUpdateMappings(Path, List, RosettaPath)"})
-  public void testGetValueListAndUpdateMappings_thenArrayListSizeIsTwo() {
+  @DisplayName(
+      "Test getValueListAndUpdateMappings(Path, List, RosettaPath); then ArrayList() size is two")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "List MappingProcessorUtils.getValueListAndUpdateMappings(Path, List, RosettaPath)"
+  })
+  void testGetValueListAndUpdateMappings_thenArrayListSizeIsTwo() {
     // Arrange
     ArrayList<Mapping> mappings = new ArrayList<>();
-    mappings.add(new Mapping(ScopeReferenceHelper.EMPTY_SCOPE, "Xml Value", ScopeReferenceHelper.EMPTY_SCOPE,
-        "Rosetta Value", "An error occurred", true, true, true));
-    mappings.add(new Mapping(ScopeReferenceHelper.EMPTY_SCOPE, "Xml Value", ScopeReferenceHelper.EMPTY_SCOPE,
-        "Rosetta Value", "An error occurred", true, true, true));
+    Mapping mapping =
+        new Mapping(
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            "An error occurred",
+            true,
+            true,
+            true);
+    mappings.add(mapping);
+    Mapping mapping2 =
+        new Mapping(
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            "An error occurred",
+            true,
+            true,
+            true);
+    mappings.add(mapping2);
+
     RosettaPath rosettaPath = mock(RosettaPath.class);
     when(rosettaPath.allElements()).thenReturn(new LinkedList<>());
 
     // Act
-    List<String> actualValueListAndUpdateMappings = MappingProcessorUtils
-        .getValueListAndUpdateMappings(ScopeReferenceHelper.EMPTY_SCOPE, mappings, rosettaPath);
+    List<String> actualValueListAndUpdateMappings =
+        MappingProcessorUtils.getValueListAndUpdateMappings(
+            ScopeReferenceHelper.EMPTY_SCOPE, mappings, rosettaPath);
 
     // Assert
     verify(rosettaPath, atLeast(1)).allElements();
     assertEquals(2, mappings.size());
     assertEquals(2, actualValueListAndUpdateMappings.size());
-    assertEquals("Xml Value", actualValueListAndUpdateMappings.get(0));
-    assertEquals("Xml Value", actualValueListAndUpdateMappings.get(1));
+    assertEquals("NON_EMPTY", actualValueListAndUpdateMappings.get(0));
+    assertEquals("NON_EMPTY", actualValueListAndUpdateMappings.get(1));
     Mapping getResult = mappings.get(0);
     assertNull(getResult.getError());
     assertFalse(getResult.isDuplicate());
@@ -410,26 +553,44 @@ public class MappingProcessorUtilsDiffblueTest {
 
   /**
    * Test {@link MappingProcessorUtils#getValueListAndUpdateMappings(Path, List, RosettaPath)}.
+   *
    * <ul>
-   *   <li>Then return first is {@code emptyScope}.</li>
+   *   <li>Then return first is {@code emptyScope}.
    * </ul>
-   * <p>
-   * Method under test: {@link MappingProcessorUtils#getValueListAndUpdateMappings(Path, List, RosettaPath)}
+   *
+   * <p>Method under test: {@link MappingProcessorUtils#getValueListAndUpdateMappings(Path, List,
+   * RosettaPath)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"List MappingProcessorUtils.getValueListAndUpdateMappings(Path, List, RosettaPath)"})
-  public void testGetValueListAndUpdateMappings_thenReturnFirstIsEmptyScope() {
+  @DisplayName(
+      "Test getValueListAndUpdateMappings(Path, List, RosettaPath); then return first is 'emptyScope'")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "List MappingProcessorUtils.getValueListAndUpdateMappings(Path, List, RosettaPath)"
+  })
+  void testGetValueListAndUpdateMappings_thenReturnFirstIsEmptyScope() {
     // Arrange
     ArrayList<Mapping> mappings = new ArrayList<>();
-    mappings.add(new Mapping(ScopeReferenceHelper.EMPTY_SCOPE, new PathElement("emptyScope"),
-        ScopeReferenceHelper.EMPTY_SCOPE, "Rosetta Value", "An error occurred", true, true, true));
+    Mapping mapping =
+        new Mapping(
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            PathElement.parse("emptyScope", true),
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            "An error occurred",
+            true,
+            true,
+            true);
+    mappings.add(mapping);
+
     RosettaPath rosettaPath = mock(RosettaPath.class);
     when(rosettaPath.allElements()).thenReturn(new LinkedList<>());
 
     // Act
-    List<String> actualValueListAndUpdateMappings = MappingProcessorUtils
-        .getValueListAndUpdateMappings(ScopeReferenceHelper.EMPTY_SCOPE, mappings, rosettaPath);
+    List<String> actualValueListAndUpdateMappings =
+        MappingProcessorUtils.getValueListAndUpdateMappings(
+            ScopeReferenceHelper.EMPTY_SCOPE, mappings, rosettaPath);
 
     // Assert
     verify(rosettaPath).allElements();
@@ -443,26 +604,44 @@ public class MappingProcessorUtilsDiffblueTest {
 
   /**
    * Test {@link MappingProcessorUtils#getValueListAndUpdateMappings(Path, List, RosettaPath)}.
+   *
    * <ul>
-   *   <li>Then return first is {@code emptyScope(1)}.</li>
+   *   <li>Then return first is {@code emptyScope(1)}.
    * </ul>
-   * <p>
-   * Method under test: {@link MappingProcessorUtils#getValueListAndUpdateMappings(Path, List, RosettaPath)}
+   *
+   * <p>Method under test: {@link MappingProcessorUtils#getValueListAndUpdateMappings(Path, List,
+   * RosettaPath)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"List MappingProcessorUtils.getValueListAndUpdateMappings(Path, List, RosettaPath)"})
-  public void testGetValueListAndUpdateMappings_thenReturnFirstIsEmptyScope1() {
+  @DisplayName(
+      "Test getValueListAndUpdateMappings(Path, List, RosettaPath); then return first is 'emptyScope(1)'")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "List MappingProcessorUtils.getValueListAndUpdateMappings(Path, List, RosettaPath)"
+  })
+  void testGetValueListAndUpdateMappings_thenReturnFirstIsEmptyScope1() {
     // Arrange
     ArrayList<Mapping> mappings = new ArrayList<>();
-    mappings.add(new Mapping(ScopeReferenceHelper.EMPTY_SCOPE, new PathElement("emptyScope", 1),
-        ScopeReferenceHelper.EMPTY_SCOPE, "Rosetta Value", "An error occurred", true, true, true));
+    Mapping mapping =
+        new Mapping(
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            new PathElement("emptyScope", 1),
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            "An error occurred",
+            true,
+            true,
+            true);
+    mappings.add(mapping);
+
     RosettaPath rosettaPath = mock(RosettaPath.class);
     when(rosettaPath.allElements()).thenReturn(new LinkedList<>());
 
     // Act
-    List<String> actualValueListAndUpdateMappings = MappingProcessorUtils
-        .getValueListAndUpdateMappings(ScopeReferenceHelper.EMPTY_SCOPE, mappings, rosettaPath);
+    List<String> actualValueListAndUpdateMappings =
+        MappingProcessorUtils.getValueListAndUpdateMappings(
+            ScopeReferenceHelper.EMPTY_SCOPE, mappings, rosettaPath);
 
     // Assert
     verify(rosettaPath).allElements();
@@ -476,32 +655,50 @@ public class MappingProcessorUtilsDiffblueTest {
 
   /**
    * Test {@link MappingProcessorUtils#getValueListAndUpdateMappings(Path, List, RosettaPath)}.
+   *
    * <ul>
-   *   <li>Then return first is {@code Xml Value}.</li>
+   *   <li>Then return first is {@code NON_EMPTY}.
    * </ul>
-   * <p>
-   * Method under test: {@link MappingProcessorUtils#getValueListAndUpdateMappings(Path, List, RosettaPath)}
+   *
+   * <p>Method under test: {@link MappingProcessorUtils#getValueListAndUpdateMappings(Path, List,
+   * RosettaPath)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"List MappingProcessorUtils.getValueListAndUpdateMappings(Path, List, RosettaPath)"})
-  public void testGetValueListAndUpdateMappings_thenReturnFirstIsXmlValue() {
+  @DisplayName(
+      "Test getValueListAndUpdateMappings(Path, List, RosettaPath); then return first is 'NON_EMPTY'")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "List MappingProcessorUtils.getValueListAndUpdateMappings(Path, List, RosettaPath)"
+  })
+  void testGetValueListAndUpdateMappings_thenReturnFirstIsNonEmpty() {
     // Arrange
     ArrayList<Mapping> mappings = new ArrayList<>();
-    mappings.add(new Mapping(ScopeReferenceHelper.EMPTY_SCOPE, "Xml Value", ScopeReferenceHelper.EMPTY_SCOPE,
-        "Rosetta Value", "An error occurred", true, true, true));
+    Mapping mapping =
+        new Mapping(
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            "An error occurred",
+            true,
+            true,
+            true);
+    mappings.add(mapping);
+
     RosettaPath rosettaPath = mock(RosettaPath.class);
     when(rosettaPath.allElements()).thenReturn(new LinkedList<>());
 
     // Act
-    List<String> actualValueListAndUpdateMappings = MappingProcessorUtils
-        .getValueListAndUpdateMappings(ScopeReferenceHelper.EMPTY_SCOPE, mappings, rosettaPath);
+    List<String> actualValueListAndUpdateMappings =
+        MappingProcessorUtils.getValueListAndUpdateMappings(
+            ScopeReferenceHelper.EMPTY_SCOPE, mappings, rosettaPath);
 
     // Assert
     verify(rosettaPath).allElements();
     assertEquals(1, mappings.size());
     assertEquals(1, actualValueListAndUpdateMappings.size());
-    assertEquals("Xml Value", actualValueListAndUpdateMappings.get(0));
+    assertEquals("NON_EMPTY", actualValueListAndUpdateMappings.get(0));
     Mapping getResult = mappings.get(0);
     assertNull(getResult.getError());
     assertFalse(getResult.isDuplicate());
@@ -509,46 +706,80 @@ public class MappingProcessorUtilsDiffblueTest {
 
   /**
    * Test {@link MappingProcessorUtils#getValueListAndUpdateMappings(Path, List, RosettaPath)}.
+   *
    * <ul>
-   *   <li>When {@link ArrayList#ArrayList()}.</li>
-   *   <li>Then return Empty.</li>
+   *   <li>When {@link ArrayList#ArrayList()}.
+   *   <li>Then return Empty.
    * </ul>
-   * <p>
-   * Method under test: {@link MappingProcessorUtils#getValueListAndUpdateMappings(Path, List, RosettaPath)}
+   *
+   * <p>Method under test: {@link MappingProcessorUtils#getValueListAndUpdateMappings(Path, List,
+   * RosettaPath)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"List MappingProcessorUtils.getValueListAndUpdateMappings(Path, List, RosettaPath)"})
-  public void testGetValueListAndUpdateMappings_whenArrayList_thenReturnEmpty() {
+  @DisplayName(
+      "Test getValueListAndUpdateMappings(Path, List, RosettaPath); when ArrayList(); then return Empty")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "List MappingProcessorUtils.getValueListAndUpdateMappings(Path, List, RosettaPath)"
+  })
+  void testGetValueListAndUpdateMappings_whenArrayList_thenReturnEmpty() {
     // Arrange and Act
-    List<String> actualValueListAndUpdateMappings = MappingProcessorUtils
-        .getValueListAndUpdateMappings(ScopeReferenceHelper.EMPTY_SCOPE, new ArrayList<>(), mock(RosettaPath.class));
+    List<String> actualValueListAndUpdateMappings =
+        MappingProcessorUtils.getValueListAndUpdateMappings(
+            ScopeReferenceHelper.EMPTY_SCOPE, new ArrayList<>(), mock(RosettaPath.class));
 
     // Assert
     assertTrue(actualValueListAndUpdateMappings.isEmpty());
   }
 
   /**
-   * Test {@link MappingProcessorUtils#setValueAndUpdateMappings(Path, Consumer, List, RosettaPath)}.
-   * <p>
-   * Method under test: {@link MappingProcessorUtils#setValueAndUpdateMappings(Path, Consumer, List, RosettaPath)}
+   * Test {@link MappingProcessorUtils#setValueListAndUpdateMappings(Path, Consumer, List,
+   * RosettaPath)}.
+   *
+   * <p>Method under test: {@link MappingProcessorUtils#setValueListAndUpdateMappings(Path,
+   * Consumer, List, RosettaPath)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void MappingProcessorUtils.setValueAndUpdateMappings(Path, Consumer, List, RosettaPath)"})
-  public void testSetValueAndUpdateMappings() {
+  @DisplayName("Test setValueListAndUpdateMappings(Path, Consumer, List, RosettaPath)")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void MappingProcessorUtils.setValueListAndUpdateMappings(Path, Consumer, List, RosettaPath)"
+  })
+  void testSetValueListAndUpdateMappings() {
     // Arrange
-    Consumer<String> setter = new Mapping(ScopeReferenceHelper.EMPTY_SCOPE, "Xml Value",
-        ScopeReferenceHelper.EMPTY_SCOPE, "Rosetta Value", "An error occurred", true, true, true)::setError;
+    Mapping mapping =
+        new Mapping(
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            "An error occurred",
+            true,
+            true,
+            true);
+    Consumer<String> setter = mapping::setError;
 
     ArrayList<Mapping> mappings = new ArrayList<>();
-    mappings.add(new Mapping(ScopeReferenceHelper.EMPTY_SCOPE, new PathElement("emptyScope", 1),
-        ScopeReferenceHelper.EMPTY_SCOPE, "Rosetta Value", "An error occurred", true, true, true));
+    Mapping mapping2 =
+        new Mapping(
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            PathElement.parse("emptyScope", true),
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            "An error occurred",
+            true,
+            true,
+            true);
+    mappings.add(mapping2);
+
     RosettaPath rosettaPath = mock(RosettaPath.class);
     when(rosettaPath.allElements()).thenReturn(new LinkedList<>());
 
     // Act
-    MappingProcessorUtils.setValueAndUpdateMappings(ScopeReferenceHelper.EMPTY_SCOPE, setter, mappings, rosettaPath);
+    MappingProcessorUtils.setValueListAndUpdateMappings(
+        ScopeReferenceHelper.EMPTY_SCOPE, setter, mappings, rosettaPath);
 
     // Assert
     verify(rosettaPath).allElements();
@@ -559,29 +790,52 @@ public class MappingProcessorUtilsDiffblueTest {
   }
 
   /**
-   * Test {@link MappingProcessorUtils#setValueAndUpdateMappings(Path, Consumer, List, RosettaPath)}.
-   * <ul>
-   *   <li>Given {@link PathElement#PathElement(String)} with pathName is {@code emptyScope}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link MappingProcessorUtils#setValueAndUpdateMappings(Path, Consumer, List, RosettaPath)}
+   * Test {@link MappingProcessorUtils#setValueListAndUpdateMappings(Path, Consumer, List,
+   * RosettaPath)}.
+   *
+   * <p>Method under test: {@link MappingProcessorUtils#setValueListAndUpdateMappings(Path,
+   * Consumer, List, RosettaPath)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void MappingProcessorUtils.setValueAndUpdateMappings(Path, Consumer, List, RosettaPath)"})
-  public void testSetValueAndUpdateMappings_givenPathElementWithPathNameIsEmptyScope() {
+  @DisplayName("Test setValueListAndUpdateMappings(Path, Consumer, List, RosettaPath)")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void MappingProcessorUtils.setValueListAndUpdateMappings(Path, Consumer, List, RosettaPath)"
+  })
+  void testSetValueListAndUpdateMappings2() {
     // Arrange
-    Consumer<String> setter = new Mapping(ScopeReferenceHelper.EMPTY_SCOPE, "Xml Value",
-        ScopeReferenceHelper.EMPTY_SCOPE, "Rosetta Value", "An error occurred", true, true, true)::setError;
+    Mapping mapping =
+        new Mapping(
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            "An error occurred",
+            true,
+            true,
+            true);
+    Consumer<String> setter = mapping::setError;
 
     ArrayList<Mapping> mappings = new ArrayList<>();
-    mappings.add(new Mapping(ScopeReferenceHelper.EMPTY_SCOPE, new PathElement("emptyScope"),
-        ScopeReferenceHelper.EMPTY_SCOPE, "Rosetta Value", "An error occurred", true, true, true));
+    Mapping mapping2 =
+        new Mapping(
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            new PathElement("emptyScope", 1),
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            "An error occurred",
+            true,
+            true,
+            true);
+    mappings.add(mapping2);
+
     RosettaPath rosettaPath = mock(RosettaPath.class);
     when(rosettaPath.allElements()).thenReturn(new LinkedList<>());
 
     // Act
-    MappingProcessorUtils.setValueAndUpdateMappings(ScopeReferenceHelper.EMPTY_SCOPE, setter, mappings, rosettaPath);
+    MappingProcessorUtils.setValueListAndUpdateMappings(
+        ScopeReferenceHelper.EMPTY_SCOPE, setter, mappings, rosettaPath);
 
     // Assert
     verify(rosettaPath).allElements();
@@ -592,61 +846,55 @@ public class MappingProcessorUtilsDiffblueTest {
   }
 
   /**
-   * Test {@link MappingProcessorUtils#setValueAndUpdateMappings(Path, Consumer, List, RosettaPath)}.
+   * Test {@link MappingProcessorUtils#setValueListAndUpdateMappings(Path, Consumer, List,
+   * RosettaPath)}.
+   *
    * <ul>
-   *   <li>Then {@link ArrayList#ArrayList()} first Error is {@code null}.</li>
+   *   <li>Then {@link ArrayList#ArrayList()} first Error is {@code An error occurred}.
    * </ul>
-   * <p>
-   * Method under test: {@link MappingProcessorUtils#setValueAndUpdateMappings(Path, Consumer, List, RosettaPath)}
+   *
+   * <p>Method under test: {@link MappingProcessorUtils#setValueListAndUpdateMappings(Path,
+   * Consumer, List, RosettaPath)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void MappingProcessorUtils.setValueAndUpdateMappings(Path, Consumer, List, RosettaPath)"})
-  public void testSetValueAndUpdateMappings_thenArrayListFirstErrorIsNull() {
-    // Arrange
-    Consumer<String> setter = new Mapping(ScopeReferenceHelper.EMPTY_SCOPE, "Xml Value",
-        ScopeReferenceHelper.EMPTY_SCOPE, "Rosetta Value", "An error occurred", true, true, true)::setError;
-
-    ArrayList<Mapping> mappings = new ArrayList<>();
-    mappings.add(new Mapping(ScopeReferenceHelper.EMPTY_SCOPE, "Xml Value", ScopeReferenceHelper.EMPTY_SCOPE,
-        "Rosetta Value", "An error occurred", true, true, true));
-    RosettaPath rosettaPath = mock(RosettaPath.class);
-    when(rosettaPath.allElements()).thenReturn(new LinkedList<>());
-
-    // Act
-    MappingProcessorUtils.setValueAndUpdateMappings(ScopeReferenceHelper.EMPTY_SCOPE, setter, mappings, rosettaPath);
-
-    // Assert
-    verify(rosettaPath).allElements();
-    assertEquals(1, mappings.size());
-    Mapping getResult = mappings.get(0);
-    assertNull(getResult.getError());
-    assertFalse(getResult.isDuplicate());
-  }
-
-  /**
-   * Test {@link MappingProcessorUtils#setValueAndUpdateMappings(Path, Consumer, List, RosettaPath)}.
-   * <ul>
-   *   <li>Then {@link ArrayList#ArrayList()} first RosettaPath Elements size is one.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link MappingProcessorUtils#setValueAndUpdateMappings(Path, Consumer, List, RosettaPath)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void MappingProcessorUtils.setValueAndUpdateMappings(Path, Consumer, List, RosettaPath)"})
-  public void testSetValueAndUpdateMappings_thenArrayListFirstRosettaPathElementsSizeIsOne() {
+  @DisplayName(
+      "Test setValueListAndUpdateMappings(Path, Consumer, List, RosettaPath); then ArrayList() first Error is 'An error occurred'")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void MappingProcessorUtils.setValueListAndUpdateMappings(Path, Consumer, List, RosettaPath)"
+  })
+  void testSetValueListAndUpdateMappings_thenArrayListFirstErrorIsAnErrorOccurred() {
     // Arrange
     Path synonymPath = new Path();
-    Consumer<String> setter = new Mapping(ScopeReferenceHelper.EMPTY_SCOPE, "Xml Value",
-        ScopeReferenceHelper.EMPTY_SCOPE, "Rosetta Value", "An error occurred", true, true, true)::setError;
+    Mapping mapping =
+        new Mapping(
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            "An error occurred",
+            true,
+            true,
+            true);
+    Consumer<String> setter = mapping::setError;
 
     ArrayList<Mapping> mappings = new ArrayList<>();
-    mappings.add(new Mapping(ScopeReferenceHelper.EMPTY_SCOPE, "Xml Value", ScopeReferenceHelper.EMPTY_SCOPE,
-        "Rosetta Value", "An error occurred", true, true, true));
+    Mapping mapping2 =
+        new Mapping(
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            "An error occurred",
+            true,
+            true,
+            true);
+    mappings.add(mapping2);
 
     // Act
-    MappingProcessorUtils.setValueAndUpdateMappings(synonymPath, setter, mappings, mock(RosettaPath.class));
+    MappingProcessorUtils.setValueListAndUpdateMappings(
+        synonymPath, setter, mappings, mock(RosettaPath.class));
 
     // Assert that nothing has changed
     assertEquals(1, mappings.size());
@@ -659,163 +907,57 @@ public class MappingProcessorUtilsDiffblueTest {
   }
 
   /**
-   * Test {@link MappingProcessorUtils#setValueAndUpdateMappings(Path, Consumer, List, RosettaPath)}.
+   * Test {@link MappingProcessorUtils#setValueListAndUpdateMappings(Path, Consumer, List,
+   * RosettaPath)}.
+   *
    * <ul>
-   *   <li>Then {@link ArrayList#ArrayList()} first RosettaPath is {@link ScopeReferenceHelper#EMPTY_SCOPE}.</li>
+   *   <li>Then {@link ArrayList#ArrayList()} size is one.
    * </ul>
-   * <p>
-   * Method under test: {@link MappingProcessorUtils#setValueAndUpdateMappings(Path, Consumer, List, RosettaPath)}
+   *
+   * <p>Method under test: {@link MappingProcessorUtils#setValueListAndUpdateMappings(Path,
+   * Consumer, List, RosettaPath)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void MappingProcessorUtils.setValueAndUpdateMappings(Path, Consumer, List, RosettaPath)"})
-  public void testSetValueAndUpdateMappings_thenArrayListFirstRosettaPathIsEmpty_scope() {
+  @DisplayName(
+      "Test setValueListAndUpdateMappings(Path, Consumer, List, RosettaPath); then ArrayList() size is one")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void MappingProcessorUtils.setValueListAndUpdateMappings(Path, Consumer, List, RosettaPath)"
+  })
+  void testSetValueListAndUpdateMappings_thenArrayListSizeIsOne() {
     // Arrange
-    Path synonymPath = ScopeReferenceHelper.EMPTY_SCOPE;
-    Consumer<String> setter = new Mapping(ScopeReferenceHelper.EMPTY_SCOPE, "Xml Value",
-        ScopeReferenceHelper.EMPTY_SCOPE, "Rosetta Value", "An error occurred", true, true, true)::setError;
+    Mapping mapping =
+        new Mapping(
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            "An error occurred",
+            true,
+            true,
+            true);
+    Consumer<String> setter = mapping::setError;
 
     ArrayList<Mapping> mappings = new ArrayList<>();
-    mappings.add(new Mapping(new Path(), "Xml Value", ScopeReferenceHelper.EMPTY_SCOPE, "Rosetta Value",
-        "An error occurred", true, true, true));
+    Mapping mapping2 =
+        new Mapping(
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            "An error occurred",
+            true,
+            true,
+            true);
+    mappings.add(mapping2);
 
-    // Act
-    MappingProcessorUtils.setValueAndUpdateMappings(synonymPath, setter, mappings, mock(RosettaPath.class));
-
-    // Assert that nothing has changed
-    assertEquals(1, mappings.size());
-    Mapping getResult = mappings.get(0);
-    assertEquals("An error occurred", getResult.getError());
-    assertTrue(getResult.isDuplicate());
-    assertSame(synonymPath, getResult.getRosettaPath());
-  }
-
-  /**
-   * Test {@link MappingProcessorUtils#setValueAndUpdateMappings(Path, Consumer, List, RosettaPath)}.
-   * <ul>
-   *   <li>Then {@link ArrayList#ArrayList()} first RosettaPath is {@link Path#Path()}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link MappingProcessorUtils#setValueAndUpdateMappings(Path, Consumer, List, RosettaPath)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void MappingProcessorUtils.setValueAndUpdateMappings(Path, Consumer, List, RosettaPath)"})
-  public void testSetValueAndUpdateMappings_thenArrayListFirstRosettaPathIsPath() {
-    // Arrange
-    Path synonymPath = new Path();
-    Consumer<String> setter = new Mapping(ScopeReferenceHelper.EMPTY_SCOPE, "Xml Value",
-        ScopeReferenceHelper.EMPTY_SCOPE, "Rosetta Value", "An error occurred", true, true, true)::setError;
-
-    ArrayList<Mapping> mappings = new ArrayList<>();
-    mappings.add(new Mapping(new Path(), "Xml Value", ScopeReferenceHelper.EMPTY_SCOPE, "Rosetta Value",
-        "An error occurred", true, true, true));
     RosettaPath rosettaPath = mock(RosettaPath.class);
     when(rosettaPath.allElements()).thenReturn(new LinkedList<>());
 
     // Act
-    MappingProcessorUtils.setValueAndUpdateMappings(synonymPath, setter, mappings, rosettaPath);
-
-    // Assert
-    verify(rosettaPath).allElements();
-    assertEquals(1, mappings.size());
-    Mapping getResult = mappings.get(0);
-    assertNull(getResult.getError());
-    assertFalse(getResult.isDuplicate());
-    assertEquals(synonymPath, getResult.getRosettaPath());
-  }
-
-  /**
-   * Test {@link MappingProcessorUtils#setValueAndUpdateMappings(Path, Consumer, List, RosettaPath)}.
-   * <ul>
-   *   <li>Then {@link ArrayList#ArrayList()} size is two.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link MappingProcessorUtils#setValueAndUpdateMappings(Path, Consumer, List, RosettaPath)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void MappingProcessorUtils.setValueAndUpdateMappings(Path, Consumer, List, RosettaPath)"})
-  public void testSetValueAndUpdateMappings_thenArrayListSizeIsTwo() {
-    // Arrange
-    Consumer<String> setter = new Mapping(ScopeReferenceHelper.EMPTY_SCOPE, "Xml Value",
-        ScopeReferenceHelper.EMPTY_SCOPE, "Rosetta Value", "An error occurred", true, true, true)::setError;
-
-    ArrayList<Mapping> mappings = new ArrayList<>();
-    mappings.add(new Mapping(ScopeReferenceHelper.EMPTY_SCOPE, "Xml Value", ScopeReferenceHelper.EMPTY_SCOPE,
-        "Rosetta Value", "An error occurred", true, true, true));
-    Mapping mapping = new Mapping(ScopeReferenceHelper.EMPTY_SCOPE, "Xml Value", ScopeReferenceHelper.EMPTY_SCOPE,
-        "Rosetta Value", "An error occurred", true, true, true);
-
-    mappings.add(mapping);
-    RosettaPath rosettaPath = mock(RosettaPath.class);
-    when(rosettaPath.allElements()).thenReturn(new LinkedList<>());
-
-    // Act
-    MappingProcessorUtils.setValueAndUpdateMappings(ScopeReferenceHelper.EMPTY_SCOPE, setter, mappings, rosettaPath);
-
-    // Assert
-    verify(rosettaPath, atLeast(1)).allElements();
-    assertEquals(2, mappings.size());
-    assertSame(mapping, mappings.get(1));
-  }
-
-  /**
-   * Test {@link MappingProcessorUtils#setValueAndUpdateMappings(Path, Consumer, List, RosettaPath)}.
-   * <ul>
-   *   <li>When valueOf {@code Path}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link MappingProcessorUtils#setValueAndUpdateMappings(Path, Consumer, List, RosettaPath)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void MappingProcessorUtils.setValueAndUpdateMappings(Path, Consumer, List, RosettaPath)"})
-  public void testSetValueAndUpdateMappings_whenValueOfPath() {
-    // Arrange
-    Path synonymPath = Path.valueOf("Path");
-    Consumer<String> setter = new Mapping(ScopeReferenceHelper.EMPTY_SCOPE, "Xml Value",
-        ScopeReferenceHelper.EMPTY_SCOPE, "Rosetta Value", "An error occurred", true, true, true)::setError;
-
-    ArrayList<Mapping> mappings = new ArrayList<>();
-    mappings.add(new Mapping(ScopeReferenceHelper.EMPTY_SCOPE, "Xml Value", ScopeReferenceHelper.EMPTY_SCOPE,
-        "Rosetta Value", "An error occurred", true, true, true));
-
-    // Act
-    MappingProcessorUtils.setValueAndUpdateMappings(synonymPath, setter, mappings, mock(RosettaPath.class));
-
-    // Assert that nothing has changed
-    assertEquals(1, mappings.size());
-    Mapping getResult = mappings.get(0);
-    assertEquals("An error occurred", getResult.getError());
-    Path rosettaPath = getResult.getRosettaPath();
-    assertEquals(1, rosettaPath.getElements().size());
-    assertEquals(1, rosettaPath.getPathNames().length);
-    assertTrue(getResult.isDuplicate());
-  }
-
-  /**
-   * Test {@link MappingProcessorUtils#setValueListAndUpdateMappings(Path, Consumer, List, RosettaPath)}.
-   * <p>
-   * Method under test: {@link MappingProcessorUtils#setValueListAndUpdateMappings(Path, Consumer, List, RosettaPath)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void MappingProcessorUtils.setValueListAndUpdateMappings(Path, Consumer, List, RosettaPath)"})
-  public void testSetValueListAndUpdateMappings() {
-    // Arrange
-    Consumer<String> setter = new Mapping(ScopeReferenceHelper.EMPTY_SCOPE, "Xml Value",
-        ScopeReferenceHelper.EMPTY_SCOPE, "Rosetta Value", "An error occurred", true, true, true)::setError;
-
-    ArrayList<Mapping> mappings = new ArrayList<>();
-    mappings.add(new Mapping(ScopeReferenceHelper.EMPTY_SCOPE, new PathElement("emptyScope", 1),
-        ScopeReferenceHelper.EMPTY_SCOPE, "Rosetta Value", "An error occurred", true, true, true));
-    RosettaPath rosettaPath = mock(RosettaPath.class);
-    when(rosettaPath.allElements()).thenReturn(new LinkedList<>());
-
-    // Act
-    MappingProcessorUtils.setValueListAndUpdateMappings(ScopeReferenceHelper.EMPTY_SCOPE, setter, mappings,
-        rosettaPath);
+    MappingProcessorUtils.setValueListAndUpdateMappings(
+        ScopeReferenceHelper.EMPTY_SCOPE, setter, mappings, rosettaPath);
 
     // Assert
     verify(rosettaPath).allElements();
@@ -826,136 +968,68 @@ public class MappingProcessorUtilsDiffblueTest {
   }
 
   /**
-   * Test {@link MappingProcessorUtils#setValueListAndUpdateMappings(Path, Consumer, List, RosettaPath)}.
+   * Test {@link MappingProcessorUtils#setValueListAndUpdateMappings(Path, Consumer, List,
+   * RosettaPath)}.
+   *
    * <ul>
-   *   <li>Given {@link PathElement#PathElement(String)} with pathName is {@code emptyScope}.</li>
+   *   <li>Then {@link ArrayList#ArrayList()} size is two.
    * </ul>
-   * <p>
-   * Method under test: {@link MappingProcessorUtils#setValueListAndUpdateMappings(Path, Consumer, List, RosettaPath)}
+   *
+   * <p>Method under test: {@link MappingProcessorUtils#setValueListAndUpdateMappings(Path,
+   * Consumer, List, RosettaPath)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void MappingProcessorUtils.setValueListAndUpdateMappings(Path, Consumer, List, RosettaPath)"})
-  public void testSetValueListAndUpdateMappings_givenPathElementWithPathNameIsEmptyScope() {
+  @DisplayName(
+      "Test setValueListAndUpdateMappings(Path, Consumer, List, RosettaPath); then ArrayList() size is two")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void MappingProcessorUtils.setValueListAndUpdateMappings(Path, Consumer, List, RosettaPath)"
+  })
+  void testSetValueListAndUpdateMappings_thenArrayListSizeIsTwo() {
     // Arrange
-    Consumer<String> setter = new Mapping(ScopeReferenceHelper.EMPTY_SCOPE, "Xml Value",
-        ScopeReferenceHelper.EMPTY_SCOPE, "Rosetta Value", "An error occurred", true, true, true)::setError;
+    Mapping mapping =
+        new Mapping(
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            "An error occurred",
+            true,
+            true,
+            true);
+    Consumer<String> setter = mapping::setError;
 
     ArrayList<Mapping> mappings = new ArrayList<>();
-    mappings.add(new Mapping(ScopeReferenceHelper.EMPTY_SCOPE, new PathElement("emptyScope"),
-        ScopeReferenceHelper.EMPTY_SCOPE, "Rosetta Value", "An error occurred", true, true, true));
+    Mapping mapping2 =
+        new Mapping(
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            "An error occurred",
+            true,
+            true,
+            true);
+    mappings.add(mapping2);
+    Mapping mapping3 =
+        new Mapping(
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            "An error occurred",
+            true,
+            true,
+            true);
+    mappings.add(mapping3);
+
     RosettaPath rosettaPath = mock(RosettaPath.class);
     when(rosettaPath.allElements()).thenReturn(new LinkedList<>());
 
     // Act
-    MappingProcessorUtils.setValueListAndUpdateMappings(ScopeReferenceHelper.EMPTY_SCOPE, setter, mappings,
-        rosettaPath);
-
-    // Assert
-    verify(rosettaPath).allElements();
-    assertEquals(1, mappings.size());
-    Mapping getResult = mappings.get(0);
-    assertNull(getResult.getError());
-    assertFalse(getResult.isDuplicate());
-  }
-
-  /**
-   * Test {@link MappingProcessorUtils#setValueListAndUpdateMappings(Path, Consumer, List, RosettaPath)}.
-   * <ul>
-   *   <li>Then {@link ArrayList#ArrayList()} first Error is {@code An error occurred}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link MappingProcessorUtils#setValueListAndUpdateMappings(Path, Consumer, List, RosettaPath)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void MappingProcessorUtils.setValueListAndUpdateMappings(Path, Consumer, List, RosettaPath)"})
-  public void testSetValueListAndUpdateMappings_thenArrayListFirstErrorIsAnErrorOccurred() {
-    // Arrange
-    Path synonymPath = new Path();
-    Consumer<String> setter = new Mapping(ScopeReferenceHelper.EMPTY_SCOPE, "Xml Value",
-        ScopeReferenceHelper.EMPTY_SCOPE, "Rosetta Value", "An error occurred", true, true, true)::setError;
-
-    ArrayList<Mapping> mappings = new ArrayList<>();
-    mappings.add(new Mapping(ScopeReferenceHelper.EMPTY_SCOPE, "Xml Value", ScopeReferenceHelper.EMPTY_SCOPE,
-        "Rosetta Value", "An error occurred", true, true, true));
-
-    // Act
-    MappingProcessorUtils.setValueListAndUpdateMappings(synonymPath, setter, mappings, mock(RosettaPath.class));
-
-    // Assert that nothing has changed
-    assertEquals(1, mappings.size());
-    Mapping getResult = mappings.get(0);
-    assertEquals("An error occurred", getResult.getError());
-    Path rosettaPath = getResult.getRosettaPath();
-    assertEquals(1, rosettaPath.getElements().size());
-    assertEquals(1, rosettaPath.getPathNames().length);
-    assertTrue(getResult.isDuplicate());
-  }
-
-  /**
-   * Test {@link MappingProcessorUtils#setValueListAndUpdateMappings(Path, Consumer, List, RosettaPath)}.
-   * <ul>
-   *   <li>Then {@link ArrayList#ArrayList()} size is one.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link MappingProcessorUtils#setValueListAndUpdateMappings(Path, Consumer, List, RosettaPath)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void MappingProcessorUtils.setValueListAndUpdateMappings(Path, Consumer, List, RosettaPath)"})
-  public void testSetValueListAndUpdateMappings_thenArrayListSizeIsOne() {
-    // Arrange
-    Consumer<String> setter = new Mapping(ScopeReferenceHelper.EMPTY_SCOPE, "Xml Value",
-        ScopeReferenceHelper.EMPTY_SCOPE, "Rosetta Value", "An error occurred", true, true, true)::setError;
-
-    ArrayList<Mapping> mappings = new ArrayList<>();
-    mappings.add(new Mapping(ScopeReferenceHelper.EMPTY_SCOPE, "Xml Value", ScopeReferenceHelper.EMPTY_SCOPE,
-        "Rosetta Value", "An error occurred", true, true, true));
-    RosettaPath rosettaPath = mock(RosettaPath.class);
-    when(rosettaPath.allElements()).thenReturn(new LinkedList<>());
-
-    // Act
-    MappingProcessorUtils.setValueListAndUpdateMappings(ScopeReferenceHelper.EMPTY_SCOPE, setter, mappings,
-        rosettaPath);
-
-    // Assert
-    verify(rosettaPath).allElements();
-    assertEquals(1, mappings.size());
-    Mapping getResult = mappings.get(0);
-    assertNull(getResult.getError());
-    assertFalse(getResult.isDuplicate());
-  }
-
-  /**
-   * Test {@link MappingProcessorUtils#setValueListAndUpdateMappings(Path, Consumer, List, RosettaPath)}.
-   * <ul>
-   *   <li>Then {@link ArrayList#ArrayList()} size is two.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link MappingProcessorUtils#setValueListAndUpdateMappings(Path, Consumer, List, RosettaPath)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void MappingProcessorUtils.setValueListAndUpdateMappings(Path, Consumer, List, RosettaPath)"})
-  public void testSetValueListAndUpdateMappings_thenArrayListSizeIsTwo() {
-    // Arrange
-    Consumer<String> setter = new Mapping(ScopeReferenceHelper.EMPTY_SCOPE, "Xml Value",
-        ScopeReferenceHelper.EMPTY_SCOPE, "Rosetta Value", "An error occurred", true, true, true)::setError;
-
-    ArrayList<Mapping> mappings = new ArrayList<>();
-    mappings.add(new Mapping(ScopeReferenceHelper.EMPTY_SCOPE, "Xml Value", ScopeReferenceHelper.EMPTY_SCOPE,
-        "Rosetta Value", "An error occurred", true, true, true));
-    Mapping mapping = new Mapping(ScopeReferenceHelper.EMPTY_SCOPE, "Xml Value", ScopeReferenceHelper.EMPTY_SCOPE,
-        "Rosetta Value", "An error occurred", true, true, true);
-
-    mappings.add(mapping);
-    RosettaPath rosettaPath = mock(RosettaPath.class);
-    when(rosettaPath.allElements()).thenReturn(new LinkedList<>());
-
-    // Act
-    MappingProcessorUtils.setValueListAndUpdateMappings(ScopeReferenceHelper.EMPTY_SCOPE, setter, mappings,
-        rosettaPath);
+    MappingProcessorUtils.setValueListAndUpdateMappings(
+        ScopeReferenceHelper.EMPTY_SCOPE, setter, mappings, rosettaPath);
 
     // Assert
     verify(rosettaPath, atLeast(1)).allElements();
@@ -963,96 +1037,91 @@ public class MappingProcessorUtilsDiffblueTest {
     Mapping getResult = mappings.get(0);
     assertNull(getResult.getError());
     assertFalse(getResult.isDuplicate());
-    assertSame(mapping, mappings.get(1));
+    assertSame(mapping3, mappings.get(1));
   }
 
   /**
-   * Test {@link MappingProcessorUtils#setValueAndOptionallyUpdateMappings(Path, Function, List, RosettaPath)}.
-   * <p>
-   * Method under test: {@link MappingProcessorUtils#setValueAndOptionallyUpdateMappings(Path, Function, List, RosettaPath)}
+   * Test {@link MappingProcessorUtils#setValueAndOptionallyUpdateMappings(Path, Function, List,
+   * RosettaPath)}.
+   *
+   * <p>Method under test: {@link MappingProcessorUtils#setValueAndOptionallyUpdateMappings(Path,
+   * Function, List, RosettaPath)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @DisplayName("Test setValueAndOptionallyUpdateMappings(Path, Function, List, RosettaPath)")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({
-      "void MappingProcessorUtils.setValueAndOptionallyUpdateMappings(Path, Function, List, RosettaPath)"})
-  public void testSetValueAndOptionallyUpdateMappings() {
-    // Arrange
-    Path synonymPath = new Path();
-    Function<String, Boolean> func = mock(Function.class);
-
-    ArrayList<Mapping> mappings = new ArrayList<>();
-    mappings.add(new Mapping(ScopeReferenceHelper.EMPTY_SCOPE, "Xml Value", ScopeReferenceHelper.EMPTY_SCOPE,
-        "Rosetta Value", "An error occurred", true, true, true));
-
-    // Act
-    MappingProcessorUtils.setValueAndOptionallyUpdateMappings(synonymPath, func, mappings, mock(RosettaPath.class));
-
-    // Assert that nothing has changed
-    assertEquals(1, mappings.size());
-    Mapping getResult = mappings.get(0);
-    assertEquals("An error occurred", getResult.getError());
-    Path rosettaPath = getResult.getRosettaPath();
-    assertEquals(1, rosettaPath.getElements().size());
-    assertEquals(1, rosettaPath.getPathNames().length);
-    assertTrue(getResult.isDuplicate());
-  }
-
-  /**
-   * Test {@link MappingProcessorUtils#setValueAndOptionallyUpdateMappings(Path, Function, List, RosettaPath)}.
-   * <p>
-   * Method under test: {@link MappingProcessorUtils#setValueAndOptionallyUpdateMappings(Path, Function, List, RosettaPath)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({
-      "void MappingProcessorUtils.setValueAndOptionallyUpdateMappings(Path, Function, List, RosettaPath)"})
-  public void testSetValueAndOptionallyUpdateMappings2() {
+    "void MappingProcessorUtils.setValueAndOptionallyUpdateMappings(Path, Function, List, RosettaPath)"
+  })
+  void testSetValueAndOptionallyUpdateMappings() {
     // Arrange
     Path synonymPath = ScopeReferenceHelper.EMPTY_SCOPE;
-    Function<String, Boolean> func = mock(Function.class);
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
 
-    ArrayList<Mapping> mappings = new ArrayList<>();
-    mappings.add(new Mapping(new Path(), "Xml Value", ScopeReferenceHelper.EMPTY_SCOPE, "Rosetta Value",
-        "An error occurred", true, true, true));
-
-    // Act
-    MappingProcessorUtils.setValueAndOptionallyUpdateMappings(synonymPath, func, mappings, mock(RosettaPath.class));
-
-    // Assert that nothing has changed
-    assertEquals(1, mappings.size());
-    Mapping getResult = mappings.get(0);
-    assertEquals("An error occurred", getResult.getError());
-    assertEquals("Rosetta Value", getResult.getRosettaValue());
-    assertSame(synonymPath, getResult.getRosettaPath());
-  }
-
-  /**
-   * Test {@link MappingProcessorUtils#setValueAndOptionallyUpdateMappings(Path, Function, List, RosettaPath)}.
-   * <p>
-   * Method under test: {@link MappingProcessorUtils#setValueAndOptionallyUpdateMappings(Path, Function, List, RosettaPath)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({
-      "void MappingProcessorUtils.setValueAndOptionallyUpdateMappings(Path, Function, List, RosettaPath)"})
-  public void testSetValueAndOptionallyUpdateMappings3() {
-    // Arrange
     Function<String, Boolean> func = mock(Function.class);
     when(func.apply(Mockito.<String>any())).thenReturn(true);
 
+    Path xmlPath = ScopeReferenceHelper.EMPTY_SCOPE;
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    Mapping mapping =
+        new Mapping(
+            xmlPath,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            "An error occurred",
+            true,
+            true,
+            true);
+
     ArrayList<Mapping> mappings = new ArrayList<>();
-    mappings.add(new Mapping(ScopeReferenceHelper.EMPTY_SCOPE, new PathElement("emptyScope", 1),
-        ScopeReferenceHelper.EMPTY_SCOPE, "Rosetta Value", "An error occurred", true, true, true));
+    mappings.add(mapping);
+
     RosettaPath rosettaPath = mock(RosettaPath.class);
     when(rosettaPath.allElements()).thenReturn(new LinkedList<>());
 
     // Act
-    MappingProcessorUtils.setValueAndOptionallyUpdateMappings(ScopeReferenceHelper.EMPTY_SCOPE, func, mappings,
-        rosettaPath);
+    MappingProcessorUtils.setValueAndOptionallyUpdateMappings(
+        synonymPath, func, mappings, rosettaPath);
 
     // Assert
     verify(rosettaPath).allElements();
-    verify(func).apply(eq("emptyScope(1)"));
+    verify(func).apply("NON_EMPTY");
     assertEquals(1, mappings.size());
     Mapping getResult = mappings.get(0);
     assertNull(getResult.getError());
@@ -1060,35 +1129,87 @@ public class MappingProcessorUtilsDiffblueTest {
   }
 
   /**
-   * Test {@link MappingProcessorUtils#setValueAndOptionallyUpdateMappings(Path, Function, List, RosettaPath)}.
-   * <ul>
-   *   <li>Given {@link PathElement#PathElement(String)} with pathName is {@code emptyScope}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link MappingProcessorUtils#setValueAndOptionallyUpdateMappings(Path, Function, List, RosettaPath)}
+   * Test {@link MappingProcessorUtils#setValueAndOptionallyUpdateMappings(Path, Function, List,
+   * RosettaPath)}.
+   *
+   * <p>Method under test: {@link MappingProcessorUtils#setValueAndOptionallyUpdateMappings(Path,
+   * Function, List, RosettaPath)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @DisplayName("Test setValueAndOptionallyUpdateMappings(Path, Function, List, RosettaPath)")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({
-      "void MappingProcessorUtils.setValueAndOptionallyUpdateMappings(Path, Function, List, RosettaPath)"})
-  public void testSetValueAndOptionallyUpdateMappings_givenPathElementWithPathNameIsEmptyScope() {
+    "void MappingProcessorUtils.setValueAndOptionallyUpdateMappings(Path, Function, List, RosettaPath)"
+  })
+  void testSetValueAndOptionallyUpdateMappings2() {
     // Arrange
+    Path synonymPath = ScopeReferenceHelper.EMPTY_SCOPE;
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+
     Function<String, Boolean> func = mock(Function.class);
     when(func.apply(Mockito.<String>any())).thenReturn(true);
 
+    Path xmlPath = ScopeReferenceHelper.EMPTY_SCOPE;
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    Mapping mapping =
+        new Mapping(
+            xmlPath,
+            PathElement.parse("emptyScope", true),
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            "An error occurred",
+            true,
+            true,
+            true);
+
     ArrayList<Mapping> mappings = new ArrayList<>();
-    mappings.add(new Mapping(ScopeReferenceHelper.EMPTY_SCOPE, new PathElement("emptyScope"),
-        ScopeReferenceHelper.EMPTY_SCOPE, "Rosetta Value", "An error occurred", true, true, true));
+    mappings.add(mapping);
+
     RosettaPath rosettaPath = mock(RosettaPath.class);
     when(rosettaPath.allElements()).thenReturn(new LinkedList<>());
 
     // Act
-    MappingProcessorUtils.setValueAndOptionallyUpdateMappings(ScopeReferenceHelper.EMPTY_SCOPE, func, mappings,
-        rosettaPath);
+    MappingProcessorUtils.setValueAndOptionallyUpdateMappings(
+        synonymPath, func, mappings, rosettaPath);
 
     // Assert
     verify(rosettaPath).allElements();
-    verify(func).apply(eq("emptyScope"));
+    verify(func).apply("emptyScope");
     assertEquals(1, mappings.size());
     Mapping getResult = mappings.get(0);
     assertNull(getResult.getError());
@@ -1096,32 +1217,176 @@ public class MappingProcessorUtilsDiffblueTest {
   }
 
   /**
-   * Test {@link MappingProcessorUtils#setValueAndOptionallyUpdateMappings(Path, Function, List, RosettaPath)}.
-   * <ul>
-   *   <li>Then {@link ArrayList#ArrayList()} first Error is {@code no destination}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link MappingProcessorUtils#setValueAndOptionallyUpdateMappings(Path, Function, List, RosettaPath)}
+   * Test {@link MappingProcessorUtils#setValueAndOptionallyUpdateMappings(Path, Function, List,
+   * RosettaPath)}.
+   *
+   * <p>Method under test: {@link MappingProcessorUtils#setValueAndOptionallyUpdateMappings(Path,
+   * Function, List, RosettaPath)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @DisplayName("Test setValueAndOptionallyUpdateMappings(Path, Function, List, RosettaPath)")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({
-      "void MappingProcessorUtils.setValueAndOptionallyUpdateMappings(Path, Function, List, RosettaPath)"})
-  public void testSetValueAndOptionallyUpdateMappings_thenArrayListFirstErrorIsNoDestination() {
+    "void MappingProcessorUtils.setValueAndOptionallyUpdateMappings(Path, Function, List, RosettaPath)"
+  })
+  void testSetValueAndOptionallyUpdateMappings3() {
     // Arrange
+    Path synonymPath = ScopeReferenceHelper.EMPTY_SCOPE;
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+
+    Function<String, Boolean> func = mock(Function.class);
+    when(func.apply(Mockito.<String>any())).thenReturn(true);
+
+    Path xmlPath = ScopeReferenceHelper.EMPTY_SCOPE;
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    Mapping mapping =
+        new Mapping(
+            xmlPath,
+            new PathElement("emptyScope", 1),
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            "An error occurred",
+            true,
+            true,
+            true);
+
+    ArrayList<Mapping> mappings = new ArrayList<>();
+    mappings.add(mapping);
+
+    RosettaPath rosettaPath = mock(RosettaPath.class);
+    when(rosettaPath.allElements()).thenReturn(new LinkedList<>());
+
+    // Act
+    MappingProcessorUtils.setValueAndOptionallyUpdateMappings(
+        synonymPath, func, mappings, rosettaPath);
+
+    // Assert
+    verify(rosettaPath).allElements();
+    verify(func).apply("emptyScope(1)");
+    assertEquals(1, mappings.size());
+    Mapping getResult = mappings.get(0);
+    assertNull(getResult.getError());
+    assertFalse(getResult.isDuplicate());
+  }
+
+  /**
+   * Test {@link MappingProcessorUtils#setValueAndOptionallyUpdateMappings(Path, Function, List,
+   * RosettaPath)}.
+   *
+   * <ul>
+   *   <li>Then {@link ArrayList#ArrayList()} first Error is {@code no destination}.
+   * </ul>
+   *
+   * <p>Method under test: {@link MappingProcessorUtils#setValueAndOptionallyUpdateMappings(Path,
+   * Function, List, RosettaPath)}
+   */
+  @Test
+  @DisplayName(
+      "Test setValueAndOptionallyUpdateMappings(Path, Function, List, RosettaPath); then ArrayList() first Error is 'no destination'")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void MappingProcessorUtils.setValueAndOptionallyUpdateMappings(Path, Function, List, RosettaPath)"
+  })
+  void testSetValueAndOptionallyUpdateMappings_thenArrayListFirstErrorIsNoDestination() {
+    // Arrange
+    Path synonymPath = ScopeReferenceHelper.EMPTY_SCOPE;
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+
     Function<String, Boolean> func = mock(Function.class);
     when(func.apply(Mockito.<String>any())).thenReturn(false);
 
+    Path xmlPath = ScopeReferenceHelper.EMPTY_SCOPE;
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    Mapping mapping =
+        new Mapping(
+            xmlPath,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            "An error occurred",
+            true,
+            true,
+            true);
+
     ArrayList<Mapping> mappings = new ArrayList<>();
-    mappings.add(new Mapping(ScopeReferenceHelper.EMPTY_SCOPE, "Xml Value", ScopeReferenceHelper.EMPTY_SCOPE,
-        "Rosetta Value", "An error occurred", true, true, true));
+    mappings.add(mapping);
 
     // Act
-    MappingProcessorUtils.setValueAndOptionallyUpdateMappings(ScopeReferenceHelper.EMPTY_SCOPE, func, mappings,
-        mock(RosettaPath.class));
+    MappingProcessorUtils.setValueAndOptionallyUpdateMappings(
+        synonymPath, func, mappings, mock(RosettaPath.class));
 
     // Assert
-    verify(func).apply(eq("Xml Value"));
+    verify(func).apply("NON_EMPTY");
     assertEquals(1, mappings.size());
     Mapping getResult = mappings.get(0);
     assertEquals("no destination", getResult.getError());
@@ -1131,170 +1396,126 @@ public class MappingProcessorUtilsDiffblueTest {
   }
 
   /**
-   * Test {@link MappingProcessorUtils#setValueAndOptionallyUpdateMappings(Path, Function, List, RosettaPath)}.
+   * Test {@link MappingProcessorUtils#setValueAndOptionallyUpdateMappings(Path, Function, List,
+   * RosettaPath)}.
+   *
    * <ul>
-   *   <li>Then {@link ArrayList#ArrayList()} first Error is {@code null}.</li>
+   *   <li>Then {@link ArrayList#ArrayList()} first RosettaValue {@link JsonInclude.Include}.
    * </ul>
-   * <p>
-   * Method under test: {@link MappingProcessorUtils#setValueAndOptionallyUpdateMappings(Path, Function, List, RosettaPath)}
+   *
+   * <p>Method under test: {@link MappingProcessorUtils#setValueAndOptionallyUpdateMappings(Path,
+   * Function, List, RosettaPath)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @DisplayName(
+      "Test setValueAndOptionallyUpdateMappings(Path, Function, List, RosettaPath); then ArrayList() first RosettaValue Include")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({
-      "void MappingProcessorUtils.setValueAndOptionallyUpdateMappings(Path, Function, List, RosettaPath)"})
-  public void testSetValueAndOptionallyUpdateMappings_thenArrayListFirstErrorIsNull() {
+    "void MappingProcessorUtils.setValueAndOptionallyUpdateMappings(Path, Function, List, RosettaPath)"
+  })
+  void testSetValueAndOptionallyUpdateMappings_thenArrayListFirstRosettaValueInclude() {
     // Arrange
-    Function<String, Boolean> func = mock(Function.class);
-    when(func.apply(Mockito.<String>any())).thenReturn(true);
-
-    ArrayList<Mapping> mappings = new ArrayList<>();
-    mappings.add(new Mapping(ScopeReferenceHelper.EMPTY_SCOPE, "Xml Value", ScopeReferenceHelper.EMPTY_SCOPE,
-        "Rosetta Value", "An error occurred", true, true, true));
-    RosettaPath rosettaPath = mock(RosettaPath.class);
-    when(rosettaPath.allElements()).thenReturn(new LinkedList<>());
-
-    // Act
-    MappingProcessorUtils.setValueAndOptionallyUpdateMappings(ScopeReferenceHelper.EMPTY_SCOPE, func, mappings,
-        rosettaPath);
-
-    // Assert
-    verify(rosettaPath).allElements();
-    verify(func).apply(eq("Xml Value"));
-    assertEquals(1, mappings.size());
-    Mapping getResult = mappings.get(0);
-    assertNull(getResult.getError());
-    assertFalse(getResult.isDuplicate());
-  }
-
-  /**
-   * Test {@link MappingProcessorUtils#setValueAndOptionallyUpdateMappings(Path, Function, List, RosettaPath)}.
-   * <ul>
-   *   <li>Then {@link ArrayList#ArrayList()} first RosettaPath is {@link Path#Path()}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link MappingProcessorUtils#setValueAndOptionallyUpdateMappings(Path, Function, List, RosettaPath)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({
-      "void MappingProcessorUtils.setValueAndOptionallyUpdateMappings(Path, Function, List, RosettaPath)"})
-  public void testSetValueAndOptionallyUpdateMappings_thenArrayListFirstRosettaPathIsPath() {
-    // Arrange
-    Path synonymPath = new Path();
-    Function<String, Boolean> func = mock(Function.class);
-    when(func.apply(Mockito.<String>any())).thenReturn(true);
-
-    ArrayList<Mapping> mappings = new ArrayList<>();
-    mappings.add(new Mapping(new Path(), "Xml Value", ScopeReferenceHelper.EMPTY_SCOPE, "Rosetta Value",
-        "An error occurred", true, true, true));
-    RosettaPath rosettaPath = mock(RosettaPath.class);
-    when(rosettaPath.allElements()).thenReturn(new LinkedList<>());
-
-    // Act
-    MappingProcessorUtils.setValueAndOptionallyUpdateMappings(synonymPath, func, mappings, rosettaPath);
-
-    // Assert
-    verify(rosettaPath).allElements();
-    verify(func).apply(eq("Xml Value"));
-    assertEquals(1, mappings.size());
-    Mapping getResult = mappings.get(0);
-    assertNull(getResult.getError());
-    assertFalse(getResult.isDuplicate());
-    assertEquals(synonymPath, getResult.getRosettaPath());
-  }
-
-  /**
-   * Test {@link MappingProcessorUtils#setValueAndOptionallyUpdateMappings(Path, Function, List, RosettaPath)}.
-   * <ul>
-   *   <li>Then {@link ArrayList#ArrayList()} size is two.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link MappingProcessorUtils#setValueAndOptionallyUpdateMappings(Path, Function, List, RosettaPath)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({
-      "void MappingProcessorUtils.setValueAndOptionallyUpdateMappings(Path, Function, List, RosettaPath)"})
-  public void testSetValueAndOptionallyUpdateMappings_thenArrayListSizeIsTwo() {
-    // Arrange
-    Function<String, Boolean> func = mock(Function.class);
-    when(func.apply(Mockito.<String>any())).thenReturn(true);
-
-    ArrayList<Mapping> mappings = new ArrayList<>();
-    mappings.add(new Mapping(ScopeReferenceHelper.EMPTY_SCOPE, "Xml Value", ScopeReferenceHelper.EMPTY_SCOPE,
-        "Rosetta Value", "An error occurred", true, true, true));
-    mappings.add(new Mapping(ScopeReferenceHelper.EMPTY_SCOPE, "Xml Value", ScopeReferenceHelper.EMPTY_SCOPE,
-        "Rosetta Value", "An error occurred", true, true, true));
-    RosettaPath rosettaPath = mock(RosettaPath.class);
-    when(rosettaPath.allElements()).thenReturn(new LinkedList<>());
-
-    // Act
-    MappingProcessorUtils.setValueAndOptionallyUpdateMappings(ScopeReferenceHelper.EMPTY_SCOPE, func, mappings,
-        rosettaPath);
-
-    // Assert
-    verify(rosettaPath, atLeast(1)).allElements();
-    verify(func).apply(eq("Xml Value"));
-    assertEquals(2, mappings.size());
-    Mapping getResult = mappings.get(0);
-    assertNull(getResult.getError());
-    assertFalse(getResult.isDuplicate());
-  }
-
-  /**
-   * Test {@link MappingProcessorUtils#setValueAndOptionallyUpdateMappings(Path, Function, List, RosettaPath)}.
-   * <ul>
-   *   <li>When valueOf {@code Path}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link MappingProcessorUtils#setValueAndOptionallyUpdateMappings(Path, Function, List, RosettaPath)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({
-      "void MappingProcessorUtils.setValueAndOptionallyUpdateMappings(Path, Function, List, RosettaPath)"})
-  public void testSetValueAndOptionallyUpdateMappings_whenValueOfPath() {
-    // Arrange
-    Path synonymPath = Path.valueOf("Path");
+    Path synonymPath = ScopeReferenceHelper.EMPTY_SCOPE;
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
     Function<String, Boolean> func = mock(Function.class);
 
+    Path xmlPath = new Path();
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    Mapping mapping =
+        new Mapping(
+            xmlPath,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            "An error occurred",
+            true,
+            true,
+            true);
+
     ArrayList<Mapping> mappings = new ArrayList<>();
-    mappings.add(new Mapping(ScopeReferenceHelper.EMPTY_SCOPE, "Xml Value", ScopeReferenceHelper.EMPTY_SCOPE,
-        "Rosetta Value", "An error occurred", true, true, true));
+    mappings.add(mapping);
 
     // Act
-    MappingProcessorUtils.setValueAndOptionallyUpdateMappings(synonymPath, func, mappings, mock(RosettaPath.class));
+    MappingProcessorUtils.setValueAndOptionallyUpdateMappings(
+        synonymPath, func, mappings, mock(RosettaPath.class));
 
     // Assert that nothing has changed
     assertEquals(1, mappings.size());
     Mapping getResult = mappings.get(0);
+    Object rosettaValue = getResult.getRosettaValue();
+    assertTrue(rosettaValue instanceof Include);
     assertEquals("An error occurred", getResult.getError());
-    Path rosettaPath = getResult.getRosettaPath();
-    assertEquals(1, rosettaPath.getElements().size());
-    assertEquals(1, rosettaPath.getPathNames().length);
-    assertTrue(getResult.isDuplicate());
+    assertEquals(Include.NON_EMPTY, rosettaValue);
+    assertSame(synonymPath, getResult.getRosettaPath());
   }
 
   /**
    * Test {@link MappingProcessorUtils#filterListMappings(List, Path)}.
+   *
    * <ul>
-   *   <li>Then return {@link ArrayList#ArrayList()}.</li>
+   *   <li>Then return {@link ArrayList#ArrayList()}.
    * </ul>
-   * <p>
-   * Method under test: {@link MappingProcessorUtils#filterListMappings(List, Path)}
+   *
+   * <p>Method under test: {@link MappingProcessorUtils#filterListMappings(List, Path)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @DisplayName("Test filterListMappings(List, Path); then return ArrayList()")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"List MappingProcessorUtils.filterListMappings(List, Path)"})
-  public void testFilterListMappings_thenReturnArrayList() {
+  void testFilterListMappings_thenReturnArrayList() {
     // Arrange
     ArrayList<Mapping> mappings = new ArrayList<>();
-    mappings.add(new Mapping(ScopeReferenceHelper.EMPTY_SCOPE, "Xml Value", ScopeReferenceHelper.EMPTY_SCOPE,
-        "Rosetta Value", "An error occurred", true, true, true));
+    Mapping mapping =
+        new Mapping(
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            "An error occurred",
+            true,
+            true,
+            true);
+    mappings.add(mapping);
 
     // Act
-    List<Mapping> actualFilterListMappingsResult = MappingProcessorUtils.filterListMappings(mappings,
-        ScopeReferenceHelper.EMPTY_SCOPE);
+    List<Mapping> actualFilterListMappingsResult =
+        MappingProcessorUtils.filterListMappings(mappings, ScopeReferenceHelper.EMPTY_SCOPE);
 
     // Assert
     assertEquals(mappings, actualFilterListMappingsResult);
@@ -1302,24 +1523,36 @@ public class MappingProcessorUtilsDiffblueTest {
 
   /**
    * Test {@link MappingProcessorUtils#filterListMappings(List, Path)}.
+   *
    * <ul>
-   *   <li>Then return Empty.</li>
+   *   <li>Then return Empty.
    * </ul>
-   * <p>
-   * Method under test: {@link MappingProcessorUtils#filterListMappings(List, Path)}
+   *
+   * <p>Method under test: {@link MappingProcessorUtils#filterListMappings(List, Path)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @DisplayName("Test filterListMappings(List, Path); then return Empty")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"List MappingProcessorUtils.filterListMappings(List, Path)"})
-  public void testFilterListMappings_thenReturnEmpty() {
+  void testFilterListMappings_thenReturnEmpty() {
     // Arrange
     ArrayList<Mapping> mappings = new ArrayList<>();
-    mappings.add(new Mapping(new Path(), "Xml Value", ScopeReferenceHelper.EMPTY_SCOPE, "Rosetta Value",
-        "An error occurred", true, true, true));
+    Mapping mapping =
+        new Mapping(
+            new Path(),
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            "An error occurred",
+            true,
+            true,
+            true);
+    mappings.add(mapping);
 
     // Act
-    List<Mapping> actualFilterListMappingsResult = MappingProcessorUtils.filterListMappings(mappings,
-        ScopeReferenceHelper.EMPTY_SCOPE);
+    List<Mapping> actualFilterListMappingsResult =
+        MappingProcessorUtils.filterListMappings(mappings, ScopeReferenceHelper.EMPTY_SCOPE);
 
     // Assert
     assertTrue(actualFilterListMappingsResult.isEmpty());
@@ -1327,641 +1560,882 @@ public class MappingProcessorUtilsDiffblueTest {
 
   /**
    * Test {@link MappingProcessorUtils#filterListMappings(List, Path)}.
+   *
    * <ul>
-   *   <li>Then return size is two.</li>
+   *   <li>Then return size is two.
    * </ul>
-   * <p>
-   * Method under test: {@link MappingProcessorUtils#filterListMappings(List, Path)}
+   *
+   * <p>Method under test: {@link MappingProcessorUtils#filterListMappings(List, Path)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @DisplayName("Test filterListMappings(List, Path); then return size is two")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"List MappingProcessorUtils.filterListMappings(List, Path)"})
-  public void testFilterListMappings_thenReturnSizeIsTwo() {
+  void testFilterListMappings_thenReturnSizeIsTwo() {
     // Arrange
     ArrayList<Mapping> mappings = new ArrayList<>();
-    mappings.add(new Mapping(ScopeReferenceHelper.EMPTY_SCOPE, "Xml Value", ScopeReferenceHelper.EMPTY_SCOPE,
-        "Rosetta Value", "An error occurred", true, true, true));
-    Mapping mapping = new Mapping(ScopeReferenceHelper.EMPTY_SCOPE, "Xml Value", ScopeReferenceHelper.EMPTY_SCOPE,
-        "Rosetta Value", "An error occurred", true, true, true);
-
+    Mapping mapping =
+        new Mapping(
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            "An error occurred",
+            true,
+            true,
+            true);
     mappings.add(mapping);
+    Mapping mapping2 =
+        new Mapping(
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            "An error occurred",
+            true,
+            true,
+            true);
+    mappings.add(mapping2);
 
     // Act
-    List<Mapping> actualFilterListMappingsResult = MappingProcessorUtils.filterListMappings(mappings,
-        ScopeReferenceHelper.EMPTY_SCOPE);
+    List<Mapping> actualFilterListMappingsResult =
+        MappingProcessorUtils.filterListMappings(mappings, ScopeReferenceHelper.EMPTY_SCOPE);
 
     // Assert
     assertEquals(2, actualFilterListMappingsResult.size());
-    assertSame(mapping, actualFilterListMappingsResult.get(1));
+    assertSame(mapping2, actualFilterListMappingsResult.get(1));
   }
 
   /**
    * Test {@link MappingProcessorUtils#filterListMappings(List, Path)}.
+   *
    * <ul>
-   *   <li>When {@link ArrayList#ArrayList()}.</li>
-   *   <li>Then return Empty.</li>
+   *   <li>When {@link ArrayList#ArrayList()}.
+   *   <li>Then return Empty.
    * </ul>
-   * <p>
-   * Method under test: {@link MappingProcessorUtils#filterListMappings(List, Path)}
+   *
+   * <p>Method under test: {@link MappingProcessorUtils#filterListMappings(List, Path)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @DisplayName("Test filterListMappings(List, Path); when ArrayList(); then return Empty")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"List MappingProcessorUtils.filterListMappings(List, Path)"})
-  public void testFilterListMappings_whenArrayList_thenReturnEmpty() {
+  void testFilterListMappings_whenArrayList_thenReturnEmpty() {
     // Arrange and Act
-    List<Mapping> actualFilterListMappingsResult = MappingProcessorUtils.filterListMappings(new ArrayList<>(),
-        ScopeReferenceHelper.EMPTY_SCOPE);
+    List<Mapping> actualFilterListMappingsResult =
+        MappingProcessorUtils.filterListMappings(
+            new ArrayList<>(), ScopeReferenceHelper.EMPTY_SCOPE);
 
     // Assert
     assertTrue(actualFilterListMappingsResult.isEmpty());
   }
 
   /**
-   * Test {@link MappingProcessorUtils#filterMappings(List, RosettaPath)} with {@code mappings}, {@code rosettaPath}.
-   * <p>
-   * Method under test: {@link MappingProcessorUtils#filterMappings(List, RosettaPath)}
+   * Test {@link MappingProcessorUtils#filterMappings(List, RosettaPath)} with {@code mappings},
+   * {@code rosettaPath}.
+   *
+   * <p>Method under test: {@link MappingProcessorUtils#filterMappings(List, RosettaPath)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @DisplayName("Test filterMappings(List, RosettaPath) with 'mappings', 'rosettaPath'")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"List MappingProcessorUtils.filterMappings(List, RosettaPath)"})
-  public void testFilterMappingsWithMappingsRosettaPath() {
+  void testFilterMappingsWithMappingsRosettaPath() {
     // Arrange
     ArrayList<Mapping> mappings = new ArrayList<>();
-    mappings.add(new Mapping(ScopeReferenceHelper.EMPTY_SCOPE, "Xml Value", ScopeReferenceHelper.EMPTY_SCOPE,
-        "Rosetta Value", "An error occurred", true, true, true));
+    Mapping mapping =
+        new Mapping(
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            "An error occurred",
+            true,
+            true,
+            true);
+    mappings.add(mapping);
 
     // Act
-    List<Mapping> actualFilterMappingsResult = MappingProcessorUtils.filterMappings(mappings, mock(RosettaPath.class));
+    List<Mapping> actualFilterMappingsResult =
+        MappingProcessorUtils.filterMappings(mappings, mock(RosettaPath.class));
 
     // Assert
     assertTrue(actualFilterMappingsResult.isEmpty());
   }
 
   /**
-   * Test {@link MappingProcessorUtils#filterMappings(List, RosettaPath)} with {@code mappings}, {@code rosettaPath}.
-   * <p>
-   * Method under test: {@link MappingProcessorUtils#filterMappings(List, RosettaPath)}
+   * Test {@link MappingProcessorUtils#filterMappings(List, RosettaPath)} with {@code mappings},
+   * {@code rosettaPath}.
+   *
+   * <p>Method under test: {@link MappingProcessorUtils#filterMappings(List, RosettaPath)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @DisplayName("Test filterMappings(List, RosettaPath) with 'mappings', 'rosettaPath'")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"List MappingProcessorUtils.filterMappings(List, RosettaPath)"})
-  public void testFilterMappingsWithMappingsRosettaPath2() {
+  void testFilterMappingsWithMappingsRosettaPath2() {
     // Arrange
     ArrayList<Mapping> mappings = new ArrayList<>();
-    mappings.add(new Mapping(ScopeReferenceHelper.EMPTY_SCOPE, "Xml Value", ScopeReferenceHelper.EMPTY_SCOPE,
-        "Rosetta Value", "An error occurred", true, true, true));
-    mappings.add(new Mapping(ScopeReferenceHelper.EMPTY_SCOPE, "Xml Value", ScopeReferenceHelper.EMPTY_SCOPE,
-        "Rosetta Value", "An error occurred", true, true, true));
+    Mapping mapping =
+        new Mapping(
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            "An error occurred",
+            true,
+            true,
+            true);
+    mappings.add(mapping);
+    Mapping mapping2 =
+        new Mapping(
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            "An error occurred",
+            true,
+            true,
+            true);
+    mappings.add(mapping2);
 
     // Act
-    List<Mapping> actualFilterMappingsResult = MappingProcessorUtils.filterMappings(mappings, mock(RosettaPath.class));
+    List<Mapping> actualFilterMappingsResult =
+        MappingProcessorUtils.filterMappings(mappings, mock(RosettaPath.class));
 
     // Assert
     assertTrue(actualFilterMappingsResult.isEmpty());
   }
 
   /**
-   * Test {@link MappingProcessorUtils#filterMappings(List, RosettaPath)} with {@code mappings}, {@code rosettaPath}.
-   * <p>
-   * Method under test: {@link MappingProcessorUtils#filterMappings(List, RosettaPath)}
+   * Test {@link MappingProcessorUtils#filterMappings(List, RosettaPath)} with {@code mappings},
+   * {@code rosettaPath}.
+   *
+   * <p>Method under test: {@link MappingProcessorUtils#filterMappings(List, RosettaPath)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @DisplayName("Test filterMappings(List, RosettaPath) with 'mappings', 'rosettaPath'")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"List MappingProcessorUtils.filterMappings(List, RosettaPath)"})
-  public void testFilterMappingsWithMappingsRosettaPath3() {
+  void testFilterMappingsWithMappingsRosettaPath3() {
     // Arrange
     ArrayList<Mapping> mappings = new ArrayList<>();
-    mappings.add(new Mapping(ScopeReferenceHelper.EMPTY_SCOPE, "Xml Value", ScopeReferenceHelper.EMPTY_SCOPE, null,
-        "An error occurred", true, true, true));
+    Mapping mapping =
+        new Mapping(
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            new Path(),
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            "An error occurred",
+            true,
+            true,
+            true);
+    mappings.add(mapping);
 
     // Act
-    List<Mapping> actualFilterMappingsResult = MappingProcessorUtils.filterMappings(mappings, mock(RosettaPath.class));
+    List<Mapping> actualFilterMappingsResult =
+        MappingProcessorUtils.filterMappings(mappings, mock(RosettaPath.class));
 
     // Assert
     assertTrue(actualFilterMappingsResult.isEmpty());
   }
 
   /**
-   * Test {@link MappingProcessorUtils#filterMappings(List, RosettaPath)} with {@code mappings}, {@code rosettaPath}.
-   * <p>
-   * Method under test: {@link MappingProcessorUtils#filterMappings(List, RosettaPath)}
+   * Test {@link MappingProcessorUtils#filterMappings(List, RosettaPath)} with {@code mappings},
+   * {@code rosettaPath}.
+   *
+   * <p>Method under test: {@link MappingProcessorUtils#filterMappings(List, RosettaPath)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @DisplayName("Test filterMappings(List, RosettaPath) with 'mappings', 'rosettaPath'")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"List MappingProcessorUtils.filterMappings(List, RosettaPath)"})
-  public void testFilterMappingsWithMappingsRosettaPath4() {
+  void testFilterMappingsWithMappingsRosettaPath4() {
     // Arrange
     ArrayList<Mapping> mappings = new ArrayList<>();
-    mappings.add(new Mapping(ScopeReferenceHelper.EMPTY_SCOPE, "Xml Value", new Path(), "Rosetta Value",
-        "An error occurred", true, true, true));
+    Mapping mapping =
+        new Mapping(
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            null,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            "An error occurred",
+            true,
+            true,
+            true);
+    mappings.add(mapping);
 
     // Act
-    List<Mapping> actualFilterMappingsResult = MappingProcessorUtils.filterMappings(mappings, mock(RosettaPath.class));
+    List<Mapping> actualFilterMappingsResult =
+        MappingProcessorUtils.filterMappings(mappings, mock(RosettaPath.class));
 
     // Assert
     assertTrue(actualFilterMappingsResult.isEmpty());
   }
 
   /**
-   * Test {@link MappingProcessorUtils#filterMappings(List, RosettaPath)} with {@code mappings}, {@code rosettaPath}.
-   * <p>
-   * Method under test: {@link MappingProcessorUtils#filterMappings(List, RosettaPath)}
+   * Test {@link MappingProcessorUtils#filterMappings(List, RosettaPath)} with {@code mappings},
+   * {@code rosettaPath}.
+   *
+   * <p>Method under test: {@link MappingProcessorUtils#filterMappings(List, RosettaPath)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @DisplayName("Test filterMappings(List, RosettaPath) with 'mappings', 'rosettaPath'")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"List MappingProcessorUtils.filterMappings(List, RosettaPath)"})
-  public void testFilterMappingsWithMappingsRosettaPath5() {
+  void testFilterMappingsWithMappingsRosettaPath5() {
     // Arrange
     ArrayList<Mapping> mappings = new ArrayList<>();
-    mappings.add(new Mapping(ScopeReferenceHelper.EMPTY_SCOPE, "Xml Value", null, "Rosetta Value", "An error occurred",
-        true, true, true));
+    Mapping mapping =
+        new Mapping(
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            null,
+            "An error occurred",
+            true,
+            true,
+            true);
+    mappings.add(mapping);
 
     // Act
-    List<Mapping> actualFilterMappingsResult = MappingProcessorUtils.filterMappings(mappings, mock(RosettaPath.class));
+    List<Mapping> actualFilterMappingsResult =
+        MappingProcessorUtils.filterMappings(mappings, mock(RosettaPath.class));
 
     // Assert
     assertTrue(actualFilterMappingsResult.isEmpty());
   }
 
   /**
-   * Test {@link MappingProcessorUtils#filterMappings(List, RosettaPath)} with {@code mappings}, {@code rosettaPath}.
+   * Test {@link MappingProcessorUtils#filterMappings(List, RosettaPath)} with {@code mappings},
+   * {@code rosettaPath}.
+   *
+   * <p>Method under test: {@link MappingProcessorUtils#filterMappings(List, RosettaPath)}
+   */
+  @Test
+  @DisplayName("Test filterMappings(List, RosettaPath) with 'mappings', 'rosettaPath'")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
+  @MethodsUnderTest({"List MappingProcessorUtils.filterMappings(List, RosettaPath)"})
+  void testFilterMappingsWithMappingsRosettaPath6() {
+    // Arrange
+    ArrayList<Mapping> mappings = new ArrayList<>();
+    Mapping mapping =
+        new Mapping(
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            new Path(),
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            "An error occurred",
+            true,
+            true,
+            true);
+    mappings.add(mapping);
+
+    // Act
+    List<Mapping> actualFilterMappingsResult =
+        MappingProcessorUtils.filterMappings(mappings, new NullPath());
+
+    // Assert
+    assertTrue(actualFilterMappingsResult.isEmpty());
+  }
+
+  /**
+   * Test {@link MappingProcessorUtils#filterMappings(List, RosettaPath)} with {@code mappings},
+   * {@code rosettaPath}.
+   *
    * <ul>
-   *   <li>When {@link ArrayList#ArrayList()}.</li>
-   *   <li>Then return Empty.</li>
+   *   <li>When {@link ArrayList#ArrayList()}.
+   *   <li>Then return Empty.
    * </ul>
-   * <p>
-   * Method under test: {@link MappingProcessorUtils#filterMappings(List, RosettaPath)}
+   *
+   * <p>Method under test: {@link MappingProcessorUtils#filterMappings(List, RosettaPath)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @DisplayName(
+      "Test filterMappings(List, RosettaPath) with 'mappings', 'rosettaPath'; when ArrayList(); then return Empty")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"List MappingProcessorUtils.filterMappings(List, RosettaPath)"})
-  public void testFilterMappingsWithMappingsRosettaPath_whenArrayList_thenReturnEmpty() {
+  void testFilterMappingsWithMappingsRosettaPath_whenArrayList_thenReturnEmpty() {
     // Arrange and Act
-    List<Mapping> actualFilterMappingsResult = MappingProcessorUtils.filterMappings(new ArrayList<>(),
-        mock(RosettaPath.class));
+    List<Mapping> actualFilterMappingsResult =
+        MappingProcessorUtils.filterMappings(new ArrayList<>(), mock(RosettaPath.class));
 
     // Assert
     assertTrue(actualFilterMappingsResult.isEmpty());
   }
 
   /**
-   * Test {@link MappingProcessorUtils#filterMappings(List, Path)} with {@code mappings}, {@code synonymPath}.
-   * <p>
-   * Method under test: {@link MappingProcessorUtils#filterMappings(List, Path)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"List MappingProcessorUtils.filterMappings(List, Path)"})
-  public void testFilterMappingsWithMappingsSynonymPath() {
-    // Arrange
-    ArrayList<Mapping> mappings = new ArrayList<>();
-    Mapping mapping = new Mapping(ScopeReferenceHelper.EMPTY_SCOPE, "Xml Value", ScopeReferenceHelper.EMPTY_SCOPE,
-        "Rosetta Value", "An error occurred", true, true, true);
-
-    mappings.add(mapping);
-
-    // Act
-    List<Mapping> actualFilterMappingsResult = MappingProcessorUtils.filterMappings(mappings,
-        ScopeReferenceHelper.EMPTY_SCOPE);
-
-    // Assert
-    assertEquals(1, actualFilterMappingsResult.size());
-    assertSame(mapping, actualFilterMappingsResult.get(0));
-  }
-
-  /**
-   * Test {@link MappingProcessorUtils#filterMappings(List, Path)} with {@code mappings}, {@code synonymPath}.
-   * <p>
-   * Method under test: {@link MappingProcessorUtils#filterMappings(List, Path)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"List MappingProcessorUtils.filterMappings(List, Path)"})
-  public void testFilterMappingsWithMappingsSynonymPath2() {
-    // Arrange
-    ArrayList<Mapping> mappings = new ArrayList<>();
-    mappings.add(new Mapping(new Path(), "Xml Value", ScopeReferenceHelper.EMPTY_SCOPE, "Rosetta Value",
-        "An error occurred", true, true, true));
-
-    // Act
-    List<Mapping> actualFilterMappingsResult = MappingProcessorUtils.filterMappings(mappings,
-        ScopeReferenceHelper.EMPTY_SCOPE);
-
-    // Assert
-    assertTrue(actualFilterMappingsResult.isEmpty());
-  }
-
-  /**
-   * Test {@link MappingProcessorUtils#filterMappings(List, Path)} with {@code mappings}, {@code synonymPath}.
-   * <p>
-   * Method under test: {@link MappingProcessorUtils#filterMappings(List, Path)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"List MappingProcessorUtils.filterMappings(List, Path)"})
-  public void testFilterMappingsWithMappingsSynonymPath3() {
-    // Arrange
-    ArrayList<Mapping> mappings = new ArrayList<>();
-    Mapping mapping = new Mapping(new Path(), "Xml Value", ScopeReferenceHelper.EMPTY_SCOPE, "Rosetta Value",
-        "An error occurred", true, true, true);
-
-    mappings.add(mapping);
-
-    // Act
-    List<Mapping> actualFilterMappingsResult = MappingProcessorUtils.filterMappings(mappings, new Path());
-
-    // Assert
-    assertEquals(1, actualFilterMappingsResult.size());
-    assertSame(mapping, actualFilterMappingsResult.get(0));
-  }
-
-  /**
-   * Test {@link MappingProcessorUtils#filterMappings(List, Path, Path)} with {@code mappings}, {@code synonymPath}, {@code startsWithModelPath}.
-   * <p>
-   * Method under test: {@link MappingProcessorUtils#filterMappings(List, Path, Path)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"List MappingProcessorUtils.filterMappings(List, Path, Path)"})
-  public void testFilterMappingsWithMappingsSynonymPathStartsWithModelPath() {
-    // Arrange
-    ArrayList<Mapping> mappings = new ArrayList<>();
-    Mapping mapping = new Mapping(ScopeReferenceHelper.EMPTY_SCOPE, "Xml Value", ScopeReferenceHelper.EMPTY_SCOPE,
-        "Rosetta Value", "An error occurred", true, true, true);
-
-    mappings.add(mapping);
-
-    // Act
-    List<Mapping> actualFilterMappingsResult = MappingProcessorUtils.filterMappings(mappings,
-        ScopeReferenceHelper.EMPTY_SCOPE, ScopeReferenceHelper.EMPTY_SCOPE);
-
-    // Assert
-    assertEquals(1, actualFilterMappingsResult.size());
-    assertSame(mapping, actualFilterMappingsResult.get(0));
-  }
-
-  /**
-   * Test {@link MappingProcessorUtils#filterMappings(List, Path, Path)} with {@code mappings}, {@code synonymPath}, {@code startsWithModelPath}.
-   * <p>
-   * Method under test: {@link MappingProcessorUtils#filterMappings(List, Path, Path)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"List MappingProcessorUtils.filterMappings(List, Path, Path)"})
-  public void testFilterMappingsWithMappingsSynonymPathStartsWithModelPath2() {
-    // Arrange
-    ArrayList<Mapping> mappings = new ArrayList<>();
-    mappings.add(new Mapping(new Path(), "Xml Value", ScopeReferenceHelper.EMPTY_SCOPE, "Rosetta Value",
-        "An error occurred", true, true, true));
-
-    // Act
-    List<Mapping> actualFilterMappingsResult = MappingProcessorUtils.filterMappings(mappings,
-        ScopeReferenceHelper.EMPTY_SCOPE, ScopeReferenceHelper.EMPTY_SCOPE);
-
-    // Assert
-    assertTrue(actualFilterMappingsResult.isEmpty());
-  }
-
-  /**
-   * Test {@link MappingProcessorUtils#filterMappings(List, Path, Path)} with {@code mappings}, {@code synonymPath}, {@code startsWithModelPath}.
-   * <p>
-   * Method under test: {@link MappingProcessorUtils#filterMappings(List, Path, Path)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"List MappingProcessorUtils.filterMappings(List, Path, Path)"})
-  public void testFilterMappingsWithMappingsSynonymPathStartsWithModelPath3() {
-    // Arrange
-    ArrayList<Mapping> mappings = new ArrayList<>();
-    mappings.add(new Mapping(ScopeReferenceHelper.EMPTY_SCOPE, "Xml Value", new Path(), "Rosetta Value",
-        "An error occurred", true, true, true));
-
-    // Act
-    List<Mapping> actualFilterMappingsResult = MappingProcessorUtils.filterMappings(mappings,
-        ScopeReferenceHelper.EMPTY_SCOPE, ScopeReferenceHelper.EMPTY_SCOPE);
-
-    // Assert
-    assertTrue(actualFilterMappingsResult.isEmpty());
-  }
-
-  /**
-   * Test {@link MappingProcessorUtils#filterMappings(List, Path, Path)} with {@code mappings}, {@code synonymPath}, {@code startsWithModelPath}.
-   * <p>
-   * Method under test: {@link MappingProcessorUtils#filterMappings(List, Path, Path)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"List MappingProcessorUtils.filterMappings(List, Path, Path)"})
-  public void testFilterMappingsWithMappingsSynonymPathStartsWithModelPath4() {
-    // Arrange
-    ArrayList<Mapping> mappings = new ArrayList<>();
-    mappings.add(new Mapping(ScopeReferenceHelper.EMPTY_SCOPE, "Xml Value", null, "Rosetta Value", "An error occurred",
-        true, true, true));
-
-    // Act
-    List<Mapping> actualFilterMappingsResult = MappingProcessorUtils.filterMappings(mappings,
-        ScopeReferenceHelper.EMPTY_SCOPE, ScopeReferenceHelper.EMPTY_SCOPE);
-
-    // Assert
-    assertTrue(actualFilterMappingsResult.isEmpty());
-  }
-
-  /**
-   * Test {@link MappingProcessorUtils#filterMappings(List, Path, Path)} with {@code mappings}, {@code synonymPath}, {@code startsWithModelPath}.
-   * <p>
-   * Method under test: {@link MappingProcessorUtils#filterMappings(List, Path, Path)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"List MappingProcessorUtils.filterMappings(List, Path, Path)"})
-  public void testFilterMappingsWithMappingsSynonymPathStartsWithModelPath5() {
-    // Arrange
-    ArrayList<Mapping> mappings = new ArrayList<>();
-    Mapping mapping = new Mapping(new Path(), "Xml Value", ScopeReferenceHelper.EMPTY_SCOPE, "Rosetta Value",
-        "An error occurred", true, true, true);
-
-    mappings.add(mapping);
-
-    // Act
-    List<Mapping> actualFilterMappingsResult = MappingProcessorUtils.filterMappings(mappings, new Path(),
-        ScopeReferenceHelper.EMPTY_SCOPE);
-
-    // Assert
-    assertEquals(1, actualFilterMappingsResult.size());
-    assertSame(mapping, actualFilterMappingsResult.get(0));
-  }
-
-  /**
-   * Test {@link MappingProcessorUtils#filterMappings(List, Path, Path)} with {@code mappings}, {@code synonymPath}, {@code startsWithModelPath}.
-   * <p>
-   * Method under test: {@link MappingProcessorUtils#filterMappings(List, Path, Path)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"List MappingProcessorUtils.filterMappings(List, Path, Path)"})
-  public void testFilterMappingsWithMappingsSynonymPathStartsWithModelPath6() {
-    // Arrange
-    ArrayList<Mapping> mappings = new ArrayList<>();
-    Mapping mapping = new Mapping(ScopeReferenceHelper.EMPTY_SCOPE, "Xml Value", new Path(), "Rosetta Value",
-        "An error occurred", true, true, true);
-
-    mappings.add(mapping);
-
-    // Act
-    List<Mapping> actualFilterMappingsResult = MappingProcessorUtils.filterMappings(mappings,
-        ScopeReferenceHelper.EMPTY_SCOPE, new Path());
-
-    // Assert
-    assertEquals(1, actualFilterMappingsResult.size());
-    assertSame(mapping, actualFilterMappingsResult.get(0));
-  }
-
-  /**
-   * Test {@link MappingProcessorUtils#filterMappings(List, Path, Path)} with {@code mappings}, {@code synonymPath}, {@code startsWithModelPath}.
+   * Test {@link MappingProcessorUtils#filterMappings(List, RosettaPath)} with {@code mappings},
+   * {@code rosettaPath}.
+   *
    * <ul>
-   *   <li>Then return size is two.</li>
+   *   <li>When {@link NullPath} (default constructor).
    * </ul>
-   * <p>
-   * Method under test: {@link MappingProcessorUtils#filterMappings(List, Path, Path)}
+   *
+   * <p>Method under test: {@link MappingProcessorUtils#filterMappings(List, RosettaPath)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"List MappingProcessorUtils.filterMappings(List, Path, Path)"})
-  public void testFilterMappingsWithMappingsSynonymPathStartsWithModelPath_thenReturnSizeIsTwo() {
+  @DisplayName(
+      "Test filterMappings(List, RosettaPath) with 'mappings', 'rosettaPath'; when NullPath (default constructor)")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
+  @MethodsUnderTest({"List MappingProcessorUtils.filterMappings(List, RosettaPath)"})
+  void testFilterMappingsWithMappingsRosettaPath_whenNullPath() {
     // Arrange
     ArrayList<Mapping> mappings = new ArrayList<>();
-    mappings.add(new Mapping(ScopeReferenceHelper.EMPTY_SCOPE, "Xml Value", ScopeReferenceHelper.EMPTY_SCOPE,
-        "Rosetta Value", "An error occurred", true, true, true));
-    Mapping mapping = new Mapping(ScopeReferenceHelper.EMPTY_SCOPE, "Xml Value", ScopeReferenceHelper.EMPTY_SCOPE,
-        "Rosetta Value", "An error occurred", true, true, true);
-
+    Mapping mapping =
+        new Mapping(
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            "An error occurred",
+            true,
+            true,
+            true);
     mappings.add(mapping);
+    Mapping mapping2 =
+        new Mapping(
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            "An error occurred",
+            true,
+            true,
+            true);
+    mappings.add(mapping2);
 
     // Act
-    List<Mapping> actualFilterMappingsResult = MappingProcessorUtils.filterMappings(mappings,
-        ScopeReferenceHelper.EMPTY_SCOPE, ScopeReferenceHelper.EMPTY_SCOPE);
+    List<Mapping> actualFilterMappingsResult =
+        MappingProcessorUtils.filterMappings(mappings, new NullPath());
 
     // Assert
-    assertEquals(2, actualFilterMappingsResult.size());
-    assertSame(mapping, actualFilterMappingsResult.get(1));
+    assertTrue(actualFilterMappingsResult.isEmpty());
   }
 
   /**
-   * Test {@link MappingProcessorUtils#filterMappings(List, Path, Path)} with {@code mappings}, {@code synonymPath}, {@code startsWithModelPath}.
-   * <ul>
-   *   <li>When {@link ArrayList#ArrayList()}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link MappingProcessorUtils#filterMappings(List, Path, Path)}
+   * Test {@link MappingProcessorUtils#filterMappings(List, Path, Path)} with {@code mappings},
+   * {@code synonymPath}, {@code startsWithModelPath}.
+   *
+   * <p>Method under test: {@link MappingProcessorUtils#filterMappings(List, Path, Path)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @DisplayName(
+      "Test filterMappings(List, Path, Path) with 'mappings', 'synonymPath', 'startsWithModelPath'")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"List MappingProcessorUtils.filterMappings(List, Path, Path)"})
-  public void testFilterMappingsWithMappingsSynonymPathStartsWithModelPath_whenArrayList() {
+  void testFilterMappingsWithMappingsSynonymPathStartsWithModelPath() {
+    // Arrange
+    Path xmlPath = ScopeReferenceHelper.EMPTY_SCOPE;
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    Mapping mapping =
+        new Mapping(
+            xmlPath,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            null,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            "An error occurred",
+            true,
+            true,
+            true);
+
+    ArrayList<Mapping> mappings = new ArrayList<>();
+    mappings.add(mapping);
+
+    Path synonymPath = ScopeReferenceHelper.EMPTY_SCOPE;
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+
+    // Act
+    List<Mapping> actualFilterMappingsResult =
+        MappingProcessorUtils.filterMappings(
+            mappings, synonymPath, ScopeReferenceHelper.EMPTY_SCOPE);
+
+    // Assert
+    assertTrue(actualFilterMappingsResult.isEmpty());
+  }
+
+  /**
+   * Test {@link MappingProcessorUtils#filterMappings(List, Path, Path)} with {@code mappings},
+   * {@code synonymPath}, {@code startsWithModelPath}.
+   *
+   * <p>Method under test: {@link MappingProcessorUtils#filterMappings(List, Path, Path)}
+   */
+  @Test
+  @DisplayName(
+      "Test filterMappings(List, Path, Path) with 'mappings', 'synonymPath', 'startsWithModelPath'")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
+  @MethodsUnderTest({"List MappingProcessorUtils.filterMappings(List, Path, Path)"})
+  void testFilterMappingsWithMappingsSynonymPathStartsWithModelPath2() {
+    // Arrange
+    Path xmlPath = new Path();
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    Mapping mapping =
+        new Mapping(
+            xmlPath,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            null,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            "An error occurred",
+            true,
+            true,
+            true);
+
+    ArrayList<Mapping> mappings = new ArrayList<>();
+    mappings.add(mapping);
+
+    Path synonymPath = ScopeReferenceHelper.EMPTY_SCOPE;
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+
+    // Act
+    List<Mapping> actualFilterMappingsResult =
+        MappingProcessorUtils.filterMappings(
+            mappings, synonymPath, ScopeReferenceHelper.EMPTY_SCOPE);
+
+    // Assert
+    assertTrue(actualFilterMappingsResult.isEmpty());
+  }
+
+  /**
+   * Test {@link MappingProcessorUtils#filterMappings(List, Path, Path)} with {@code mappings},
+   * {@code synonymPath}, {@code startsWithModelPath}.
+   *
+   * <p>Method under test: {@link MappingProcessorUtils#filterMappings(List, Path, Path)}
+   */
+  @Test
+  @DisplayName(
+      "Test filterMappings(List, Path, Path) with 'mappings', 'synonymPath', 'startsWithModelPath'")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
+  @MethodsUnderTest({"List MappingProcessorUtils.filterMappings(List, Path, Path)"})
+  void testFilterMappingsWithMappingsSynonymPathStartsWithModelPath3() {
+    // Arrange
+    Path xmlPath = ScopeReferenceHelper.EMPTY_SCOPE;
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    Mapping mapping =
+        new Mapping(
+            xmlPath,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            new Path(),
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            "An error occurred",
+            true,
+            true,
+            true);
+
+    ArrayList<Mapping> mappings = new ArrayList<>();
+    mappings.add(mapping);
+
+    Path synonymPath = ScopeReferenceHelper.EMPTY_SCOPE;
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+
+    // Act
+    List<Mapping> actualFilterMappingsResult =
+        MappingProcessorUtils.filterMappings(
+            mappings, synonymPath, ScopeReferenceHelper.EMPTY_SCOPE);
+
+    // Assert
+    assertTrue(actualFilterMappingsResult.isEmpty());
+  }
+
+  /**
+   * Test {@link MappingProcessorUtils#filterMappings(List, Path, Path)} with {@code mappings},
+   * {@code synonymPath}, {@code startsWithModelPath}.
+   *
+   * <ul>
+   *   <li>Then return {@link ArrayList#ArrayList()}.
+   * </ul>
+   *
+   * <p>Method under test: {@link MappingProcessorUtils#filterMappings(List, Path, Path)}
+   */
+  @Test
+  @DisplayName(
+      "Test filterMappings(List, Path, Path) with 'mappings', 'synonymPath', 'startsWithModelPath'; then return ArrayList()")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
+  @MethodsUnderTest({"List MappingProcessorUtils.filterMappings(List, Path, Path)"})
+  void testFilterMappingsWithMappingsSynonymPathStartsWithModelPath_thenReturnArrayList() {
+    // Arrange
+    Path xmlPath = ScopeReferenceHelper.EMPTY_SCOPE;
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    Mapping mapping =
+        new Mapping(
+            xmlPath,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            "An error occurred",
+            true,
+            true,
+            true);
+
+    ArrayList<Mapping> mappings = new ArrayList<>();
+    mappings.add(mapping);
+
+    Path synonymPath = ScopeReferenceHelper.EMPTY_SCOPE;
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+
+    // Act
+    List<Mapping> actualFilterMappingsResult =
+        MappingProcessorUtils.filterMappings(
+            mappings, synonymPath, ScopeReferenceHelper.EMPTY_SCOPE);
+
+    // Assert
+    assertEquals(mappings, actualFilterMappingsResult);
+  }
+
+  /**
+   * Test {@link MappingProcessorUtils#filterMappings(List, Path, Path)} with {@code mappings},
+   * {@code synonymPath}, {@code startsWithModelPath}.
+   *
+   * <ul>
+   *   <li>When {@link ArrayList#ArrayList()}.
+   * </ul>
+   *
+   * <p>Method under test: {@link MappingProcessorUtils#filterMappings(List, Path, Path)}
+   */
+  @Test
+  @DisplayName(
+      "Test filterMappings(List, Path, Path) with 'mappings', 'synonymPath', 'startsWithModelPath'; when ArrayList()")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
+  @MethodsUnderTest({"List MappingProcessorUtils.filterMappings(List, Path, Path)"})
+  void testFilterMappingsWithMappingsSynonymPathStartsWithModelPath_whenArrayList() {
     // Arrange and Act
-    List<Mapping> actualFilterMappingsResult = MappingProcessorUtils.filterMappings(new ArrayList<>(),
-        ScopeReferenceHelper.EMPTY_SCOPE, ScopeReferenceHelper.EMPTY_SCOPE);
+    List<Mapping> actualFilterMappingsResult =
+        MappingProcessorUtils.filterMappings(
+            new ArrayList<>(), ScopeReferenceHelper.EMPTY_SCOPE, ScopeReferenceHelper.EMPTY_SCOPE);
 
     // Assert
     assertTrue(actualFilterMappingsResult.isEmpty());
   }
 
   /**
-   * Test {@link MappingProcessorUtils#filterMappings(List, Path, Path)} with {@code mappings}, {@code synonymPath}, {@code startsWithModelPath}.
+   * Test {@link MappingProcessorUtils#filterMappings(List, Path)} with {@code mappings}, {@code
+   * synonymPath}.
+   *
    * <ul>
-   *   <li>When {@link Path#Path()}.</li>
+   *   <li>Given {@link Path#Path()} addElement parse {@code foo} and {@code true}.
    * </ul>
-   * <p>
-   * Method under test: {@link MappingProcessorUtils#filterMappings(List, Path, Path)}
+   *
+   * <p>Method under test: {@link MappingProcessorUtils#filterMappings(List, Path)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"List MappingProcessorUtils.filterMappings(List, Path, Path)"})
-  public void testFilterMappingsWithMappingsSynonymPathStartsWithModelPath_whenPath() {
-    // Arrange
-    ArrayList<Mapping> mappings = new ArrayList<>();
-    mappings.add(new Mapping(ScopeReferenceHelper.EMPTY_SCOPE, "Xml Value", ScopeReferenceHelper.EMPTY_SCOPE,
-        "Rosetta Value", "An error occurred", true, true, true));
-
-    // Act
-    List<Mapping> actualFilterMappingsResult = MappingProcessorUtils.filterMappings(mappings, new Path(),
-        ScopeReferenceHelper.EMPTY_SCOPE);
-
-    // Assert
-    assertTrue(actualFilterMappingsResult.isEmpty());
-  }
-
-  /**
-   * Test {@link MappingProcessorUtils#filterMappings(List, Path, Path)} with {@code mappings}, {@code synonymPath}, {@code startsWithModelPath}.
-   * <ul>
-   *   <li>When {@link Path#Path()}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link MappingProcessorUtils#filterMappings(List, Path, Path)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"List MappingProcessorUtils.filterMappings(List, Path, Path)"})
-  public void testFilterMappingsWithMappingsSynonymPathStartsWithModelPath_whenPath2() {
-    // Arrange
-    ArrayList<Mapping> mappings = new ArrayList<>();
-    mappings.add(new Mapping(ScopeReferenceHelper.EMPTY_SCOPE, "Xml Value", ScopeReferenceHelper.EMPTY_SCOPE,
-        "Rosetta Value", "An error occurred", true, true, true));
-
-    // Act
-    List<Mapping> actualFilterMappingsResult = MappingProcessorUtils.filterMappings(mappings,
-        ScopeReferenceHelper.EMPTY_SCOPE, new Path());
-
-    // Assert
-    assertTrue(actualFilterMappingsResult.isEmpty());
-  }
-
-  /**
-   * Test {@link MappingProcessorUtils#filterMappings(List, Path, Path)} with {@code mappings}, {@code synonymPath}, {@code startsWithModelPath}.
-   * <ul>
-   *   <li>When valueOf {@code Path}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link MappingProcessorUtils#filterMappings(List, Path, Path)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"List MappingProcessorUtils.filterMappings(List, Path, Path)"})
-  public void testFilterMappingsWithMappingsSynonymPathStartsWithModelPath_whenValueOfPath() {
-    // Arrange
-    ArrayList<Mapping> mappings = new ArrayList<>();
-    mappings.add(new Mapping(ScopeReferenceHelper.EMPTY_SCOPE, "Xml Value", ScopeReferenceHelper.EMPTY_SCOPE,
-        "Rosetta Value", "An error occurred", true, true, true));
-
-    // Act
-    List<Mapping> actualFilterMappingsResult = MappingProcessorUtils.filterMappings(mappings, Path.valueOf("Path"),
-        ScopeReferenceHelper.EMPTY_SCOPE);
-
-    // Assert
-    assertTrue(actualFilterMappingsResult.isEmpty());
-  }
-
-  /**
-   * Test {@link MappingProcessorUtils#filterMappings(List, Path, Path)} with {@code mappings}, {@code synonymPath}, {@code startsWithModelPath}.
-   * <ul>
-   *   <li>When valueOf {@code Path}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link MappingProcessorUtils#filterMappings(List, Path, Path)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"List MappingProcessorUtils.filterMappings(List, Path, Path)"})
-  public void testFilterMappingsWithMappingsSynonymPathStartsWithModelPath_whenValueOfPath2() {
-    // Arrange
-    ArrayList<Mapping> mappings = new ArrayList<>();
-    mappings.add(new Mapping(ScopeReferenceHelper.EMPTY_SCOPE, "Xml Value", ScopeReferenceHelper.EMPTY_SCOPE,
-        "Rosetta Value", "An error occurred", true, true, true));
-
-    // Act
-    List<Mapping> actualFilterMappingsResult = MappingProcessorUtils.filterMappings(mappings,
-        ScopeReferenceHelper.EMPTY_SCOPE, Path.valueOf("Path"));
-
-    // Assert
-    assertTrue(actualFilterMappingsResult.isEmpty());
-  }
-
-  /**
-   * Test {@link MappingProcessorUtils#filterMappings(List, Path)} with {@code mappings}, {@code synonymPath}.
-   * <ul>
-   *   <li>Then return size is two.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link MappingProcessorUtils#filterMappings(List, Path)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
+  @DisplayName(
+      "Test filterMappings(List, Path) with 'mappings', 'synonymPath'; given Path() addElement parse 'foo' and 'true'")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"List MappingProcessorUtils.filterMappings(List, Path)"})
-  public void testFilterMappingsWithMappingsSynonymPath_thenReturnSizeIsTwo() {
+  void testFilterMappingsWithMappingsSynonymPath_givenPathAddElementParseFooAndTrue() {
     // Arrange
-    ArrayList<Mapping> mappings = new ArrayList<>();
-    mappings.add(new Mapping(ScopeReferenceHelper.EMPTY_SCOPE, "Xml Value", ScopeReferenceHelper.EMPTY_SCOPE,
-        "Rosetta Value", "An error occurred", true, true, true));
-    Mapping mapping = new Mapping(ScopeReferenceHelper.EMPTY_SCOPE, "Xml Value", ScopeReferenceHelper.EMPTY_SCOPE,
-        "Rosetta Value", "An error occurred", true, true, true);
+    Path xmlPath = new Path();
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    Mapping mapping =
+        new Mapping(
+            xmlPath,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            "An error occurred",
+            true,
+            true,
+            true);
 
+    ArrayList<Mapping> mappings = new ArrayList<>();
     mappings.add(mapping);
 
+    Path synonymPath = ScopeReferenceHelper.EMPTY_SCOPE;
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+
     // Act
-    List<Mapping> actualFilterMappingsResult = MappingProcessorUtils.filterMappings(mappings,
-        ScopeReferenceHelper.EMPTY_SCOPE);
+    List<Mapping> actualFilterMappingsResult =
+        MappingProcessorUtils.filterMappings(mappings, synonymPath);
 
     // Assert
-    assertEquals(2, actualFilterMappingsResult.size());
-    assertSame(mapping, actualFilterMappingsResult.get(1));
+    assertTrue(actualFilterMappingsResult.isEmpty());
   }
 
   /**
-   * Test {@link MappingProcessorUtils#filterMappings(List, Path)} with {@code mappings}, {@code synonymPath}.
+   * Test {@link MappingProcessorUtils#filterMappings(List, Path)} with {@code mappings}, {@code
+   * synonymPath}.
+   *
    * <ul>
-   *   <li>When {@link ArrayList#ArrayList()}.</li>
-   *   <li>Then return Empty.</li>
+   *   <li>Then return {@link ArrayList#ArrayList()}.
    * </ul>
-   * <p>
-   * Method under test: {@link MappingProcessorUtils#filterMappings(List, Path)}
+   *
+   * <p>Method under test: {@link MappingProcessorUtils#filterMappings(List, Path)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @DisplayName(
+      "Test filterMappings(List, Path) with 'mappings', 'synonymPath'; then return ArrayList()")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"List MappingProcessorUtils.filterMappings(List, Path)"})
-  public void testFilterMappingsWithMappingsSynonymPath_whenArrayList_thenReturnEmpty() {
+  void testFilterMappingsWithMappingsSynonymPath_thenReturnArrayList() {
+    // Arrange
+    Path xmlPath = ScopeReferenceHelper.EMPTY_SCOPE;
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    Mapping mapping =
+        new Mapping(
+            xmlPath,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            "An error occurred",
+            true,
+            true,
+            true);
+
+    ArrayList<Mapping> mappings = new ArrayList<>();
+    mappings.add(mapping);
+
+    Path synonymPath = ScopeReferenceHelper.EMPTY_SCOPE;
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+
+    // Act
+    List<Mapping> actualFilterMappingsResult =
+        MappingProcessorUtils.filterMappings(mappings, synonymPath);
+
+    // Assert
+    assertEquals(mappings, actualFilterMappingsResult);
+  }
+
+  /**
+   * Test {@link MappingProcessorUtils#filterMappings(List, Path)} with {@code mappings}, {@code
+   * synonymPath}.
+   *
+   * <ul>
+   *   <li>When {@link ArrayList#ArrayList()}.
+   *   <li>Then return Empty.
+   * </ul>
+   *
+   * <p>Method under test: {@link MappingProcessorUtils#filterMappings(List, Path)}
+   */
+  @Test
+  @DisplayName(
+      "Test filterMappings(List, Path) with 'mappings', 'synonymPath'; when ArrayList(); then return Empty")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
+  @MethodsUnderTest({"List MappingProcessorUtils.filterMappings(List, Path)"})
+  void testFilterMappingsWithMappingsSynonymPath_whenArrayList_thenReturnEmpty() {
     // Arrange and Act
-    List<Mapping> actualFilterMappingsResult = MappingProcessorUtils.filterMappings(new ArrayList<>(),
-        ScopeReferenceHelper.EMPTY_SCOPE);
-
-    // Assert
-    assertTrue(actualFilterMappingsResult.isEmpty());
-  }
-
-  /**
-   * Test {@link MappingProcessorUtils#filterMappings(List, Path)} with {@code mappings}, {@code synonymPath}.
-   * <ul>
-   *   <li>When {@link Path#Path()}.</li>
-   *   <li>Then return Empty.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link MappingProcessorUtils#filterMappings(List, Path)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"List MappingProcessorUtils.filterMappings(List, Path)"})
-  public void testFilterMappingsWithMappingsSynonymPath_whenPath_thenReturnEmpty() {
-    // Arrange
-    ArrayList<Mapping> mappings = new ArrayList<>();
-    mappings.add(new Mapping(ScopeReferenceHelper.EMPTY_SCOPE, "Xml Value", ScopeReferenceHelper.EMPTY_SCOPE,
-        "Rosetta Value", "An error occurred", true, true, true));
-
-    // Act
-    List<Mapping> actualFilterMappingsResult = MappingProcessorUtils.filterMappings(mappings, new Path());
-
-    // Assert
-    assertTrue(actualFilterMappingsResult.isEmpty());
-  }
-
-  /**
-   * Test {@link MappingProcessorUtils#filterMappings(List, Path)} with {@code mappings}, {@code synonymPath}.
-   * <ul>
-   *   <li>When valueOf {@code Path}.</li>
-   *   <li>Then return Empty.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link MappingProcessorUtils#filterMappings(List, Path)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"List MappingProcessorUtils.filterMappings(List, Path)"})
-  public void testFilterMappingsWithMappingsSynonymPath_whenValueOfPath_thenReturnEmpty() {
-    // Arrange
-    ArrayList<Mapping> mappings = new ArrayList<>();
-    mappings.add(new Mapping(ScopeReferenceHelper.EMPTY_SCOPE, "Xml Value", ScopeReferenceHelper.EMPTY_SCOPE,
-        "Rosetta Value", "An error occurred", true, true, true));
-
-    // Act
-    List<Mapping> actualFilterMappingsResult = MappingProcessorUtils.filterMappings(mappings, Path.valueOf("Path"));
+    List<Mapping> actualFilterMappingsResult =
+        MappingProcessorUtils.filterMappings(new ArrayList<>(), ScopeReferenceHelper.EMPTY_SCOPE);
 
     // Assert
     assertTrue(actualFilterMappingsResult.isEmpty());
@@ -1969,23 +2443,72 @@ public class MappingProcessorUtilsDiffblueTest {
 
   /**
    * Test {@link MappingProcessorUtils#getEmptyMappings(List, Path)}.
-   * <p>
-   * Method under test: {@link MappingProcessorUtils#getEmptyMappings(List, Path)}
+   *
+   * <p>Method under test: {@link MappingProcessorUtils#getEmptyMappings(List, Path)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @DisplayName("Test getEmptyMappings(List, Path)")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"List MappingProcessorUtils.getEmptyMappings(List, Path)"})
-  public void testGetEmptyMappings() {
+  void testGetEmptyMappings() {
     // Arrange
-    ArrayList<Mapping> mappings = new ArrayList<>();
-    Mapping mapping = new Mapping(ScopeReferenceHelper.EMPTY_SCOPE, "Xml Value", ScopeReferenceHelper.EMPTY_SCOPE,
-        "Rosetta Value", "An error occurred", true, true, true);
+    Path xmlPath = ScopeReferenceHelper.EMPTY_SCOPE;
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    Mapping mapping =
+        new Mapping(
+            xmlPath,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            null,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            null,
+            true,
+            true,
+            true);
 
+    ArrayList<Mapping> mappings = new ArrayList<>();
     mappings.add(mapping);
 
+    Path synonymPath = ScopeReferenceHelper.EMPTY_SCOPE;
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+
     // Act
-    List<Mapping> actualEmptyMappings = MappingProcessorUtils.getEmptyMappings(mappings,
-        ScopeReferenceHelper.EMPTY_SCOPE);
+    List<Mapping> actualEmptyMappings =
+        MappingProcessorUtils.getEmptyMappings(mappings, synonymPath);
 
     // Assert
     assertEquals(1, actualEmptyMappings.size());
@@ -1994,21 +2517,66 @@ public class MappingProcessorUtilsDiffblueTest {
 
   /**
    * Test {@link MappingProcessorUtils#getEmptyMappings(List, Path)}.
-   * <p>
-   * Method under test: {@link MappingProcessorUtils#getEmptyMappings(List, Path)}
+   *
+   * <p>Method under test: {@link MappingProcessorUtils#getEmptyMappings(List, Path)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @DisplayName("Test getEmptyMappings(List, Path)")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"List MappingProcessorUtils.getEmptyMappings(List, Path)"})
-  public void testGetEmptyMappings2() {
+  void testGetEmptyMappings2() {
     // Arrange
     ArrayList<Mapping> mappings = new ArrayList<>();
-    mappings.add(new Mapping(ScopeReferenceHelper.EMPTY_SCOPE, "Xml Value", ScopeReferenceHelper.EMPTY_SCOPE,
-        "Rosetta Value", null, true, true, true));
+    Mapping mapping =
+        new Mapping(
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            "An error occurred",
+            true,
+            true,
+            true);
+    mappings.add(mapping);
 
     // Act
-    List<Mapping> actualEmptyMappings = MappingProcessorUtils.getEmptyMappings(mappings,
-        ScopeReferenceHelper.EMPTY_SCOPE);
+    List<Mapping> actualEmptyMappings =
+        MappingProcessorUtils.getEmptyMappings(mappings, ScopeReferenceHelper.EMPTY_SCOPE);
+
+    // Assert
+    assertEquals(1, actualEmptyMappings.size());
+    assertSame(mapping, actualEmptyMappings.get(0));
+  }
+
+  /**
+   * Test {@link MappingProcessorUtils#getEmptyMappings(List, Path)}.
+   *
+   * <p>Method under test: {@link MappingProcessorUtils#getEmptyMappings(List, Path)}
+   */
+  @Test
+  @DisplayName("Test getEmptyMappings(List, Path)")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
+  @MethodsUnderTest({"List MappingProcessorUtils.getEmptyMappings(List, Path)"})
+  void testGetEmptyMappings3() {
+    // Arrange
+    ArrayList<Mapping> mappings = new ArrayList<>();
+    Mapping mapping =
+        new Mapping(
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            null,
+            true,
+            true,
+            true);
+    mappings.add(mapping);
+
+    // Act
+    List<Mapping> actualEmptyMappings =
+        MappingProcessorUtils.getEmptyMappings(mappings, ScopeReferenceHelper.EMPTY_SCOPE);
 
     // Assert
     assertTrue(actualEmptyMappings.isEmpty());
@@ -2016,21 +2584,32 @@ public class MappingProcessorUtilsDiffblueTest {
 
   /**
    * Test {@link MappingProcessorUtils#getEmptyMappings(List, Path)}.
-   * <p>
-   * Method under test: {@link MappingProcessorUtils#getEmptyMappings(List, Path)}
+   *
+   * <p>Method under test: {@link MappingProcessorUtils#getEmptyMappings(List, Path)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @DisplayName("Test getEmptyMappings(List, Path)")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"List MappingProcessorUtils.getEmptyMappings(List, Path)"})
-  public void testGetEmptyMappings3() {
+  void testGetEmptyMappings4() {
     // Arrange
     ArrayList<Mapping> mappings = new ArrayList<>();
-    mappings.add(new Mapping(new Path(), "Xml Value", ScopeReferenceHelper.EMPTY_SCOPE, "Rosetta Value",
-        "An error occurred", true, true, true));
+    Mapping mapping =
+        new Mapping(
+            new Path(),
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            "An error occurred",
+            true,
+            true,
+            true);
+    mappings.add(mapping);
 
     // Act
-    List<Mapping> actualEmptyMappings = MappingProcessorUtils.getEmptyMappings(mappings,
-        ScopeReferenceHelper.EMPTY_SCOPE);
+    List<Mapping> actualEmptyMappings =
+        MappingProcessorUtils.getEmptyMappings(mappings, ScopeReferenceHelper.EMPTY_SCOPE);
 
     // Assert
     assertTrue(actualEmptyMappings.isEmpty());
@@ -2038,23 +2617,65 @@ public class MappingProcessorUtilsDiffblueTest {
 
   /**
    * Test {@link MappingProcessorUtils#getEmptyMappings(List, Path)}.
-   * <p>
-   * Method under test: {@link MappingProcessorUtils#getEmptyMappings(List, Path)}
+   *
+   * <p>Method under test: {@link MappingProcessorUtils#getEmptyMappings(List, Path)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @DisplayName("Test getEmptyMappings(List, Path)")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"List MappingProcessorUtils.getEmptyMappings(List, Path)"})
-  public void testGetEmptyMappings4() {
+  void testGetEmptyMappings5() {
     // Arrange
     ArrayList<Mapping> mappings = new ArrayList<>();
-    Mapping mapping = new Mapping(ScopeReferenceHelper.EMPTY_SCOPE, "Xml Value", null, "Rosetta Value",
-        "An error occurred", true, true, true);
-
+    Mapping mapping =
+        new Mapping(
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            "An error occurred",
+            true,
+            true,
+            true);
     mappings.add(mapping);
 
     // Act
-    List<Mapping> actualEmptyMappings = MappingProcessorUtils.getEmptyMappings(mappings,
-        ScopeReferenceHelper.EMPTY_SCOPE);
+    List<Mapping> actualEmptyMappings =
+        MappingProcessorUtils.getEmptyMappings(mappings, new Path());
+
+    // Assert
+    assertTrue(actualEmptyMappings.isEmpty());
+  }
+
+  /**
+   * Test {@link MappingProcessorUtils#getEmptyMappings(List, Path)}.
+   *
+   * <p>Method under test: {@link MappingProcessorUtils#getEmptyMappings(List, Path)}
+   */
+  @Test
+  @DisplayName("Test getEmptyMappings(List, Path)")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
+  @MethodsUnderTest({"List MappingProcessorUtils.getEmptyMappings(List, Path)"})
+  void testGetEmptyMappings6() {
+    // Arrange
+    ArrayList<Mapping> mappings = new ArrayList<>();
+    Mapping mapping =
+        new Mapping(
+            new Path(),
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            "An error occurred",
+            true,
+            true,
+            true);
+    mappings.add(mapping);
+
+    // Act
+    List<Mapping> actualEmptyMappings =
+        MappingProcessorUtils.getEmptyMappings(mappings, new Path());
 
     // Assert
     assertEquals(1, actualEmptyMappings.size());
@@ -2063,122 +2684,72 @@ public class MappingProcessorUtilsDiffblueTest {
 
   /**
    * Test {@link MappingProcessorUtils#getEmptyMappings(List, Path)}.
-   * <p>
-   * Method under test: {@link MappingProcessorUtils#getEmptyMappings(List, Path)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"List MappingProcessorUtils.getEmptyMappings(List, Path)"})
-  public void testGetEmptyMappings5() {
-    // Arrange
-    ArrayList<Mapping> mappings = new ArrayList<>();
-    Mapping mapping = new Mapping(new Path(), "Xml Value", ScopeReferenceHelper.EMPTY_SCOPE, "Rosetta Value",
-        "An error occurred", true, true, true);
-
-    mappings.add(mapping);
-
-    // Act
-    List<Mapping> actualEmptyMappings = MappingProcessorUtils.getEmptyMappings(mappings, new Path());
-
-    // Assert
-    assertEquals(1, actualEmptyMappings.size());
-    assertSame(mapping, actualEmptyMappings.get(0));
-  }
-
-  /**
-   * Test {@link MappingProcessorUtils#getEmptyMappings(List, Path)}.
+   *
    * <ul>
-   *   <li>Then return size is two.</li>
+   *   <li>Then return size is two.
    * </ul>
-   * <p>
-   * Method under test: {@link MappingProcessorUtils#getEmptyMappings(List, Path)}
+   *
+   * <p>Method under test: {@link MappingProcessorUtils#getEmptyMappings(List, Path)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @DisplayName("Test getEmptyMappings(List, Path); then return size is two")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"List MappingProcessorUtils.getEmptyMappings(List, Path)"})
-  public void testGetEmptyMappings_thenReturnSizeIsTwo() {
+  void testGetEmptyMappings_thenReturnSizeIsTwo() {
     // Arrange
     ArrayList<Mapping> mappings = new ArrayList<>();
-    mappings.add(new Mapping(ScopeReferenceHelper.EMPTY_SCOPE, "Xml Value", ScopeReferenceHelper.EMPTY_SCOPE,
-        "Rosetta Value", "An error occurred", true, true, true));
-    Mapping mapping = new Mapping(ScopeReferenceHelper.EMPTY_SCOPE, "Xml Value", ScopeReferenceHelper.EMPTY_SCOPE,
-        "Rosetta Value", "An error occurred", true, true, true);
-
+    Mapping mapping =
+        new Mapping(
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            "An error occurred",
+            true,
+            true,
+            true);
     mappings.add(mapping);
+    Mapping mapping2 =
+        new Mapping(
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            "An error occurred",
+            true,
+            true,
+            true);
+    mappings.add(mapping2);
 
     // Act
-    List<Mapping> actualEmptyMappings = MappingProcessorUtils.getEmptyMappings(mappings,
-        ScopeReferenceHelper.EMPTY_SCOPE);
+    List<Mapping> actualEmptyMappings =
+        MappingProcessorUtils.getEmptyMappings(mappings, ScopeReferenceHelper.EMPTY_SCOPE);
 
     // Assert
     assertEquals(2, actualEmptyMappings.size());
-    assertSame(mapping, actualEmptyMappings.get(1));
+    assertSame(mapping2, actualEmptyMappings.get(1));
   }
 
   /**
    * Test {@link MappingProcessorUtils#getEmptyMappings(List, Path)}.
+   *
    * <ul>
-   *   <li>When {@link ArrayList#ArrayList()}.</li>
-   *   <li>Then return Empty.</li>
+   *   <li>When {@link ArrayList#ArrayList()}.
+   *   <li>Then return Empty.
    * </ul>
-   * <p>
-   * Method under test: {@link MappingProcessorUtils#getEmptyMappings(List, Path)}
+   *
+   * <p>Method under test: {@link MappingProcessorUtils#getEmptyMappings(List, Path)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @DisplayName("Test getEmptyMappings(List, Path); when ArrayList(); then return Empty")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"List MappingProcessorUtils.getEmptyMappings(List, Path)"})
-  public void testGetEmptyMappings_whenArrayList_thenReturnEmpty() {
+  void testGetEmptyMappings_whenArrayList_thenReturnEmpty() {
     // Arrange and Act
-    List<Mapping> actualEmptyMappings = MappingProcessorUtils.getEmptyMappings(new ArrayList<>(),
-        ScopeReferenceHelper.EMPTY_SCOPE);
-
-    // Assert
-    assertTrue(actualEmptyMappings.isEmpty());
-  }
-
-  /**
-   * Test {@link MappingProcessorUtils#getEmptyMappings(List, Path)}.
-   * <ul>
-   *   <li>When {@link Path#Path()}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link MappingProcessorUtils#getEmptyMappings(List, Path)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"List MappingProcessorUtils.getEmptyMappings(List, Path)"})
-  public void testGetEmptyMappings_whenPath() {
-    // Arrange
-    ArrayList<Mapping> mappings = new ArrayList<>();
-    mappings.add(new Mapping(ScopeReferenceHelper.EMPTY_SCOPE, "Xml Value", ScopeReferenceHelper.EMPTY_SCOPE,
-        "Rosetta Value", "An error occurred", true, true, true));
-
-    // Act
-    List<Mapping> actualEmptyMappings = MappingProcessorUtils.getEmptyMappings(mappings, new Path());
-
-    // Assert
-    assertTrue(actualEmptyMappings.isEmpty());
-  }
-
-  /**
-   * Test {@link MappingProcessorUtils#getEmptyMappings(List, Path)}.
-   * <ul>
-   *   <li>When valueOf {@code Path}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link MappingProcessorUtils#getEmptyMappings(List, Path)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"List MappingProcessorUtils.getEmptyMappings(List, Path)"})
-  public void testGetEmptyMappings_whenValueOfPath() {
-    // Arrange
-    ArrayList<Mapping> mappings = new ArrayList<>();
-    mappings.add(new Mapping(ScopeReferenceHelper.EMPTY_SCOPE, "Xml Value", ScopeReferenceHelper.EMPTY_SCOPE,
-        "Rosetta Value", "An error occurred", true, true, true));
-
-    // Act
-    List<Mapping> actualEmptyMappings = MappingProcessorUtils.getEmptyMappings(mappings, Path.valueOf("Path"));
+    List<Mapping> actualEmptyMappings =
+        MappingProcessorUtils.getEmptyMappings(new ArrayList<>(), ScopeReferenceHelper.EMPTY_SCOPE);
 
     // Assert
     assertTrue(actualEmptyMappings.isEmpty());
@@ -2186,227 +2757,402 @@ public class MappingProcessorUtilsDiffblueTest {
 
   /**
    * Test {@link MappingProcessorUtils#getNonNullMappedValue(List)} with {@code filteredMappings}.
+   *
    * <ul>
-   *   <li>Then return {@link Optional#get()} is {@code Xml Value}.</li>
+   *   <li>Then return {@link Optional#get()} is {@code NON_EMPTY}.
    * </ul>
-   * <p>
-   * Method under test: {@link MappingProcessorUtils#getNonNullMappedValue(List)}
+   *
+   * <p>Method under test: {@link MappingProcessorUtils#getNonNullMappedValue(List)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @DisplayName(
+      "Test getNonNullMappedValue(List) with 'filteredMappings'; then return get() is 'NON_EMPTY'")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"Optional MappingProcessorUtils.getNonNullMappedValue(List)"})
-  public void testGetNonNullMappedValueWithFilteredMappings_thenReturnGetIsXmlValue() {
+  void testGetNonNullMappedValueWithFilteredMappings_thenReturnGetIsNonEmpty() {
     // Arrange
     ArrayList<Mapping> filteredMappings = new ArrayList<>();
-    filteredMappings.add(new Mapping(ScopeReferenceHelper.EMPTY_SCOPE, "Xml Value", ScopeReferenceHelper.EMPTY_SCOPE,
-        "Rosetta Value", "An error occurred", true, true, true));
+    Mapping mapping =
+        new Mapping(
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            "An error occurred",
+            true,
+            true,
+            true);
+    filteredMappings.add(mapping);
 
     // Act
-    Optional<String> actualNonNullMappedValue = MappingProcessorUtils.getNonNullMappedValue(filteredMappings);
+    Optional<String> actualNonNullMappedValue =
+        MappingProcessorUtils.getNonNullMappedValue(filteredMappings);
 
     // Assert
-    assertEquals("Xml Value", actualNonNullMappedValue.get());
+    assertEquals("NON_EMPTY", actualNonNullMappedValue.get());
     assertTrue(actualNonNullMappedValue.isPresent());
   }
 
   /**
    * Test {@link MappingProcessorUtils#getNonNullMappedValue(List)} with {@code filteredMappings}.
+   *
    * <ul>
-   *   <li>Then return {@link Optional#get()} is {@code Xml Value}.</li>
+   *   <li>Then return {@link Optional#get()} is {@code NON_EMPTY}.
    * </ul>
-   * <p>
-   * Method under test: {@link MappingProcessorUtils#getNonNullMappedValue(List)}
+   *
+   * <p>Method under test: {@link MappingProcessorUtils#getNonNullMappedValue(List)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @DisplayName(
+      "Test getNonNullMappedValue(List) with 'filteredMappings'; then return get() is 'NON_EMPTY'")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"Optional MappingProcessorUtils.getNonNullMappedValue(List)"})
-  public void testGetNonNullMappedValueWithFilteredMappings_thenReturnGetIsXmlValue2() {
+  void testGetNonNullMappedValueWithFilteredMappings_thenReturnGetIsNonEmpty2() {
     // Arrange
     ArrayList<Mapping> filteredMappings = new ArrayList<>();
-    filteredMappings.add(new Mapping(ScopeReferenceHelper.EMPTY_SCOPE, "Xml Value", ScopeReferenceHelper.EMPTY_SCOPE,
-        "Rosetta Value", "An error occurred", true, true, true));
-    filteredMappings.add(new Mapping(ScopeReferenceHelper.EMPTY_SCOPE, "Xml Value", ScopeReferenceHelper.EMPTY_SCOPE,
-        "Rosetta Value", "An error occurred", true, true, true));
+    Mapping mapping =
+        new Mapping(
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            "An error occurred",
+            true,
+            true,
+            true);
+    filteredMappings.add(mapping);
+    Mapping mapping2 =
+        new Mapping(
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            "An error occurred",
+            true,
+            true,
+            true);
+    filteredMappings.add(mapping2);
 
     // Act
-    Optional<String> actualNonNullMappedValue = MappingProcessorUtils.getNonNullMappedValue(filteredMappings);
+    Optional<String> actualNonNullMappedValue =
+        MappingProcessorUtils.getNonNullMappedValue(filteredMappings);
 
     // Assert
-    assertEquals("Xml Value", actualNonNullMappedValue.get());
+    assertEquals("NON_EMPTY", actualNonNullMappedValue.get());
     assertTrue(actualNonNullMappedValue.isPresent());
   }
 
   /**
    * Test {@link MappingProcessorUtils#getNonNullMappedValue(List)} with {@code filteredMappings}.
+   *
    * <ul>
-   *   <li>When {@link ArrayList#ArrayList()}.</li>
-   *   <li>Then return not Present.</li>
+   *   <li>When {@link ArrayList#ArrayList()}.
+   *   <li>Then return not Present.
    * </ul>
-   * <p>
-   * Method under test: {@link MappingProcessorUtils#getNonNullMappedValue(List)}
+   *
+   * <p>Method under test: {@link MappingProcessorUtils#getNonNullMappedValue(List)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @DisplayName(
+      "Test getNonNullMappedValue(List) with 'filteredMappings'; when ArrayList(); then return not Present")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"Optional MappingProcessorUtils.getNonNullMappedValue(List)"})
-  public void testGetNonNullMappedValueWithFilteredMappings_whenArrayList_thenReturnNotPresent() {
+  void testGetNonNullMappedValueWithFilteredMappings_whenArrayList_thenReturnNotPresent() {
     // Arrange and Act
-    Optional<String> actualNonNullMappedValue = MappingProcessorUtils.getNonNullMappedValue(new ArrayList<>());
+    Optional<String> actualNonNullMappedValue =
+        MappingProcessorUtils.getNonNullMappedValue(new ArrayList<>());
 
     // Assert
     assertFalse(actualNonNullMappedValue.isPresent());
   }
 
   /**
-   * Test {@link MappingProcessorUtils#getNonNullMappedValue(List, Path, String[])} with {@code mappings}, {@code startsWith}, {@code endsWith}.
-   * <p>
-   * Method under test: {@link MappingProcessorUtils#getNonNullMappedValue(List, Path, String[])}
+   * Test {@link MappingProcessorUtils#getNonNullMappedValue(List, Path, String[])} with {@code
+   * mappings}, {@code startsWith}, {@code endsWith}.
+   *
+   * <p>Method under test: {@link MappingProcessorUtils#getNonNullMappedValue(List, Path, String[])}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @DisplayName(
+      "Test getNonNullMappedValue(List, Path, String[]) with 'mappings', 'startsWith', 'endsWith'")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"Optional MappingProcessorUtils.getNonNullMappedValue(List, Path, String[])"})
-  public void testGetNonNullMappedValueWithMappingsStartsWithEndsWith() {
+  void testGetNonNullMappedValueWithMappingsStartsWithEndsWith() {
     // Arrange
+    Path xmlPath = ScopeReferenceHelper.EMPTY_SCOPE;
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    Mapping mapping =
+        new Mapping(
+            xmlPath,
+            null,
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            "An error occurred",
+            true,
+            true,
+            true);
+
     ArrayList<Mapping> mappings = new ArrayList<>();
-    mappings.add(new Mapping(ScopeReferenceHelper.EMPTY_SCOPE, "Xml Value", ScopeReferenceHelper.EMPTY_SCOPE,
-        "Rosetta Value", "An error occurred", true, true, true));
+    mappings.add(mapping);
+
+    Path startsWith = ScopeReferenceHelper.EMPTY_SCOPE;
+    startsWith.addElement(PathElement.parse("foo", true));
+    startsWith.addElement(PathElement.parse("foo", true));
+    startsWith.addElement(PathElement.parse("foo", true));
+    startsWith.addElement(PathElement.parse("foo", true));
+    startsWith.addElement(PathElement.parse("foo", true));
+    startsWith.addElement(PathElement.parse("foo", true));
+    startsWith.addElement(PathElement.parse("foo", true));
+    startsWith.addElement(PathElement.parse("foo", true));
+    startsWith.addElement(PathElement.parse("foo", true));
+    startsWith.addElement(PathElement.parse("foo", true));
+    startsWith.addElement(PathElement.parse("foo", true));
+    startsWith.addElement(PathElement.parse("foo", true));
+    startsWith.addElement(PathElement.parse("foo", true));
+    startsWith.addElement(PathElement.parse("foo", true));
+    startsWith.addElement(PathElement.parse("foo", true));
+    startsWith.addElement(PathElement.parse("foo", true));
+    startsWith.addElement(PathElement.parse("foo", true));
+    startsWith.addElement(PathElement.parse("foo", true));
 
     // Act
-    Optional<String> actualNonNullMappedValue = MappingProcessorUtils.getNonNullMappedValue(mappings,
-        ScopeReferenceHelper.EMPTY_SCOPE, "Ends With");
+    Optional<String> actualNonNullMappedValue =
+        MappingProcessorUtils.getNonNullMappedValue(mappings, startsWith, "Ends With");
 
     // Assert
     assertFalse(actualNonNullMappedValue.isPresent());
   }
 
   /**
-   * Test {@link MappingProcessorUtils#getNonNullMappedValue(List, Path, String[])} with {@code mappings}, {@code startsWith}, {@code endsWith}.
-   * <p>
-   * Method under test: {@link MappingProcessorUtils#getNonNullMappedValue(List, Path, String[])}
+   * Test {@link MappingProcessorUtils#getNonNullMappedValue(List, Path, String[])} with {@code
+   * mappings}, {@code startsWith}, {@code endsWith}.
+   *
+   * <p>Method under test: {@link MappingProcessorUtils#getNonNullMappedValue(List, Path, String[])}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @DisplayName(
+      "Test getNonNullMappedValue(List, Path, String[]) with 'mappings', 'startsWith', 'endsWith'")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"Optional MappingProcessorUtils.getNonNullMappedValue(List, Path, String[])"})
-  public void testGetNonNullMappedValueWithMappingsStartsWithEndsWith2() {
+  void testGetNonNullMappedValueWithMappingsStartsWithEndsWith2() {
     // Arrange
+    Path xmlPath = new Path();
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    Mapping mapping =
+        new Mapping(
+            xmlPath,
+            null,
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            "An error occurred",
+            true,
+            true,
+            true);
+
     ArrayList<Mapping> mappings = new ArrayList<>();
-    mappings.add(new Mapping(ScopeReferenceHelper.EMPTY_SCOPE, "Xml Value", ScopeReferenceHelper.EMPTY_SCOPE,
-        "Rosetta Value", "An error occurred", true, true, true));
-    mappings.add(new Mapping(ScopeReferenceHelper.EMPTY_SCOPE, "Xml Value", ScopeReferenceHelper.EMPTY_SCOPE,
-        "Rosetta Value", "An error occurred", true, true, true));
+    mappings.add(mapping);
+
+    Path startsWith = ScopeReferenceHelper.EMPTY_SCOPE;
+    startsWith.addElement(PathElement.parse("foo", true));
+    startsWith.addElement(PathElement.parse("foo", true));
+    startsWith.addElement(PathElement.parse("foo", true));
+    startsWith.addElement(PathElement.parse("foo", true));
+    startsWith.addElement(PathElement.parse("foo", true));
+    startsWith.addElement(PathElement.parse("foo", true));
+    startsWith.addElement(PathElement.parse("foo", true));
+    startsWith.addElement(PathElement.parse("foo", true));
+    startsWith.addElement(PathElement.parse("foo", true));
+    startsWith.addElement(PathElement.parse("foo", true));
+    startsWith.addElement(PathElement.parse("foo", true));
+    startsWith.addElement(PathElement.parse("foo", true));
+    startsWith.addElement(PathElement.parse("foo", true));
+    startsWith.addElement(PathElement.parse("foo", true));
+    startsWith.addElement(PathElement.parse("foo", true));
+    startsWith.addElement(PathElement.parse("foo", true));
+    startsWith.addElement(PathElement.parse("foo", true));
+    startsWith.addElement(PathElement.parse("foo", true));
 
     // Act
-    Optional<String> actualNonNullMappedValue = MappingProcessorUtils.getNonNullMappedValue(mappings,
-        ScopeReferenceHelper.EMPTY_SCOPE, "Ends With");
+    Optional<String> actualNonNullMappedValue =
+        MappingProcessorUtils.getNonNullMappedValue(mappings, startsWith, "Ends With");
 
     // Assert
     assertFalse(actualNonNullMappedValue.isPresent());
   }
 
   /**
-   * Test {@link MappingProcessorUtils#getNonNullMappedValue(List, Path, String[])} with {@code mappings}, {@code startsWith}, {@code endsWith}.
-   * <p>
-   * Method under test: {@link MappingProcessorUtils#getNonNullMappedValue(List, Path, String[])}
+   * Test {@link MappingProcessorUtils#getNonNullMappedValue(List, Path, String[])} with {@code
+   * mappings}, {@code startsWith}, {@code endsWith}.
+   *
+   * <p>Method under test: {@link MappingProcessorUtils#getNonNullMappedValue(List, Path, String[])}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @DisplayName(
+      "Test getNonNullMappedValue(List, Path, String[]) with 'mappings', 'startsWith', 'endsWith'")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"Optional MappingProcessorUtils.getNonNullMappedValue(List, Path, String[])"})
-  public void testGetNonNullMappedValueWithMappingsStartsWithEndsWith3() {
+  void testGetNonNullMappedValueWithMappingsStartsWithEndsWith3() {
     // Arrange
     ArrayList<Mapping> mappings = new ArrayList<>();
-    mappings.add(new Mapping(new Path(), "Xml Value", ScopeReferenceHelper.EMPTY_SCOPE, "Rosetta Value",
-        "An error occurred", true, true, true));
+    Mapping mapping =
+        new Mapping(
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            "An error occurred",
+            true,
+            true,
+            true);
+    mappings.add(mapping);
+    Mapping mapping2 =
+        new Mapping(
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            "An error occurred",
+            true,
+            true,
+            true);
+    mappings.add(mapping2);
 
     // Act
-    Optional<String> actualNonNullMappedValue = MappingProcessorUtils.getNonNullMappedValue(mappings,
-        ScopeReferenceHelper.EMPTY_SCOPE, "Ends With");
+    Optional<String> actualNonNullMappedValue =
+        MappingProcessorUtils.getNonNullMappedValue(
+            mappings, ScopeReferenceHelper.EMPTY_SCOPE, "Ends With", "java.lang.Boolean");
 
     // Assert
     assertFalse(actualNonNullMappedValue.isPresent());
   }
 
   /**
-   * Test {@link MappingProcessorUtils#getNonNullMappedValue(List, Path, String[])} with {@code mappings}, {@code startsWith}, {@code endsWith}.
-   * <p>
-   * Method under test: {@link MappingProcessorUtils#getNonNullMappedValue(List, Path, String[])}
+   * Test {@link MappingProcessorUtils#getNonNullMappedValue(List, Path, String[])} with {@code
+   * mappings}, {@code startsWith}, {@code endsWith}.
+   *
+   * <p>Method under test: {@link MappingProcessorUtils#getNonNullMappedValue(List, Path, String[])}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @DisplayName(
+      "Test getNonNullMappedValue(List, Path, String[]) with 'mappings', 'startsWith', 'endsWith'")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"Optional MappingProcessorUtils.getNonNullMappedValue(List, Path, String[])"})
-  public void testGetNonNullMappedValueWithMappingsStartsWithEndsWith4() {
+  void testGetNonNullMappedValueWithMappingsStartsWithEndsWith4() {
     // Arrange
     ArrayList<Mapping> mappings = new ArrayList<>();
-    mappings.add(new Mapping(ScopeReferenceHelper.EMPTY_SCOPE, "Xml Value", ScopeReferenceHelper.EMPTY_SCOPE,
-        "Rosetta Value", "An error occurred", true, true, true));
+    Mapping mapping =
+        new Mapping(
+            new Path(),
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            "An error occurred",
+            true,
+            true,
+            true);
+    mappings.add(mapping);
+    Mapping mapping2 =
+        new Mapping(
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            "An error occurred",
+            true,
+            true,
+            true);
+    mappings.add(mapping2);
 
     // Act
-    Optional<String> actualNonNullMappedValue = MappingProcessorUtils.getNonNullMappedValue(mappings,
-        ScopeReferenceHelper.EMPTY_SCOPE, "Ends With", "java.lang.Boolean");
+    Optional<String> actualNonNullMappedValue =
+        MappingProcessorUtils.getNonNullMappedValue(mappings, new Path(), "Ends With");
 
     // Assert
     assertFalse(actualNonNullMappedValue.isPresent());
   }
 
   /**
-   * Test {@link MappingProcessorUtils#getNonNullMappedValue(List, Path, String[])} with {@code mappings}, {@code startsWith}, {@code endsWith}.
-   * <p>
-   * Method under test: {@link MappingProcessorUtils#getNonNullMappedValue(List, Path, String[])}
+   * Test {@link MappingProcessorUtils#getNonNullMappedValue(List, Path, String[])} with {@code
+   * mappings}, {@code startsWith}, {@code endsWith}.
+   *
+   * <p>Method under test: {@link MappingProcessorUtils#getNonNullMappedValue(List, Path, String[])}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @DisplayName(
+      "Test getNonNullMappedValue(List, Path, String[]) with 'mappings', 'startsWith', 'endsWith'")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"Optional MappingProcessorUtils.getNonNullMappedValue(List, Path, String[])"})
-  public void testGetNonNullMappedValueWithMappingsStartsWithEndsWith5() {
+  void testGetNonNullMappedValueWithMappingsStartsWithEndsWith5() {
     // Arrange
     ArrayList<Mapping> mappings = new ArrayList<>();
-    mappings.add(new Mapping(new Path(), "Xml Value", ScopeReferenceHelper.EMPTY_SCOPE, "Rosetta Value",
-        "An error occurred", true, true, true));
+    Mapping mapping =
+        new Mapping(
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            PathElement.parse("emptyScope", true),
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            "An error occurred",
+            true,
+            true,
+            true);
+    mappings.add(mapping);
+    Mapping mapping2 =
+        new Mapping(
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            "An error occurred",
+            true,
+            true,
+            true);
+    mappings.add(mapping2);
 
     // Act
-    Optional<String> actualNonNullMappedValue = MappingProcessorUtils.getNonNullMappedValue(mappings, new Path(),
-        "Ends With");
-
-    // Assert
-    assertFalse(actualNonNullMappedValue.isPresent());
-  }
-
-  /**
-   * Test {@link MappingProcessorUtils#getNonNullMappedValue(List, Path, String[])} with {@code mappings}, {@code startsWith}, {@code endsWith}.
-   * <p>
-   * Method under test: {@link MappingProcessorUtils#getNonNullMappedValue(List, Path, String[])}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"Optional MappingProcessorUtils.getNonNullMappedValue(List, Path, String[])"})
-  public void testGetNonNullMappedValueWithMappingsStartsWithEndsWith6() {
-    // Arrange
-    ArrayList<Mapping> mappings = new ArrayList<>();
-    mappings.add(new Mapping(ScopeReferenceHelper.EMPTY_SCOPE, null, ScopeReferenceHelper.EMPTY_SCOPE, "Rosetta Value",
-        "An error occurred", true, true, true));
-
-    // Act
-    Optional<String> actualNonNullMappedValue = MappingProcessorUtils.getNonNullMappedValue(mappings,
-        ScopeReferenceHelper.EMPTY_SCOPE, "emptyScope");
-
-    // Assert
-    assertFalse(actualNonNullMappedValue.isPresent());
-  }
-
-  /**
-   * Test {@link MappingProcessorUtils#getNonNullMappedValue(List, Path, String[])} with {@code mappings}, {@code startsWith}, {@code endsWith}.
-   * <p>
-   * Method under test: {@link MappingProcessorUtils#getNonNullMappedValue(List, Path, String[])}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"Optional MappingProcessorUtils.getNonNullMappedValue(List, Path, String[])"})
-  public void testGetNonNullMappedValueWithMappingsStartsWithEndsWith7() {
-    // Arrange
-    ArrayList<Mapping> mappings = new ArrayList<>();
-    mappings.add(new Mapping(ScopeReferenceHelper.EMPTY_SCOPE, new PathElement("emptyScope"),
-        ScopeReferenceHelper.EMPTY_SCOPE, "Rosetta Value", "An error occurred", true, true, true));
-
-    // Act
-    Optional<String> actualNonNullMappedValue = MappingProcessorUtils.getNonNullMappedValue(mappings,
-        ScopeReferenceHelper.EMPTY_SCOPE, "emptyScope");
+    Optional<String> actualNonNullMappedValue =
+        MappingProcessorUtils.getNonNullMappedValue(mappings, ScopeReferenceHelper.EMPTY_SCOPE);
 
     // Assert
     assertEquals("emptyScope", actualNonNullMappedValue.get());
@@ -2414,22 +3160,46 @@ public class MappingProcessorUtilsDiffblueTest {
   }
 
   /**
-   * Test {@link MappingProcessorUtils#getNonNullMappedValue(List, Path, String[])} with {@code mappings}, {@code startsWith}, {@code endsWith}.
-   * <p>
-   * Method under test: {@link MappingProcessorUtils#getNonNullMappedValue(List, Path, String[])}
+   * Test {@link MappingProcessorUtils#getNonNullMappedValue(List, Path, String[])} with {@code
+   * mappings}, {@code startsWith}, {@code endsWith}.
+   *
+   * <p>Method under test: {@link MappingProcessorUtils#getNonNullMappedValue(List, Path, String[])}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @DisplayName(
+      "Test getNonNullMappedValue(List, Path, String[]) with 'mappings', 'startsWith', 'endsWith'")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"Optional MappingProcessorUtils.getNonNullMappedValue(List, Path, String[])"})
-  public void testGetNonNullMappedValueWithMappingsStartsWithEndsWith8() {
+  void testGetNonNullMappedValueWithMappingsStartsWithEndsWith6() {
     // Arrange
     ArrayList<Mapping> mappings = new ArrayList<>();
-    mappings.add(new Mapping(ScopeReferenceHelper.EMPTY_SCOPE, new PathElement("emptyScope", 1),
-        ScopeReferenceHelper.EMPTY_SCOPE, "Rosetta Value", "An error occurred", true, true, true));
+    Mapping mapping =
+        new Mapping(
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            new PathElement("emptyScope", 1),
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            "An error occurred",
+            true,
+            true,
+            true);
+    mappings.add(mapping);
+    Mapping mapping2 =
+        new Mapping(
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            "An error occurred",
+            true,
+            true,
+            true);
+    mappings.add(mapping2);
 
     // Act
-    Optional<String> actualNonNullMappedValue = MappingProcessorUtils.getNonNullMappedValue(mappings,
-        ScopeReferenceHelper.EMPTY_SCOPE, "emptyScope");
+    Optional<String> actualNonNullMappedValue =
+        MappingProcessorUtils.getNonNullMappedValue(mappings, ScopeReferenceHelper.EMPTY_SCOPE);
 
     // Assert
     assertEquals("emptyScope(1)", actualNonNullMappedValue.get());
@@ -2437,167 +3207,432 @@ public class MappingProcessorUtilsDiffblueTest {
   }
 
   /**
-   * Test {@link MappingProcessorUtils#getNonNullMappedValue(List, Path, String[])} with {@code mappings}, {@code startsWith}, {@code endsWith}.
+   * Test {@link MappingProcessorUtils#getNonNullMappedValue(List, Path, String[])} with {@code
+   * mappings}, {@code startsWith}, {@code endsWith}.
+   *
    * <ul>
-   *   <li>Then return {@link Optional#get()} is {@code Xml Value}.</li>
+   *   <li>Then return {@link Optional#get()} is {@code NON_EMPTY}.
    * </ul>
-   * <p>
-   * Method under test: {@link MappingProcessorUtils#getNonNullMappedValue(List, Path, String[])}
+   *
+   * <p>Method under test: {@link MappingProcessorUtils#getNonNullMappedValue(List, Path, String[])}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @DisplayName(
+      "Test getNonNullMappedValue(List, Path, String[]) with 'mappings', 'startsWith', 'endsWith'; then return get() is 'NON_EMPTY'")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"Optional MappingProcessorUtils.getNonNullMappedValue(List, Path, String[])"})
-  public void testGetNonNullMappedValueWithMappingsStartsWithEndsWith_thenReturnGetIsXmlValue() {
+  void testGetNonNullMappedValueWithMappingsStartsWithEndsWith_thenReturnGetIsNonEmpty() {
     // Arrange
     ArrayList<Mapping> mappings = new ArrayList<>();
-    mappings.add(new Mapping(ScopeReferenceHelper.EMPTY_SCOPE, "Xml Value", ScopeReferenceHelper.EMPTY_SCOPE,
-        "Rosetta Value", "An error occurred", true, true, true));
+    Mapping mapping =
+        new Mapping(
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            "An error occurred",
+            true,
+            true,
+            true);
+    mappings.add(mapping);
+    Mapping mapping2 =
+        new Mapping(
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            "An error occurred",
+            true,
+            true,
+            true);
+    mappings.add(mapping2);
 
     // Act
-    Optional<String> actualNonNullMappedValue = MappingProcessorUtils.getNonNullMappedValue(mappings,
-        ScopeReferenceHelper.EMPTY_SCOPE, "emptyScope");
+    Optional<String> actualNonNullMappedValue =
+        MappingProcessorUtils.getNonNullMappedValue(mappings, ScopeReferenceHelper.EMPTY_SCOPE);
 
     // Assert
-    assertEquals("Xml Value", actualNonNullMappedValue.get());
+    assertEquals("NON_EMPTY", actualNonNullMappedValue.get());
     assertTrue(actualNonNullMappedValue.isPresent());
   }
 
   /**
-   * Test {@link MappingProcessorUtils#getNonNullMappedValue(List, Path, String[])} with {@code mappings}, {@code startsWith}, {@code endsWith}.
+   * Test {@link MappingProcessorUtils#getNonNullMappedValue(List, Path, String[])} with {@code
+   * mappings}, {@code startsWith}, {@code endsWith}.
+   *
    * <ul>
-   *   <li>When {@link ArrayList#ArrayList()}.</li>
+   *   <li>Then return {@link Optional#get()} is {@code NON_EMPTY}.
    * </ul>
-   * <p>
-   * Method under test: {@link MappingProcessorUtils#getNonNullMappedValue(List, Path, String[])}
+   *
+   * <p>Method under test: {@link MappingProcessorUtils#getNonNullMappedValue(List, Path, String[])}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @DisplayName(
+      "Test getNonNullMappedValue(List, Path, String[]) with 'mappings', 'startsWith', 'endsWith'; then return get() is 'NON_EMPTY'")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"Optional MappingProcessorUtils.getNonNullMappedValue(List, Path, String[])"})
-  public void testGetNonNullMappedValueWithMappingsStartsWithEndsWith_whenArrayList() {
+  void testGetNonNullMappedValueWithMappingsStartsWithEndsWith_thenReturnGetIsNonEmpty2() {
+    // Arrange
+    ArrayList<Mapping> mappings = new ArrayList<>();
+    Mapping mapping =
+        new Mapping(
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            null,
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            "An error occurred",
+            true,
+            true,
+            true);
+    mappings.add(mapping);
+    Mapping mapping2 =
+        new Mapping(
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            "An error occurred",
+            true,
+            true,
+            true);
+    mappings.add(mapping2);
+
+    // Act
+    Optional<String> actualNonNullMappedValue =
+        MappingProcessorUtils.getNonNullMappedValue(mappings, ScopeReferenceHelper.EMPTY_SCOPE);
+
+    // Assert
+    assertEquals("NON_EMPTY", actualNonNullMappedValue.get());
+    assertTrue(actualNonNullMappedValue.isPresent());
+  }
+
+  /**
+   * Test {@link MappingProcessorUtils#getNonNullMappedValue(List, Path, String[])} with {@code
+   * mappings}, {@code startsWith}, {@code endsWith}.
+   *
+   * <ul>
+   *   <li>Then return not Present.
+   * </ul>
+   *
+   * <p>Method under test: {@link MappingProcessorUtils#getNonNullMappedValue(List, Path, String[])}
+   */
+  @Test
+  @DisplayName(
+      "Test getNonNullMappedValue(List, Path, String[]) with 'mappings', 'startsWith', 'endsWith'; then return not Present")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
+  @MethodsUnderTest({"Optional MappingProcessorUtils.getNonNullMappedValue(List, Path, String[])"})
+  void testGetNonNullMappedValueWithMappingsStartsWithEndsWith_thenReturnNotPresent() {
+    // Arrange
+    ArrayList<Mapping> mappings = new ArrayList<>();
+    Mapping mapping =
+        new Mapping(
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            "An error occurred",
+            true,
+            true,
+            true);
+    mappings.add(mapping);
+    Mapping mapping2 =
+        new Mapping(
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            "An error occurred",
+            true,
+            true,
+            true);
+    mappings.add(mapping2);
+
+    // Act
+    Optional<String> actualNonNullMappedValue =
+        MappingProcessorUtils.getNonNullMappedValue(
+            mappings, ScopeReferenceHelper.EMPTY_SCOPE, "Ends With");
+
+    // Assert
+    assertFalse(actualNonNullMappedValue.isPresent());
+  }
+
+  /**
+   * Test {@link MappingProcessorUtils#getNonNullMappedValue(List, Path, String[])} with {@code
+   * mappings}, {@code startsWith}, {@code endsWith}.
+   *
+   * <ul>
+   *   <li>When {@link ArrayList#ArrayList()}.
+   * </ul>
+   *
+   * <p>Method under test: {@link MappingProcessorUtils#getNonNullMappedValue(List, Path, String[])}
+   */
+  @Test
+  @DisplayName(
+      "Test getNonNullMappedValue(List, Path, String[]) with 'mappings', 'startsWith', 'endsWith'; when ArrayList()")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
+  @MethodsUnderTest({"Optional MappingProcessorUtils.getNonNullMappedValue(List, Path, String[])"})
+  void testGetNonNullMappedValueWithMappingsStartsWithEndsWith_whenArrayList() {
     // Arrange and Act
-    Optional<String> actualNonNullMappedValue = MappingProcessorUtils.getNonNullMappedValue(new ArrayList<>(),
-        ScopeReferenceHelper.EMPTY_SCOPE, "Ends With");
+    Optional<String> actualNonNullMappedValue =
+        MappingProcessorUtils.getNonNullMappedValue(
+            new ArrayList<>(), ScopeReferenceHelper.EMPTY_SCOPE, "Ends With");
 
     // Assert
     assertFalse(actualNonNullMappedValue.isPresent());
   }
 
   /**
-   * Test {@link MappingProcessorUtils#getNonNullMappedValue(List, Path, String[])} with {@code mappings}, {@code startsWith}, {@code endsWith}.
+   * Test {@link MappingProcessorUtils#getNonNullMappedValue(List, Path, String[])} with {@code
+   * mappings}, {@code startsWith}, {@code endsWith}.
+   *
    * <ul>
-   *   <li>When {@link Path#Path()}.</li>
+   *   <li>When {@link Path#Path()}.
    * </ul>
-   * <p>
-   * Method under test: {@link MappingProcessorUtils#getNonNullMappedValue(List, Path, String[])}
+   *
+   * <p>Method under test: {@link MappingProcessorUtils#getNonNullMappedValue(List, Path, String[])}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @DisplayName(
+      "Test getNonNullMappedValue(List, Path, String[]) with 'mappings', 'startsWith', 'endsWith'; when Path()")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"Optional MappingProcessorUtils.getNonNullMappedValue(List, Path, String[])"})
-  public void testGetNonNullMappedValueWithMappingsStartsWithEndsWith_whenPath() {
+  void testGetNonNullMappedValueWithMappingsStartsWithEndsWith_whenPath() {
     // Arrange
     ArrayList<Mapping> mappings = new ArrayList<>();
-    mappings.add(new Mapping(ScopeReferenceHelper.EMPTY_SCOPE, "Xml Value", ScopeReferenceHelper.EMPTY_SCOPE,
-        "Rosetta Value", "An error occurred", true, true, true));
+    Mapping mapping =
+        new Mapping(
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            "An error occurred",
+            true,
+            true,
+            true);
+    mappings.add(mapping);
+    Mapping mapping2 =
+        new Mapping(
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            "An error occurred",
+            true,
+            true,
+            true);
+    mappings.add(mapping2);
 
     // Act
-    Optional<String> actualNonNullMappedValue = MappingProcessorUtils.getNonNullMappedValue(mappings, new Path(),
-        "Ends With");
+    Optional<String> actualNonNullMappedValue =
+        MappingProcessorUtils.getNonNullMappedValue(mappings, new Path(), "Ends With");
 
     // Assert
     assertFalse(actualNonNullMappedValue.isPresent());
   }
 
   /**
-   * Test {@link MappingProcessorUtils#getNonNullMappedValue(List, Path, String[])} with {@code mappings}, {@code startsWith}, {@code endsWith}.
+   * Test {@link MappingProcessorUtils#getNonNullMappedValue(List, Path, String[])} with {@code
+   * mappings}, {@code startsWith}, {@code endsWith}.
+   *
    * <ul>
-   *   <li>When valueOf {@code Path}.</li>
+   *   <li>When valueOf {@code Path}.
    * </ul>
-   * <p>
-   * Method under test: {@link MappingProcessorUtils#getNonNullMappedValue(List, Path, String[])}
+   *
+   * <p>Method under test: {@link MappingProcessorUtils#getNonNullMappedValue(List, Path, String[])}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @DisplayName(
+      "Test getNonNullMappedValue(List, Path, String[]) with 'mappings', 'startsWith', 'endsWith'; when valueOf 'Path'")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"Optional MappingProcessorUtils.getNonNullMappedValue(List, Path, String[])"})
-  public void testGetNonNullMappedValueWithMappingsStartsWithEndsWith_whenValueOfPath() {
+  void testGetNonNullMappedValueWithMappingsStartsWithEndsWith_whenValueOfPath() {
     // Arrange
     ArrayList<Mapping> mappings = new ArrayList<>();
-    mappings.add(new Mapping(ScopeReferenceHelper.EMPTY_SCOPE, "Xml Value", ScopeReferenceHelper.EMPTY_SCOPE,
-        "Rosetta Value", "An error occurred", true, true, true));
+    Mapping mapping =
+        new Mapping(
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            "An error occurred",
+            true,
+            true,
+            true);
+    mappings.add(mapping);
+    Mapping mapping2 =
+        new Mapping(
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            "An error occurred",
+            true,
+            true,
+            true);
+    mappings.add(mapping2);
 
     // Act
-    Optional<String> actualNonNullMappedValue = MappingProcessorUtils.getNonNullMappedValue(mappings,
-        Path.valueOf("Path"), "Ends With");
+    Optional<String> actualNonNullMappedValue =
+        MappingProcessorUtils.getNonNullMappedValue(mappings, Path.valueOf("Path"), "Ends With");
 
     // Assert
     assertFalse(actualNonNullMappedValue.isPresent());
   }
 
   /**
-   * Test {@link MappingProcessorUtils#getNonNullMappedValue(Path, List)} with {@code synonymPath}, {@code mappings}.
-   * <p>
-   * Method under test: {@link MappingProcessorUtils#getNonNullMappedValue(Path, List)}
+   * Test {@link MappingProcessorUtils#getNonNullMappedValue(Path, List)} with {@code synonymPath},
+   * {@code mappings}.
+   *
+   * <p>Method under test: {@link MappingProcessorUtils#getNonNullMappedValue(Path, List)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @DisplayName("Test getNonNullMappedValue(Path, List) with 'synonymPath', 'mappings'")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"Optional MappingProcessorUtils.getNonNullMappedValue(Path, List)"})
-  public void testGetNonNullMappedValueWithSynonymPathMappings() {
+  void testGetNonNullMappedValueWithSynonymPathMappings() {
     // Arrange
+    Path synonymPath = ScopeReferenceHelper.EMPTY_SCOPE;
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+
+    Path xmlPath = new Path();
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    Mapping mapping =
+        new Mapping(
+            xmlPath,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            "An error occurred",
+            true,
+            true,
+            true);
+
     ArrayList<Mapping> mappings = new ArrayList<>();
-    mappings.add(new Mapping(new Path(), "Xml Value", ScopeReferenceHelper.EMPTY_SCOPE, "Rosetta Value",
-        "An error occurred", true, true, true));
+    mappings.add(mapping);
 
     // Act
-    Optional<String> actualNonNullMappedValue = MappingProcessorUtils
-        .getNonNullMappedValue(ScopeReferenceHelper.EMPTY_SCOPE, mappings);
+    Optional<String> actualNonNullMappedValue =
+        MappingProcessorUtils.getNonNullMappedValue(synonymPath, mappings);
 
     // Assert
     assertFalse(actualNonNullMappedValue.isPresent());
   }
 
   /**
-   * Test {@link MappingProcessorUtils#getNonNullMappedValue(Path, List)} with {@code synonymPath}, {@code mappings}.
-   * <p>
-   * Method under test: {@link MappingProcessorUtils#getNonNullMappedValue(Path, List)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"Optional MappingProcessorUtils.getNonNullMappedValue(Path, List)"})
-  public void testGetNonNullMappedValueWithSynonymPathMappings2() {
-    // Arrange
-    Path synonymPath = new Path();
-
-    ArrayList<Mapping> mappings = new ArrayList<>();
-    mappings.add(new Mapping(new Path(), "Xml Value", ScopeReferenceHelper.EMPTY_SCOPE, "Rosetta Value",
-        "An error occurred", true, true, true));
-
-    // Act
-    Optional<String> actualNonNullMappedValue = MappingProcessorUtils.getNonNullMappedValue(synonymPath, mappings);
-
-    // Assert
-    assertEquals("Xml Value", actualNonNullMappedValue.get());
-    assertTrue(actualNonNullMappedValue.isPresent());
-  }
-
-  /**
-   * Test {@link MappingProcessorUtils#getNonNullMappedValue(Path, List)} with {@code synonymPath}, {@code mappings}.
+   * Test {@link MappingProcessorUtils#getNonNullMappedValue(Path, List)} with {@code synonymPath},
+   * {@code mappings}.
+   *
    * <ul>
-   *   <li>Then return {@link Optional#get()} is {@code emptyScope}.</li>
+   *   <li>Then return {@link Optional#get()} is {@code emptyScope}.
    * </ul>
-   * <p>
-   * Method under test: {@link MappingProcessorUtils#getNonNullMappedValue(Path, List)}
+   *
+   * <p>Method under test: {@link MappingProcessorUtils#getNonNullMappedValue(Path, List)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @DisplayName(
+      "Test getNonNullMappedValue(Path, List) with 'synonymPath', 'mappings'; then return get() is 'emptyScope'")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"Optional MappingProcessorUtils.getNonNullMappedValue(Path, List)"})
-  public void testGetNonNullMappedValueWithSynonymPathMappings_thenReturnGetIsEmptyScope() {
+  void testGetNonNullMappedValueWithSynonymPathMappings_thenReturnGetIsEmptyScope() {
     // Arrange
+    Path synonymPath = ScopeReferenceHelper.EMPTY_SCOPE;
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+
+    Path xmlPath = ScopeReferenceHelper.EMPTY_SCOPE;
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    Mapping mapping =
+        new Mapping(
+            xmlPath,
+            PathElement.parse("emptyScope", true),
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            "An error occurred",
+            true,
+            true,
+            true);
+
     ArrayList<Mapping> mappings = new ArrayList<>();
-    mappings.add(new Mapping(ScopeReferenceHelper.EMPTY_SCOPE, new PathElement("emptyScope"),
-        ScopeReferenceHelper.EMPTY_SCOPE, "Rosetta Value", "An error occurred", true, true, true));
+    mappings.add(mapping);
 
     // Act
-    Optional<String> actualNonNullMappedValue = MappingProcessorUtils
-        .getNonNullMappedValue(ScopeReferenceHelper.EMPTY_SCOPE, mappings);
+    Optional<String> actualNonNullMappedValue =
+        MappingProcessorUtils.getNonNullMappedValue(synonymPath, mappings);
 
     // Assert
     assertEquals("emptyScope", actualNonNullMappedValue.get());
@@ -2605,25 +3640,79 @@ public class MappingProcessorUtilsDiffblueTest {
   }
 
   /**
-   * Test {@link MappingProcessorUtils#getNonNullMappedValue(Path, List)} with {@code synonymPath}, {@code mappings}.
+   * Test {@link MappingProcessorUtils#getNonNullMappedValue(Path, List)} with {@code synonymPath},
+   * {@code mappings}.
+   *
    * <ul>
-   *   <li>Then return {@link Optional#get()} is {@code emptyScope(1)}.</li>
+   *   <li>Then return {@link Optional#get()} is {@code emptyScope(1)}.
    * </ul>
-   * <p>
-   * Method under test: {@link MappingProcessorUtils#getNonNullMappedValue(Path, List)}
+   *
+   * <p>Method under test: {@link MappingProcessorUtils#getNonNullMappedValue(Path, List)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @DisplayName(
+      "Test getNonNullMappedValue(Path, List) with 'synonymPath', 'mappings'; then return get() is 'emptyScope(1)'")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"Optional MappingProcessorUtils.getNonNullMappedValue(Path, List)"})
-  public void testGetNonNullMappedValueWithSynonymPathMappings_thenReturnGetIsEmptyScope1() {
+  void testGetNonNullMappedValueWithSynonymPathMappings_thenReturnGetIsEmptyScope1() {
     // Arrange
+    Path synonymPath = ScopeReferenceHelper.EMPTY_SCOPE;
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+
+    Path xmlPath = ScopeReferenceHelper.EMPTY_SCOPE;
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    Mapping mapping =
+        new Mapping(
+            xmlPath,
+            new PathElement("emptyScope", 1),
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            "An error occurred",
+            true,
+            true,
+            true);
+
     ArrayList<Mapping> mappings = new ArrayList<>();
-    mappings.add(new Mapping(ScopeReferenceHelper.EMPTY_SCOPE, new PathElement("emptyScope", 1),
-        ScopeReferenceHelper.EMPTY_SCOPE, "Rosetta Value", "An error occurred", true, true, true));
+    mappings.add(mapping);
 
     // Act
-    Optional<String> actualNonNullMappedValue = MappingProcessorUtils
-        .getNonNullMappedValue(ScopeReferenceHelper.EMPTY_SCOPE, mappings);
+    Optional<String> actualNonNullMappedValue =
+        MappingProcessorUtils.getNonNullMappedValue(synonymPath, mappings);
 
     // Assert
     assertEquals("emptyScope(1)", actualNonNullMappedValue.get());
@@ -2631,309 +3720,571 @@ public class MappingProcessorUtilsDiffblueTest {
   }
 
   /**
-   * Test {@link MappingProcessorUtils#getNonNullMappedValue(Path, List)} with {@code synonymPath}, {@code mappings}.
+   * Test {@link MappingProcessorUtils#getNonNullMappedValue(Path, List)} with {@code synonymPath},
+   * {@code mappings}.
+   *
    * <ul>
-   *   <li>Then return {@link Optional#get()} is {@code Xml Value}.</li>
+   *   <li>Then return {@link Optional#get()} is {@code NON_EMPTY}.
    * </ul>
-   * <p>
-   * Method under test: {@link MappingProcessorUtils#getNonNullMappedValue(Path, List)}
+   *
+   * <p>Method under test: {@link MappingProcessorUtils#getNonNullMappedValue(Path, List)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @DisplayName(
+      "Test getNonNullMappedValue(Path, List) with 'synonymPath', 'mappings'; then return get() is 'NON_EMPTY'")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"Optional MappingProcessorUtils.getNonNullMappedValue(Path, List)"})
-  public void testGetNonNullMappedValueWithSynonymPathMappings_thenReturnGetIsXmlValue() {
+  void testGetNonNullMappedValueWithSynonymPathMappings_thenReturnGetIsNonEmpty() {
     // Arrange
+    Path synonymPath = ScopeReferenceHelper.EMPTY_SCOPE;
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+
+    Path xmlPath = ScopeReferenceHelper.EMPTY_SCOPE;
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    Mapping mapping =
+        new Mapping(
+            xmlPath,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            "An error occurred",
+            true,
+            true,
+            true);
+
     ArrayList<Mapping> mappings = new ArrayList<>();
-    mappings.add(new Mapping(ScopeReferenceHelper.EMPTY_SCOPE, "Xml Value", ScopeReferenceHelper.EMPTY_SCOPE,
-        "Rosetta Value", "An error occurred", true, true, true));
+    mappings.add(mapping);
 
     // Act
-    Optional<String> actualNonNullMappedValue = MappingProcessorUtils
-        .getNonNullMappedValue(ScopeReferenceHelper.EMPTY_SCOPE, mappings);
+    Optional<String> actualNonNullMappedValue =
+        MappingProcessorUtils.getNonNullMappedValue(synonymPath, mappings);
 
     // Assert
-    assertEquals("Xml Value", actualNonNullMappedValue.get());
+    assertEquals("NON_EMPTY", actualNonNullMappedValue.get());
     assertTrue(actualNonNullMappedValue.isPresent());
   }
 
   /**
-   * Test {@link MappingProcessorUtils#getNonNullMappedValue(Path, List)} with {@code synonymPath}, {@code mappings}.
+   * Test {@link MappingProcessorUtils#getNonNullMappedValue(Path, List)} with {@code synonymPath},
+   * {@code mappings}.
+   *
    * <ul>
-   *   <li>Then return {@link Optional#get()} is {@code Xml Value}.</li>
+   *   <li>When {@link ScopeReferenceHelper#EMPTY_SCOPE}.
    * </ul>
-   * <p>
-   * Method under test: {@link MappingProcessorUtils#getNonNullMappedValue(Path, List)}
+   *
+   * <p>Method under test: {@link MappingProcessorUtils#getNonNullMappedValue(Path, List)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @DisplayName(
+      "Test getNonNullMappedValue(Path, List) with 'synonymPath', 'mappings'; when EMPTY_SCOPE")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"Optional MappingProcessorUtils.getNonNullMappedValue(Path, List)"})
-  public void testGetNonNullMappedValueWithSynonymPathMappings_thenReturnGetIsXmlValue2() {
-    // Arrange
-    ArrayList<Mapping> mappings = new ArrayList<>();
-    mappings.add(new Mapping(ScopeReferenceHelper.EMPTY_SCOPE, "Xml Value", ScopeReferenceHelper.EMPTY_SCOPE,
-        "Rosetta Value", "An error occurred", true, true, true));
-    mappings.add(new Mapping(ScopeReferenceHelper.EMPTY_SCOPE, "Xml Value", ScopeReferenceHelper.EMPTY_SCOPE,
-        "Rosetta Value", "An error occurred", true, true, true));
-
-    // Act
-    Optional<String> actualNonNullMappedValue = MappingProcessorUtils
-        .getNonNullMappedValue(ScopeReferenceHelper.EMPTY_SCOPE, mappings);
-
-    // Assert
-    assertEquals("Xml Value", actualNonNullMappedValue.get());
-    assertTrue(actualNonNullMappedValue.isPresent());
-  }
-
-  /**
-   * Test {@link MappingProcessorUtils#getNonNullMappedValue(Path, List)} with {@code synonymPath}, {@code mappings}.
-   * <ul>
-   *   <li>When {@link ArrayList#ArrayList()}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link MappingProcessorUtils#getNonNullMappedValue(Path, List)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"Optional MappingProcessorUtils.getNonNullMappedValue(Path, List)"})
-  public void testGetNonNullMappedValueWithSynonymPathMappings_whenArrayList() {
+  void testGetNonNullMappedValueWithSynonymPathMappings_whenEmpty_scope() {
     // Arrange and Act
-    Optional<String> actualNonNullMappedValue = MappingProcessorUtils
-        .getNonNullMappedValue(ScopeReferenceHelper.EMPTY_SCOPE, new ArrayList<>());
+    Optional<String> actualNonNullMappedValue =
+        MappingProcessorUtils.getNonNullMappedValue(
+            ScopeReferenceHelper.EMPTY_SCOPE, new ArrayList<>());
 
     // Assert
     assertFalse(actualNonNullMappedValue.isPresent());
   }
 
   /**
-   * Test {@link MappingProcessorUtils#getNonNullMappedValue(Path, List)} with {@code synonymPath}, {@code mappings}.
-   * <ul>
-   *   <li>When {@link Path#Path()}.</li>
-   *   <li>Then return not Present.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link MappingProcessorUtils#getNonNullMappedValue(Path, List)}
+   * Test {@link MappingProcessorUtils#getNonNullMapping(List, RosettaPath, Path, String[])} with
+   * {@code mappings}, {@code modelPathStartsWith}, {@code synonymPathStartsWith}, {@code
+   * synonymPathEndsWith}.
+   *
+   * <p>Method under test: {@link MappingProcessorUtils#getNonNullMapping(List, RosettaPath, Path,
+   * String[])}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"Optional MappingProcessorUtils.getNonNullMappedValue(Path, List)"})
-  public void testGetNonNullMappedValueWithSynonymPathMappings_whenPath_thenReturnNotPresent() {
-    // Arrange
-    Path synonymPath = new Path();
-
-    ArrayList<Mapping> mappings = new ArrayList<>();
-    mappings.add(new Mapping(ScopeReferenceHelper.EMPTY_SCOPE, "Xml Value", ScopeReferenceHelper.EMPTY_SCOPE,
-        "Rosetta Value", "An error occurred", true, true, true));
-
-    // Act
-    Optional<String> actualNonNullMappedValue = MappingProcessorUtils.getNonNullMappedValue(synonymPath, mappings);
-
-    // Assert
-    assertFalse(actualNonNullMappedValue.isPresent());
-  }
-
-  /**
-   * Test {@link MappingProcessorUtils#getNonNullMappedValue(Path, List)} with {@code synonymPath}, {@code mappings}.
-   * <ul>
-   *   <li>When valueOf {@code Path}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link MappingProcessorUtils#getNonNullMappedValue(Path, List)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"Optional MappingProcessorUtils.getNonNullMappedValue(Path, List)"})
-  public void testGetNonNullMappedValueWithSynonymPathMappings_whenValueOfPath() {
-    // Arrange
-    Path synonymPath = Path.valueOf("Path");
-
-    ArrayList<Mapping> mappings = new ArrayList<>();
-    mappings.add(new Mapping(ScopeReferenceHelper.EMPTY_SCOPE, "Xml Value", ScopeReferenceHelper.EMPTY_SCOPE,
-        "Rosetta Value", "An error occurred", true, true, true));
-
-    // Act
-    Optional<String> actualNonNullMappedValue = MappingProcessorUtils.getNonNullMappedValue(synonymPath, mappings);
-
-    // Assert
-    assertFalse(actualNonNullMappedValue.isPresent());
-  }
-
-  /**
-   * Test {@link MappingProcessorUtils#getNonNullMapping(List, RosettaPath, Path, String[])} with {@code mappings}, {@code modelPathStartsWith}, {@code synonymPathStartsWith}, {@code synonymPathEndsWith}.
-   * <p>
-   * Method under test: {@link MappingProcessorUtils#getNonNullMapping(List, RosettaPath, Path, String[])}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"Optional MappingProcessorUtils.getNonNullMapping(List, RosettaPath, Path, String[])"})
-  public void testGetNonNullMappingWithMappingsModelPathStartsWithSynonymPathStartsWithSynonymPathEndsWith() {
+  @DisplayName(
+      "Test getNonNullMapping(List, RosettaPath, Path, String[]) with 'mappings', 'modelPathStartsWith', 'synonymPathStartsWith', 'synonymPathEndsWith'")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "Optional MappingProcessorUtils.getNonNullMapping(List, RosettaPath, Path, String[])"
+  })
+  void
+      testGetNonNullMappingWithMappingsModelPathStartsWithSynonymPathStartsWithSynonymPathEndsWith() {
     // Arrange and Act
-    Optional<Mapping> actualNonNullMapping = MappingProcessorUtils.getNonNullMapping(new ArrayList<>(),
-        mock(RosettaPath.class), ScopeReferenceHelper.EMPTY_SCOPE, "Synonym Path Ends With");
+    Optional<Mapping> actualNonNullMapping =
+        MappingProcessorUtils.getNonNullMapping(
+            new ArrayList<>(),
+            mock(RosettaPath.class),
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            "Synonym Path Ends With");
 
     // Assert
     assertFalse(actualNonNullMapping.isPresent());
   }
 
   /**
-   * Test {@link MappingProcessorUtils#getNonNullMapping(List, RosettaPath, Path, String[])} with {@code mappings}, {@code modelPathStartsWith}, {@code synonymPathStartsWith}, {@code synonymPathEndsWith}.
-   * <p>
-   * Method under test: {@link MappingProcessorUtils#getNonNullMapping(List, RosettaPath, Path, String[])}
+   * Test {@link MappingProcessorUtils#getNonNullMapping(List, RosettaPath, Path, String[])} with
+   * {@code mappings}, {@code modelPathStartsWith}, {@code synonymPathStartsWith}, {@code
+   * synonymPathEndsWith}.
+   *
+   * <p>Method under test: {@link MappingProcessorUtils#getNonNullMapping(List, RosettaPath, Path,
+   * String[])}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"Optional MappingProcessorUtils.getNonNullMapping(List, RosettaPath, Path, String[])"})
-  public void testGetNonNullMappingWithMappingsModelPathStartsWithSynonymPathStartsWithSynonymPathEndsWith2() {
+  @DisplayName(
+      "Test getNonNullMapping(List, RosettaPath, Path, String[]) with 'mappings', 'modelPathStartsWith', 'synonymPathStartsWith', 'synonymPathEndsWith'")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "Optional MappingProcessorUtils.getNonNullMapping(List, RosettaPath, Path, String[])"
+  })
+  void
+      testGetNonNullMappingWithMappingsModelPathStartsWithSynonymPathStartsWithSynonymPathEndsWith2() {
     // Arrange
+    Path xmlPath = ScopeReferenceHelper.EMPTY_SCOPE;
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    Mapping mapping =
+        new Mapping(
+            xmlPath,
+            null,
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            "An error occurred",
+            true,
+            true,
+            true);
+
     ArrayList<Mapping> mappings = new ArrayList<>();
-    mappings.add(new Mapping(ScopeReferenceHelper.EMPTY_SCOPE, "Xml Value", ScopeReferenceHelper.EMPTY_SCOPE,
-        "Rosetta Value", "An error occurred", true, true, true));
-
-    // Act
-    Optional<Mapping> actualNonNullMapping = MappingProcessorUtils.getNonNullMapping(mappings, mock(RosettaPath.class),
-        ScopeReferenceHelper.EMPTY_SCOPE, "Synonym Path Ends With");
-
-    // Assert
-    assertFalse(actualNonNullMapping.isPresent());
-  }
-
-  /**
-   * Test {@link MappingProcessorUtils#getNonNullMapping(List, RosettaPath, Path, String[])} with {@code mappings}, {@code modelPathStartsWith}, {@code synonymPathStartsWith}, {@code synonymPathEndsWith}.
-   * <p>
-   * Method under test: {@link MappingProcessorUtils#getNonNullMapping(List, RosettaPath, Path, String[])}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"Optional MappingProcessorUtils.getNonNullMapping(List, RosettaPath, Path, String[])"})
-  public void testGetNonNullMappingWithMappingsModelPathStartsWithSynonymPathStartsWithSynonymPathEndsWith3() {
-    // Arrange
-    ArrayList<Mapping> mappings = new ArrayList<>();
-    mappings.add(new Mapping(ScopeReferenceHelper.EMPTY_SCOPE, "Xml Value", ScopeReferenceHelper.EMPTY_SCOPE,
-        "Rosetta Value", "An error occurred", true, true, true));
-    mappings.add(new Mapping(ScopeReferenceHelper.EMPTY_SCOPE, "Xml Value", ScopeReferenceHelper.EMPTY_SCOPE,
-        "Rosetta Value", "An error occurred", true, true, true));
-
-    // Act
-    Optional<Mapping> actualNonNullMapping = MappingProcessorUtils.getNonNullMapping(mappings, mock(RosettaPath.class),
-        ScopeReferenceHelper.EMPTY_SCOPE, "Synonym Path Ends With");
-
-    // Assert
-    assertFalse(actualNonNullMapping.isPresent());
-  }
-
-  /**
-   * Test {@link MappingProcessorUtils#getNonNullMapping(List, RosettaPath, Path, String[])} with {@code mappings}, {@code modelPathStartsWith}, {@code synonymPathStartsWith}, {@code synonymPathEndsWith}.
-   * <p>
-   * Method under test: {@link MappingProcessorUtils#getNonNullMapping(List, RosettaPath, Path, String[])}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"Optional MappingProcessorUtils.getNonNullMapping(List, RosettaPath, Path, String[])"})
-  public void testGetNonNullMappingWithMappingsModelPathStartsWithSynonymPathStartsWithSynonymPathEndsWith4() {
-    // Arrange
-    ArrayList<Mapping> mappings = new ArrayList<>();
-    mappings.add(new Mapping(new Path(), "Xml Value", ScopeReferenceHelper.EMPTY_SCOPE, "Rosetta Value",
-        "An error occurred", true, true, true));
-
-    // Act
-    Optional<Mapping> actualNonNullMapping = MappingProcessorUtils.getNonNullMapping(mappings, mock(RosettaPath.class),
-        ScopeReferenceHelper.EMPTY_SCOPE, "Synonym Path Ends With");
-
-    // Assert
-    assertFalse(actualNonNullMapping.isPresent());
-  }
-
-  /**
-   * Test {@link MappingProcessorUtils#getNonNullMapping(List, RosettaPath, Path, String[])} with {@code mappings}, {@code modelPathStartsWith}, {@code synonymPathStartsWith}, {@code synonymPathEndsWith}.
-   * <p>
-   * Method under test: {@link MappingProcessorUtils#getNonNullMapping(List, RosettaPath, Path, String[])}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"Optional MappingProcessorUtils.getNonNullMapping(List, RosettaPath, Path, String[])"})
-  public void testGetNonNullMappingWithMappingsModelPathStartsWithSynonymPathStartsWithSynonymPathEndsWith5() {
-    // Arrange
-    ArrayList<Mapping> mappings = new ArrayList<>();
-    mappings.add(new Mapping(ScopeReferenceHelper.EMPTY_SCOPE, "Xml Value", ScopeReferenceHelper.EMPTY_SCOPE,
-        "Rosetta Value", "An error occurred", true, true, true));
-    RosettaPath modelPathStartsWith = mock(RosettaPath.class);
-
-    // Act
-    Optional<Mapping> actualNonNullMapping = MappingProcessorUtils.getNonNullMapping(mappings, modelPathStartsWith,
-        new Path(), "Synonym Path Ends With");
-
-    // Assert
-    assertFalse(actualNonNullMapping.isPresent());
-  }
-
-  /**
-   * Test {@link MappingProcessorUtils#getNonNullMapping(List, RosettaPath, Path, String[])} with {@code mappings}, {@code modelPathStartsWith}, {@code synonymPathStartsWith}, {@code synonymPathEndsWith}.
-   * <p>
-   * Method under test: {@link MappingProcessorUtils#getNonNullMapping(List, RosettaPath, Path, String[])}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"Optional MappingProcessorUtils.getNonNullMapping(List, RosettaPath, Path, String[])"})
-  public void testGetNonNullMappingWithMappingsModelPathStartsWithSynonymPathStartsWithSynonymPathEndsWith6() {
-    // Arrange
-    ArrayList<Mapping> mappings = new ArrayList<>();
-    mappings.add(new Mapping(ScopeReferenceHelper.EMPTY_SCOPE, "Xml Value", ScopeReferenceHelper.EMPTY_SCOPE,
-        "Rosetta Value", "An error occurred", true, true, true));
-    RosettaPath modelPathStartsWith = mock(RosettaPath.class);
-
-    // Act
-    Optional<Mapping> actualNonNullMapping = MappingProcessorUtils.getNonNullMapping(mappings, modelPathStartsWith,
-        Path.valueOf("Path"), "Synonym Path Ends With");
-
-    // Assert
-    assertFalse(actualNonNullMapping.isPresent());
-  }
-
-  /**
-   * Test {@link MappingProcessorUtils#getNonNullMapping(List, RosettaPath, Path, String[])} with {@code mappings}, {@code modelPathStartsWith}, {@code synonymPathStartsWith}, {@code synonymPathEndsWith}.
-   * <p>
-   * Method under test: {@link MappingProcessorUtils#getNonNullMapping(List, RosettaPath, Path, String[])}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"Optional MappingProcessorUtils.getNonNullMapping(List, RosettaPath, Path, String[])"})
-  public void testGetNonNullMappingWithMappingsModelPathStartsWithSynonymPathStartsWithSynonymPathEndsWith7() {
-    // Arrange
-    ArrayList<Mapping> mappings = new ArrayList<>();
-    mappings.add(new Mapping(ScopeReferenceHelper.EMPTY_SCOPE, "Xml Value", ScopeReferenceHelper.EMPTY_SCOPE,
-        "Rosetta Value", "An error occurred", true, true, true));
-    RosettaPath modelPathStartsWith = mock(RosettaPath.class);
-    when(modelPathStartsWith.allElements()).thenReturn(new LinkedList<>());
-
-    // Act
-    Optional<Mapping> actualNonNullMapping = MappingProcessorUtils.getNonNullMapping(mappings, modelPathStartsWith,
-        ScopeReferenceHelper.EMPTY_SCOPE, "emptyScope");
-
-    // Assert
-    verify(modelPathStartsWith).allElements();
-    assertFalse(actualNonNullMapping.isPresent());
-  }
-
-  /**
-   * Test {@link MappingProcessorUtils#getNonNullMapping(List, RosettaPath, Path, String[])} with {@code mappings}, {@code modelPathStartsWith}, {@code synonymPathStartsWith}, {@code synonymPathEndsWith}.
-   * <p>
-   * Method under test: {@link MappingProcessorUtils#getNonNullMapping(List, RosettaPath, Path, String[])}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"Optional MappingProcessorUtils.getNonNullMapping(List, RosettaPath, Path, String[])"})
-  public void testGetNonNullMappingWithMappingsModelPathStartsWithSynonymPathStartsWithSynonymPathEndsWith8() {
-    // Arrange
-    ArrayList<Mapping> mappings = new ArrayList<>();
-    Mapping mapping = new Mapping(ScopeReferenceHelper.EMPTY_SCOPE, "Xml Value", new Path(), "Rosetta Value",
-        "An error occurred", true, true, true);
-
     mappings.add(mapping);
     RosettaPath modelPathStartsWith = mock(RosettaPath.class);
+
+    Path synonymPathStartsWith = ScopeReferenceHelper.EMPTY_SCOPE;
+    synonymPathStartsWith.addElement(PathElement.parse("foo", true));
+    synonymPathStartsWith.addElement(PathElement.parse("foo", true));
+    synonymPathStartsWith.addElement(PathElement.parse("foo", true));
+    synonymPathStartsWith.addElement(PathElement.parse("foo", true));
+    synonymPathStartsWith.addElement(PathElement.parse("foo", true));
+    synonymPathStartsWith.addElement(PathElement.parse("foo", true));
+    synonymPathStartsWith.addElement(PathElement.parse("foo", true));
+    synonymPathStartsWith.addElement(PathElement.parse("foo", true));
+    synonymPathStartsWith.addElement(PathElement.parse("foo", true));
+    synonymPathStartsWith.addElement(PathElement.parse("foo", true));
+    synonymPathStartsWith.addElement(PathElement.parse("foo", true));
+    synonymPathStartsWith.addElement(PathElement.parse("foo", true));
+    synonymPathStartsWith.addElement(PathElement.parse("foo", true));
+    synonymPathStartsWith.addElement(PathElement.parse("foo", true));
+    synonymPathStartsWith.addElement(PathElement.parse("foo", true));
+    synonymPathStartsWith.addElement(PathElement.parse("foo", true));
+    synonymPathStartsWith.addElement(PathElement.parse("foo", true));
+    synonymPathStartsWith.addElement(PathElement.parse("foo", true));
+
+    // Act
+    Optional<Mapping> actualNonNullMapping =
+        MappingProcessorUtils.getNonNullMapping(
+            mappings, modelPathStartsWith, synonymPathStartsWith, "Synonym Path Ends With");
+
+    // Assert
+    assertFalse(actualNonNullMapping.isPresent());
+  }
+
+  /**
+   * Test {@link MappingProcessorUtils#getNonNullMapping(List, RosettaPath, Path, String[])} with
+   * {@code mappings}, {@code modelPathStartsWith}, {@code synonymPathStartsWith}, {@code
+   * synonymPathEndsWith}.
+   *
+   * <p>Method under test: {@link MappingProcessorUtils#getNonNullMapping(List, RosettaPath, Path,
+   * String[])}
+   */
+  @Test
+  @DisplayName(
+      "Test getNonNullMapping(List, RosettaPath, Path, String[]) with 'mappings', 'modelPathStartsWith', 'synonymPathStartsWith', 'synonymPathEndsWith'")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "Optional MappingProcessorUtils.getNonNullMapping(List, RosettaPath, Path, String[])"
+  })
+  void
+      testGetNonNullMappingWithMappingsModelPathStartsWithSynonymPathStartsWithSynonymPathEndsWith3() {
+    // Arrange
+    Path xmlPath = new Path();
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    Mapping mapping =
+        new Mapping(
+            xmlPath,
+            null,
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            "An error occurred",
+            true,
+            true,
+            true);
+
+    ArrayList<Mapping> mappings = new ArrayList<>();
+    mappings.add(mapping);
+    RosettaPath modelPathStartsWith = mock(RosettaPath.class);
+
+    Path synonymPathStartsWith = ScopeReferenceHelper.EMPTY_SCOPE;
+    synonymPathStartsWith.addElement(PathElement.parse("foo", true));
+    synonymPathStartsWith.addElement(PathElement.parse("foo", true));
+    synonymPathStartsWith.addElement(PathElement.parse("foo", true));
+    synonymPathStartsWith.addElement(PathElement.parse("foo", true));
+    synonymPathStartsWith.addElement(PathElement.parse("foo", true));
+    synonymPathStartsWith.addElement(PathElement.parse("foo", true));
+    synonymPathStartsWith.addElement(PathElement.parse("foo", true));
+    synonymPathStartsWith.addElement(PathElement.parse("foo", true));
+    synonymPathStartsWith.addElement(PathElement.parse("foo", true));
+    synonymPathStartsWith.addElement(PathElement.parse("foo", true));
+    synonymPathStartsWith.addElement(PathElement.parse("foo", true));
+    synonymPathStartsWith.addElement(PathElement.parse("foo", true));
+    synonymPathStartsWith.addElement(PathElement.parse("foo", true));
+    synonymPathStartsWith.addElement(PathElement.parse("foo", true));
+    synonymPathStartsWith.addElement(PathElement.parse("foo", true));
+    synonymPathStartsWith.addElement(PathElement.parse("foo", true));
+    synonymPathStartsWith.addElement(PathElement.parse("foo", true));
+    synonymPathStartsWith.addElement(PathElement.parse("foo", true));
+
+    // Act
+    Optional<Mapping> actualNonNullMapping =
+        MappingProcessorUtils.getNonNullMapping(
+            mappings, modelPathStartsWith, synonymPathStartsWith, "Synonym Path Ends With");
+
+    // Assert
+    assertFalse(actualNonNullMapping.isPresent());
+  }
+
+  /**
+   * Test {@link MappingProcessorUtils#getNonNullMapping(List, RosettaPath, Path, String[])} with
+   * {@code mappings}, {@code modelPathStartsWith}, {@code synonymPathStartsWith}, {@code
+   * synonymPathEndsWith}.
+   *
+   * <p>Method under test: {@link MappingProcessorUtils#getNonNullMapping(List, RosettaPath, Path,
+   * String[])}
+   */
+  @Test
+  @DisplayName(
+      "Test getNonNullMapping(List, RosettaPath, Path, String[]) with 'mappings', 'modelPathStartsWith', 'synonymPathStartsWith', 'synonymPathEndsWith'")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "Optional MappingProcessorUtils.getNonNullMapping(List, RosettaPath, Path, String[])"
+  })
+  void
+      testGetNonNullMappingWithMappingsModelPathStartsWithSynonymPathStartsWithSynonymPathEndsWith4() {
+    // Arrange
+    ArrayList<Mapping> mappings = new ArrayList<>();
+    Mapping mapping =
+        new Mapping(
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            "An error occurred",
+            true,
+            true,
+            true);
+    mappings.add(mapping);
+    Mapping mapping2 =
+        new Mapping(
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            "An error occurred",
+            true,
+            true,
+            true);
+    mappings.add(mapping2);
+
+    // Act
+    Optional<Mapping> actualNonNullMapping =
+        MappingProcessorUtils.getNonNullMapping(
+            mappings,
+            mock(RosettaPath.class),
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            "Synonym Path Ends With");
+
+    // Assert
+    assertFalse(actualNonNullMapping.isPresent());
+  }
+
+  /**
+   * Test {@link MappingProcessorUtils#getNonNullMapping(List, RosettaPath, Path, String[])} with
+   * {@code mappings}, {@code modelPathStartsWith}, {@code synonymPathStartsWith}, {@code
+   * synonymPathEndsWith}.
+   *
+   * <p>Method under test: {@link MappingProcessorUtils#getNonNullMapping(List, RosettaPath, Path,
+   * String[])}
+   */
+  @Test
+  @DisplayName(
+      "Test getNonNullMapping(List, RosettaPath, Path, String[]) with 'mappings', 'modelPathStartsWith', 'synonymPathStartsWith', 'synonymPathEndsWith'")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "Optional MappingProcessorUtils.getNonNullMapping(List, RosettaPath, Path, String[])"
+  })
+  void
+      testGetNonNullMappingWithMappingsModelPathStartsWithSynonymPathStartsWithSynonymPathEndsWith5() {
+    // Arrange
+    ArrayList<Mapping> mappings = new ArrayList<>();
+    Mapping mapping =
+        new Mapping(
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            "An error occurred",
+            true,
+            true,
+            true);
+    mappings.add(mapping);
+    Mapping mapping2 =
+        new Mapping(
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            "An error occurred",
+            true,
+            true,
+            true);
+    mappings.add(mapping2);
+    RosettaPath modelPathStartsWith = mock(RosettaPath.class);
+
+    // Act
+    Optional<Mapping> actualNonNullMapping =
+        MappingProcessorUtils.getNonNullMapping(
+            mappings, modelPathStartsWith, new Path(), "Synonym Path Ends With");
+
+    // Assert
+    assertFalse(actualNonNullMapping.isPresent());
+  }
+
+  /**
+   * Test {@link MappingProcessorUtils#getNonNullMapping(List, RosettaPath, Path, String[])} with
+   * {@code mappings}, {@code modelPathStartsWith}, {@code synonymPathStartsWith}, {@code
+   * synonymPathEndsWith}.
+   *
+   * <p>Method under test: {@link MappingProcessorUtils#getNonNullMapping(List, RosettaPath, Path,
+   * String[])}
+   */
+  @Test
+  @DisplayName(
+      "Test getNonNullMapping(List, RosettaPath, Path, String[]) with 'mappings', 'modelPathStartsWith', 'synonymPathStartsWith', 'synonymPathEndsWith'")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "Optional MappingProcessorUtils.getNonNullMapping(List, RosettaPath, Path, String[])"
+  })
+  void
+      testGetNonNullMappingWithMappingsModelPathStartsWithSynonymPathStartsWithSynonymPathEndsWith6() {
+    // Arrange
+    ArrayList<Mapping> mappings = new ArrayList<>();
+    Mapping mapping =
+        new Mapping(
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            "An error occurred",
+            true,
+            true,
+            true);
+    mappings.add(mapping);
+    Mapping mapping2 =
+        new Mapping(
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            "An error occurred",
+            true,
+            true,
+            true);
+    mappings.add(mapping2);
+
+    // Act
+    Optional<Mapping> actualNonNullMapping =
+        MappingProcessorUtils.getNonNullMapping(
+            mappings, mock(RosettaPath.class), Path.valueOf("Path"), "Synonym Path Ends With");
+
+    // Assert
+    assertFalse(actualNonNullMapping.isPresent());
+  }
+
+  /**
+   * Test {@link MappingProcessorUtils#getNonNullMapping(List, RosettaPath, Path, String[])} with
+   * {@code mappings}, {@code modelPathStartsWith}, {@code synonymPathStartsWith}, {@code
+   * synonymPathEndsWith}.
+   *
+   * <p>Method under test: {@link MappingProcessorUtils#getNonNullMapping(List, RosettaPath, Path,
+   * String[])}
+   */
+  @Test
+  @DisplayName(
+      "Test getNonNullMapping(List, RosettaPath, Path, String[]) with 'mappings', 'modelPathStartsWith', 'synonymPathStartsWith', 'synonymPathEndsWith'")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "Optional MappingProcessorUtils.getNonNullMapping(List, RosettaPath, Path, String[])"
+  })
+  void
+      testGetNonNullMappingWithMappingsModelPathStartsWithSynonymPathStartsWithSynonymPathEndsWith7() {
+    // Arrange
+    ArrayList<Mapping> mappings = new ArrayList<>();
+    Mapping mapping =
+        new Mapping(
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            "An error occurred",
+            true,
+            true,
+            true);
+    mappings.add(mapping);
+    Mapping mapping2 =
+        new Mapping(
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            "An error occurred",
+            true,
+            true,
+            true);
+    mappings.add(mapping2);
+
+    RosettaPath modelPathStartsWith = mock(RosettaPath.class);
     when(modelPathStartsWith.allElements()).thenReturn(new LinkedList<>());
 
     // Act
-    Optional<Mapping> actualNonNullMapping = MappingProcessorUtils.getNonNullMapping(mappings, modelPathStartsWith,
-        ScopeReferenceHelper.EMPTY_SCOPE, "emptyScope");
+    Optional<Mapping> actualNonNullMapping =
+        MappingProcessorUtils.getNonNullMapping(
+            mappings, modelPathStartsWith, ScopeReferenceHelper.EMPTY_SCOPE);
+
+    // Assert
+    verify(modelPathStartsWith, atLeast(1)).allElements();
+    assertFalse(actualNonNullMapping.isPresent());
+  }
+
+  /**
+   * Test {@link MappingProcessorUtils#getNonNullMapping(List, RosettaPath, Path, String[])} with
+   * {@code mappings}, {@code modelPathStartsWith}, {@code synonymPathStartsWith}, {@code
+   * synonymPathEndsWith}.
+   *
+   * <p>Method under test: {@link MappingProcessorUtils#getNonNullMapping(List, RosettaPath, Path,
+   * String[])}
+   */
+  @Test
+  @DisplayName(
+      "Test getNonNullMapping(List, RosettaPath, Path, String[]) with 'mappings', 'modelPathStartsWith', 'synonymPathStartsWith', 'synonymPathEndsWith'")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "Optional MappingProcessorUtils.getNonNullMapping(List, RosettaPath, Path, String[])"
+  })
+  void
+      testGetNonNullMappingWithMappingsModelPathStartsWithSynonymPathStartsWithSynonymPathEndsWith8() {
+    // Arrange
+    ArrayList<Mapping> mappings = new ArrayList<>();
+    Mapping mapping =
+        new Mapping(
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            new Path(),
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            "An error occurred",
+            true,
+            true,
+            true);
+    mappings.add(mapping);
+    Mapping mapping2 =
+        new Mapping(
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            "An error occurred",
+            true,
+            true,
+            true);
+    mappings.add(mapping2);
+
+    RosettaPath modelPathStartsWith = mock(RosettaPath.class);
+    when(modelPathStartsWith.allElements()).thenReturn(new LinkedList<>());
+
+    // Act
+    Optional<Mapping> actualNonNullMapping =
+        MappingProcessorUtils.getNonNullMapping(
+            mappings, modelPathStartsWith, ScopeReferenceHelper.EMPTY_SCOPE);
 
     // Assert
     verify(modelPathStartsWith).allElements();
@@ -2942,207 +4293,406 @@ public class MappingProcessorUtilsDiffblueTest {
   }
 
   /**
-   * Test {@link MappingProcessorUtils#getNonNullMapping(List, RosettaPath, Path, String[])} with {@code mappings}, {@code modelPathStartsWith}, {@code synonymPathStartsWith}, {@code synonymPathEndsWith}.
-   * <p>
-   * Method under test: {@link MappingProcessorUtils#getNonNullMapping(List, RosettaPath, Path, String[])}
+   * Test {@link MappingProcessorUtils#getNonNullMapping(List, RosettaPath, Path, String[])} with
+   * {@code mappings}, {@code modelPathStartsWith}, {@code synonymPathStartsWith}, {@code
+   * synonymPathEndsWith}.
+   *
+   * <p>Method under test: {@link MappingProcessorUtils#getNonNullMapping(List, RosettaPath, Path,
+   * String[])}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"Optional MappingProcessorUtils.getNonNullMapping(List, RosettaPath, Path, String[])"})
-  public void testGetNonNullMappingWithMappingsModelPathStartsWithSynonymPathStartsWithSynonymPathEndsWith9() {
+  @DisplayName(
+      "Test getNonNullMapping(List, RosettaPath, Path, String[]) with 'mappings', 'modelPathStartsWith', 'synonymPathStartsWith', 'synonymPathEndsWith'")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "Optional MappingProcessorUtils.getNonNullMapping(List, RosettaPath, Path, String[])"
+  })
+  void
+      testGetNonNullMappingWithMappingsModelPathStartsWithSynonymPathStartsWithSynonymPathEndsWith9() {
     // Arrange
     ArrayList<Mapping> mappings = new ArrayList<>();
-    mappings.add(new Mapping(ScopeReferenceHelper.EMPTY_SCOPE, "Xml Value", ScopeReferenceHelper.EMPTY_SCOPE,
-        "Rosetta Value", "An error occurred", true, true, true));
+    Mapping mapping =
+        new Mapping(
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            "An error occurred",
+            true,
+            true,
+            true);
+    mappings.add(mapping);
+    Mapping mapping2 =
+        new Mapping(
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            "An error occurred",
+            true,
+            true,
+            true);
+    mappings.add(mapping2);
 
     // Act
-    Optional<Mapping> actualNonNullMapping = MappingProcessorUtils.getNonNullMapping(mappings, mock(RosettaPath.class),
-        ScopeReferenceHelper.EMPTY_SCOPE, "Synonym Path Ends With", "java.lang.Boolean");
+    Optional<Mapping> actualNonNullMapping =
+        MappingProcessorUtils.getNonNullMapping(
+            mappings,
+            mock(RosettaPath.class),
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            "Synonym Path Ends With",
+            "java.lang.Boolean");
 
     // Assert
     assertFalse(actualNonNullMapping.isPresent());
   }
 
   /**
-   * Test {@link MappingProcessorUtils#getNonNullMapping(List, RosettaPath, Path, String[])} with {@code mappings}, {@code modelPathStartsWith}, {@code synonymPathStartsWith}, {@code synonymPathEndsWith}.
-   * <p>
-   * Method under test: {@link MappingProcessorUtils#getNonNullMapping(List, RosettaPath, Path, String[])}
+   * Test {@link MappingProcessorUtils#getNonNullMapping(List, RosettaPath, Path, String[])} with
+   * {@code mappings}, {@code modelPathStartsWith}, {@code synonymPathStartsWith}, {@code
+   * synonymPathEndsWith}.
+   *
+   * <p>Method under test: {@link MappingProcessorUtils#getNonNullMapping(List, RosettaPath, Path,
+   * String[])}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"Optional MappingProcessorUtils.getNonNullMapping(List, RosettaPath, Path, String[])"})
-  public void testGetNonNullMappingWithMappingsModelPathStartsWithSynonymPathStartsWithSynonymPathEndsWith10() {
+  @DisplayName(
+      "Test getNonNullMapping(List, RosettaPath, Path, String[]) with 'mappings', 'modelPathStartsWith', 'synonymPathStartsWith', 'synonymPathEndsWith'")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "Optional MappingProcessorUtils.getNonNullMapping(List, RosettaPath, Path, String[])"
+  })
+  void
+      testGetNonNullMappingWithMappingsModelPathStartsWithSynonymPathStartsWithSynonymPathEndsWith10() {
     // Arrange
     ArrayList<Mapping> mappings = new ArrayList<>();
-    mappings.add(new Mapping(ScopeReferenceHelper.EMPTY_SCOPE, null, new Path(), "Rosetta Value", "An error occurred",
-        true, true, true));
+    Mapping mapping =
+        new Mapping(
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            null,
+            new Path(),
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            "An error occurred",
+            true,
+            true,
+            true);
+    mappings.add(mapping);
+    Mapping mapping2 =
+        new Mapping(
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            "An error occurred",
+            true,
+            true,
+            true);
+    mappings.add(mapping2);
+
     RosettaPath modelPathStartsWith = mock(RosettaPath.class);
     when(modelPathStartsWith.allElements()).thenReturn(new LinkedList<>());
 
     // Act
-    Optional<Mapping> actualNonNullMapping = MappingProcessorUtils.getNonNullMapping(mappings, modelPathStartsWith,
-        ScopeReferenceHelper.EMPTY_SCOPE, "emptyScope");
+    Optional<Mapping> actualNonNullMapping =
+        MappingProcessorUtils.getNonNullMapping(
+            mappings, modelPathStartsWith, ScopeReferenceHelper.EMPTY_SCOPE);
 
     // Assert
-    verify(modelPathStartsWith).allElements();
+    verify(modelPathStartsWith, atLeast(1)).allElements();
     assertFalse(actualNonNullMapping.isPresent());
   }
 
   /**
-   * Test {@link MappingProcessorUtils#getNonNullMapping(List, Path, String[])} with {@code mappings}, {@code startsWith}, {@code endsWith}.
-   * <p>
-   * Method under test: {@link MappingProcessorUtils#getNonNullMapping(List, Path, String[])}
+   * Test {@link MappingProcessorUtils#getNonNullMapping(List, Path, String[])} with {@code
+   * mappings}, {@code startsWith}, {@code endsWith}.
+   *
+   * <p>Method under test: {@link MappingProcessorUtils#getNonNullMapping(List, Path, String[])}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @DisplayName(
+      "Test getNonNullMapping(List, Path, String[]) with 'mappings', 'startsWith', 'endsWith'")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"Optional MappingProcessorUtils.getNonNullMapping(List, Path, String[])"})
-  public void testGetNonNullMappingWithMappingsStartsWithEndsWith() {
+  void testGetNonNullMappingWithMappingsStartsWithEndsWith() {
     // Arrange
+    Path xmlPath = ScopeReferenceHelper.EMPTY_SCOPE;
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    Mapping mapping =
+        new Mapping(
+            xmlPath,
+            null,
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            "An error occurred",
+            true,
+            true,
+            true);
+
     ArrayList<Mapping> mappings = new ArrayList<>();
-    mappings.add(new Mapping(ScopeReferenceHelper.EMPTY_SCOPE, "Xml Value", ScopeReferenceHelper.EMPTY_SCOPE,
-        "Rosetta Value", "An error occurred", true, true, true));
-
-    // Act
-    Optional<Mapping> actualNonNullMapping = MappingProcessorUtils.getNonNullMapping(mappings,
-        ScopeReferenceHelper.EMPTY_SCOPE, "Ends With");
-
-    // Assert
-    assertFalse(actualNonNullMapping.isPresent());
-  }
-
-  /**
-   * Test {@link MappingProcessorUtils#getNonNullMapping(List, Path, String[])} with {@code mappings}, {@code startsWith}, {@code endsWith}.
-   * <p>
-   * Method under test: {@link MappingProcessorUtils#getNonNullMapping(List, Path, String[])}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"Optional MappingProcessorUtils.getNonNullMapping(List, Path, String[])"})
-  public void testGetNonNullMappingWithMappingsStartsWithEndsWith2() {
-    // Arrange
-    ArrayList<Mapping> mappings = new ArrayList<>();
-    mappings.add(new Mapping(ScopeReferenceHelper.EMPTY_SCOPE, "Xml Value", ScopeReferenceHelper.EMPTY_SCOPE,
-        "Rosetta Value", "An error occurred", true, true, true));
-    mappings.add(new Mapping(ScopeReferenceHelper.EMPTY_SCOPE, "Xml Value", ScopeReferenceHelper.EMPTY_SCOPE,
-        "Rosetta Value", "An error occurred", true, true, true));
-
-    // Act
-    Optional<Mapping> actualNonNullMapping = MappingProcessorUtils.getNonNullMapping(mappings,
-        ScopeReferenceHelper.EMPTY_SCOPE, "Ends With");
-
-    // Assert
-    assertFalse(actualNonNullMapping.isPresent());
-  }
-
-  /**
-   * Test {@link MappingProcessorUtils#getNonNullMapping(List, Path, String[])} with {@code mappings}, {@code startsWith}, {@code endsWith}.
-   * <p>
-   * Method under test: {@link MappingProcessorUtils#getNonNullMapping(List, Path, String[])}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"Optional MappingProcessorUtils.getNonNullMapping(List, Path, String[])"})
-  public void testGetNonNullMappingWithMappingsStartsWithEndsWith3() {
-    // Arrange
-    ArrayList<Mapping> mappings = new ArrayList<>();
-    mappings.add(new Mapping(new Path(), "Xml Value", ScopeReferenceHelper.EMPTY_SCOPE, "Rosetta Value",
-        "An error occurred", true, true, true));
-
-    // Act
-    Optional<Mapping> actualNonNullMapping = MappingProcessorUtils.getNonNullMapping(mappings,
-        ScopeReferenceHelper.EMPTY_SCOPE, "Ends With");
-
-    // Assert
-    assertFalse(actualNonNullMapping.isPresent());
-  }
-
-  /**
-   * Test {@link MappingProcessorUtils#getNonNullMapping(List, Path, String[])} with {@code mappings}, {@code startsWith}, {@code endsWith}.
-   * <p>
-   * Method under test: {@link MappingProcessorUtils#getNonNullMapping(List, Path, String[])}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"Optional MappingProcessorUtils.getNonNullMapping(List, Path, String[])"})
-  public void testGetNonNullMappingWithMappingsStartsWithEndsWith4() {
-    // Arrange
-    ArrayList<Mapping> mappings = new ArrayList<>();
-    mappings.add(new Mapping(ScopeReferenceHelper.EMPTY_SCOPE, "Xml Value", ScopeReferenceHelper.EMPTY_SCOPE,
-        "Rosetta Value", "An error occurred", true, true, true));
-
-    // Act
-    Optional<Mapping> actualNonNullMapping = MappingProcessorUtils.getNonNullMapping(mappings,
-        ScopeReferenceHelper.EMPTY_SCOPE, "Ends With", "java.lang.Boolean");
-
-    // Assert
-    assertFalse(actualNonNullMapping.isPresent());
-  }
-
-  /**
-   * Test {@link MappingProcessorUtils#getNonNullMapping(List, Path, String[])} with {@code mappings}, {@code startsWith}, {@code endsWith}.
-   * <p>
-   * Method under test: {@link MappingProcessorUtils#getNonNullMapping(List, Path, String[])}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"Optional MappingProcessorUtils.getNonNullMapping(List, Path, String[])"})
-  public void testGetNonNullMappingWithMappingsStartsWithEndsWith5() {
-    // Arrange
-    ArrayList<Mapping> mappings = new ArrayList<>();
-    mappings.add(new Mapping(new Path(), "Xml Value", ScopeReferenceHelper.EMPTY_SCOPE, "Rosetta Value",
-        "An error occurred", true, true, true));
-
-    // Act
-    Optional<Mapping> actualNonNullMapping = MappingProcessorUtils.getNonNullMapping(mappings, new Path(), "Ends With");
-
-    // Assert
-    assertFalse(actualNonNullMapping.isPresent());
-  }
-
-  /**
-   * Test {@link MappingProcessorUtils#getNonNullMapping(List, Path, String[])} with {@code mappings}, {@code startsWith}, {@code endsWith}.
-   * <p>
-   * Method under test: {@link MappingProcessorUtils#getNonNullMapping(List, Path, String[])}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"Optional MappingProcessorUtils.getNonNullMapping(List, Path, String[])"})
-  public void testGetNonNullMappingWithMappingsStartsWithEndsWith6() {
-    // Arrange
-    ArrayList<Mapping> mappings = new ArrayList<>();
-    mappings.add(new Mapping(ScopeReferenceHelper.EMPTY_SCOPE, null, ScopeReferenceHelper.EMPTY_SCOPE, "Rosetta Value",
-        "An error occurred", true, true, true));
-
-    // Act
-    Optional<Mapping> actualNonNullMapping = MappingProcessorUtils.getNonNullMapping(mappings,
-        ScopeReferenceHelper.EMPTY_SCOPE, "emptyScope");
-
-    // Assert
-    assertFalse(actualNonNullMapping.isPresent());
-  }
-
-  /**
-   * Test {@link MappingProcessorUtils#getNonNullMapping(List, Path, String[])} with {@code mappings}, {@code startsWith}, {@code endsWith}.
-   * <ul>
-   *   <li>Then return Present.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link MappingProcessorUtils#getNonNullMapping(List, Path, String[])}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"Optional MappingProcessorUtils.getNonNullMapping(List, Path, String[])"})
-  public void testGetNonNullMappingWithMappingsStartsWithEndsWith_thenReturnPresent() {
-    // Arrange
-    ArrayList<Mapping> mappings = new ArrayList<>();
-    Mapping mapping = new Mapping(ScopeReferenceHelper.EMPTY_SCOPE, "Xml Value", ScopeReferenceHelper.EMPTY_SCOPE,
-        "Rosetta Value", "An error occurred", true, true, true);
-
     mappings.add(mapping);
 
+    Path startsWith = ScopeReferenceHelper.EMPTY_SCOPE;
+    startsWith.addElement(PathElement.parse("foo", true));
+    startsWith.addElement(PathElement.parse("foo", true));
+    startsWith.addElement(PathElement.parse("foo", true));
+    startsWith.addElement(PathElement.parse("foo", true));
+    startsWith.addElement(PathElement.parse("foo", true));
+    startsWith.addElement(PathElement.parse("foo", true));
+    startsWith.addElement(PathElement.parse("foo", true));
+    startsWith.addElement(PathElement.parse("foo", true));
+    startsWith.addElement(PathElement.parse("foo", true));
+    startsWith.addElement(PathElement.parse("foo", true));
+    startsWith.addElement(PathElement.parse("foo", true));
+    startsWith.addElement(PathElement.parse("foo", true));
+    startsWith.addElement(PathElement.parse("foo", true));
+    startsWith.addElement(PathElement.parse("foo", true));
+    startsWith.addElement(PathElement.parse("foo", true));
+    startsWith.addElement(PathElement.parse("foo", true));
+    startsWith.addElement(PathElement.parse("foo", true));
+    startsWith.addElement(PathElement.parse("foo", true));
+
     // Act
-    Optional<Mapping> actualNonNullMapping = MappingProcessorUtils.getNonNullMapping(mappings,
-        ScopeReferenceHelper.EMPTY_SCOPE, "emptyScope");
+    Optional<Mapping> actualNonNullMapping =
+        MappingProcessorUtils.getNonNullMapping(mappings, startsWith, "Ends With");
+
+    // Assert
+    assertFalse(actualNonNullMapping.isPresent());
+  }
+
+  /**
+   * Test {@link MappingProcessorUtils#getNonNullMapping(List, Path, String[])} with {@code
+   * mappings}, {@code startsWith}, {@code endsWith}.
+   *
+   * <p>Method under test: {@link MappingProcessorUtils#getNonNullMapping(List, Path, String[])}
+   */
+  @Test
+  @DisplayName(
+      "Test getNonNullMapping(List, Path, String[]) with 'mappings', 'startsWith', 'endsWith'")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
+  @MethodsUnderTest({"Optional MappingProcessorUtils.getNonNullMapping(List, Path, String[])"})
+  void testGetNonNullMappingWithMappingsStartsWithEndsWith2() {
+    // Arrange
+    Path xmlPath = new Path();
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    Mapping mapping =
+        new Mapping(
+            xmlPath,
+            null,
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            "An error occurred",
+            true,
+            true,
+            true);
+
+    ArrayList<Mapping> mappings = new ArrayList<>();
+    mappings.add(mapping);
+
+    Path startsWith = ScopeReferenceHelper.EMPTY_SCOPE;
+    startsWith.addElement(PathElement.parse("foo", true));
+    startsWith.addElement(PathElement.parse("foo", true));
+    startsWith.addElement(PathElement.parse("foo", true));
+    startsWith.addElement(PathElement.parse("foo", true));
+    startsWith.addElement(PathElement.parse("foo", true));
+    startsWith.addElement(PathElement.parse("foo", true));
+    startsWith.addElement(PathElement.parse("foo", true));
+    startsWith.addElement(PathElement.parse("foo", true));
+    startsWith.addElement(PathElement.parse("foo", true));
+    startsWith.addElement(PathElement.parse("foo", true));
+    startsWith.addElement(PathElement.parse("foo", true));
+    startsWith.addElement(PathElement.parse("foo", true));
+    startsWith.addElement(PathElement.parse("foo", true));
+    startsWith.addElement(PathElement.parse("foo", true));
+    startsWith.addElement(PathElement.parse("foo", true));
+    startsWith.addElement(PathElement.parse("foo", true));
+    startsWith.addElement(PathElement.parse("foo", true));
+    startsWith.addElement(PathElement.parse("foo", true));
+
+    // Act
+    Optional<Mapping> actualNonNullMapping =
+        MappingProcessorUtils.getNonNullMapping(mappings, startsWith, "Ends With");
+
+    // Assert
+    assertFalse(actualNonNullMapping.isPresent());
+  }
+
+  /**
+   * Test {@link MappingProcessorUtils#getNonNullMapping(List, Path, String[])} with {@code
+   * mappings}, {@code startsWith}, {@code endsWith}.
+   *
+   * <p>Method under test: {@link MappingProcessorUtils#getNonNullMapping(List, Path, String[])}
+   */
+  @Test
+  @DisplayName(
+      "Test getNonNullMapping(List, Path, String[]) with 'mappings', 'startsWith', 'endsWith'")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
+  @MethodsUnderTest({"Optional MappingProcessorUtils.getNonNullMapping(List, Path, String[])"})
+  void testGetNonNullMappingWithMappingsStartsWithEndsWith3() {
+    // Arrange
+    ArrayList<Mapping> mappings = new ArrayList<>();
+    Mapping mapping =
+        new Mapping(
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            "An error occurred",
+            true,
+            true,
+            true);
+    mappings.add(mapping);
+    Mapping mapping2 =
+        new Mapping(
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            "An error occurred",
+            true,
+            true,
+            true);
+    mappings.add(mapping2);
+
+    // Act
+    Optional<Mapping> actualNonNullMapping =
+        MappingProcessorUtils.getNonNullMapping(
+            mappings, ScopeReferenceHelper.EMPTY_SCOPE, "Ends With", "java.lang.Boolean");
+
+    // Assert
+    assertFalse(actualNonNullMapping.isPresent());
+  }
+
+  /**
+   * Test {@link MappingProcessorUtils#getNonNullMapping(List, Path, String[])} with {@code
+   * mappings}, {@code startsWith}, {@code endsWith}.
+   *
+   * <p>Method under test: {@link MappingProcessorUtils#getNonNullMapping(List, Path, String[])}
+   */
+  @Test
+  @DisplayName(
+      "Test getNonNullMapping(List, Path, String[]) with 'mappings', 'startsWith', 'endsWith'")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
+  @MethodsUnderTest({"Optional MappingProcessorUtils.getNonNullMapping(List, Path, String[])"})
+  void testGetNonNullMappingWithMappingsStartsWithEndsWith4() {
+    // Arrange
+    ArrayList<Mapping> mappings = new ArrayList<>();
+    Mapping mapping =
+        new Mapping(
+            new Path(),
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            "An error occurred",
+            true,
+            true,
+            true);
+    mappings.add(mapping);
+    Mapping mapping2 =
+        new Mapping(
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            "An error occurred",
+            true,
+            true,
+            true);
+    mappings.add(mapping2);
+
+    // Act
+    Optional<Mapping> actualNonNullMapping =
+        MappingProcessorUtils.getNonNullMapping(mappings, new Path(), "Ends With");
+
+    // Assert
+    assertFalse(actualNonNullMapping.isPresent());
+  }
+
+  /**
+   * Test {@link MappingProcessorUtils#getNonNullMapping(List, Path, String[])} with {@code
+   * mappings}, {@code startsWith}, {@code endsWith}.
+   *
+   * <ul>
+   *   <li>Then return Present.
+   * </ul>
+   *
+   * <p>Method under test: {@link MappingProcessorUtils#getNonNullMapping(List, Path, String[])}
+   */
+  @Test
+  @DisplayName(
+      "Test getNonNullMapping(List, Path, String[]) with 'mappings', 'startsWith', 'endsWith'; then return Present")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
+  @MethodsUnderTest({"Optional MappingProcessorUtils.getNonNullMapping(List, Path, String[])"})
+  void testGetNonNullMappingWithMappingsStartsWithEndsWith_thenReturnPresent() {
+    // Arrange
+    ArrayList<Mapping> mappings = new ArrayList<>();
+    Mapping mapping =
+        new Mapping(
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            "An error occurred",
+            true,
+            true,
+            true);
+    mappings.add(mapping);
+    Mapping mapping2 =
+        new Mapping(
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            "An error occurred",
+            true,
+            true,
+            true);
+    mappings.add(mapping2);
+
+    // Act
+    Optional<Mapping> actualNonNullMapping =
+        MappingProcessorUtils.getNonNullMapping(
+            mappings, ScopeReferenceHelper.EMPTY_SCOPE, new String[] {});
 
     // Assert
     assertTrue(actualNonNullMapping.isPresent());
@@ -3150,282 +4700,489 @@ public class MappingProcessorUtilsDiffblueTest {
   }
 
   /**
-   * Test {@link MappingProcessorUtils#getNonNullMapping(List, Path, String[])} with {@code mappings}, {@code startsWith}, {@code endsWith}.
+   * Test {@link MappingProcessorUtils#getNonNullMapping(List, Path, String[])} with {@code
+   * mappings}, {@code startsWith}, {@code endsWith}.
+   *
    * <ul>
-   *   <li>When {@link ArrayList#ArrayList()}.</li>
+   *   <li>Then return Present.
    * </ul>
-   * <p>
-   * Method under test: {@link MappingProcessorUtils#getNonNullMapping(List, Path, String[])}
+   *
+   * <p>Method under test: {@link MappingProcessorUtils#getNonNullMapping(List, Path, String[])}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @DisplayName(
+      "Test getNonNullMapping(List, Path, String[]) with 'mappings', 'startsWith', 'endsWith'; then return Present")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"Optional MappingProcessorUtils.getNonNullMapping(List, Path, String[])"})
-  public void testGetNonNullMappingWithMappingsStartsWithEndsWith_whenArrayList() {
-    // Arrange and Act
-    Optional<Mapping> actualNonNullMapping = MappingProcessorUtils.getNonNullMapping(new ArrayList<>(),
-        ScopeReferenceHelper.EMPTY_SCOPE, "Ends With");
+  void testGetNonNullMappingWithMappingsStartsWithEndsWith_thenReturnPresent2() {
+    // Arrange
+    ArrayList<Mapping> mappings = new ArrayList<>();
+    Mapping mapping =
+        new Mapping(
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            null,
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            "An error occurred",
+            true,
+            true,
+            true);
+    mappings.add(mapping);
+    Mapping mapping2 =
+        new Mapping(
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            "An error occurred",
+            true,
+            true,
+            true);
+    mappings.add(mapping2);
+
+    // Act
+    Optional<Mapping> actualNonNullMapping =
+        MappingProcessorUtils.getNonNullMapping(
+            mappings, ScopeReferenceHelper.EMPTY_SCOPE, new String[] {});
 
     // Assert
-    assertFalse(actualNonNullMapping.isPresent());
+    assertTrue(actualNonNullMapping.isPresent());
+    assertSame(mapping2, actualNonNullMapping.get());
   }
 
   /**
-   * Test {@link MappingProcessorUtils#getNonNullMapping(List, Path, String[])} with {@code mappings}, {@code startsWith}, {@code endsWith}.
+   * Test {@link MappingProcessorUtils#getNonNullMapping(List, Path, String[])} with {@code
+   * mappings}, {@code startsWith}, {@code endsWith}.
+   *
    * <ul>
-   *   <li>When {@link Path#Path()}.</li>
+   *   <li>When {@link ArrayList#ArrayList()}.
    * </ul>
-   * <p>
-   * Method under test: {@link MappingProcessorUtils#getNonNullMapping(List, Path, String[])}
+   *
+   * <p>Method under test: {@link MappingProcessorUtils#getNonNullMapping(List, Path, String[])}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @DisplayName(
+      "Test getNonNullMapping(List, Path, String[]) with 'mappings', 'startsWith', 'endsWith'; when ArrayList()")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"Optional MappingProcessorUtils.getNonNullMapping(List, Path, String[])"})
-  public void testGetNonNullMappingWithMappingsStartsWithEndsWith_whenPath() {
-    // Arrange
-    ArrayList<Mapping> mappings = new ArrayList<>();
-    mappings.add(new Mapping(ScopeReferenceHelper.EMPTY_SCOPE, "Xml Value", ScopeReferenceHelper.EMPTY_SCOPE,
-        "Rosetta Value", "An error occurred", true, true, true));
-
-    // Act
-    Optional<Mapping> actualNonNullMapping = MappingProcessorUtils.getNonNullMapping(mappings, new Path(), "Ends With");
+  void testGetNonNullMappingWithMappingsStartsWithEndsWith_whenArrayList() {
+    // Arrange and Act
+    Optional<Mapping> actualNonNullMapping =
+        MappingProcessorUtils.getNonNullMapping(
+            new ArrayList<>(), ScopeReferenceHelper.EMPTY_SCOPE, "Ends With");
 
     // Assert
     assertFalse(actualNonNullMapping.isPresent());
   }
 
   /**
-   * Test {@link MappingProcessorUtils#getNonNullMapping(List, Path, String[])} with {@code mappings}, {@code startsWith}, {@code endsWith}.
+   * Test {@link MappingProcessorUtils#getNonNullMapping(List, Path, String[])} with {@code
+   * mappings}, {@code startsWith}, {@code endsWith}.
+   *
    * <ul>
-   *   <li>When valueOf {@code Path}.</li>
+   *   <li>When {@link ScopeReferenceHelper#EMPTY_SCOPE}.
    * </ul>
-   * <p>
-   * Method under test: {@link MappingProcessorUtils#getNonNullMapping(List, Path, String[])}
+   *
+   * <p>Method under test: {@link MappingProcessorUtils#getNonNullMapping(List, Path, String[])}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @DisplayName(
+      "Test getNonNullMapping(List, Path, String[]) with 'mappings', 'startsWith', 'endsWith'; when EMPTY_SCOPE")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"Optional MappingProcessorUtils.getNonNullMapping(List, Path, String[])"})
-  public void testGetNonNullMappingWithMappingsStartsWithEndsWith_whenValueOfPath() {
+  void testGetNonNullMappingWithMappingsStartsWithEndsWith_whenEmpty_scope() {
     // Arrange
     ArrayList<Mapping> mappings = new ArrayList<>();
-    mappings.add(new Mapping(ScopeReferenceHelper.EMPTY_SCOPE, "Xml Value", ScopeReferenceHelper.EMPTY_SCOPE,
-        "Rosetta Value", "An error occurred", true, true, true));
+    Mapping mapping =
+        new Mapping(
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            "An error occurred",
+            true,
+            true,
+            true);
+    mappings.add(mapping);
+    Mapping mapping2 =
+        new Mapping(
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            "An error occurred",
+            true,
+            true,
+            true);
+    mappings.add(mapping2);
 
     // Act
-    Optional<Mapping> actualNonNullMapping = MappingProcessorUtils.getNonNullMapping(mappings, Path.valueOf("Path"),
-        "Ends With");
+    Optional<Mapping> actualNonNullMapping =
+        MappingProcessorUtils.getNonNullMapping(
+            mappings, ScopeReferenceHelper.EMPTY_SCOPE, "Ends With");
 
     // Assert
     assertFalse(actualNonNullMapping.isPresent());
   }
 
   /**
-   * Test {@link MappingProcessorUtils#getNonNullMapping(List, Path)} with {@code mappings}, {@code synonymPath}.
-   * <p>
-   * Method under test: {@link MappingProcessorUtils#getNonNullMapping(List, Path)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"Optional MappingProcessorUtils.getNonNullMapping(List, Path)"})
-  public void testGetNonNullMappingWithMappingsSynonymPath() {
-    // Arrange
-    ArrayList<Mapping> mappings = new ArrayList<>();
-    Mapping mapping = new Mapping(ScopeReferenceHelper.EMPTY_SCOPE, "Xml Value", ScopeReferenceHelper.EMPTY_SCOPE,
-        "Rosetta Value", "An error occurred", true, true, true);
-
-    mappings.add(mapping);
-
-    // Act
-    Optional<Mapping> actualNonNullMapping = MappingProcessorUtils.getNonNullMapping(mappings,
-        ScopeReferenceHelper.EMPTY_SCOPE);
-
-    // Assert
-    assertSame(mapping, actualNonNullMapping.get());
-  }
-
-  /**
-   * Test {@link MappingProcessorUtils#getNonNullMapping(List, Path)} with {@code mappings}, {@code synonymPath}.
-   * <p>
-   * Method under test: {@link MappingProcessorUtils#getNonNullMapping(List, Path)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"Optional MappingProcessorUtils.getNonNullMapping(List, Path)"})
-  public void testGetNonNullMappingWithMappingsSynonymPath2() {
-    // Arrange
-    ArrayList<Mapping> mappings = new ArrayList<>();
-    Mapping mapping = new Mapping(ScopeReferenceHelper.EMPTY_SCOPE, "Xml Value", ScopeReferenceHelper.EMPTY_SCOPE,
-        "Rosetta Value", "An error occurred", true, true, true);
-
-    mappings.add(mapping);
-    mappings.add(new Mapping(ScopeReferenceHelper.EMPTY_SCOPE, "Xml Value", ScopeReferenceHelper.EMPTY_SCOPE,
-        "Rosetta Value", "An error occurred", true, true, true));
-
-    // Act
-    Optional<Mapping> actualNonNullMapping = MappingProcessorUtils.getNonNullMapping(mappings,
-        ScopeReferenceHelper.EMPTY_SCOPE);
-
-    // Assert
-    assertSame(mapping, actualNonNullMapping.get());
-  }
-
-  /**
-   * Test {@link MappingProcessorUtils#getNonNullMapping(List, Path)} with {@code mappings}, {@code synonymPath}.
-   * <p>
-   * Method under test: {@link MappingProcessorUtils#getNonNullMapping(List, Path)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"Optional MappingProcessorUtils.getNonNullMapping(List, Path)"})
-  public void testGetNonNullMappingWithMappingsSynonymPath3() {
-    // Arrange
-    ArrayList<Mapping> mappings = new ArrayList<>();
-    mappings.add(new Mapping(ScopeReferenceHelper.EMPTY_SCOPE, null, ScopeReferenceHelper.EMPTY_SCOPE, "Rosetta Value",
-        "An error occurred", true, true, true));
-
-    // Act
-    Optional<Mapping> actualNonNullMapping = MappingProcessorUtils.getNonNullMapping(mappings,
-        ScopeReferenceHelper.EMPTY_SCOPE);
-
-    // Assert
-    assertFalse(actualNonNullMapping.isPresent());
-  }
-
-  /**
-   * Test {@link MappingProcessorUtils#getNonNullMapping(List, Path)} with {@code mappings}, {@code synonymPath}.
-   * <p>
-   * Method under test: {@link MappingProcessorUtils#getNonNullMapping(List, Path)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"Optional MappingProcessorUtils.getNonNullMapping(List, Path)"})
-  public void testGetNonNullMappingWithMappingsSynonymPath4() {
-    // Arrange
-    ArrayList<Mapping> mappings = new ArrayList<>();
-    mappings.add(new Mapping(ScopeReferenceHelper.EMPTY_SCOPE, null, ScopeReferenceHelper.EMPTY_SCOPE, "Rosetta Value",
-        "An error occurred", true, true, true));
-    Mapping mapping = new Mapping(ScopeReferenceHelper.EMPTY_SCOPE, "Xml Value", ScopeReferenceHelper.EMPTY_SCOPE,
-        "Rosetta Value", "An error occurred", true, true, true);
-
-    mappings.add(mapping);
-
-    // Act
-    Optional<Mapping> actualNonNullMapping = MappingProcessorUtils.getNonNullMapping(mappings,
-        ScopeReferenceHelper.EMPTY_SCOPE);
-
-    // Assert
-    assertSame(mapping, actualNonNullMapping.get());
-  }
-
-  /**
-   * Test {@link MappingProcessorUtils#getNonNullMapping(List, Path)} with {@code mappings}, {@code synonymPath}.
-   * <p>
-   * Method under test: {@link MappingProcessorUtils#getNonNullMapping(List, Path)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"Optional MappingProcessorUtils.getNonNullMapping(List, Path)"})
-  public void testGetNonNullMappingWithMappingsSynonymPath5() {
-    // Arrange
-    ArrayList<Mapping> mappings = new ArrayList<>();
-    mappings.add(new Mapping(new Path(), "Xml Value", ScopeReferenceHelper.EMPTY_SCOPE, "Rosetta Value",
-        "An error occurred", true, true, true));
-
-    // Act
-    Optional<Mapping> actualNonNullMapping = MappingProcessorUtils.getNonNullMapping(mappings,
-        ScopeReferenceHelper.EMPTY_SCOPE);
-
-    // Assert
-    assertFalse(actualNonNullMapping.isPresent());
-  }
-
-  /**
-   * Test {@link MappingProcessorUtils#getNonNullMapping(List, Path)} with {@code mappings}, {@code synonymPath}.
-   * <p>
-   * Method under test: {@link MappingProcessorUtils#getNonNullMapping(List, Path)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"Optional MappingProcessorUtils.getNonNullMapping(List, Path)"})
-  public void testGetNonNullMappingWithMappingsSynonymPath6() {
-    // Arrange
-    ArrayList<Mapping> mappings = new ArrayList<>();
-    Mapping mapping = new Mapping(new Path(), "Xml Value", ScopeReferenceHelper.EMPTY_SCOPE, "Rosetta Value",
-        "An error occurred", true, true, true);
-
-    mappings.add(mapping);
-
-    // Act
-    Optional<Mapping> actualNonNullMapping = MappingProcessorUtils.getNonNullMapping(mappings, new Path());
-
-    // Assert
-    assertSame(mapping, actualNonNullMapping.get());
-  }
-
-  /**
-   * Test {@link MappingProcessorUtils#getNonNullMapping(List, Path)} with {@code mappings}, {@code synonymPath}.
+   * Test {@link MappingProcessorUtils#getNonNullMapping(List, Path, String[])} with {@code
+   * mappings}, {@code startsWith}, {@code endsWith}.
+   *
    * <ul>
-   *   <li>When {@link ArrayList#ArrayList()}.</li>
-   *   <li>Then return not Present.</li>
+   *   <li>When {@link Path#Path()}.
    * </ul>
-   * <p>
-   * Method under test: {@link MappingProcessorUtils#getNonNullMapping(List, Path)}
+   *
+   * <p>Method under test: {@link MappingProcessorUtils#getNonNullMapping(List, Path, String[])}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @DisplayName(
+      "Test getNonNullMapping(List, Path, String[]) with 'mappings', 'startsWith', 'endsWith'; when Path()")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
+  @MethodsUnderTest({"Optional MappingProcessorUtils.getNonNullMapping(List, Path, String[])"})
+  void testGetNonNullMappingWithMappingsStartsWithEndsWith_whenPath() {
+    // Arrange
+    ArrayList<Mapping> mappings = new ArrayList<>();
+    Mapping mapping =
+        new Mapping(
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            "An error occurred",
+            true,
+            true,
+            true);
+    mappings.add(mapping);
+    Mapping mapping2 =
+        new Mapping(
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            "An error occurred",
+            true,
+            true,
+            true);
+    mappings.add(mapping2);
+
+    // Act
+    Optional<Mapping> actualNonNullMapping =
+        MappingProcessorUtils.getNonNullMapping(mappings, new Path(), "Ends With");
+
+    // Assert
+    assertFalse(actualNonNullMapping.isPresent());
+  }
+
+  /**
+   * Test {@link MappingProcessorUtils#getNonNullMapping(List, Path, String[])} with {@code
+   * mappings}, {@code startsWith}, {@code endsWith}.
+   *
+   * <ul>
+   *   <li>When valueOf {@code Path}.
+   * </ul>
+   *
+   * <p>Method under test: {@link MappingProcessorUtils#getNonNullMapping(List, Path, String[])}
+   */
+  @Test
+  @DisplayName(
+      "Test getNonNullMapping(List, Path, String[]) with 'mappings', 'startsWith', 'endsWith'; when valueOf 'Path'")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
+  @MethodsUnderTest({"Optional MappingProcessorUtils.getNonNullMapping(List, Path, String[])"})
+  void testGetNonNullMappingWithMappingsStartsWithEndsWith_whenValueOfPath() {
+    // Arrange
+    ArrayList<Mapping> mappings = new ArrayList<>();
+    Mapping mapping =
+        new Mapping(
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            "An error occurred",
+            true,
+            true,
+            true);
+    mappings.add(mapping);
+    Mapping mapping2 =
+        new Mapping(
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            "An error occurred",
+            true,
+            true,
+            true);
+    mappings.add(mapping2);
+
+    // Act
+    Optional<Mapping> actualNonNullMapping =
+        MappingProcessorUtils.getNonNullMapping(mappings, Path.valueOf("Path"), "Ends With");
+
+    // Assert
+    assertFalse(actualNonNullMapping.isPresent());
+  }
+
+  /**
+   * Test {@link MappingProcessorUtils#getNonNullMapping(List, Path)} with {@code mappings}, {@code
+   * synonymPath}.
+   *
+   * <p>Method under test: {@link MappingProcessorUtils#getNonNullMapping(List, Path)}
+   */
+  @Test
+  @DisplayName("Test getNonNullMapping(List, Path) with 'mappings', 'synonymPath'")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"Optional MappingProcessorUtils.getNonNullMapping(List, Path)"})
-  public void testGetNonNullMappingWithMappingsSynonymPath_whenArrayList_thenReturnNotPresent() {
+  void testGetNonNullMappingWithMappingsSynonymPath() {
+    // Arrange
+    Path xmlPath = ScopeReferenceHelper.EMPTY_SCOPE;
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    Mapping mapping =
+        new Mapping(
+            xmlPath,
+            null,
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            "An error occurred",
+            true,
+            true,
+            true);
+
+    ArrayList<Mapping> mappings = new ArrayList<>();
+    mappings.add(mapping);
+
+    Path synonymPath = ScopeReferenceHelper.EMPTY_SCOPE;
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+
+    // Act
+    Optional<Mapping> actualNonNullMapping =
+        MappingProcessorUtils.getNonNullMapping(mappings, synonymPath);
+
+    // Assert
+    assertFalse(actualNonNullMapping.isPresent());
+  }
+
+  /**
+   * Test {@link MappingProcessorUtils#getNonNullMapping(List, Path)} with {@code mappings}, {@code
+   * synonymPath}.
+   *
+   * <ul>
+   *   <li>Given {@link Path#Path()} addElement parse {@code foo} and {@code true}.
+   * </ul>
+   *
+   * <p>Method under test: {@link MappingProcessorUtils#getNonNullMapping(List, Path)}
+   */
+  @Test
+  @DisplayName(
+      "Test getNonNullMapping(List, Path) with 'mappings', 'synonymPath'; given Path() addElement parse 'foo' and 'true'")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
+  @MethodsUnderTest({"Optional MappingProcessorUtils.getNonNullMapping(List, Path)"})
+  void testGetNonNullMappingWithMappingsSynonymPath_givenPathAddElementParseFooAndTrue() {
+    // Arrange
+    Path xmlPath = new Path();
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    Mapping mapping =
+        new Mapping(
+            xmlPath,
+            null,
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            "An error occurred",
+            true,
+            true,
+            true);
+
+    ArrayList<Mapping> mappings = new ArrayList<>();
+    mappings.add(mapping);
+
+    Path synonymPath = ScopeReferenceHelper.EMPTY_SCOPE;
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+
+    // Act
+    Optional<Mapping> actualNonNullMapping =
+        MappingProcessorUtils.getNonNullMapping(mappings, synonymPath);
+
+    // Assert
+    assertFalse(actualNonNullMapping.isPresent());
+  }
+
+  /**
+   * Test {@link MappingProcessorUtils#getNonNullMapping(List, Path)} with {@code mappings}, {@code
+   * synonymPath}.
+   *
+   * <ul>
+   *   <li>Then return Present.
+   * </ul>
+   *
+   * <p>Method under test: {@link MappingProcessorUtils#getNonNullMapping(List, Path)}
+   */
+  @Test
+  @DisplayName(
+      "Test getNonNullMapping(List, Path) with 'mappings', 'synonymPath'; then return Present")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
+  @MethodsUnderTest({"Optional MappingProcessorUtils.getNonNullMapping(List, Path)"})
+  void testGetNonNullMappingWithMappingsSynonymPath_thenReturnPresent() {
+    // Arrange
+    Path xmlPath = ScopeReferenceHelper.EMPTY_SCOPE;
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    Mapping mapping =
+        new Mapping(
+            xmlPath,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            "An error occurred",
+            true,
+            true,
+            true);
+
+    ArrayList<Mapping> mappings = new ArrayList<>();
+    mappings.add(mapping);
+
+    Path synonymPath = ScopeReferenceHelper.EMPTY_SCOPE;
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+
+    // Act
+    Optional<Mapping> actualNonNullMapping =
+        MappingProcessorUtils.getNonNullMapping(mappings, synonymPath);
+
+    // Assert
+    assertTrue(actualNonNullMapping.isPresent());
+    assertSame(mapping, actualNonNullMapping.get());
+  }
+
+  /**
+   * Test {@link MappingProcessorUtils#getNonNullMapping(List, Path)} with {@code mappings}, {@code
+   * synonymPath}.
+   *
+   * <ul>
+   *   <li>When {@link ArrayList#ArrayList()}.
+   *   <li>Then return not Present.
+   * </ul>
+   *
+   * <p>Method under test: {@link MappingProcessorUtils#getNonNullMapping(List, Path)}
+   */
+  @Test
+  @DisplayName(
+      "Test getNonNullMapping(List, Path) with 'mappings', 'synonymPath'; when ArrayList(); then return not Present")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
+  @MethodsUnderTest({"Optional MappingProcessorUtils.getNonNullMapping(List, Path)"})
+  void testGetNonNullMappingWithMappingsSynonymPath_whenArrayList_thenReturnNotPresent() {
     // Arrange and Act
-    Optional<Mapping> actualNonNullMapping = MappingProcessorUtils.getNonNullMapping(new ArrayList<>(),
-        ScopeReferenceHelper.EMPTY_SCOPE);
-
-    // Assert
-    assertFalse(actualNonNullMapping.isPresent());
-  }
-
-  /**
-   * Test {@link MappingProcessorUtils#getNonNullMapping(List, Path)} with {@code mappings}, {@code synonymPath}.
-   * <ul>
-   *   <li>When {@link Path#Path()}.</li>
-   *   <li>Then return not Present.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link MappingProcessorUtils#getNonNullMapping(List, Path)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"Optional MappingProcessorUtils.getNonNullMapping(List, Path)"})
-  public void testGetNonNullMappingWithMappingsSynonymPath_whenPath_thenReturnNotPresent() {
-    // Arrange
-    ArrayList<Mapping> mappings = new ArrayList<>();
-    mappings.add(new Mapping(ScopeReferenceHelper.EMPTY_SCOPE, "Xml Value", ScopeReferenceHelper.EMPTY_SCOPE,
-        "Rosetta Value", "An error occurred", true, true, true));
-
-    // Act
-    Optional<Mapping> actualNonNullMapping = MappingProcessorUtils.getNonNullMapping(mappings, new Path());
-
-    // Assert
-    assertFalse(actualNonNullMapping.isPresent());
-  }
-
-  /**
-   * Test {@link MappingProcessorUtils#getNonNullMapping(List, Path)} with {@code mappings}, {@code synonymPath}.
-   * <ul>
-   *   <li>When valueOf {@code Path}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link MappingProcessorUtils#getNonNullMapping(List, Path)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"Optional MappingProcessorUtils.getNonNullMapping(List, Path)"})
-  public void testGetNonNullMappingWithMappingsSynonymPath_whenValueOfPath() {
-    // Arrange
-    ArrayList<Mapping> mappings = new ArrayList<>();
-    mappings.add(new Mapping(ScopeReferenceHelper.EMPTY_SCOPE, "Xml Value", ScopeReferenceHelper.EMPTY_SCOPE,
-        "Rosetta Value", "An error occurred", true, true, true));
-
-    // Act
-    Optional<Mapping> actualNonNullMapping = MappingProcessorUtils.getNonNullMapping(mappings, Path.valueOf("Path"));
+    Optional<Mapping> actualNonNullMapping =
+        MappingProcessorUtils.getNonNullMapping(
+            new ArrayList<>(), ScopeReferenceHelper.EMPTY_SCOPE);
 
     // Assert
     assertFalse(actualNonNullMapping.isPresent());
@@ -3433,71 +5190,52 @@ public class MappingProcessorUtilsDiffblueTest {
 
   /**
    * Test {@link MappingProcessorUtils#getNonNullMappingForModelPath(List, Path)}.
-   * <p>
-   * Method under test: {@link MappingProcessorUtils#getNonNullMappingForModelPath(List, Path)}
+   *
+   * <p>Method under test: {@link MappingProcessorUtils#getNonNullMappingForModelPath(List, Path)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @DisplayName("Test getNonNullMappingForModelPath(List, Path)")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"Optional MappingProcessorUtils.getNonNullMappingForModelPath(List, Path)"})
-  public void testGetNonNullMappingForModelPath() {
+  void testGetNonNullMappingForModelPath() {
     // Arrange
     ArrayList<Mapping> mappings = new ArrayList<>();
-    Mapping mapping = new Mapping(ScopeReferenceHelper.EMPTY_SCOPE, "Xml Value", ScopeReferenceHelper.EMPTY_SCOPE,
-        "Rosetta Value", "An error occurred", true, true, true);
-
+    Mapping mapping =
+        new Mapping(
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            null,
+            null,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            "An error occurred",
+            true,
+            true,
+            true);
     mappings.add(mapping);
 
-    // Act
-    Optional<Mapping> actualNonNullMappingForModelPath = MappingProcessorUtils.getNonNullMappingForModelPath(mappings,
-        ScopeReferenceHelper.EMPTY_SCOPE);
-
-    // Assert
-    assertSame(mapping, actualNonNullMappingForModelPath.get());
-  }
-
-  /**
-   * Test {@link MappingProcessorUtils#getNonNullMappingForModelPath(List, Path)}.
-   * <p>
-   * Method under test: {@link MappingProcessorUtils#getNonNullMappingForModelPath(List, Path)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"Optional MappingProcessorUtils.getNonNullMappingForModelPath(List, Path)"})
-  public void testGetNonNullMappingForModelPath2() {
-    // Arrange
-    ArrayList<Mapping> mappings = new ArrayList<>();
-    Mapping mapping = new Mapping(ScopeReferenceHelper.EMPTY_SCOPE, "Xml Value", ScopeReferenceHelper.EMPTY_SCOPE,
-        "Rosetta Value", "An error occurred", true, true, true);
-
-    mappings.add(mapping);
-    mappings.add(new Mapping(ScopeReferenceHelper.EMPTY_SCOPE, "Xml Value", ScopeReferenceHelper.EMPTY_SCOPE,
-        "Rosetta Value", "An error occurred", true, true, true));
+    Path modelPath = ScopeReferenceHelper.EMPTY_SCOPE;
+    modelPath.addElement(PathElement.parse("foo", true));
+    modelPath.addElement(PathElement.parse("foo", true));
+    modelPath.addElement(PathElement.parse("foo", true));
+    modelPath.addElement(PathElement.parse("foo", true));
+    modelPath.addElement(PathElement.parse("foo", true));
+    modelPath.addElement(PathElement.parse("foo", true));
+    modelPath.addElement(PathElement.parse("foo", true));
+    modelPath.addElement(PathElement.parse("foo", true));
+    modelPath.addElement(PathElement.parse("foo", true));
+    modelPath.addElement(PathElement.parse("foo", true));
+    modelPath.addElement(PathElement.parse("foo", true));
+    modelPath.addElement(PathElement.parse("foo", true));
+    modelPath.addElement(PathElement.parse("foo", true));
+    modelPath.addElement(PathElement.parse("foo", true));
+    modelPath.addElement(PathElement.parse("foo", true));
+    modelPath.addElement(PathElement.parse("foo", true));
+    modelPath.addElement(PathElement.parse("foo", true));
+    modelPath.addElement(PathElement.parse("foo", true));
 
     // Act
-    Optional<Mapping> actualNonNullMappingForModelPath = MappingProcessorUtils.getNonNullMappingForModelPath(mappings,
-        ScopeReferenceHelper.EMPTY_SCOPE);
-
-    // Assert
-    assertSame(mapping, actualNonNullMappingForModelPath.get());
-  }
-
-  /**
-   * Test {@link MappingProcessorUtils#getNonNullMappingForModelPath(List, Path)}.
-   * <p>
-   * Method under test: {@link MappingProcessorUtils#getNonNullMappingForModelPath(List, Path)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"Optional MappingProcessorUtils.getNonNullMappingForModelPath(List, Path)"})
-  public void testGetNonNullMappingForModelPath3() {
-    // Arrange
-    ArrayList<Mapping> mappings = new ArrayList<>();
-    mappings.add(new Mapping(ScopeReferenceHelper.EMPTY_SCOPE, null, ScopeReferenceHelper.EMPTY_SCOPE, "Rosetta Value",
-        "An error occurred", true, true, true));
-
-    // Act
-    Optional<Mapping> actualNonNullMappingForModelPath = MappingProcessorUtils.getNonNullMappingForModelPath(mappings,
-        ScopeReferenceHelper.EMPTY_SCOPE);
+    Optional<Mapping> actualNonNullMappingForModelPath =
+        MappingProcessorUtils.getNonNullMappingForModelPath(mappings, modelPath);
 
     // Assert
     assertFalse(actualNonNullMappingForModelPath.isPresent());
@@ -3505,25 +5243,33 @@ public class MappingProcessorUtilsDiffblueTest {
 
   /**
    * Test {@link MappingProcessorUtils#getNonNullMappingForModelPath(List, Path)}.
-   * <p>
-   * Method under test: {@link MappingProcessorUtils#getNonNullMappingForModelPath(List, Path)}
+   *
+   * <p>Method under test: {@link MappingProcessorUtils#getNonNullMappingForModelPath(List, Path)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @DisplayName("Test getNonNullMappingForModelPath(List, Path)")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"Optional MappingProcessorUtils.getNonNullMappingForModelPath(List, Path)"})
-  public void testGetNonNullMappingForModelPath4() {
+  void testGetNonNullMappingForModelPath2() {
     // Arrange
     ArrayList<Mapping> mappings = new ArrayList<>();
-    mappings.add(new Mapping(ScopeReferenceHelper.EMPTY_SCOPE, null, ScopeReferenceHelper.EMPTY_SCOPE, "Rosetta Value",
-        "An error occurred", true, true, true));
-    Mapping mapping = new Mapping(ScopeReferenceHelper.EMPTY_SCOPE, "Xml Value", ScopeReferenceHelper.EMPTY_SCOPE,
-        "Rosetta Value", "An error occurred", true, true, true);
-
+    Mapping mapping =
+        new Mapping(
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            "An error occurred",
+            true,
+            true,
+            true);
     mappings.add(mapping);
 
     // Act
-    Optional<Mapping> actualNonNullMappingForModelPath = MappingProcessorUtils.getNonNullMappingForModelPath(mappings,
-        ScopeReferenceHelper.EMPTY_SCOPE);
+    Optional<Mapping> actualNonNullMappingForModelPath =
+        MappingProcessorUtils.getNonNullMappingForModelPath(
+            mappings, ScopeReferenceHelper.EMPTY_SCOPE);
 
     // Assert
     assertSame(mapping, actualNonNullMappingForModelPath.get());
@@ -3531,67 +5277,44 @@ public class MappingProcessorUtilsDiffblueTest {
 
   /**
    * Test {@link MappingProcessorUtils#getNonNullMappingForModelPath(List, Path)}.
-   * <p>
-   * Method under test: {@link MappingProcessorUtils#getNonNullMappingForModelPath(List, Path)}
+   *
+   * <p>Method under test: {@link MappingProcessorUtils#getNonNullMappingForModelPath(List, Path)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @DisplayName("Test getNonNullMappingForModelPath(List, Path)")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"Optional MappingProcessorUtils.getNonNullMappingForModelPath(List, Path)"})
-  public void testGetNonNullMappingForModelPath5() {
+  void testGetNonNullMappingForModelPath3() {
     // Arrange
     ArrayList<Mapping> mappings = new ArrayList<>();
-    mappings.add(new Mapping(ScopeReferenceHelper.EMPTY_SCOPE, "Xml Value", new Path(), "Rosetta Value",
-        "An error occurred", true, true, true));
-
-    // Act
-    Optional<Mapping> actualNonNullMappingForModelPath = MappingProcessorUtils.getNonNullMappingForModelPath(mappings,
-        ScopeReferenceHelper.EMPTY_SCOPE);
-
-    // Assert
-    assertFalse(actualNonNullMappingForModelPath.isPresent());
-  }
-
-  /**
-   * Test {@link MappingProcessorUtils#getNonNullMappingForModelPath(List, Path)}.
-   * <p>
-   * Method under test: {@link MappingProcessorUtils#getNonNullMappingForModelPath(List, Path)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"Optional MappingProcessorUtils.getNonNullMappingForModelPath(List, Path)"})
-  public void testGetNonNullMappingForModelPath6() {
-    // Arrange
-    ArrayList<Mapping> mappings = new ArrayList<>();
-    mappings.add(new Mapping(ScopeReferenceHelper.EMPTY_SCOPE, "Xml Value", null, "Rosetta Value", "An error occurred",
-        true, true, true));
-
-    // Act
-    Optional<Mapping> actualNonNullMappingForModelPath = MappingProcessorUtils.getNonNullMappingForModelPath(mappings,
-        ScopeReferenceHelper.EMPTY_SCOPE);
-
-    // Assert
-    assertFalse(actualNonNullMappingForModelPath.isPresent());
-  }
-
-  /**
-   * Test {@link MappingProcessorUtils#getNonNullMappingForModelPath(List, Path)}.
-   * <p>
-   * Method under test: {@link MappingProcessorUtils#getNonNullMappingForModelPath(List, Path)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"Optional MappingProcessorUtils.getNonNullMappingForModelPath(List, Path)"})
-  public void testGetNonNullMappingForModelPath7() {
-    // Arrange
-    ArrayList<Mapping> mappings = new ArrayList<>();
-    Mapping mapping = new Mapping(ScopeReferenceHelper.EMPTY_SCOPE, "Xml Value", new Path(), "Rosetta Value",
-        "An error occurred", true, true, true);
-
+    Mapping mapping =
+        new Mapping(
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            "An error occurred",
+            true,
+            true,
+            true);
     mappings.add(mapping);
+    Mapping mapping2 =
+        new Mapping(
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            "An error occurred",
+            true,
+            true,
+            true);
+    mappings.add(mapping2);
 
     // Act
-    Optional<Mapping> actualNonNullMappingForModelPath = MappingProcessorUtils.getNonNullMappingForModelPath(mappings,
-        new Path());
+    Optional<Mapping> actualNonNullMappingForModelPath =
+        MappingProcessorUtils.getNonNullMappingForModelPath(
+            mappings, ScopeReferenceHelper.EMPTY_SCOPE);
 
     // Assert
     assertSame(mapping, actualNonNullMappingForModelPath.get());
@@ -3599,20 +5322,171 @@ public class MappingProcessorUtilsDiffblueTest {
 
   /**
    * Test {@link MappingProcessorUtils#getNonNullMappingForModelPath(List, Path)}.
+   *
+   * <p>Method under test: {@link MappingProcessorUtils#getNonNullMappingForModelPath(List, Path)}
+   */
+  @Test
+  @DisplayName("Test getNonNullMappingForModelPath(List, Path)")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
+  @MethodsUnderTest({"Optional MappingProcessorUtils.getNonNullMappingForModelPath(List, Path)"})
+  void testGetNonNullMappingForModelPath4() {
+    // Arrange
+    ArrayList<Mapping> mappings = new ArrayList<>();
+    Mapping mapping =
+        new Mapping(
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            null,
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            "An error occurred",
+            true,
+            true,
+            true);
+    mappings.add(mapping);
+
+    // Act
+    Optional<Mapping> actualNonNullMappingForModelPath =
+        MappingProcessorUtils.getNonNullMappingForModelPath(
+            mappings, ScopeReferenceHelper.EMPTY_SCOPE);
+
+    // Assert
+    assertFalse(actualNonNullMappingForModelPath.isPresent());
+  }
+
+  /**
+   * Test {@link MappingProcessorUtils#getNonNullMappingForModelPath(List, Path)}.
+   *
+   * <p>Method under test: {@link MappingProcessorUtils#getNonNullMappingForModelPath(List, Path)}
+   */
+  @Test
+  @DisplayName("Test getNonNullMappingForModelPath(List, Path)")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
+  @MethodsUnderTest({"Optional MappingProcessorUtils.getNonNullMappingForModelPath(List, Path)"})
+  void testGetNonNullMappingForModelPath5() {
+    // Arrange
+    ArrayList<Mapping> mappings = new ArrayList<>();
+    Mapping mapping =
+        new Mapping(
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            new Path(),
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            "An error occurred",
+            true,
+            true,
+            true);
+    mappings.add(mapping);
+
+    // Act
+    Optional<Mapping> actualNonNullMappingForModelPath =
+        MappingProcessorUtils.getNonNullMappingForModelPath(
+            mappings, ScopeReferenceHelper.EMPTY_SCOPE);
+
+    // Assert
+    assertFalse(actualNonNullMappingForModelPath.isPresent());
+  }
+
+  /**
+   * Test {@link MappingProcessorUtils#getNonNullMappingForModelPath(List, Path)}.
+   *
+   * <p>Method under test: {@link MappingProcessorUtils#getNonNullMappingForModelPath(List, Path)}
+   */
+  @Test
+  @DisplayName("Test getNonNullMappingForModelPath(List, Path)")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
+  @MethodsUnderTest({"Optional MappingProcessorUtils.getNonNullMappingForModelPath(List, Path)"})
+  void testGetNonNullMappingForModelPath6() {
+    // Arrange
+    ArrayList<Mapping> mappings = new ArrayList<>();
+    Mapping mapping =
+        new Mapping(
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            null,
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            "An error occurred",
+            true,
+            true,
+            true);
+    mappings.add(mapping);
+    Mapping mapping2 =
+        new Mapping(
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            "An error occurred",
+            true,
+            true,
+            true);
+    mappings.add(mapping2);
+
+    // Act
+    Optional<Mapping> actualNonNullMappingForModelPath =
+        MappingProcessorUtils.getNonNullMappingForModelPath(
+            mappings, ScopeReferenceHelper.EMPTY_SCOPE);
+
+    // Assert
+    assertSame(mapping2, actualNonNullMappingForModelPath.get());
+  }
+
+  /**
+   * Test {@link MappingProcessorUtils#getNonNullMappingForModelPath(List, Path)}.
+   *
+   * <p>Method under test: {@link MappingProcessorUtils#getNonNullMappingForModelPath(List, Path)}
+   */
+  @Test
+  @DisplayName("Test getNonNullMappingForModelPath(List, Path)")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
+  @MethodsUnderTest({"Optional MappingProcessorUtils.getNonNullMappingForModelPath(List, Path)"})
+  void testGetNonNullMappingForModelPath7() {
+    // Arrange
+    ArrayList<Mapping> mappings = new ArrayList<>();
+    Mapping mapping =
+        new Mapping(
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            new Path(),
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            "An error occurred",
+            true,
+            true,
+            true);
+    mappings.add(mapping);
+
+    // Act
+    Optional<Mapping> actualNonNullMappingForModelPath =
+        MappingProcessorUtils.getNonNullMappingForModelPath(mappings, new Path());
+
+    // Assert
+    assertSame(mapping, actualNonNullMappingForModelPath.get());
+  }
+
+  /**
+   * Test {@link MappingProcessorUtils#getNonNullMappingForModelPath(List, Path)}.
+   *
    * <ul>
-   *   <li>When {@link ArrayList#ArrayList()}.</li>
-   *   <li>Then return not Present.</li>
+   *   <li>When {@link ArrayList#ArrayList()}.
+   *   <li>Then return not Present.
    * </ul>
-   * <p>
-   * Method under test: {@link MappingProcessorUtils#getNonNullMappingForModelPath(List, Path)}
+   *
+   * <p>Method under test: {@link MappingProcessorUtils#getNonNullMappingForModelPath(List, Path)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @DisplayName(
+      "Test getNonNullMappingForModelPath(List, Path); when ArrayList(); then return not Present")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"Optional MappingProcessorUtils.getNonNullMappingForModelPath(List, Path)"})
-  public void testGetNonNullMappingForModelPath_whenArrayList_thenReturnNotPresent() {
+  void testGetNonNullMappingForModelPath_whenArrayList_thenReturnNotPresent() {
     // Arrange and Act
-    Optional<Mapping> actualNonNullMappingForModelPath = MappingProcessorUtils
-        .getNonNullMappingForModelPath(new ArrayList<>(), ScopeReferenceHelper.EMPTY_SCOPE);
+    Optional<Mapping> actualNonNullMappingForModelPath =
+        MappingProcessorUtils.getNonNullMappingForModelPath(
+            new ArrayList<>(), ScopeReferenceHelper.EMPTY_SCOPE);
 
     // Assert
     assertFalse(actualNonNullMappingForModelPath.isPresent());
@@ -3620,51 +5494,38 @@ public class MappingProcessorUtilsDiffblueTest {
 
   /**
    * Test {@link MappingProcessorUtils#getNonNullMappingForModelPath(List, Path)}.
+   *
    * <ul>
-   *   <li>When {@link Path#Path()}.</li>
-   *   <li>Then return not Present.</li>
+   *   <li>When {@link Path#Path()}.
+   *   <li>Then return not Present.
    * </ul>
-   * <p>
-   * Method under test: {@link MappingProcessorUtils#getNonNullMappingForModelPath(List, Path)}
+   *
+   * <p>Method under test: {@link MappingProcessorUtils#getNonNullMappingForModelPath(List, Path)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @DisplayName(
+      "Test getNonNullMappingForModelPath(List, Path); when Path(); then return not Present")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"Optional MappingProcessorUtils.getNonNullMappingForModelPath(List, Path)"})
-  public void testGetNonNullMappingForModelPath_whenPath_thenReturnNotPresent() {
+  void testGetNonNullMappingForModelPath_whenPath_thenReturnNotPresent() {
     // Arrange
     ArrayList<Mapping> mappings = new ArrayList<>();
-    mappings.add(new Mapping(ScopeReferenceHelper.EMPTY_SCOPE, "Xml Value", ScopeReferenceHelper.EMPTY_SCOPE,
-        "Rosetta Value", "An error occurred", true, true, true));
+    Mapping mapping =
+        new Mapping(
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            "An error occurred",
+            true,
+            true,
+            true);
+    mappings.add(mapping);
 
     // Act
-    Optional<Mapping> actualNonNullMappingForModelPath = MappingProcessorUtils.getNonNullMappingForModelPath(mappings,
-        new Path());
-
-    // Assert
-    assertFalse(actualNonNullMappingForModelPath.isPresent());
-  }
-
-  /**
-   * Test {@link MappingProcessorUtils#getNonNullMappingForModelPath(List, Path)}.
-   * <ul>
-   *   <li>When valueOf {@code Path}.</li>
-   *   <li>Then return not Present.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link MappingProcessorUtils#getNonNullMappingForModelPath(List, Path)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"Optional MappingProcessorUtils.getNonNullMappingForModelPath(List, Path)"})
-  public void testGetNonNullMappingForModelPath_whenValueOfPath_thenReturnNotPresent() {
-    // Arrange
-    ArrayList<Mapping> mappings = new ArrayList<>();
-    mappings.add(new Mapping(ScopeReferenceHelper.EMPTY_SCOPE, "Xml Value", ScopeReferenceHelper.EMPTY_SCOPE,
-        "Rosetta Value", "An error occurred", true, true, true));
-
-    // Act
-    Optional<Mapping> actualNonNullMappingForModelPath = MappingProcessorUtils.getNonNullMappingForModelPath(mappings,
-        Path.valueOf("Path"));
+    Optional<Mapping> actualNonNullMappingForModelPath =
+        MappingProcessorUtils.getNonNullMappingForModelPath(mappings, new Path());
 
     // Assert
     assertFalse(actualNonNullMappingForModelPath.isPresent());
@@ -3672,20 +5533,23 @@ public class MappingProcessorUtilsDiffblueTest {
 
   /**
    * Test {@link MappingProcessorUtils#subPath(String, Path)}.
+   *
    * <ul>
-   *   <li>When {@link ScopeReferenceHelper#EMPTY_SCOPE}.</li>
-   *   <li>Then return not Present.</li>
+   *   <li>When {@link ScopeReferenceHelper#EMPTY_SCOPE}.
+   *   <li>Then return not Present.
    * </ul>
-   * <p>
-   * Method under test: {@link MappingProcessorUtils#subPath(String, Path)}
+   *
+   * <p>Method under test: {@link MappingProcessorUtils#subPath(String, Path)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @DisplayName("Test subPath(String, Path); when EMPTY_SCOPE; then return not Present")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"Optional MappingProcessorUtils.subPath(String, Path)"})
-  public void testSubPath_whenEmpty_scope_thenReturnNotPresent() {
+  void testSubPath_whenEmpty_scope_thenReturnNotPresent() {
     // Arrange and Act
-    Optional<Path> actualSubPathResult = MappingProcessorUtils.subPath("Last Element",
-        ScopeReferenceHelper.EMPTY_SCOPE);
+    Optional<Path> actualSubPathResult =
+        MappingProcessorUtils.subPath("Last Element", ScopeReferenceHelper.EMPTY_SCOPE);
 
     // Assert
     assertFalse(actualSubPathResult.isPresent());
@@ -3693,52 +5557,73 @@ public class MappingProcessorUtilsDiffblueTest {
 
   /**
    * Test {@link MappingProcessorUtils#updateMappings(Path, List, RosettaPath)}.
+   *
    * <ul>
-   *   <li>Then {@link ArrayList#ArrayList()} first Error is {@code null}.</li>
+   *   <li>Then {@link ArrayList#ArrayList()} first Error is {@code An error occurred}.
    * </ul>
-   * <p>
-   * Method under test: {@link MappingProcessorUtils#updateMappings(Path, List, RosettaPath)}
+   *
+   * <p>Method under test: {@link MappingProcessorUtils#updateMappings(Path, List, RosettaPath)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @DisplayName(
+      "Test updateMappings(Path, List, RosettaPath); then ArrayList() first Error is 'An error occurred'")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"void MappingProcessorUtils.updateMappings(Path, List, RosettaPath)"})
-  public void testUpdateMappings_thenArrayListFirstErrorIsNull() {
-    // Arrange
-    ArrayList<Mapping> mappings = new ArrayList<>();
-    mappings.add(new Mapping(ScopeReferenceHelper.EMPTY_SCOPE, "Xml Value", ScopeReferenceHelper.EMPTY_SCOPE,
-        "Rosetta Value", "An error occurred", true, true, true));
-    RosettaPath rosettaPath = mock(RosettaPath.class);
-    when(rosettaPath.allElements()).thenReturn(new LinkedList<>());
-
-    // Act
-    MappingProcessorUtils.updateMappings(ScopeReferenceHelper.EMPTY_SCOPE, mappings, rosettaPath);
-
-    // Assert
-    verify(rosettaPath).allElements();
-    assertEquals(1, mappings.size());
-    Mapping getResult = mappings.get(0);
-    assertNull(getResult.getError());
-    assertFalse(getResult.isDuplicate());
-  }
-
-  /**
-   * Test {@link MappingProcessorUtils#updateMappings(Path, List, RosettaPath)}.
-   * <ul>
-   *   <li>Then {@link ArrayList#ArrayList()} first RosettaPath is {@link ScopeReferenceHelper#EMPTY_SCOPE}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link MappingProcessorUtils#updateMappings(Path, List, RosettaPath)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void MappingProcessorUtils.updateMappings(Path, List, RosettaPath)"})
-  public void testUpdateMappings_thenArrayListFirstRosettaPathIsEmpty_scope() {
+  void testUpdateMappings_thenArrayListFirstErrorIsAnErrorOccurred() {
     // Arrange
     Path synonymPath = ScopeReferenceHelper.EMPTY_SCOPE;
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+
+    Path xmlPath = new Path();
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    Mapping mapping =
+        new Mapping(
+            xmlPath,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            "An error occurred",
+            true,
+            true,
+            true);
 
     ArrayList<Mapping> mappings = new ArrayList<>();
-    mappings.add(new Mapping(new Path(), "Xml Value", ScopeReferenceHelper.EMPTY_SCOPE, "Rosetta Value",
-        "An error occurred", true, true, true));
+    mappings.add(mapping);
 
     // Act
     MappingProcessorUtils.updateMappings(synonymPath, mappings, mock(RosettaPath.class));
@@ -3753,22 +5638,74 @@ public class MappingProcessorUtilsDiffblueTest {
 
   /**
    * Test {@link MappingProcessorUtils#updateMappings(Path, List, RosettaPath)}.
+   *
    * <ul>
-   *   <li>Then {@link ArrayList#ArrayList()} first RosettaPath is {@link Path#Path()}.</li>
+   *   <li>Then {@link ArrayList#ArrayList()} first Error is {@code null}.
    * </ul>
-   * <p>
-   * Method under test: {@link MappingProcessorUtils#updateMappings(Path, List, RosettaPath)}
+   *
+   * <p>Method under test: {@link MappingProcessorUtils#updateMappings(Path, List, RosettaPath)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @DisplayName(
+      "Test updateMappings(Path, List, RosettaPath); then ArrayList() first Error is 'null'")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"void MappingProcessorUtils.updateMappings(Path, List, RosettaPath)"})
-  public void testUpdateMappings_thenArrayListFirstRosettaPathIsPath() {
+  void testUpdateMappings_thenArrayListFirstErrorIsNull() {
     // Arrange
-    Path synonymPath = new Path();
+    Path synonymPath = ScopeReferenceHelper.EMPTY_SCOPE;
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+    synonymPath.addElement(PathElement.parse("foo", true));
+
+    Path xmlPath = ScopeReferenceHelper.EMPTY_SCOPE;
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    xmlPath.addElement(PathElement.parse("foo", true));
+    Mapping mapping =
+        new Mapping(
+            xmlPath,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            "An error occurred",
+            true,
+            true,
+            true);
 
     ArrayList<Mapping> mappings = new ArrayList<>();
-    mappings.add(new Mapping(new Path(), "Xml Value", ScopeReferenceHelper.EMPTY_SCOPE, "Rosetta Value",
-        "An error occurred", true, true, true));
+    mappings.add(mapping);
+
     RosettaPath rosettaPath = mock(RosettaPath.class);
     when(rosettaPath.allElements()).thenReturn(new LinkedList<>());
 
@@ -3781,118 +5718,31 @@ public class MappingProcessorUtilsDiffblueTest {
     Mapping getResult = mappings.get(0);
     assertNull(getResult.getError());
     assertFalse(getResult.isDuplicate());
-    assertEquals(synonymPath, getResult.getRosettaPath());
   }
 
   /**
-   * Test {@link MappingProcessorUtils#updateMappings(Path, List, RosettaPath)}.
-   * <ul>
-   *   <li>Then {@link ArrayList#ArrayList()} size is two.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link MappingProcessorUtils#updateMappings(Path, List, RosettaPath)}
+   * Test {@link MappingProcessorUtils#updateMappingSuccess(Mapping, Path)} with {@code Mapping},
+   * {@code Path}.
+   *
+   * <p>Method under test: {@link MappingProcessorUtils#updateMappingSuccess(Mapping, Path)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void MappingProcessorUtils.updateMappings(Path, List, RosettaPath)"})
-  public void testUpdateMappings_thenArrayListSizeIsTwo() {
-    // Arrange
-    ArrayList<Mapping> mappings = new ArrayList<>();
-    mappings.add(new Mapping(ScopeReferenceHelper.EMPTY_SCOPE, "Xml Value", ScopeReferenceHelper.EMPTY_SCOPE,
-        "Rosetta Value", "An error occurred", true, true, true));
-    mappings.add(new Mapping(ScopeReferenceHelper.EMPTY_SCOPE, "Xml Value", ScopeReferenceHelper.EMPTY_SCOPE,
-        "Rosetta Value", "An error occurred", true, true, true));
-    RosettaPath rosettaPath = mock(RosettaPath.class);
-    when(rosettaPath.allElements()).thenReturn(new LinkedList<>());
-
-    // Act
-    MappingProcessorUtils.updateMappings(ScopeReferenceHelper.EMPTY_SCOPE, mappings, rosettaPath);
-
-    // Assert
-    verify(rosettaPath, atLeast(1)).allElements();
-    assertEquals(2, mappings.size());
-    Mapping getResult = mappings.get(0);
-    assertNull(getResult.getError());
-    assertFalse(getResult.isDuplicate());
-  }
-
-  /**
-   * Test {@link MappingProcessorUtils#updateMappings(Path, List, RosettaPath)}.
-   * <ul>
-   *   <li>When {@link Path#Path()}.</li>
-   *   <li>Then {@link ArrayList#ArrayList()} first RosettaPath Elements size is one.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link MappingProcessorUtils#updateMappings(Path, List, RosettaPath)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void MappingProcessorUtils.updateMappings(Path, List, RosettaPath)"})
-  public void testUpdateMappings_whenPath_thenArrayListFirstRosettaPathElementsSizeIsOne() {
-    // Arrange
-    Path synonymPath = new Path();
-
-    ArrayList<Mapping> mappings = new ArrayList<>();
-    mappings.add(new Mapping(ScopeReferenceHelper.EMPTY_SCOPE, "Xml Value", ScopeReferenceHelper.EMPTY_SCOPE,
-        "Rosetta Value", "An error occurred", true, true, true));
-
-    // Act
-    MappingProcessorUtils.updateMappings(synonymPath, mappings, mock(RosettaPath.class));
-
-    // Assert that nothing has changed
-    assertEquals(1, mappings.size());
-    Mapping getResult = mappings.get(0);
-    assertEquals("An error occurred", getResult.getError());
-    Path rosettaPath = getResult.getRosettaPath();
-    assertEquals(1, rosettaPath.getElements().size());
-    assertEquals(1, rosettaPath.getPathNames().length);
-    assertTrue(getResult.isDuplicate());
-  }
-
-  /**
-   * Test {@link MappingProcessorUtils#updateMappings(Path, List, RosettaPath)}.
-   * <ul>
-   *   <li>When valueOf {@code Path}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link MappingProcessorUtils#updateMappings(Path, List, RosettaPath)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void MappingProcessorUtils.updateMappings(Path, List, RosettaPath)"})
-  public void testUpdateMappings_whenValueOfPath() {
-    // Arrange
-    Path synonymPath = Path.valueOf("Path");
-
-    ArrayList<Mapping> mappings = new ArrayList<>();
-    mappings.add(new Mapping(ScopeReferenceHelper.EMPTY_SCOPE, "Xml Value", ScopeReferenceHelper.EMPTY_SCOPE,
-        "Rosetta Value", "An error occurred", true, true, true));
-
-    // Act
-    MappingProcessorUtils.updateMappings(synonymPath, mappings, mock(RosettaPath.class));
-
-    // Assert that nothing has changed
-    assertEquals(1, mappings.size());
-    Mapping getResult = mappings.get(0);
-    assertEquals("An error occurred", getResult.getError());
-    Path rosettaPath = getResult.getRosettaPath();
-    assertEquals(1, rosettaPath.getElements().size());
-    assertEquals(1, rosettaPath.getPathNames().length);
-    assertTrue(getResult.isDuplicate());
-  }
-
-  /**
-   * Test {@link MappingProcessorUtils#updateMappingSuccess(Mapping, Path)} with {@code Mapping}, {@code Path}.
-   * <p>
-   * Method under test: {@link MappingProcessorUtils#updateMappingSuccess(Mapping, Path)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
+  @DisplayName("Test updateMappingSuccess(Mapping, Path) with 'Mapping', 'Path'")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"void MappingProcessorUtils.updateMappingSuccess(Mapping, Path)"})
-  public void testUpdateMappingSuccessWithMappingPath() {
+  void testUpdateMappingSuccessWithMappingPath() {
     // Arrange
-    Mapping mapping = new Mapping(ScopeReferenceHelper.EMPTY_SCOPE, "Xml Value", ScopeReferenceHelper.EMPTY_SCOPE,
-        "Rosetta Value", "An error occurred", true, true, true);
+    Mapping mapping =
+        new Mapping(
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            "An error occurred",
+            true,
+            true,
+            true);
 
     // Act
     MappingProcessorUtils.updateMappingSuccess(mapping, ScopeReferenceHelper.EMPTY_SCOPE);
@@ -3903,17 +5753,28 @@ public class MappingProcessorUtilsDiffblueTest {
   }
 
   /**
-   * Test {@link MappingProcessorUtils#updateMappingSuccess(Mapping, RosettaPath)} with {@code Mapping}, {@code RosettaPath}.
-   * <p>
-   * Method under test: {@link MappingProcessorUtils#updateMappingSuccess(Mapping, RosettaPath)}
+   * Test {@link MappingProcessorUtils#updateMappingSuccess(Mapping, RosettaPath)} with {@code
+   * Mapping}, {@code RosettaPath}.
+   *
+   * <p>Method under test: {@link MappingProcessorUtils#updateMappingSuccess(Mapping, RosettaPath)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @DisplayName("Test updateMappingSuccess(Mapping, RosettaPath) with 'Mapping', 'RosettaPath'")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"void MappingProcessorUtils.updateMappingSuccess(Mapping, RosettaPath)"})
-  public void testUpdateMappingSuccessWithMappingRosettaPath() {
+  void testUpdateMappingSuccessWithMappingRosettaPath() {
     // Arrange
-    Mapping mapping = new Mapping(ScopeReferenceHelper.EMPTY_SCOPE, "Xml Value", ScopeReferenceHelper.EMPTY_SCOPE,
-        "Rosetta Value", "An error occurred", true, true, true);
+    Mapping mapping =
+        new Mapping(
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            "An error occurred",
+            true,
+            true,
+            true);
 
     RosettaPath rosettaPath = mock(RosettaPath.class);
     when(rosettaPath.allElements()).thenReturn(new LinkedList<>());
@@ -3938,21 +5799,31 @@ public class MappingProcessorUtilsDiffblueTest {
     assertTrue(lastElement.getMetas().isEmpty());
     assertEquals(rosettaPath2, xmlPath.getParent());
     assertSame(lastElement, elements.get(0));
-    assertArrayEquals(new String[]{"emptyScope"}, xmlPath.getPathNames());
+    assertArrayEquals(new String[] {"emptyScope"}, xmlPath.getPathNames());
   }
 
   /**
    * Test {@link MappingProcessorUtils#updateMappingFail(Mapping, String)}.
-   * <p>
-   * Method under test: {@link MappingProcessorUtils#updateMappingFail(Mapping, String)}
+   *
+   * <p>Method under test: {@link MappingProcessorUtils#updateMappingFail(Mapping, String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @DisplayName("Test updateMappingFail(Mapping, String)")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"void MappingProcessorUtils.updateMappingFail(Mapping, String)"})
-  public void testUpdateMappingFail() {
+  void testUpdateMappingFail() {
     // Arrange
-    Mapping mapping = new Mapping(ScopeReferenceHelper.EMPTY_SCOPE, "Xml Value", ScopeReferenceHelper.EMPTY_SCOPE,
-        "Rosetta Value", "An error occurred", true, true, true);
+    Mapping mapping =
+        new Mapping(
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            "An error occurred",
+            true,
+            true,
+            true);
 
     // Act
     MappingProcessorUtils.updateMappingFail(mapping, "An error occurred");
@@ -3972,77 +5843,116 @@ public class MappingProcessorUtilsDiffblueTest {
     assertTrue(parent.getElements().isEmpty());
     assertTrue(lastElement.getMetas().isEmpty());
     assertSame(lastElement, elements.get(0));
-    assertArrayEquals(new String[]{"emptyScope"}, xmlPath.getPathNames());
+    assertArrayEquals(new String[] {"emptyScope"}, xmlPath.getPathNames());
   }
 
   /**
    * Test {@link MappingProcessorUtils#getNonNullMappedValueList(List)}.
+   *
    * <ul>
-   *   <li>Then return size is one.</li>
+   *   <li>Then return size is one.
    * </ul>
-   * <p>
-   * Method under test: {@link MappingProcessorUtils#getNonNullMappedValueList(List)}
+   *
+   * <p>Method under test: {@link MappingProcessorUtils#getNonNullMappedValueList(List)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @DisplayName("Test getNonNullMappedValueList(List); then return size is one")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"List MappingProcessorUtils.getNonNullMappedValueList(List)"})
-  public void testGetNonNullMappedValueList_thenReturnSizeIsOne() {
+  void testGetNonNullMappedValueList_thenReturnSizeIsOne() {
     // Arrange
     ArrayList<Mapping> filteredMappings = new ArrayList<>();
-    filteredMappings.add(new Mapping(ScopeReferenceHelper.EMPTY_SCOPE, "Xml Value", ScopeReferenceHelper.EMPTY_SCOPE,
-        "Rosetta Value", "An error occurred", true, true, true));
+    Mapping mapping =
+        new Mapping(
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            "An error occurred",
+            true,
+            true,
+            true);
+    filteredMappings.add(mapping);
 
     // Act
-    List<String> actualNonNullMappedValueList = MappingProcessorUtils.getNonNullMappedValueList(filteredMappings);
+    List<String> actualNonNullMappedValueList =
+        MappingProcessorUtils.getNonNullMappedValueList(filteredMappings);
 
     // Assert
     assertEquals(1, actualNonNullMappedValueList.size());
-    assertEquals("Xml Value", actualNonNullMappedValueList.get(0));
+    assertEquals("NON_EMPTY", actualNonNullMappedValueList.get(0));
   }
 
   /**
    * Test {@link MappingProcessorUtils#getNonNullMappedValueList(List)}.
+   *
    * <ul>
-   *   <li>Then return size is two.</li>
+   *   <li>Then return size is two.
    * </ul>
-   * <p>
-   * Method under test: {@link MappingProcessorUtils#getNonNullMappedValueList(List)}
+   *
+   * <p>Method under test: {@link MappingProcessorUtils#getNonNullMappedValueList(List)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @DisplayName("Test getNonNullMappedValueList(List); then return size is two")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"List MappingProcessorUtils.getNonNullMappedValueList(List)"})
-  public void testGetNonNullMappedValueList_thenReturnSizeIsTwo() {
+  void testGetNonNullMappedValueList_thenReturnSizeIsTwo() {
     // Arrange
     ArrayList<Mapping> filteredMappings = new ArrayList<>();
-    filteredMappings.add(new Mapping(ScopeReferenceHelper.EMPTY_SCOPE, "Xml Value", ScopeReferenceHelper.EMPTY_SCOPE,
-        "Rosetta Value", "An error occurred", true, true, true));
-    filteredMappings.add(new Mapping(ScopeReferenceHelper.EMPTY_SCOPE, "Xml Value", ScopeReferenceHelper.EMPTY_SCOPE,
-        "Rosetta Value", "An error occurred", true, true, true));
+    Mapping mapping =
+        new Mapping(
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            "An error occurred",
+            true,
+            true,
+            true);
+    filteredMappings.add(mapping);
+    Mapping mapping2 =
+        new Mapping(
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            ScopeReferenceHelper.EMPTY_SCOPE,
+            BeanPropertyWriter.MARKER_FOR_EMPTY,
+            "An error occurred",
+            true,
+            true,
+            true);
+    filteredMappings.add(mapping2);
 
     // Act
-    List<String> actualNonNullMappedValueList = MappingProcessorUtils.getNonNullMappedValueList(filteredMappings);
+    List<String> actualNonNullMappedValueList =
+        MappingProcessorUtils.getNonNullMappedValueList(filteredMappings);
 
     // Assert
     assertEquals(2, actualNonNullMappedValueList.size());
-    assertEquals("Xml Value", actualNonNullMappedValueList.get(0));
-    assertEquals("Xml Value", actualNonNullMappedValueList.get(1));
+    assertEquals("NON_EMPTY", actualNonNullMappedValueList.get(0));
+    assertEquals("NON_EMPTY", actualNonNullMappedValueList.get(1));
   }
 
   /**
    * Test {@link MappingProcessorUtils#getNonNullMappedValueList(List)}.
+   *
    * <ul>
-   *   <li>When {@link ArrayList#ArrayList()}.</li>
-   *   <li>Then return Empty.</li>
+   *   <li>When {@link ArrayList#ArrayList()}.
+   *   <li>Then return Empty.
    * </ul>
-   * <p>
-   * Method under test: {@link MappingProcessorUtils#getNonNullMappedValueList(List)}
+   *
+   * <p>Method under test: {@link MappingProcessorUtils#getNonNullMappedValueList(List)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @DisplayName("Test getNonNullMappedValueList(List); when ArrayList(); then return Empty")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"List MappingProcessorUtils.getNonNullMappedValueList(List)"})
-  public void testGetNonNullMappedValueList_whenArrayList_thenReturnEmpty() {
+  void testGetNonNullMappedValueList_whenArrayList_thenReturnEmpty() {
     // Arrange and Act
-    List<String> actualNonNullMappedValueList = MappingProcessorUtils.getNonNullMappedValueList(new ArrayList<>());
+    List<String> actualNonNullMappedValueList =
+        MappingProcessorUtils.getNonNullMappedValueList(new ArrayList<>());
 
     // Assert
     assertTrue(actualNonNullMappedValueList.isEmpty());

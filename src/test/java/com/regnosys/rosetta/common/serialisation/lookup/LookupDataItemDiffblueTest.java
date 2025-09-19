@@ -20,22 +20,30 @@ package com.regnosys.rosetta.common.serialisation.lookup;
  * ==============
  */
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertNull;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
-import org.junit.Test;
-import org.junit.experimental.categories.Category;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.fasterxml.jackson.databind.ser.BeanPropertyWriter;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
 
-public class LookupDataItemDiffblueTest {
+class LookupDataItemDiffblueTest {
   /**
    * Test getters and setters.
+   *
    * <ul>
-   *   <li>Then return toString is {@code LookupDataItem[key=null, value=null]}.</li>
+   *   <li>Then return toString is {@code LookupDataItem[key=null, value=null]}.
    * </ul>
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link LookupDataItem#LookupDataItem()}
    *   <li>{@link LookupDataItem#toString()}
@@ -44,10 +52,18 @@ public class LookupDataItemDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void LookupDataItem.<init>()", "void LookupDataItem.<init>(Object, Object)",
-      "Object LookupDataItem.getKey()", "Object LookupDataItem.getValue()", "String LookupDataItem.toString()"})
-  public void testGettersAndSetters_thenReturnToStringIsLookupDataItemKeyNullValueNull() {
+  @DisplayName(
+      "Test getters and setters; then return toString is 'LookupDataItem[key=null, value=null]'")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void LookupDataItem.<init>()",
+    "void LookupDataItem.<init>(Object, Object)",
+    "Object LookupDataItem.getKey()",
+    "Object LookupDataItem.getValue()",
+    "String LookupDataItem.toString()"
+  })
+  void testGettersAndSetters_thenReturnToStringIsLookupDataItemKeyNullValueNull() {
     // Arrange and Act
     LookupDataItem actualLookupDataItem = new LookupDataItem();
     String actualToStringResult = actualLookupDataItem.toString();
@@ -61,12 +77,14 @@ public class LookupDataItemDiffblueTest {
 
   /**
    * Test getters and setters.
+   *
    * <ul>
-   *   <li>When {@code Key}.</li>
-   *   <li>Then return {@code Key}.</li>
+   *   <li>When {@link BeanPropertyWriter#MARKER_FOR_EMPTY}.
+   *   <li>Then Key return {@link JsonInclude.Include}.
    * </ul>
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link LookupDataItem#LookupDataItem(Object, Object)}
    *   <li>{@link LookupDataItem#toString()}
@@ -75,65 +93,85 @@ public class LookupDataItemDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void LookupDataItem.<init>()", "void LookupDataItem.<init>(Object, Object)",
-      "Object LookupDataItem.getKey()", "Object LookupDataItem.getValue()", "String LookupDataItem.toString()"})
-  public void testGettersAndSetters_whenKey_thenReturnKey() {
-    // Arrange and Act
-    LookupDataItem actualLookupDataItem = new LookupDataItem("Key", "Value");
+  @DisplayName("Test getters and setters; when MARKER_FOR_EMPTY; then Key return Include")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void LookupDataItem.<init>()",
+    "void LookupDataItem.<init>(Object, Object)",
+    "Object LookupDataItem.getKey()",
+    "Object LookupDataItem.getValue()",
+    "String LookupDataItem.toString()"
+  })
+  void testGettersAndSetters_whenMarker_for_empty_thenKeyReturnInclude() {
+    // Arrange
+    Object object = BeanPropertyWriter.MARKER_FOR_EMPTY;
+
+    // Act
+    LookupDataItem actualLookupDataItem =
+        new LookupDataItem(BeanPropertyWriter.MARKER_FOR_EMPTY, object);
     String actualToStringResult = actualLookupDataItem.toString();
     Object actualKey = actualLookupDataItem.getKey();
 
     // Assert
-    assertEquals("Key", actualKey);
-    assertEquals("LookupDataItem[key=Key, value=Value]", actualToStringResult);
-    assertEquals("Value", actualLookupDataItem.getValue());
+    assertTrue(actualKey instanceof Include);
+    assertEquals("LookupDataItem[key=NON_EMPTY, value=NON_EMPTY]", actualToStringResult);
+    assertEquals(Include.NON_EMPTY, actualKey);
+    assertSame(object, actualKey);
+    assertSame(object, actualLookupDataItem.getValue());
   }
 
   /**
    * Test {@link LookupDataItem#equals(Object)}, and {@link LookupDataItem#hashCode()}.
+   *
    * <ul>
-   *   <li>When other is equal.</li>
-   *   <li>Then return equal.</li>
+   *   <li>When other is equal.
+   *   <li>Then return equal.
    * </ul>
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link LookupDataItem#equals(Object)}
    *   <li>{@link LookupDataItem#hashCode()}
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @DisplayName("Test equals(Object), and hashCode(); when other is equal; then return equal")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean LookupDataItem.equals(Object)", "int LookupDataItem.hashCode()"})
-  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
+  void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
     // Arrange
     LookupDataItem lookupDataItem = new LookupDataItem();
     LookupDataItem lookupDataItem2 = new LookupDataItem();
 
     // Act and Assert
     assertEquals(lookupDataItem, lookupDataItem2);
-    int expectedHashCodeResult = lookupDataItem.hashCode();
-    assertEquals(expectedHashCodeResult, lookupDataItem2.hashCode());
+    assertEquals(lookupDataItem.hashCode(), lookupDataItem2.hashCode());
   }
 
   /**
    * Test {@link LookupDataItem#equals(Object)}, and {@link LookupDataItem#hashCode()}.
+   *
    * <ul>
-   *   <li>When other is same.</li>
-   *   <li>Then return equal.</li>
+   *   <li>When other is same.
+   *   <li>Then return equal.
    * </ul>
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link LookupDataItem#equals(Object)}
    *   <li>{@link LookupDataItem#hashCode()}
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @DisplayName("Test equals(Object), and hashCode(); when other is same; then return equal")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean LookupDataItem.equals(Object)", "int LookupDataItem.hashCode()"})
-  public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
+  void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
     LookupDataItem lookupDataItem = new LookupDataItem();
 
@@ -145,19 +183,24 @@ public class LookupDataItemDiffblueTest {
 
   /**
    * Test {@link LookupDataItem#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is different.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link LookupDataItem#equals(Object)}
+   *
+   * <p>Method under test: {@link LookupDataItem#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @DisplayName("Test equals(Object); when other is different; then return not equal")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean LookupDataItem.equals(Object)", "int LookupDataItem.hashCode()"})
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
+  void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange
-    LookupDataItem lookupDataItem = new LookupDataItem("Key", "Value");
+    LookupDataItem lookupDataItem =
+        new LookupDataItem(
+            BeanPropertyWriter.MARKER_FOR_EMPTY, BeanPropertyWriter.MARKER_FOR_EMPTY);
 
     // Act and Assert
     assertNotEquals(lookupDataItem, new LookupDataItem());
@@ -165,19 +208,23 @@ public class LookupDataItemDiffblueTest {
 
   /**
    * Test {@link LookupDataItem#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is different.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link LookupDataItem#equals(Object)}
+   *
+   * <p>Method under test: {@link LookupDataItem#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @DisplayName("Test equals(Object); when other is different; then return not equal")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean LookupDataItem.equals(Object)", "int LookupDataItem.hashCode()"})
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual2() {
+  void testEquals_whenOtherIsDifferent_thenReturnNotEqual2() {
     // Arrange
-    LookupDataItem lookupDataItem = new LookupDataItem(new LookupDataItem(), "Value");
+    LookupDataItem lookupDataItem =
+        new LookupDataItem(new LookupDataItem(), BeanPropertyWriter.MARKER_FOR_EMPTY);
 
     // Act and Assert
     assertNotEquals(lookupDataItem, new LookupDataItem());
@@ -185,19 +232,22 @@ public class LookupDataItemDiffblueTest {
 
   /**
    * Test {@link LookupDataItem#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is different.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link LookupDataItem#equals(Object)}
+   *
+   * <p>Method under test: {@link LookupDataItem#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @DisplayName("Test equals(Object); when other is different; then return not equal")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean LookupDataItem.equals(Object)", "int LookupDataItem.hashCode()"})
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual3() {
+  void testEquals_whenOtherIsDifferent_thenReturnNotEqual3() {
     // Arrange
-    LookupDataItem lookupDataItem = new LookupDataItem(null, "Value");
+    LookupDataItem lookupDataItem = new LookupDataItem(null, BeanPropertyWriter.MARKER_FOR_EMPTY);
 
     // Act and Assert
     assertNotEquals(lookupDataItem, new LookupDataItem());
@@ -205,17 +255,20 @@ public class LookupDataItemDiffblueTest {
 
   /**
    * Test {@link LookupDataItem#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is different.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link LookupDataItem#equals(Object)}
+   *
+   * <p>Method under test: {@link LookupDataItem#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @DisplayName("Test equals(Object); when other is different; then return not equal")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean LookupDataItem.equals(Object)", "int LookupDataItem.hashCode()"})
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual4() {
+  void testEquals_whenOtherIsDifferent_thenReturnNotEqual4() {
     // Arrange
     LookupDataItem lookupDataItem = new LookupDataItem(null, new LookupDataItem());
 
@@ -225,34 +278,40 @@ public class LookupDataItemDiffblueTest {
 
   /**
    * Test {@link LookupDataItem#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is {@code null}.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is {@code null}.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link LookupDataItem#equals(Object)}
+   *
+   * <p>Method under test: {@link LookupDataItem#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @DisplayName("Test equals(Object); when other is 'null'; then return not equal")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean LookupDataItem.equals(Object)", "int LookupDataItem.hashCode()"})
-  public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
+  void testEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(new LookupDataItem(), null);
   }
 
   /**
    * Test {@link LookupDataItem#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is wrong type.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is wrong type.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link LookupDataItem#equals(Object)}
+   *
+   * <p>Method under test: {@link LookupDataItem#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @DisplayName("Test equals(Object); when other is wrong type; then return not equal")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean LookupDataItem.equals(Object)", "int LookupDataItem.hashCode()"})
-  public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
+  void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(new LookupDataItem(), "Different type to LookupDataItem");
   }

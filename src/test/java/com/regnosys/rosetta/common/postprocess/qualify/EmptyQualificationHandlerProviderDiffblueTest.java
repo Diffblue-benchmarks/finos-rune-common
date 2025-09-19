@@ -20,36 +20,44 @@ package com.regnosys.rosetta.common.postprocess.qualify;
  * ==============
  */
 
-import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
-import org.junit.Test;
-import org.junit.experimental.categories.Category;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
 
-public class EmptyQualificationHandlerProviderDiffblueTest {
+class EmptyQualificationHandlerProviderDiffblueTest {
   /**
    * Test {@link EmptyQualificationHandlerProvider#getQualificationHandlerMap()}.
-   * <p>
-   * Method under test: {@link EmptyQualificationHandlerProvider#getQualificationHandlerMap()}
+   *
+   * <p>Method under test: {@link EmptyQualificationHandlerProvider#getQualificationHandlerMap()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"java.util.Map EmptyQualificationHandlerProvider.getQualificationHandlerMap()"})
-  public void testGetQualificationHandlerMap() {
+  @DisplayName("Test getQualificationHandlerMap()")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "java.util.Map EmptyQualificationHandlerProvider.getQualificationHandlerMap()"
+  })
+  void testGetQualificationHandlerMap() {
     // Arrange, Act and Assert
-    assertTrue((new EmptyQualificationHandlerProvider()).getQualificationHandlerMap().isEmpty());
+    assertTrue(new EmptyQualificationHandlerProvider().getQualificationHandlerMap().isEmpty());
   }
 
   /**
    * Test new {@link EmptyQualificationHandlerProvider} (default constructor).
-   * <p>
-   * Method under test: default or parameterless constructor of {@link EmptyQualificationHandlerProvider}
+   *
+   * <p>Method under test: default or parameterless constructor of {@link
+   * EmptyQualificationHandlerProvider}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @DisplayName("Test new EmptyQualificationHandlerProvider (default constructor)")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"void EmptyQualificationHandlerProvider.<init>()"})
-  public void testNewEmptyQualificationHandlerProvider() {
+  void testNewEmptyQualificationHandlerProvider() {
     // Arrange, Act and Assert
-    assertTrue((new EmptyQualificationHandlerProvider()).getQualificationHandlerMap().isEmpty());
+    assertTrue(new EmptyQualificationHandlerProvider().getQualificationHandlerMap().isEmpty());
   }
 }

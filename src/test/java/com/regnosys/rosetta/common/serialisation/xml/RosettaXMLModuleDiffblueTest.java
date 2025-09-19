@@ -20,15 +20,15 @@ package com.regnosys.rosetta.common.serialisation.xml;
  * ==============
  */
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import com.fasterxml.jackson.core.Version;
 import com.fasterxml.jackson.databind.AbstractTypeResolver;
@@ -54,26 +54,32 @@ import com.fasterxml.jackson.datatype.joda.deser.key.DateTimeKeyDeserializer;
 import com.rosetta.util.serialisation.RosettaXMLConfiguration;
 import java.util.HashMap;
 import java.util.List;
-import org.junit.Test;
-import org.junit.experimental.categories.Category;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
-public class RosettaXMLModuleDiffblueTest {
+class RosettaXMLModuleDiffblueTest {
   /**
    * Test {@link RosettaXMLModule#RosettaXMLModule(ObjectMapper, RosettaXMLConfiguration, boolean)}.
-   * <p>
-   * Method under test: {@link RosettaXMLModule#RosettaXMLModule(ObjectMapper, RosettaXMLConfiguration, boolean)}
+   *
+   * <p>Method under test: {@link RosettaXMLModule#RosettaXMLModule(ObjectMapper,
+   * RosettaXMLConfiguration, boolean)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void RosettaXMLModule.<init>(ObjectMapper, RosettaXMLConfiguration, boolean)"})
-  public void testNewRosettaXMLModule() {
+  @DisplayName("Test new RosettaXMLModule(ObjectMapper, RosettaXMLConfiguration, boolean)")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void RosettaXMLModule.<init>(ObjectMapper, RosettaXMLConfiguration, boolean)"
+  })
+  void testNewRosettaXMLModule() {
     // Arrange
     JsonMapper mapper = JsonMapper.builder().findAndAddModules().build();
 
     // Act
-    RosettaXMLModule actualRosettaXMLModule = new RosettaXMLModule(mapper, new RosettaXMLConfiguration(new HashMap<>()),
-        true);
+    RosettaXMLModule actualRosettaXMLModule =
+        new RosettaXMLModule(mapper, new RosettaXMLConfiguration(new HashMap<>()), true);
 
     // Assert
     Iterable<? extends Module> dependencies = actualRosettaXMLModule.getDependencies();
@@ -95,17 +101,20 @@ public class RosettaXMLModuleDiffblueTest {
 
   /**
    * Test {@link RosettaXMLModule#setupModule(SetupContext)}.
-   * <p>
-   * Method under test: {@link RosettaXMLModule#setupModule(SetupContext)}
+   *
+   * <p>Method under test: {@link RosettaXMLModule#setupModule(SetupContext)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @DisplayName("Test setupModule(SetupContext)")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"void RosettaXMLModule.setupModule(SetupContext)"})
-  public void testSetupModule() {
+  void testSetupModule() {
     // Arrange
     JsonMapper mapper = JsonMapper.builder().findAndAddModules().build();
-    RosettaXMLModule rosettaXMLModule = new RosettaXMLModule(mapper, new RosettaXMLConfiguration(new HashMap<>()),
-        true);
+    RosettaXMLModule rosettaXMLModule =
+        new RosettaXMLModule(mapper, new RosettaXMLConfiguration(new HashMap<>()), true);
+
     SetupContext context = mock(SetupContext.class);
     doNothing().when(context).addBeanDeserializerModifier(Mockito.<BeanDeserializerModifier>any());
     doNothing().when(context).addBeanSerializerModifier(Mockito.<BeanSerializerModifier>any());
@@ -117,7 +126,8 @@ public class RosettaXMLModuleDiffblueTest {
     rosettaXMLModule.setupModule(context);
 
     // Assert
-    verify(context, atLeast(1)).addBeanDeserializerModifier(Mockito.<BeanDeserializerModifier>any());
+    verify(context, atLeast(1))
+        .addBeanDeserializerModifier(Mockito.<BeanDeserializerModifier>any());
     verify(context, atLeast(1)).addBeanSerializerModifier(Mockito.<BeanSerializerModifier>any());
     verify(context).addDeserializers(isA(Deserializers.class));
     verify(context).addSerializers(isA(Serializers.class));
@@ -126,17 +136,20 @@ public class RosettaXMLModuleDiffblueTest {
 
   /**
    * Test {@link RosettaXMLModule#setupModule(SetupContext)}.
-   * <p>
-   * Method under test: {@link RosettaXMLModule#setupModule(SetupContext)}
+   *
+   * <p>Method under test: {@link RosettaXMLModule#setupModule(SetupContext)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @DisplayName("Test setupModule(SetupContext)")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"void RosettaXMLModule.setupModule(SetupContext)"})
-  public void testSetupModule2() {
+  void testSetupModule2() {
     // Arrange
     JsonMapper mapper = JsonMapper.builder().findAndAddModules().build();
-    RosettaXMLModule rosettaXMLModule = new RosettaXMLModule(mapper, new RosettaXMLConfiguration(new HashMap<>()),
-        false);
+    RosettaXMLModule rosettaXMLModule =
+        new RosettaXMLModule(mapper, new RosettaXMLConfiguration(new HashMap<>()), false);
+
     SetupContext context = mock(SetupContext.class);
     doNothing().when(context).addBeanDeserializerModifier(Mockito.<BeanDeserializerModifier>any());
     doNothing().when(context).addBeanSerializerModifier(Mockito.<BeanSerializerModifier>any());
@@ -148,7 +161,8 @@ public class RosettaXMLModuleDiffblueTest {
     rosettaXMLModule.setupModule(context);
 
     // Assert
-    verify(context, atLeast(1)).addBeanDeserializerModifier(Mockito.<BeanDeserializerModifier>any());
+    verify(context, atLeast(1))
+        .addBeanDeserializerModifier(Mockito.<BeanDeserializerModifier>any());
     verify(context, atLeast(1)).addBeanSerializerModifier(Mockito.<BeanSerializerModifier>any());
     verify(context).addDeserializers(isA(Deserializers.class));
     verify(context).addSerializers(isA(Serializers.class));
@@ -157,19 +171,22 @@ public class RosettaXMLModuleDiffblueTest {
 
   /**
    * Test {@link RosettaXMLModule#setupModule(SetupContext)}.
-   * <p>
-   * Method under test: {@link RosettaXMLModule#setupModule(SetupContext)}
+   *
+   * <p>Method under test: {@link RosettaXMLModule#setupModule(SetupContext)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @DisplayName("Test setupModule(SetupContext)")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"void RosettaXMLModule.setupModule(SetupContext)"})
-  public void testSetupModule3() {
+  void testSetupModule3() {
     // Arrange
     JsonMapper mapper = JsonMapper.builder().findAndAddModules().build();
 
-    RosettaXMLModule rosettaXMLModule = new RosettaXMLModule(mapper, new RosettaXMLConfiguration(new HashMap<>()),
-        true);
+    RosettaXMLModule rosettaXMLModule =
+        new RosettaXMLModule(mapper, new RosettaXMLConfiguration(new HashMap<>()), true);
     rosettaXMLModule.addSerializer(new XMLGregorianCalendarSerializer());
+
     SetupContext context = mock(SetupContext.class);
     doNothing().when(context).addBeanDeserializerModifier(Mockito.<BeanDeserializerModifier>any());
     doNothing().when(context).addBeanSerializerModifier(Mockito.<BeanSerializerModifier>any());
@@ -181,7 +198,8 @@ public class RosettaXMLModuleDiffblueTest {
     rosettaXMLModule.setupModule(context);
 
     // Assert
-    verify(context, atLeast(1)).addBeanDeserializerModifier(Mockito.<BeanDeserializerModifier>any());
+    verify(context, atLeast(1))
+        .addBeanDeserializerModifier(Mockito.<BeanDeserializerModifier>any());
     verify(context, atLeast(1)).addBeanSerializerModifier(Mockito.<BeanSerializerModifier>any());
     verify(context).addDeserializers(isA(Deserializers.class));
     verify(context).addSerializers(isA(Serializers.class));
@@ -190,23 +208,26 @@ public class RosettaXMLModuleDiffblueTest {
 
   /**
    * Test {@link RosettaXMLModule#setupModule(SetupContext)}.
-   * <p>
-   * Method under test: {@link RosettaXMLModule#setupModule(SetupContext)}
+   *
+   * <p>Method under test: {@link RosettaXMLModule#setupModule(SetupContext)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @DisplayName("Test setupModule(SetupContext)")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"void RosettaXMLModule.setupModule(SetupContext)"})
-  public void testSetupModule4() {
+  void testSetupModule4() {
     // Arrange
     JsonMapper mapper = JsonMapper.builder().findAndAddModules().build();
 
-    RosettaXMLModule rosettaXMLModule = new RosettaXMLModule(mapper, new RosettaXMLConfiguration(new HashMap<>()),
-        true);
+    RosettaXMLModule rosettaXMLModule =
+        new RosettaXMLModule(mapper, new RosettaXMLConfiguration(new HashMap<>()), true);
     rosettaXMLModule.setDeserializers(new SimpleDeserializers());
     Class<Object> beanType = Object.class;
     rosettaXMLModule.addValueInstantiator(beanType, new JsonLocationInstantiator());
     Class<Object> type = Object.class;
     rosettaXMLModule.addKeyDeserializer(type, new DateTimeKeyDeserializer());
+
     SetupContext context = mock(SetupContext.class);
     doNothing().when(context).addValueInstantiators(Mockito.<ValueInstantiators>any());
     doNothing().when(context).addKeyDeserializers(Mockito.<KeyDeserializers>any());
@@ -220,7 +241,8 @@ public class RosettaXMLModuleDiffblueTest {
     rosettaXMLModule.setupModule(context);
 
     // Assert
-    verify(context, atLeast(1)).addBeanDeserializerModifier(Mockito.<BeanDeserializerModifier>any());
+    verify(context, atLeast(1))
+        .addBeanDeserializerModifier(Mockito.<BeanDeserializerModifier>any());
     verify(context, atLeast(1)).addBeanSerializerModifier(Mockito.<BeanSerializerModifier>any());
     verify(context).addDeserializers(isA(Deserializers.class));
     verify(context).addKeyDeserializers(isA(KeyDeserializers.class));
@@ -231,18 +253,20 @@ public class RosettaXMLModuleDiffblueTest {
 
   /**
    * Test {@link RosettaXMLModule#setupModule(SetupContext)}.
-   * <p>
-   * Method under test: {@link RosettaXMLModule#setupModule(SetupContext)}
+   *
+   * <p>Method under test: {@link RosettaXMLModule#setupModule(SetupContext)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @DisplayName("Test setupModule(SetupContext)")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"void RosettaXMLModule.setupModule(SetupContext)"})
-  public void testSetupModule5() {
+  void testSetupModule5() {
     // Arrange
     JsonMapper mapper = JsonMapper.builder().findAndAddModules().build();
 
-    RosettaXMLModule rosettaXMLModule = new RosettaXMLModule(mapper, new RosettaXMLConfiguration(new HashMap<>()),
-        true);
+    RosettaXMLModule rosettaXMLModule =
+        new RosettaXMLModule(mapper, new RosettaXMLConfiguration(new HashMap<>()), true);
     rosettaXMLModule.setDeserializerModifier(new RosettaBeanDeserializerModifier());
     rosettaXMLModule.setAbstractTypes(new SimpleAbstractTypeResolver());
     rosettaXMLModule.setKeySerializers(new SimpleSerializers());
@@ -250,6 +274,7 @@ public class RosettaXMLModuleDiffblueTest {
     rosettaXMLModule.addValueInstantiator(beanType, new JsonLocationInstantiator());
     Class<Object> type = Object.class;
     rosettaXMLModule.addKeyDeserializer(type, new DateTimeKeyDeserializer());
+
     SetupContext context = mock(SetupContext.class);
     doNothing().when(context).addAbstractTypeResolver(Mockito.<AbstractTypeResolver>any());
     doNothing().when(context).addKeySerializers(Mockito.<Serializers>any());
@@ -266,7 +291,8 @@ public class RosettaXMLModuleDiffblueTest {
 
     // Assert
     verify(context).addAbstractTypeResolver(isA(AbstractTypeResolver.class));
-    verify(context, atLeast(1)).addBeanDeserializerModifier(Mockito.<BeanDeserializerModifier>any());
+    verify(context, atLeast(1))
+        .addBeanDeserializerModifier(Mockito.<BeanDeserializerModifier>any());
     verify(context, atLeast(1)).addBeanSerializerModifier(Mockito.<BeanSerializerModifier>any());
     verify(context).addDeserializers(isA(Deserializers.class));
     verify(context).addKeyDeserializers(isA(KeyDeserializers.class));
@@ -278,18 +304,20 @@ public class RosettaXMLModuleDiffblueTest {
 
   /**
    * Test {@link RosettaXMLModule#setupModule(SetupContext)}.
-   * <p>
-   * Method under test: {@link RosettaXMLModule#setupModule(SetupContext)}
+   *
+   * <p>Method under test: {@link RosettaXMLModule#setupModule(SetupContext)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @DisplayName("Test setupModule(SetupContext)")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"void RosettaXMLModule.setupModule(SetupContext)"})
-  public void testSetupModule6() {
+  void testSetupModule6() {
     // Arrange
     JsonMapper mapper = JsonMapper.builder().findAndAddModules().build();
 
-    RosettaXMLModule rosettaXMLModule = new RosettaXMLModule(mapper, new RosettaXMLConfiguration(new HashMap<>()),
-        true);
+    RosettaXMLModule rosettaXMLModule =
+        new RosettaXMLModule(mapper, new RosettaXMLConfiguration(new HashMap<>()), true);
     rosettaXMLModule.setSerializerModifier(new RosettaBeanSerializerModifier());
     rosettaXMLModule.setAbstractTypes(new SimpleAbstractTypeResolver());
     rosettaXMLModule.setKeySerializers(new SimpleSerializers());
@@ -297,6 +325,7 @@ public class RosettaXMLModuleDiffblueTest {
     rosettaXMLModule.addValueInstantiator(beanType, new JsonLocationInstantiator());
     Class<Object> type = Object.class;
     rosettaXMLModule.addKeyDeserializer(type, new DateTimeKeyDeserializer());
+
     SetupContext context = mock(SetupContext.class);
     doNothing().when(context).addAbstractTypeResolver(Mockito.<AbstractTypeResolver>any());
     doNothing().when(context).addKeySerializers(Mockito.<Serializers>any());
@@ -313,7 +342,8 @@ public class RosettaXMLModuleDiffblueTest {
 
     // Assert
     verify(context).addAbstractTypeResolver(isA(AbstractTypeResolver.class));
-    verify(context, atLeast(1)).addBeanDeserializerModifier(Mockito.<BeanDeserializerModifier>any());
+    verify(context, atLeast(1))
+        .addBeanDeserializerModifier(Mockito.<BeanDeserializerModifier>any());
     verify(context, atLeast(1)).addBeanSerializerModifier(Mockito.<BeanSerializerModifier>any());
     verify(context).addDeserializers(isA(Deserializers.class));
     verify(context).addKeyDeserializers(isA(KeyDeserializers.class));
@@ -325,25 +355,28 @@ public class RosettaXMLModuleDiffblueTest {
 
   /**
    * Test {@link RosettaXMLModule#setupModule(SetupContext)}.
-   * <p>
-   * Method under test: {@link RosettaXMLModule#setupModule(SetupContext)}
+   *
+   * <p>Method under test: {@link RosettaXMLModule#setupModule(SetupContext)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @DisplayName("Test setupModule(SetupContext)")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"void RosettaXMLModule.setupModule(SetupContext)"})
-  public void testSetupModule7() {
+  void testSetupModule7() {
     // Arrange
     JsonMapper mapper = JsonMapper.builder().findAndAddModules().build();
 
-    RosettaXMLModule rosettaXMLModule = new RosettaXMLModule(mapper, new RosettaXMLConfiguration(new HashMap<>()),
-        true);
-    rosettaXMLModule.registerSubtypes(new Class[]{});
+    RosettaXMLModule rosettaXMLModule =
+        new RosettaXMLModule(mapper, new RosettaXMLConfiguration(new HashMap<>()), true);
+    rosettaXMLModule.registerSubtypes(new Class[] {});
     rosettaXMLModule.setAbstractTypes(new SimpleAbstractTypeResolver());
     rosettaXMLModule.setKeySerializers(new SimpleSerializers());
     Class<Object> beanType = Object.class;
     rosettaXMLModule.addValueInstantiator(beanType, new JsonLocationInstantiator());
     Class<Object> type = Object.class;
     rosettaXMLModule.addKeyDeserializer(type, new DateTimeKeyDeserializer());
+
     SetupContext context = mock(SetupContext.class);
     doNothing().when(context).addAbstractTypeResolver(Mockito.<AbstractTypeResolver>any());
     doNothing().when(context).addKeySerializers(Mockito.<Serializers>any());
@@ -360,7 +393,8 @@ public class RosettaXMLModuleDiffblueTest {
 
     // Assert
     verify(context).addAbstractTypeResolver(isA(AbstractTypeResolver.class));
-    verify(context, atLeast(1)).addBeanDeserializerModifier(Mockito.<BeanDeserializerModifier>any());
+    verify(context, atLeast(1))
+        .addBeanDeserializerModifier(Mockito.<BeanDeserializerModifier>any());
     verify(context, atLeast(1)).addBeanSerializerModifier(Mockito.<BeanSerializerModifier>any());
     verify(context).addDeserializers(isA(Deserializers.class));
     verify(context).addKeyDeserializers(isA(KeyDeserializers.class));
@@ -372,22 +406,26 @@ public class RosettaXMLModuleDiffblueTest {
 
   /**
    * Test {@link RosettaXMLModule#setupModule(SetupContext)}.
+   *
    * <ul>
-   *   <li>Given array of {@link Class} with {@link Object}.</li>
-   *   <li>Then calls {@link SetupContext#registerSubtypes(NamedType[])}.</li>
+   *   <li>Given array of {@link Class} with {@link Object}.
+   *   <li>Then calls {@link SetupContext#registerSubtypes(NamedType[])}.
    * </ul>
-   * <p>
-   * Method under test: {@link RosettaXMLModule#setupModule(SetupContext)}
+   *
+   * <p>Method under test: {@link RosettaXMLModule#setupModule(SetupContext)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @DisplayName(
+      "Test setupModule(SetupContext); given array of Class with Object; then calls registerSubtypes(NamedType[])")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"void RosettaXMLModule.setupModule(SetupContext)"})
-  public void testSetupModule_givenArrayOfClassWithObject_thenCallsRegisterSubtypes() {
+  void testSetupModule_givenArrayOfClassWithObject_thenCallsRegisterSubtypes() {
     // Arrange
     JsonMapper mapper = JsonMapper.builder().findAndAddModules().build();
 
-    RosettaXMLModule rosettaXMLModule = new RosettaXMLModule(mapper, new RosettaXMLConfiguration(new HashMap<>()),
-        true);
+    RosettaXMLModule rosettaXMLModule =
+        new RosettaXMLModule(mapper, new RosettaXMLConfiguration(new HashMap<>()), true);
     Class<Object> forNameResult = Object.class;
     rosettaXMLModule.registerSubtypes(forNameResult);
     rosettaXMLModule.setAbstractTypes(new SimpleAbstractTypeResolver());
@@ -396,6 +434,7 @@ public class RosettaXMLModuleDiffblueTest {
     rosettaXMLModule.addValueInstantiator(beanType, new JsonLocationInstantiator());
     Class<Object> type = Object.class;
     rosettaXMLModule.addKeyDeserializer(type, new DateTimeKeyDeserializer());
+
     SetupContext context = mock(SetupContext.class);
     doNothing().when(context).registerSubtypes(isA(NamedType[].class));
     doNothing().when(context).addAbstractTypeResolver(Mockito.<AbstractTypeResolver>any());
@@ -413,7 +452,8 @@ public class RosettaXMLModuleDiffblueTest {
 
     // Assert
     verify(context).addAbstractTypeResolver(isA(AbstractTypeResolver.class));
-    verify(context, atLeast(1)).addBeanDeserializerModifier(Mockito.<BeanDeserializerModifier>any());
+    verify(context, atLeast(1))
+        .addBeanDeserializerModifier(Mockito.<BeanDeserializerModifier>any());
     verify(context, atLeast(1)).addBeanSerializerModifier(Mockito.<BeanSerializerModifier>any());
     verify(context).addDeserializers(isA(Deserializers.class));
     verify(context).addKeyDeserializers(isA(KeyDeserializers.class));
@@ -426,24 +466,29 @@ public class RosettaXMLModuleDiffblueTest {
 
   /**
    * Test {@link RosettaXMLModule#setupModule(SetupContext)}.
+   *
    * <ul>
-   *   <li>Given {@code Object}.</li>
-   *   <li>Then calls {@link SetupContext#addKeyDeserializers(KeyDeserializers)}.</li>
+   *   <li>Given {@code Object}.
+   *   <li>Then calls {@link SetupContext#addKeyDeserializers(KeyDeserializers)}.
    * </ul>
-   * <p>
-   * Method under test: {@link RosettaXMLModule#setupModule(SetupContext)}
+   *
+   * <p>Method under test: {@link RosettaXMLModule#setupModule(SetupContext)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @DisplayName(
+      "Test setupModule(SetupContext); given 'java.lang.Object'; then calls addKeyDeserializers(KeyDeserializers)")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"void RosettaXMLModule.setupModule(SetupContext)"})
-  public void testSetupModule_givenJavaLangObject_thenCallsAddKeyDeserializers() {
+  void testSetupModule_givenJavaLangObject_thenCallsAddKeyDeserializers() {
     // Arrange
     JsonMapper mapper = JsonMapper.builder().findAndAddModules().build();
 
-    RosettaXMLModule rosettaXMLModule = new RosettaXMLModule(mapper, new RosettaXMLConfiguration(new HashMap<>()),
-        true);
+    RosettaXMLModule rosettaXMLModule =
+        new RosettaXMLModule(mapper, new RosettaXMLConfiguration(new HashMap<>()), true);
     Class<Object> type = Object.class;
     rosettaXMLModule.addKeyDeserializer(type, new DateTimeKeyDeserializer());
+
     SetupContext context = mock(SetupContext.class);
     doNothing().when(context).addKeyDeserializers(Mockito.<KeyDeserializers>any());
     doNothing().when(context).addBeanDeserializerModifier(Mockito.<BeanDeserializerModifier>any());
@@ -456,7 +501,8 @@ public class RosettaXMLModuleDiffblueTest {
     rosettaXMLModule.setupModule(context);
 
     // Assert
-    verify(context, atLeast(1)).addBeanDeserializerModifier(Mockito.<BeanDeserializerModifier>any());
+    verify(context, atLeast(1))
+        .addBeanDeserializerModifier(Mockito.<BeanDeserializerModifier>any());
     verify(context, atLeast(1)).addBeanSerializerModifier(Mockito.<BeanSerializerModifier>any());
     verify(context).addDeserializers(isA(Deserializers.class));
     verify(context).addKeyDeserializers(isA(KeyDeserializers.class));
@@ -466,27 +512,32 @@ public class RosettaXMLModuleDiffblueTest {
 
   /**
    * Test {@link RosettaXMLModule#setupModule(SetupContext)}.
+   *
    * <ul>
-   *   <li>Then calls {@link SetupContext#addAbstractTypeResolver(AbstractTypeResolver)}.</li>
+   *   <li>Then calls {@link SetupContext#addAbstractTypeResolver(AbstractTypeResolver)}.
    * </ul>
-   * <p>
-   * Method under test: {@link RosettaXMLModule#setupModule(SetupContext)}
+   *
+   * <p>Method under test: {@link RosettaXMLModule#setupModule(SetupContext)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @DisplayName(
+      "Test setupModule(SetupContext); then calls addAbstractTypeResolver(AbstractTypeResolver)")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"void RosettaXMLModule.setupModule(SetupContext)"})
-  public void testSetupModule_thenCallsAddAbstractTypeResolver() {
+  void testSetupModule_thenCallsAddAbstractTypeResolver() {
     // Arrange
     JsonMapper mapper = JsonMapper.builder().findAndAddModules().build();
 
-    RosettaXMLModule rosettaXMLModule = new RosettaXMLModule(mapper, new RosettaXMLConfiguration(new HashMap<>()),
-        true);
+    RosettaXMLModule rosettaXMLModule =
+        new RosettaXMLModule(mapper, new RosettaXMLConfiguration(new HashMap<>()), true);
     rosettaXMLModule.setAbstractTypes(new SimpleAbstractTypeResolver());
     rosettaXMLModule.setKeySerializers(new SimpleSerializers());
     Class<Object> beanType = Object.class;
     rosettaXMLModule.addValueInstantiator(beanType, new JsonLocationInstantiator());
     Class<Object> type = Object.class;
     rosettaXMLModule.addKeyDeserializer(type, new DateTimeKeyDeserializer());
+
     SetupContext context = mock(SetupContext.class);
     doNothing().when(context).addAbstractTypeResolver(Mockito.<AbstractTypeResolver>any());
     doNothing().when(context).addKeySerializers(Mockito.<Serializers>any());
@@ -503,7 +554,8 @@ public class RosettaXMLModuleDiffblueTest {
 
     // Assert
     verify(context).addAbstractTypeResolver(isA(AbstractTypeResolver.class));
-    verify(context, atLeast(1)).addBeanDeserializerModifier(Mockito.<BeanDeserializerModifier>any());
+    verify(context, atLeast(1))
+        .addBeanDeserializerModifier(Mockito.<BeanDeserializerModifier>any());
     verify(context, atLeast(1)).addBeanSerializerModifier(Mockito.<BeanSerializerModifier>any());
     verify(context).addDeserializers(isA(Deserializers.class));
     verify(context).addKeyDeserializers(isA(KeyDeserializers.class));
@@ -515,26 +567,30 @@ public class RosettaXMLModuleDiffblueTest {
 
   /**
    * Test {@link RosettaXMLModule#setupModule(SetupContext)}.
+   *
    * <ul>
-   *   <li>Then calls {@link SetupContext#addKeySerializers(Serializers)}.</li>
+   *   <li>Then calls {@link SetupContext#addKeySerializers(Serializers)}.
    * </ul>
-   * <p>
-   * Method under test: {@link RosettaXMLModule#setupModule(SetupContext)}
+   *
+   * <p>Method under test: {@link RosettaXMLModule#setupModule(SetupContext)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @DisplayName("Test setupModule(SetupContext); then calls addKeySerializers(Serializers)")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"void RosettaXMLModule.setupModule(SetupContext)"})
-  public void testSetupModule_thenCallsAddKeySerializers() {
+  void testSetupModule_thenCallsAddKeySerializers() {
     // Arrange
     JsonMapper mapper = JsonMapper.builder().findAndAddModules().build();
 
-    RosettaXMLModule rosettaXMLModule = new RosettaXMLModule(mapper, new RosettaXMLConfiguration(new HashMap<>()),
-        true);
+    RosettaXMLModule rosettaXMLModule =
+        new RosettaXMLModule(mapper, new RosettaXMLConfiguration(new HashMap<>()), true);
     rosettaXMLModule.setKeySerializers(new SimpleSerializers());
     Class<Object> beanType = Object.class;
     rosettaXMLModule.addValueInstantiator(beanType, new JsonLocationInstantiator());
     Class<Object> type = Object.class;
     rosettaXMLModule.addKeyDeserializer(type, new DateTimeKeyDeserializer());
+
     SetupContext context = mock(SetupContext.class);
     doNothing().when(context).addKeySerializers(Mockito.<Serializers>any());
     doNothing().when(context).addValueInstantiators(Mockito.<ValueInstantiators>any());
@@ -549,7 +605,8 @@ public class RosettaXMLModuleDiffblueTest {
     rosettaXMLModule.setupModule(context);
 
     // Assert
-    verify(context, atLeast(1)).addBeanDeserializerModifier(Mockito.<BeanDeserializerModifier>any());
+    verify(context, atLeast(1))
+        .addBeanDeserializerModifier(Mockito.<BeanDeserializerModifier>any());
     verify(context, atLeast(1)).addBeanSerializerModifier(Mockito.<BeanSerializerModifier>any());
     verify(context).addDeserializers(isA(Deserializers.class));
     verify(context).addKeyDeserializers(isA(KeyDeserializers.class));
@@ -561,25 +618,30 @@ public class RosettaXMLModuleDiffblueTest {
 
   /**
    * Test {@link RosettaXMLModule#setupModule(SetupContext)}.
+   *
    * <ul>
-   *   <li>Then calls {@link SetupContext#addValueInstantiators(ValueInstantiators)}.</li>
+   *   <li>Then calls {@link SetupContext#addValueInstantiators(ValueInstantiators)}.
    * </ul>
-   * <p>
-   * Method under test: {@link RosettaXMLModule#setupModule(SetupContext)}
+   *
+   * <p>Method under test: {@link RosettaXMLModule#setupModule(SetupContext)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @DisplayName(
+      "Test setupModule(SetupContext); then calls addValueInstantiators(ValueInstantiators)")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"void RosettaXMLModule.setupModule(SetupContext)"})
-  public void testSetupModule_thenCallsAddValueInstantiators() {
+  void testSetupModule_thenCallsAddValueInstantiators() {
     // Arrange
     JsonMapper mapper = JsonMapper.builder().findAndAddModules().build();
 
-    RosettaXMLModule rosettaXMLModule = new RosettaXMLModule(mapper, new RosettaXMLConfiguration(new HashMap<>()),
-        true);
+    RosettaXMLModule rosettaXMLModule =
+        new RosettaXMLModule(mapper, new RosettaXMLConfiguration(new HashMap<>()), true);
     Class<Object> beanType = Object.class;
     rosettaXMLModule.addValueInstantiator(beanType, new JsonLocationInstantiator());
     Class<Object> type = Object.class;
     rosettaXMLModule.addKeyDeserializer(type, new DateTimeKeyDeserializer());
+
     SetupContext context = mock(SetupContext.class);
     doNothing().when(context).addValueInstantiators(Mockito.<ValueInstantiators>any());
     doNothing().when(context).addKeyDeserializers(Mockito.<KeyDeserializers>any());
@@ -593,7 +655,8 @@ public class RosettaXMLModuleDiffblueTest {
     rosettaXMLModule.setupModule(context);
 
     // Assert
-    verify(context, atLeast(1)).addBeanDeserializerModifier(Mockito.<BeanDeserializerModifier>any());
+    verify(context, atLeast(1))
+        .addBeanDeserializerModifier(Mockito.<BeanDeserializerModifier>any());
     verify(context, atLeast(1)).addBeanSerializerModifier(Mockito.<BeanSerializerModifier>any());
     verify(context).addDeserializers(isA(Deserializers.class));
     verify(context).addKeyDeserializers(isA(KeyDeserializers.class));
@@ -604,23 +667,27 @@ public class RosettaXMLModuleDiffblueTest {
 
   /**
    * Test {@link RosettaXMLModule#setupModule(SetupContext)}.
+   *
    * <ul>
-   *   <li>Then calls {@link SetupContext#setMixInAnnotations(Class, Class)}.</li>
+   *   <li>Then calls {@link SetupContext#setMixInAnnotations(Class, Class)}.
    * </ul>
-   * <p>
-   * Method under test: {@link RosettaXMLModule#setupModule(SetupContext)}
+   *
+   * <p>Method under test: {@link RosettaXMLModule#setupModule(SetupContext)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @DisplayName("Test setupModule(SetupContext); then calls setMixInAnnotations(Class, Class)")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"void RosettaXMLModule.setupModule(SetupContext)"})
-  public void testSetupModule_thenCallsSetMixInAnnotations() {
+  void testSetupModule_thenCallsSetMixInAnnotations() {
     // Arrange
     JsonMapper mapper = JsonMapper.builder().findAndAddModules().build();
 
-    RosettaXMLModule rosettaXMLModule = new RosettaXMLModule(mapper, new RosettaXMLConfiguration(new HashMap<>()),
-        true);
+    RosettaXMLModule rosettaXMLModule =
+        new RosettaXMLModule(mapper, new RosettaXMLConfiguration(new HashMap<>()), true);
     Class<Object> targetType = Object.class;
     Class<Object> mixinClass = Object.class;
+
     rosettaXMLModule.setMixInAnnotation(targetType, mixinClass);
     Class<Object> forNameResult = Object.class;
     rosettaXMLModule.registerSubtypes(forNameResult);
@@ -630,8 +697,9 @@ public class RosettaXMLModuleDiffblueTest {
     rosettaXMLModule.addValueInstantiator(beanType, new JsonLocationInstantiator());
     Class<Object> type = Object.class;
     rosettaXMLModule.addKeyDeserializer(type, new DateTimeKeyDeserializer());
+
     SetupContext context = mock(SetupContext.class);
-    doNothing().when(context).setMixInAnnotations(Mockito.<Class<Object>>any(), Mockito.<Class<Object>>any());
+    doNothing().when(context).setMixInAnnotations(Mockito.<Class<?>>any(), Mockito.<Class<?>>any());
     doNothing().when(context).registerSubtypes(isA(NamedType[].class));
     doNothing().when(context).addAbstractTypeResolver(Mockito.<AbstractTypeResolver>any());
     doNothing().when(context).addKeySerializers(Mockito.<Serializers>any());
@@ -648,7 +716,8 @@ public class RosettaXMLModuleDiffblueTest {
 
     // Assert
     verify(context).addAbstractTypeResolver(isA(AbstractTypeResolver.class));
-    verify(context, atLeast(1)).addBeanDeserializerModifier(Mockito.<BeanDeserializerModifier>any());
+    verify(context, atLeast(1))
+        .addBeanDeserializerModifier(Mockito.<BeanDeserializerModifier>any());
     verify(context, atLeast(1)).addBeanSerializerModifier(Mockito.<BeanSerializerModifier>any());
     verify(context).addDeserializers(isA(Deserializers.class));
     verify(context).addKeyDeserializers(isA(KeyDeserializers.class));

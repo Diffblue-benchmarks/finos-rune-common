@@ -20,34 +20,47 @@ package com.regnosys.rosetta.common.util;
  * ==============
  */
 
-import static org.junit.Assert.assertEquals;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
-import org.junit.Test;
-import org.junit.experimental.categories.Category;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.fasterxml.jackson.databind.ser.BeanPropertyWriter;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
 
-public class MutablePairDiffblueTest {
+class MutablePairDiffblueTest {
   /**
    * Test {@link MutablePair#of(Object, Object)}.
-   * <p>
-   * Method under test: {@link MutablePair#of(Object, Object)}
+   *
+   * <p>Method under test: {@link MutablePair#of(Object, Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @DisplayName("Test of(Object, Object)")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"MutablePair MutablePair.of(Object, Object)"})
-  public void testOf() {
-    // Arrange and Act
-    MutablePair<Object, Object> actualOfResult = MutablePair.of("Left", "Right");
+  void testOf() {
+    // Arrange
+    Object object = BeanPropertyWriter.MARKER_FOR_EMPTY;
+
+    // Act
+    MutablePair<Object, Object> actualOfResult =
+        MutablePair.of(BeanPropertyWriter.MARKER_FOR_EMPTY, object);
 
     // Assert
-    assertEquals("Left", actualOfResult.getLeft());
-    assertEquals("Right", actualOfResult.getRight());
+    assertSame(object, actualOfResult.getLeft());
+    assertSame(object, actualOfResult.getRight());
   }
 
   /**
    * Test getters and setters.
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link MutablePair#MutablePair(Object, Object)}
    *   <li>{@link MutablePair#setLeft(Object)}
@@ -57,35 +70,52 @@ public class MutablePairDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void MutablePair.<init>(Object, Object)", "Object MutablePair.getLeft()",
-      "Object MutablePair.getRight()", "void MutablePair.setLeft(Object)", "void MutablePair.setRight(Object)"})
-  public void testGettersAndSetters() {
+  @DisplayName("Test getters and setters")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void MutablePair.<init>(Object, Object)",
+    "Object MutablePair.getLeft()",
+    "Object MutablePair.getRight()",
+    "void MutablePair.setLeft(Object)",
+    "void MutablePair.setRight(Object)"
+  })
+  void testGettersAndSetters() {
     // Arrange and Act
-    MutablePair<Object, Object> actualMutablePair = new MutablePair<>("Left", "Right");
-    actualMutablePair.setLeft("Left");
-    actualMutablePair.setRight("Right");
+    MutablePair<Object, Object> actualMutablePair =
+        new MutablePair<>(BeanPropertyWriter.MARKER_FOR_EMPTY, BeanPropertyWriter.MARKER_FOR_EMPTY);
+    actualMutablePair.setLeft(BeanPropertyWriter.MARKER_FOR_EMPTY);
+    Object object = BeanPropertyWriter.MARKER_FOR_EMPTY;
+    actualMutablePair.setRight(object);
     Object actualLeft = actualMutablePair.getLeft();
 
     // Assert
-    assertEquals("Left", actualLeft);
-    assertEquals("Right", actualMutablePair.getRight());
+    assertTrue(actualLeft instanceof Include);
+    assertEquals(Include.NON_EMPTY, actualLeft);
+    assertSame(object, actualLeft);
+    assertSame(object, actualMutablePair.getRight());
   }
 
   /**
    * Test {@link MutablePair#setValue(Object)}.
-   * <p>
-   * Method under test: {@link MutablePair#setValue(Object)}
+   *
+   * <p>Method under test: {@link MutablePair#setValue(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @DisplayName("Test setValue(Object)")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"Object MutablePair.setValue(Object)"})
-  public void testSetValue() {
+  void testSetValue() {
     // Arrange
-    MutablePair<Object, Object> ofResult = MutablePair.of("Left", "Right");
+    MutablePair<Object, Object> ofResult =
+        MutablePair.of(BeanPropertyWriter.MARKER_FOR_EMPTY, BeanPropertyWriter.MARKER_FOR_EMPTY);
+    Object object = BeanPropertyWriter.MARKER_FOR_EMPTY;
 
-    // Act and Assert
-    assertEquals("Right", ofResult.setValue("Value"));
-    assertEquals("Value", ofResult.getRight());
+    // Act
+    Object actualSetValueResult = ofResult.setValue(object);
+
+    // Assert
+    assertSame(object, actualSetValueResult);
   }
 }

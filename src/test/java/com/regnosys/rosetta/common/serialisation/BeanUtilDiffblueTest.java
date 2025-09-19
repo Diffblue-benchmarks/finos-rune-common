@@ -20,61 +20,71 @@ package com.regnosys.rosetta.common.serialisation;
  * ==============
  */
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
-import org.junit.Test;
-import org.junit.experimental.categories.Category;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
 
-public class BeanUtilDiffblueTest {
+class BeanUtilDiffblueTest {
   /**
    * Test {@link BeanUtil#toLowerCamelCase(String)}.
+   *
    * <ul>
-   *   <li>When empty string.</li>
-   *   <li>Then return empty string.</li>
+   *   <li>When empty string.
+   *   <li>Then return empty string.
    * </ul>
-   * <p>
-   * Method under test: {@link BeanUtil#toLowerCamelCase(String)}
+   *
+   * <p>Method under test: {@link BeanUtil#toLowerCamelCase(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @DisplayName("Test toLowerCamelCase(String); when empty string; then return empty string")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"String BeanUtil.toLowerCamelCase(String)"})
-  public void testToLowerCamelCase_whenEmptyString_thenReturnEmptyString() {
+  void testToLowerCamelCase_whenEmptyString_thenReturnEmptyString() {
     // Arrange, Act and Assert
     assertEquals("", BeanUtil.toLowerCamelCase(""));
   }
 
   /**
    * Test {@link BeanUtil#toLowerCamelCase(String)}.
+   *
    * <ul>
-   *   <li>When {@code null}.</li>
-   *   <li>Then return {@code null}.</li>
+   *   <li>When {@code null}.
+   *   <li>Then return {@code null}.
    * </ul>
-   * <p>
-   * Method under test: {@link BeanUtil#toLowerCamelCase(String)}
+   *
+   * <p>Method under test: {@link BeanUtil#toLowerCamelCase(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @DisplayName("Test toLowerCamelCase(String); when 'null'; then return 'null'")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"String BeanUtil.toLowerCamelCase(String)"})
-  public void testToLowerCamelCase_whenNull_thenReturnNull() {
+  void testToLowerCamelCase_whenNull_thenReturnNull() {
     // Arrange, Act and Assert
     assertNull(BeanUtil.toLowerCamelCase(null));
   }
 
   /**
    * Test {@link BeanUtil#toLowerCamelCase(String)}.
+   *
    * <ul>
-   *   <li>When {@code String}.</li>
-   *   <li>Then return {@code string}.</li>
+   *   <li>When {@code String}.
+   *   <li>Then return {@code string}.
    * </ul>
-   * <p>
-   * Method under test: {@link BeanUtil#toLowerCamelCase(String)}
+   *
+   * <p>Method under test: {@link BeanUtil#toLowerCamelCase(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @DisplayName("Test toLowerCamelCase(String); when 'String'; then return 'string'")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"String BeanUtil.toLowerCamelCase(String)"})
-  public void testToLowerCamelCase_whenString_thenReturnString() {
+  void testToLowerCamelCase_whenString_thenReturnString() {
     // Arrange, Act and Assert
     assertEquals("string", BeanUtil.toLowerCamelCase("String"));
   }

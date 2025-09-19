@@ -20,24 +20,26 @@ package com.regnosys.rosetta.common.serialisation.reportdata;
  * ==============
  */
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import com.rosetta.model.lib.ModelReportId;
 import java.util.ArrayList;
 import java.util.List;
-import org.junit.Test;
-import org.junit.experimental.categories.Category;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
 
-public class ReportDataSetDiffblueTest {
+class ReportDataSetDiffblueTest {
   /**
    * Test getters and setters.
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link ReportDataSet#ReportDataSet()}
    *   <li>{@link ReportDataSet#toString()}
@@ -45,10 +47,15 @@ public class ReportDataSetDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void ReportDataSet.<init>()", "List ReportDataSet.getApplicableReports()",
-      "String ReportDataSet.toString()"})
-  public void testGettersAndSetters() {
+  @DisplayName("Test getters and setters")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void ReportDataSet.<init>()",
+    "List ReportDataSet.getApplicableReports()",
+    "String ReportDataSet.toString()"
+  })
+  void testGettersAndSetters() {
     // Arrange and Act
     ReportDataSet actualReportDataSet = new ReportDataSet();
     String actualToStringResult = actualReportDataSet.toString();
@@ -68,24 +75,28 @@ public class ReportDataSetDiffblueTest {
 
   /**
    * Test {@link ReportDataSet#ReportDataSet(String, String, List, List)}.
+   *
    * <ul>
-   *   <li>Given {@code null}.</li>
-   *   <li>Then return ApplicableReports is {@link ArrayList#ArrayList()}.</li>
+   *   <li>Given {@code null}.
+   *   <li>Then return ApplicableReports is {@link ArrayList#ArrayList()}.
    * </ul>
-   * <p>
-   * Method under test: {@link ReportDataSet#ReportDataSet(String, String, List, List)}
+   *
+   * <p>Method under test: {@link ReportDataSet#ReportDataSet(String, String, List, List)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @DisplayName(
+      "Test new ReportDataSet(String, String, List, List); given 'null'; then return ApplicableReports is ArrayList()")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"void ReportDataSet.<init>(String, String, List, List)"})
-  public void testNewReportDataSet_givenNull_thenReturnApplicableReportsIsArrayList() {
+  void testNewReportDataSet_givenNull_thenReturnApplicableReportsIsArrayList() {
     // Arrange
     ArrayList<ModelReportId> applicableReports = new ArrayList<>();
     applicableReports.add(null);
 
     // Act
-    ReportDataSet actualReportDataSet = new ReportDataSet("Data Set Name", "Input Type", applicableReports,
-        new ArrayList<>());
+    ReportDataSet actualReportDataSet =
+        new ReportDataSet("Data Set Name", "Input Type", applicableReports, new ArrayList<>());
 
     // Assert
     assertEquals("Data Set Name", actualReportDataSet.getDataSetName());
@@ -96,40 +107,52 @@ public class ReportDataSetDiffblueTest {
 
   /**
    * Test {@link ReportDataSet#ReportDataSet(String, String, List, List)}.
+   *
    * <ul>
-   *   <li>Given {@link ReportDataItem#ReportDataItem()}.</li>
-   *   <li>Then return Data is {@link ArrayList#ArrayList()}.</li>
+   *   <li>Given {@link ReportDataItem#ReportDataItem()}.
+   *   <li>Then return Data is {@link ArrayList#ArrayList()}.
    * </ul>
-   * <p>
-   * Method under test: {@link ReportDataSet#ReportDataSet(String, String, List, List)}
+   *
+   * <p>Method under test: {@link ReportDataSet#ReportDataSet(String, String, List, List)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @DisplayName(
+      "Test new ReportDataSet(String, String, List, List); given ReportDataItem(); then return Data is ArrayList()")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"void ReportDataSet.<init>(String, String, List, List)"})
-  public void testNewReportDataSet_givenReportDataItem_thenReturnDataIsArrayList() {
+  void testNewReportDataSet_givenReportDataItem_thenReturnDataIsArrayList() {
     // Arrange
     ArrayList<ModelReportId> applicableReports = new ArrayList<>();
 
     ArrayList<ReportDataItem> data = new ArrayList<>();
     data.add(new ReportDataItem());
 
-    // Act and Assert
-    assertSame(data, (new ReportDataSet("Data Set Name", "Input Type", applicableReports, data)).getData());
+    // Act
+    ReportDataSet actualReportDataSet =
+        new ReportDataSet("Data Set Name", "Input Type", applicableReports, data);
+
+    // Assert
+    assertSame(data, actualReportDataSet.getData());
   }
 
   /**
    * Test {@link ReportDataSet#ReportDataSet(String, String, List, List)}.
+   *
    * <ul>
-   *   <li>Given {@link ReportDataItem#ReportDataItem()}.</li>
-   *   <li>Then return Data size is two.</li>
+   *   <li>Given {@link ReportDataItem#ReportDataItem()}.
+   *   <li>Then return Data size is two.
    * </ul>
-   * <p>
-   * Method under test: {@link ReportDataSet#ReportDataSet(String, String, List, List)}
+   *
+   * <p>Method under test: {@link ReportDataSet#ReportDataSet(String, String, List, List)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @DisplayName(
+      "Test new ReportDataSet(String, String, List, List); given ReportDataItem(); then return Data size is two")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"void ReportDataSet.<init>(String, String, List, List)"})
-  public void testNewReportDataSet_givenReportDataItem_thenReturnDataSizeIsTwo() {
+  void testNewReportDataSet_givenReportDataItem_thenReturnDataSizeIsTwo() {
     // Arrange
     ArrayList<ModelReportId> applicableReports = new ArrayList<>();
 
@@ -138,31 +161,39 @@ public class ReportDataSetDiffblueTest {
     ReportDataItem reportDataItem = new ReportDataItem();
     data.add(reportDataItem);
 
-    // Act and Assert
-    List<ReportDataItem> data2 = (new ReportDataSet("Data Set Name", "Input Type", applicableReports, data)).getData();
+    // Act
+    ReportDataSet actualReportDataSet =
+        new ReportDataSet("Data Set Name", "Input Type", applicableReports, data);
+
+    // Assert
+    List<ReportDataItem> data2 = actualReportDataSet.getData();
     assertEquals(2, data2.size());
     assertSame(reportDataItem, data2.get(1));
   }
 
   /**
    * Test {@link ReportDataSet#ReportDataSet(String, String, List, List)}.
+   *
    * <ul>
-   *   <li>When {@code Data Set Name}.</li>
-   *   <li>Then return {@code Data Set Name}.</li>
+   *   <li>When {@code Data Set Name}.
+   *   <li>Then return {@code Data Set Name}.
    * </ul>
-   * <p>
-   * Method under test: {@link ReportDataSet#ReportDataSet(String, String, List, List)}
+   *
+   * <p>Method under test: {@link ReportDataSet#ReportDataSet(String, String, List, List)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @DisplayName(
+      "Test new ReportDataSet(String, String, List, List); when 'Data Set Name'; then return 'Data Set Name'")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"void ReportDataSet.<init>(String, String, List, List)"})
-  public void testNewReportDataSet_whenDataSetName_thenReturnDataSetName() {
+  void testNewReportDataSet_whenDataSetName_thenReturnDataSetName() {
     // Arrange
     ArrayList<ModelReportId> applicableReports = new ArrayList<>();
 
     // Act
-    ReportDataSet actualReportDataSet = new ReportDataSet("Data Set Name", "Input Type", applicableReports,
-        new ArrayList<>());
+    ReportDataSet actualReportDataSet =
+        new ReportDataSet("Data Set Name", "Input Type", applicableReports, new ArrayList<>());
 
     // Assert
     assertEquals("Data Set Name", actualReportDataSet.getDataSetName());
@@ -173,22 +204,27 @@ public class ReportDataSetDiffblueTest {
 
   /**
    * Test {@link ReportDataSet#ReportDataSet(String, String, List, List)}.
+   *
    * <ul>
-   *   <li>When empty string.</li>
-   *   <li>Then return DataSetName is empty string.</li>
+   *   <li>When empty string.
+   *   <li>Then return DataSetName is empty string.
    * </ul>
-   * <p>
-   * Method under test: {@link ReportDataSet#ReportDataSet(String, String, List, List)}
+   *
+   * <p>Method under test: {@link ReportDataSet#ReportDataSet(String, String, List, List)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @DisplayName(
+      "Test new ReportDataSet(String, String, List, List); when empty string; then return DataSetName is empty string")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"void ReportDataSet.<init>(String, String, List, List)"})
-  public void testNewReportDataSet_whenEmptyString_thenReturnDataSetNameIsEmptyString() {
+  void testNewReportDataSet_whenEmptyString_thenReturnDataSetNameIsEmptyString() {
     // Arrange
     ArrayList<ModelReportId> applicableReports = new ArrayList<>();
 
     // Act
-    ReportDataSet actualReportDataSet = new ReportDataSet("", "Input Type", applicableReports, new ArrayList<>());
+    ReportDataSet actualReportDataSet =
+        new ReportDataSet("", "Input Type", applicableReports, new ArrayList<>());
 
     // Assert
     assertEquals("", actualReportDataSet.getDataSetName());
@@ -199,22 +235,27 @@ public class ReportDataSetDiffblueTest {
 
   /**
    * Test {@link ReportDataSet#ReportDataSet(String, String, List, List)}.
+   *
    * <ul>
-   *   <li>When {@code null}.</li>
-   *   <li>Then return DataSetName is {@code null}.</li>
+   *   <li>When {@code null}.
+   *   <li>Then return DataSetName is {@code null}.
    * </ul>
-   * <p>
-   * Method under test: {@link ReportDataSet#ReportDataSet(String, String, List, List)}
+   *
+   * <p>Method under test: {@link ReportDataSet#ReportDataSet(String, String, List, List)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @DisplayName(
+      "Test new ReportDataSet(String, String, List, List); when 'null'; then return DataSetName is 'null'")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"void ReportDataSet.<init>(String, String, List, List)"})
-  public void testNewReportDataSet_whenNull_thenReturnDataSetNameIsNull() {
+  void testNewReportDataSet_whenNull_thenReturnDataSetNameIsNull() {
     // Arrange
     ArrayList<ModelReportId> applicableReports = new ArrayList<>();
 
     // Act
-    ReportDataSet actualReportDataSet = new ReportDataSet(null, "Input Type", applicableReports, new ArrayList<>());
+    ReportDataSet actualReportDataSet =
+        new ReportDataSet(null, "Input Type", applicableReports, new ArrayList<>());
 
     // Assert
     assertNull(actualReportDataSet.getDataSetName());
@@ -225,48 +266,55 @@ public class ReportDataSetDiffblueTest {
 
   /**
    * Test {@link ReportDataSet#equals(Object)}, and {@link ReportDataSet#hashCode()}.
+   *
    * <ul>
-   *   <li>When other is equal.</li>
-   *   <li>Then return equal.</li>
+   *   <li>When other is equal.
+   *   <li>Then return equal.
    * </ul>
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link ReportDataSet#equals(Object)}
    *   <li>{@link ReportDataSet#hashCode()}
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @DisplayName("Test equals(Object), and hashCode(); when other is equal; then return equal")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean ReportDataSet.equals(Object)", "int ReportDataSet.hashCode()"})
-  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
+  void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
     // Arrange
     ReportDataSet reportDataSet = new ReportDataSet();
     ReportDataSet reportDataSet2 = new ReportDataSet();
 
     // Act and Assert
     assertEquals(reportDataSet, reportDataSet2);
-    int expectedHashCodeResult = reportDataSet.hashCode();
-    assertEquals(expectedHashCodeResult, reportDataSet2.hashCode());
+    assertEquals(reportDataSet.hashCode(), reportDataSet2.hashCode());
   }
 
   /**
    * Test {@link ReportDataSet#equals(Object)}, and {@link ReportDataSet#hashCode()}.
+   *
    * <ul>
-   *   <li>When other is same.</li>
-   *   <li>Then return equal.</li>
+   *   <li>When other is same.
+   *   <li>Then return equal.
    * </ul>
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link ReportDataSet#equals(Object)}
    *   <li>{@link ReportDataSet#hashCode()}
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @DisplayName("Test equals(Object), and hashCode(); when other is same; then return equal")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean ReportDataSet.equals(Object)", "int ReportDataSet.hashCode()"})
-  public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
+  void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
     ReportDataSet reportDataSet = new ReportDataSet();
 
@@ -278,21 +326,24 @@ public class ReportDataSetDiffblueTest {
 
   /**
    * Test {@link ReportDataSet#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is different.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link ReportDataSet#equals(Object)}
+   *
+   * <p>Method under test: {@link ReportDataSet#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @DisplayName("Test equals(Object); when other is different; then return not equal")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean ReportDataSet.equals(Object)", "int ReportDataSet.hashCode()"})
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
+  void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange
     ArrayList<ModelReportId> applicableReports = new ArrayList<>();
-    ReportDataSet reportDataSet = new ReportDataSet("Data Set Name", "Input Type", applicableReports,
-        new ArrayList<>());
+    ReportDataSet reportDataSet =
+        new ReportDataSet("Data Set Name", "Input Type", applicableReports, new ArrayList<>());
 
     // Act and Assert
     assertNotEquals(reportDataSet, new ReportDataSet());
@@ -300,34 +351,40 @@ public class ReportDataSetDiffblueTest {
 
   /**
    * Test {@link ReportDataSet#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is {@code null}.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is {@code null}.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link ReportDataSet#equals(Object)}
+   *
+   * <p>Method under test: {@link ReportDataSet#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @DisplayName("Test equals(Object); when other is 'null'; then return not equal")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean ReportDataSet.equals(Object)", "int ReportDataSet.hashCode()"})
-  public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
+  void testEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(new ReportDataSet(), null);
   }
 
   /**
    * Test {@link ReportDataSet#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is wrong type.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is wrong type.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link ReportDataSet#equals(Object)}
+   *
+   * <p>Method under test: {@link ReportDataSet#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @DisplayName("Test equals(Object); when other is wrong type; then return not equal")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean ReportDataSet.equals(Object)", "int ReportDataSet.hashCode()"})
-  public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
+  void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(new ReportDataSet(), "Different type to ReportDataSet");
   }

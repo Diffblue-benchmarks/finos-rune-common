@@ -20,8 +20,8 @@ package com.regnosys.rosetta.common.serialisation.lookup;
  * ==============
  */
 
-import static org.junit.Assert.assertEquals;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import java.net.MalformedURLException;
@@ -29,28 +29,37 @@ import java.net.URL;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import javax.management.loading.MLet;
-import org.junit.Test;
-import org.junit.experimental.categories.Category;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
 
-public class JsonLookupDataLoaderDiffblueTest {
+class JsonLookupDataLoaderDiffblueTest {
   /**
    * Test {@link JsonLookupDataLoader#loadInputFiles(LookupDataSet)} with {@code LookupDataSet}.
-   * <p>
-   * Method under test: {@link JsonLookupDataLoader#loadInputFiles(LookupDataSet)}
+   *
+   * <p>Method under test: {@link JsonLookupDataLoader#loadInputFiles(LookupDataSet)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @DisplayName("Test loadInputFiles(LookupDataSet) with 'LookupDataSet'")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"LookupDataSet JsonLookupDataLoader.loadInputFiles(LookupDataSet)"})
-  public void testLoadInputFilesWithLookupDataSet() throws MalformedURLException {
+  void testLoadInputFilesWithLookupDataSet() throws MalformedURLException {
     // Arrange
     MLet classLoader = new MLet();
     JsonMapper rosettaObjectMapper = JsonMapper.builder().findAndAddModules().build();
-    URL descriptorPath = Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toUri().toURL();
-    JsonLookupDataLoader jsonLookupDataLoader = new JsonLookupDataLoader(classLoader, rosettaObjectMapper,
-        descriptorPath, new ArrayList<>());
+    URL descriptorPath =
+        Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toUri().toURL();
+
+    JsonLookupDataLoader jsonLookupDataLoader =
+        new JsonLookupDataLoader(
+            classLoader, rosettaObjectMapper, descriptorPath, new ArrayList<>());
     LookupDataSet descriptor = new LookupDataSet("Name", "Key Type", "42", new ArrayList<>());
 
-    // Act and Assert
-    assertEquals(descriptor, jsonLookupDataLoader.loadInputFiles(descriptor));
+    // Act
+    LookupDataSet actualLoadInputFilesResult = jsonLookupDataLoader.loadInputFiles(descriptor);
+
+    // Assert
+    assertEquals(descriptor, actualLoadInputFilesResult);
   }
 }

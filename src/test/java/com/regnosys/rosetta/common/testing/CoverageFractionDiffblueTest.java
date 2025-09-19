@@ -20,22 +20,25 @@ package com.regnosys.rosetta.common.testing;
  * ==============
  */
 
-import static org.junit.Assert.assertEquals;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
-import org.junit.Test;
-import org.junit.experimental.categories.Category;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
 
-public class CoverageFractionDiffblueTest {
+class CoverageFractionDiffblueTest {
   /**
    * Test new {@link CoverageFraction} (default constructor).
-   * <p>
-   * Method under test: default or parameterless constructor of {@link CoverageFraction}
+   *
+   * <p>Method under test: default or parameterless constructor of {@link CoverageFraction}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @DisplayName("Test new CoverageFraction (default constructor)")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"void CoverageFraction.<init>()"})
-  public void testNewCoverageFraction() {
+  void testNewCoverageFraction() {
     // Arrange and Act
     CoverageFraction actualCoverageFraction = new CoverageFraction();
 

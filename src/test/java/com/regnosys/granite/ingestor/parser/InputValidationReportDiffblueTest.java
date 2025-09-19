@@ -20,34 +20,41 @@ package com.regnosys.granite.ingestor.parser;
  * ==============
  */
 
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import java.util.List;
-import org.junit.Test;
-import org.junit.experimental.categories.Category;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
 
-public class InputValidationReportDiffblueTest {
+class InputValidationReportDiffblueTest {
   /**
    * Test getters and setters.
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link InputValidationReport#InputValidationReport(List)}
    *   <li>{@link InputValidationReport#getErrors()}
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void InputValidationReport.<init>(List)", "List InputValidationReport.getErrors()"})
-  public void testGettersAndSetters() {
+  @DisplayName("Test getters and setters")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void InputValidationReport.<init>(List)",
+    "List InputValidationReport.getErrors()"
+  })
+  void testGettersAndSetters() {
     // Arrange
     ArrayList<String> errors = new ArrayList<>();
 
     // Act
-    List<String> actualErrors = (new InputValidationReport(errors)).getErrors();
+    List<String> actualErrors = new InputValidationReport(errors).getErrors();
 
     // Assert
     assertTrue(actualErrors.isEmpty());

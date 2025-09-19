@@ -20,24 +20,26 @@ package com.regnosys.rosetta.common.transform;
  * ==============
  */
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import com.regnosys.rosetta.common.transform.TestPackModel.SampleModel;
 import com.regnosys.rosetta.common.transform.TestPackModel.SampleModel.Assertions;
 import java.util.ArrayList;
 import java.util.List;
-import org.junit.Test;
-import org.junit.experimental.categories.Category;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
 
-public class TestPackModelDiffblueTest {
+class TestPackModelDiffblueTest {
   /**
    * Test getters and setters.
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link TestPackModel#TestPackModel(String, String, String, List)}
    *   <li>{@link TestPackModel#toString()}
@@ -48,11 +50,18 @@ public class TestPackModelDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void TestPackModel.<init>(String, String, String, List)", "String TestPackModel.getId()",
-      "String TestPackModel.getName()", "String TestPackModel.getPipelineId()", "List TestPackModel.getSamples()",
-      "String TestPackModel.toString()"})
-  public void testGettersAndSetters() {
+  @DisplayName("Test getters and setters")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void TestPackModel.<init>(String, String, String, List)",
+    "String TestPackModel.getId()",
+    "String TestPackModel.getName()",
+    "String TestPackModel.getPipelineId()",
+    "List TestPackModel.getSamples()",
+    "String TestPackModel.toString()"
+  })
+  void testGettersAndSetters() {
     // Arrange
     ArrayList<SampleModel> samples = new ArrayList<>();
 
@@ -68,60 +77,80 @@ public class TestPackModelDiffblueTest {
     assertEquals("42", actualId);
     assertEquals("42", actualPipelineId);
     assertEquals("Name", actualName);
-    assertEquals("TestPackModel{id='42', pipelineId='42', name='Name', samples=[]}", actualToStringResult);
+    assertEquals(
+        "TestPackModel{id='42', pipelineId='42', name='Name', samples=[]}", actualToStringResult);
     assertTrue(actualSamples.isEmpty());
     assertSame(samples, actualSamples);
   }
 
   /**
    * Test {@link TestPackModel#equals(Object)}, and {@link TestPackModel#hashCode()}.
+   *
    * <ul>
-   *   <li>When other is equal.</li>
-   *   <li>Then return equal.</li>
+   *   <li>When other is equal.
+   *   <li>Then return equal.
    * </ul>
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link TestPackModel#equals(Object)}
    *   <li>{@link TestPackModel#hashCode()}
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @DisplayName("Test equals(Object), and hashCode(); when other is equal; then return equal")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean TestPackModel.equals(Object)", "int TestPackModel.hashCode()"})
-  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
+  void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
     // Arrange
-    TestPackModel createTestPackResult = TestPackUtils.createTestPack("Test Pack Name", TransformType.PRE_TRANSLATE,
-        "Formatted Function Name", new ArrayList<>());
-    TestPackModel createTestPackResult2 = TestPackUtils.createTestPack("Test Pack Name", TransformType.PRE_TRANSLATE,
-        "Formatted Function Name", new ArrayList<>());
+    TestPackModel createTestPackResult =
+        TestPackUtils.createTestPack(
+            "Test Pack Name",
+            TransformType.PRE_TRANSLATE,
+            "Formatted Function Name",
+            new ArrayList<>());
+    TestPackModel createTestPackResult2 =
+        TestPackUtils.createTestPack(
+            "Test Pack Name",
+            TransformType.PRE_TRANSLATE,
+            "Formatted Function Name",
+            new ArrayList<>());
 
     // Act and Assert
     assertEquals(createTestPackResult, createTestPackResult2);
-    int expectedHashCodeResult = createTestPackResult.hashCode();
-    assertEquals(expectedHashCodeResult, createTestPackResult2.hashCode());
+    assertEquals(createTestPackResult.hashCode(), createTestPackResult2.hashCode());
   }
 
   /**
    * Test {@link TestPackModel#equals(Object)}, and {@link TestPackModel#hashCode()}.
+   *
    * <ul>
-   *   <li>When other is same.</li>
-   *   <li>Then return equal.</li>
+   *   <li>When other is same.
+   *   <li>Then return equal.
    * </ul>
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link TestPackModel#equals(Object)}
    *   <li>{@link TestPackModel#hashCode()}
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @DisplayName("Test equals(Object), and hashCode(); when other is same; then return equal")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean TestPackModel.equals(Object)", "int TestPackModel.hashCode()"})
-  public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
+  void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
-    TestPackModel createTestPackResult = TestPackUtils.createTestPack("Test Pack Name", TransformType.PRE_TRANSLATE,
-        "Formatted Function Name", new ArrayList<>());
+    TestPackModel createTestPackResult =
+        TestPackUtils.createTestPack(
+            "Test Pack Name",
+            TransformType.PRE_TRANSLATE,
+            "Formatted Function Name",
+            new ArrayList<>());
 
     // Act and Assert
     assertEquals(createTestPackResult, createTestPackResult);
@@ -131,133 +160,226 @@ public class TestPackModelDiffblueTest {
 
   /**
    * Test {@link TestPackModel#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is different.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link TestPackModel#equals(Object)}
+   *
+   * <p>Method under test: {@link TestPackModel#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @DisplayName("Test equals(Object); when other is different; then return not equal")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean TestPackModel.equals(Object)", "int TestPackModel.hashCode()"})
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
+  void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange
-    TestPackModel createTestPackResult = TestPackUtils.createTestPack("config", TransformType.PRE_TRANSLATE,
-        "Formatted Function Name", new ArrayList<>());
+    TestPackModel testPackModel = new TestPackModel("42", "42", "Name", new ArrayList<>());
 
     // Act and Assert
-    assertNotEquals(createTestPackResult, TestPackUtils.createTestPack("Test Pack Name", TransformType.PRE_TRANSLATE,
-        "Formatted Function Name", new ArrayList<>()));
+    assertNotEquals(
+        testPackModel,
+        TestPackUtils.createTestPack(
+            "Test Pack Name",
+            TransformType.PRE_TRANSLATE,
+            "Formatted Function Name",
+            new ArrayList<>()));
   }
 
   /**
    * Test {@link TestPackModel#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is different.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link TestPackModel#equals(Object)}
+   *
+   * <p>Method under test: {@link TestPackModel#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @DisplayName("Test equals(Object); when other is different; then return not equal")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean TestPackModel.equals(Object)", "int TestPackModel.hashCode()"})
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual2() {
+  void testEquals_whenOtherIsDifferent_thenReturnNotEqual2() {
     // Arrange
     ArrayList<SampleModel> sampleModels = new ArrayList<>();
-    sampleModels.add(new SampleModel("42", "Name", "Input Path", "Output Path", new Assertions(1, true, true)));
-    TestPackModel createTestPackResult = TestPackUtils.createTestPack("Test Pack Name", TransformType.PRE_TRANSLATE,
-        "Formatted Function Name", sampleModels);
+    SampleModel sampleModel =
+        new SampleModel("42", "Name", "Input Path", "Output Path", new Assertions(1, true, true));
+    sampleModels.add(sampleModel);
+    TestPackModel createTestPackResult =
+        TestPackUtils.createTestPack(
+            "Test Pack Name", TransformType.PRE_TRANSLATE, "Formatted Function Name", sampleModels);
 
     // Act and Assert
-    assertNotEquals(createTestPackResult, TestPackUtils.createTestPack("Test Pack Name", TransformType.PRE_TRANSLATE,
-        "Formatted Function Name", new ArrayList<>()));
+    assertNotEquals(
+        createTestPackResult,
+        TestPackUtils.createTestPack(
+            "Test Pack Name",
+            TransformType.PRE_TRANSLATE,
+            "Formatted Function Name",
+            new ArrayList<>()));
   }
 
   /**
    * Test {@link TestPackModel#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is {@code null}.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link TestPackModel#equals(Object)}
+   *
+   * <p>Method under test: {@link TestPackModel#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @DisplayName("Test equals(Object); when other is different; then return not equal")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean TestPackModel.equals(Object)", "int TestPackModel.hashCode()"})
-  public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
-    // Arrange, Act and Assert
-    assertNotEquals(TestPackUtils.createTestPack("Test Pack Name", TransformType.PRE_TRANSLATE,
-        "Formatted Function Name", new ArrayList<>()), null);
+  void testEquals_whenOtherIsDifferent_thenReturnNotEqual3() {
+    // Arrange
+    TestPackModel testPackModel = new TestPackModel("42", "Pipeline Id", "Name", new ArrayList<>());
+
+    // Act and Assert
+    assertNotEquals(testPackModel, new TestPackModel("42", "42", "Name", new ArrayList<>()));
   }
 
   /**
    * Test {@link TestPackModel#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is wrong type.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link TestPackModel#equals(Object)}
+   *
+   * <p>Method under test: {@link TestPackModel#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @DisplayName("Test equals(Object); when other is different; then return not equal")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean TestPackModel.equals(Object)", "int TestPackModel.hashCode()"})
-  public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
+  void testEquals_whenOtherIsDifferent_thenReturnNotEqual4() {
+    // Arrange
+    TestPackModel testPackModel =
+        new TestPackModel(
+            "42", "42", "com.regnosys.rosetta.common.transform.TestPackModel", new ArrayList<>());
+
+    // Act and Assert
+    assertNotEquals(testPackModel, new TestPackModel("42", "42", "Name", new ArrayList<>()));
+  }
+
+  /**
+   * Test {@link TestPackModel#equals(Object)}.
+   *
+   * <ul>
+   *   <li>When other is {@code null}.
+   *   <li>Then return not equal.
+   * </ul>
+   *
+   * <p>Method under test: {@link TestPackModel#equals(Object)}
+   */
+  @Test
+  @DisplayName("Test equals(Object); when other is 'null'; then return not equal")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
+  @MethodsUnderTest({"boolean TestPackModel.equals(Object)", "int TestPackModel.hashCode()"})
+  void testEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange, Act and Assert
-    assertNotEquals(TestPackUtils.createTestPack("Test Pack Name", TransformType.PRE_TRANSLATE,
-        "Formatted Function Name", new ArrayList<>()), "Different type to TestPackModel");
+    assertNotEquals(
+        TestPackUtils.createTestPack(
+            "Test Pack Name",
+            TransformType.PRE_TRANSLATE,
+            "Formatted Function Name",
+            new ArrayList<>()),
+        null);
+  }
+
+  /**
+   * Test {@link TestPackModel#equals(Object)}.
+   *
+   * <ul>
+   *   <li>When other is wrong type.
+   *   <li>Then return not equal.
+   * </ul>
+   *
+   * <p>Method under test: {@link TestPackModel#equals(Object)}
+   */
+  @Test
+  @DisplayName("Test equals(Object); when other is wrong type; then return not equal")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
+  @MethodsUnderTest({"boolean TestPackModel.equals(Object)", "int TestPackModel.hashCode()"})
+  void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
+    // Arrange, Act and Assert
+    assertNotEquals(
+        TestPackUtils.createTestPack(
+            "Test Pack Name",
+            TransformType.PRE_TRANSLATE,
+            "Formatted Function Name",
+            new ArrayList<>()),
+        "Different type to TestPackModel");
   }
 
   /**
    * Test SampleModel {@link SampleModel#equals(Object)}, and {@link SampleModel#hashCode()}.
+   *
    * <ul>
-   *   <li>When other is equal.</li>
-   *   <li>Then return equal.</li>
+   *   <li>When other is equal.
+   *   <li>Then return equal.
    * </ul>
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link SampleModel#equals(Object)}
    *   <li>{@link SampleModel#hashCode()}
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @DisplayName(
+      "Test SampleModel equals(Object), and hashCode(); when other is equal; then return equal")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean SampleModel.equals(Object)", "int SampleModel.hashCode()"})
-  public void testSampleModelEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
+  void testSampleModelEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
     // Arrange
-    SampleModel sampleModel = new SampleModel("42", "Name", "Input Path", "Output Path", new Assertions(1, true, true));
-    SampleModel sampleModel2 = new SampleModel("42", "Name", "Input Path", "Output Path",
-        new Assertions(1, true, true));
+    SampleModel sampleModel =
+        new SampleModel("42", "Name", "Input Path", "Output Path", new Assertions(1, true, true));
+    SampleModel sampleModel2 =
+        new SampleModel("42", "Name", "Input Path", "Output Path", new Assertions(1, true, true));
 
     // Act and Assert
     assertEquals(sampleModel, sampleModel2);
-    int expectedHashCodeResult = sampleModel.hashCode();
-    assertEquals(expectedHashCodeResult, sampleModel2.hashCode());
+    assertEquals(sampleModel.hashCode(), sampleModel2.hashCode());
   }
 
   /**
    * Test SampleModel {@link SampleModel#equals(Object)}, and {@link SampleModel#hashCode()}.
+   *
    * <ul>
-   *   <li>When other is same.</li>
-   *   <li>Then return equal.</li>
+   *   <li>When other is same.
+   *   <li>Then return equal.
    * </ul>
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link SampleModel#equals(Object)}
    *   <li>{@link SampleModel#hashCode()}
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @DisplayName(
+      "Test SampleModel equals(Object), and hashCode(); when other is same; then return equal")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean SampleModel.equals(Object)", "int SampleModel.hashCode()"})
-  public void testSampleModelEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
+  void testSampleModelEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
-    SampleModel sampleModel = new SampleModel("42", "Name", "Input Path", "Output Path", new Assertions(1, true, true));
+    SampleModel sampleModel =
+        new SampleModel("42", "Name", "Input Path", "Output Path", new Assertions(1, true, true));
 
     // Act and Assert
     assertEquals(sampleModel, sampleModel);
@@ -267,152 +389,198 @@ public class TestPackModelDiffblueTest {
 
   /**
    * Test SampleModel {@link SampleModel#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is different.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link SampleModel#equals(Object)}
+   *
+   * <p>Method under test: {@link SampleModel#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @DisplayName("Test SampleModel equals(Object); when other is different; then return not equal")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean SampleModel.equals(Object)", "int SampleModel.hashCode()"})
-  public void testSampleModelEquals_whenOtherIsDifferent_thenReturnNotEqual() {
+  void testSampleModelEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange
-    SampleModel sampleModel = new SampleModel("Id", "Name", "Input Path", "Output Path", new Assertions(1, true, true));
+    SampleModel sampleModel =
+        new SampleModel("Id", "Name", "Input Path", "Output Path", new Assertions(1, true, true));
 
     // Act and Assert
-    assertNotEquals(sampleModel,
+    assertNotEquals(
+        sampleModel,
         new SampleModel("42", "Name", "Input Path", "Output Path", new Assertions(1, true, true)));
   }
 
   /**
    * Test SampleModel {@link SampleModel#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is different.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link SampleModel#equals(Object)}
+   *
+   * <p>Method under test: {@link SampleModel#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @DisplayName("Test SampleModel equals(Object); when other is different; then return not equal")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean SampleModel.equals(Object)", "int SampleModel.hashCode()"})
-  public void testSampleModelEquals_whenOtherIsDifferent_thenReturnNotEqual2() {
+  void testSampleModelEquals_whenOtherIsDifferent_thenReturnNotEqual2() {
     // Arrange
-    SampleModel sampleModel = new SampleModel("42", "com.regnosys.rosetta.common.transform.TestPackModel$SampleModel",
-        "Input Path", "Output Path", new Assertions(1, true, true));
+    SampleModel sampleModel =
+        new SampleModel(
+            "42",
+            "com.regnosys.rosetta.common.transform.TestPackModel$SampleModel",
+            "Input Path",
+            "Output Path",
+            new Assertions(1, true, true));
 
     // Act and Assert
-    assertNotEquals(sampleModel,
+    assertNotEquals(
+        sampleModel,
         new SampleModel("42", "Name", "Input Path", "Output Path", new Assertions(1, true, true)));
   }
 
   /**
    * Test SampleModel {@link SampleModel#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is different.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link SampleModel#equals(Object)}
+   *
+   * <p>Method under test: {@link SampleModel#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @DisplayName("Test SampleModel equals(Object); when other is different; then return not equal")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean SampleModel.equals(Object)", "int SampleModel.hashCode()"})
-  public void testSampleModelEquals_whenOtherIsDifferent_thenReturnNotEqual3() {
+  void testSampleModelEquals_whenOtherIsDifferent_thenReturnNotEqual3() {
     // Arrange
-    SampleModel sampleModel = new SampleModel("42", "Name",
-        "com.regnosys.rosetta.common.transform.TestPackModel$SampleModel", "Output Path",
-        new Assertions(1, true, true));
+    SampleModel sampleModel =
+        new SampleModel(
+            "42",
+            "Name",
+            "com.regnosys.rosetta.common.transform.TestPackModel$SampleModel",
+            "Output Path",
+            new Assertions(1, true, true));
 
     // Act and Assert
-    assertNotEquals(sampleModel,
+    assertNotEquals(
+        sampleModel,
         new SampleModel("42", "Name", "Input Path", "Output Path", new Assertions(1, true, true)));
   }
 
   /**
    * Test SampleModel {@link SampleModel#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is different.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link SampleModel#equals(Object)}
+   *
+   * <p>Method under test: {@link SampleModel#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @DisplayName("Test SampleModel equals(Object); when other is different; then return not equal")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean SampleModel.equals(Object)", "int SampleModel.hashCode()"})
-  public void testSampleModelEquals_whenOtherIsDifferent_thenReturnNotEqual4() {
+  void testSampleModelEquals_whenOtherIsDifferent_thenReturnNotEqual4() {
     // Arrange
-    SampleModel sampleModel = new SampleModel("42", "Name", "Input Path",
-        "com.regnosys.rosetta.common.transform.TestPackModel$SampleModel", new Assertions(1, true, true));
+    SampleModel sampleModel =
+        new SampleModel(
+            "42",
+            "Name",
+            "Input Path",
+            "com.regnosys.rosetta.common.transform.TestPackModel$SampleModel",
+            new Assertions(1, true, true));
 
     // Act and Assert
-    assertNotEquals(sampleModel,
+    assertNotEquals(
+        sampleModel,
         new SampleModel("42", "Name", "Input Path", "Output Path", new Assertions(1, true, true)));
   }
 
   /**
    * Test SampleModel {@link SampleModel#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is different.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link SampleModel#equals(Object)}
+   *
+   * <p>Method under test: {@link SampleModel#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @DisplayName("Test SampleModel equals(Object); when other is different; then return not equal")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean SampleModel.equals(Object)", "int SampleModel.hashCode()"})
-  public void testSampleModelEquals_whenOtherIsDifferent_thenReturnNotEqual5() {
+  void testSampleModelEquals_whenOtherIsDifferent_thenReturnNotEqual5() {
     // Arrange
-    SampleModel sampleModel = new SampleModel("42", "Name", "Input Path", "Output Path", new Assertions(2, true, true));
+    SampleModel sampleModel =
+        new SampleModel("42", "Name", "Input Path", "Output Path", new Assertions(2, true, true));
 
     // Act and Assert
-    assertNotEquals(sampleModel,
+    assertNotEquals(
+        sampleModel,
         new SampleModel("42", "Name", "Input Path", "Output Path", new Assertions(1, true, true)));
   }
 
   /**
    * Test SampleModel {@link SampleModel#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is {@code null}.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is {@code null}.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link SampleModel#equals(Object)}
+   *
+   * <p>Method under test: {@link SampleModel#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @DisplayName("Test SampleModel equals(Object); when other is 'null'; then return not equal")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean SampleModel.equals(Object)", "int SampleModel.hashCode()"})
-  public void testSampleModelEquals_whenOtherIsNull_thenReturnNotEqual() {
+  void testSampleModelEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange, Act and Assert
-    assertNotEquals(new SampleModel("42", "Name", "Input Path", "Output Path", new Assertions(1, true, true)), null);
+    assertNotEquals(
+        new SampleModel("42", "Name", "Input Path", "Output Path", new Assertions(1, true, true)),
+        null);
   }
 
   /**
    * Test SampleModel {@link SampleModel#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is wrong type.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is wrong type.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link SampleModel#equals(Object)}
+   *
+   * <p>Method under test: {@link SampleModel#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @DisplayName("Test SampleModel equals(Object); when other is wrong type; then return not equal")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean SampleModel.equals(Object)", "int SampleModel.hashCode()"})
-  public void testSampleModelEquals_whenOtherIsWrongType_thenReturnNotEqual() {
+  void testSampleModelEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange, Act and Assert
-    assertNotEquals(new SampleModel("42", "Name", "Input Path", "Output Path", new Assertions(1, true, true)),
+    assertNotEquals(
+        new SampleModel("42", "Name", "Input Path", "Output Path", new Assertions(1, true, true)),
         "Different type to SampleModel");
   }
 
   /**
    * Test SampleModel getters and setters.
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link SampleModel#SampleModel(String, String, String, String, Assertions)}
    *   <li>{@link SampleModel#toString()}
@@ -424,16 +592,25 @@ public class TestPackModelDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void SampleModel.<init>(String, String, String, String, Assertions)",
-      "Assertions SampleModel.getAssertions()", "String SampleModel.getId()", "String SampleModel.getInputPath()",
-      "String SampleModel.getName()", "String SampleModel.getOutputPath()", "String SampleModel.toString()"})
-  public void testSampleModelGettersAndSetters() {
+  @DisplayName("Test SampleModel getters and setters")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void SampleModel.<init>(String, String, String, String, Assertions)",
+    "Assertions SampleModel.getAssertions()",
+    "String SampleModel.getId()",
+    "String SampleModel.getInputPath()",
+    "String SampleModel.getName()",
+    "String SampleModel.getOutputPath()",
+    "String SampleModel.toString()"
+  })
+  void testSampleModelGettersAndSetters() {
     // Arrange
     Assertions assertions = new Assertions(1, true, true);
 
     // Act
-    SampleModel actualSampleModel = new SampleModel("42", "Name", "Input Path", "Output Path", assertions);
+    SampleModel actualSampleModel =
+        new SampleModel("42", "Name", "Input Path", "Output Path", assertions);
     String actualToStringResult = actualSampleModel.toString();
     Assertions actualAssertions = actualSampleModel.getAssertions();
     String actualId = actualSampleModel.getId();
@@ -453,49 +630,60 @@ public class TestPackModelDiffblueTest {
   }
 
   /**
-   * Test SampleModel_Assertions {@link Assertions#equals(Object)}, and {@link Assertions#hashCode()}.
+   * Test SampleModel_Assertions {@link Assertions#equals(Object)}, and {@link
+   * Assertions#hashCode()}.
+   *
    * <ul>
-   *   <li>When other is equal.</li>
-   *   <li>Then return equal.</li>
+   *   <li>When other is equal.
+   *   <li>Then return equal.
    * </ul>
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link Assertions#equals(Object)}
    *   <li>{@link Assertions#hashCode()}
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @DisplayName(
+      "Test SampleModel_Assertions equals(Object), and hashCode(); when other is equal; then return equal")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean Assertions.equals(Object)", "int Assertions.hashCode()"})
-  public void testSampleModel_AssertionsEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
+  void testSampleModel_AssertionsEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
     // Arrange
     Assertions assertions = new Assertions(1, true, true);
     Assertions assertions2 = new Assertions(1, true, true);
 
     // Act and Assert
     assertEquals(assertions, assertions2);
-    int expectedHashCodeResult = assertions.hashCode();
-    assertEquals(expectedHashCodeResult, assertions2.hashCode());
+    assertEquals(assertions.hashCode(), assertions2.hashCode());
   }
 
   /**
-   * Test SampleModel_Assertions {@link Assertions#equals(Object)}, and {@link Assertions#hashCode()}.
+   * Test SampleModel_Assertions {@link Assertions#equals(Object)}, and {@link
+   * Assertions#hashCode()}.
+   *
    * <ul>
-   *   <li>When other is same.</li>
-   *   <li>Then return equal.</li>
+   *   <li>When other is same.
+   *   <li>Then return equal.
    * </ul>
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link Assertions#equals(Object)}
    *   <li>{@link Assertions#hashCode()}
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @DisplayName(
+      "Test SampleModel_Assertions equals(Object), and hashCode(); when other is same; then return equal")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean Assertions.equals(Object)", "int Assertions.hashCode()"})
-  public void testSampleModel_AssertionsEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
+  void testSampleModel_AssertionsEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
     Assertions assertions = new Assertions(1, true, true);
 
@@ -507,17 +695,21 @@ public class TestPackModelDiffblueTest {
 
   /**
    * Test SampleModel_Assertions {@link Assertions#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is different.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link Assertions#equals(Object)}
+   *
+   * <p>Method under test: {@link Assertions#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @DisplayName(
+      "Test SampleModel_Assertions equals(Object); when other is different; then return not equal")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean Assertions.equals(Object)", "int Assertions.hashCode()"})
-  public void testSampleModel_AssertionsEquals_whenOtherIsDifferent_thenReturnNotEqual() {
+  void testSampleModel_AssertionsEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange
     Assertions assertions = new Assertions(2, true, true);
 
@@ -527,17 +719,21 @@ public class TestPackModelDiffblueTest {
 
   /**
    * Test SampleModel_Assertions {@link Assertions#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is different.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link Assertions#equals(Object)}
+   *
+   * <p>Method under test: {@link Assertions#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @DisplayName(
+      "Test SampleModel_Assertions equals(Object); when other is different; then return not equal")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean Assertions.equals(Object)", "int Assertions.hashCode()"})
-  public void testSampleModel_AssertionsEquals_whenOtherIsDifferent_thenReturnNotEqual2() {
+  void testSampleModel_AssertionsEquals_whenOtherIsDifferent_thenReturnNotEqual2() {
     // Arrange
     Assertions assertions = new Assertions(1, false, true);
 
@@ -547,17 +743,21 @@ public class TestPackModelDiffblueTest {
 
   /**
    * Test SampleModel_Assertions {@link Assertions#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is different.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link Assertions#equals(Object)}
+   *
+   * <p>Method under test: {@link Assertions#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @DisplayName(
+      "Test SampleModel_Assertions equals(Object); when other is different; then return not equal")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean Assertions.equals(Object)", "int Assertions.hashCode()"})
-  public void testSampleModel_AssertionsEquals_whenOtherIsDifferent_thenReturnNotEqual3() {
+  void testSampleModel_AssertionsEquals_whenOtherIsDifferent_thenReturnNotEqual3() {
     // Arrange
     Assertions assertions = new Assertions(1, true, false);
 
@@ -567,42 +767,51 @@ public class TestPackModelDiffblueTest {
 
   /**
    * Test SampleModel_Assertions {@link Assertions#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is {@code null}.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is {@code null}.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link Assertions#equals(Object)}
+   *
+   * <p>Method under test: {@link Assertions#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @DisplayName(
+      "Test SampleModel_Assertions equals(Object); when other is 'null'; then return not equal")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean Assertions.equals(Object)", "int Assertions.hashCode()"})
-  public void testSampleModel_AssertionsEquals_whenOtherIsNull_thenReturnNotEqual() {
+  void testSampleModel_AssertionsEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(new Assertions(1, true, true), null);
   }
 
   /**
    * Test SampleModel_Assertions {@link Assertions#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is wrong type.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is wrong type.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link Assertions#equals(Object)}
+   *
+   * <p>Method under test: {@link Assertions#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @DisplayName(
+      "Test SampleModel_Assertions equals(Object); when other is wrong type; then return not equal")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean Assertions.equals(Object)", "int Assertions.hashCode()"})
-  public void testSampleModel_AssertionsEquals_whenOtherIsWrongType_thenReturnNotEqual() {
+  void testSampleModel_AssertionsEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(new Assertions(1, true, true), "Different type to Assertions");
   }
 
   /**
    * Test SampleModel_Assertions getters and setters.
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link Assertions#Assertions(Integer, Boolean, Boolean)}
    *   <li>{@link Assertions#toString()}
@@ -612,11 +821,17 @@ public class TestPackModelDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void Assertions.<init>(Integer, Boolean, Boolean)",
-      "Integer Assertions.getModelValidationFailures()", "Boolean Assertions.isRuntimeError()",
-      "Boolean Assertions.isSchemaValidationFailure()", "String Assertions.toString()"})
-  public void testSampleModel_AssertionsGettersAndSetters() {
+  @DisplayName("Test SampleModel_Assertions getters and setters")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void Assertions.<init>(Integer, Boolean, Boolean)",
+    "Integer Assertions.getModelValidationFailures()",
+    "Boolean Assertions.isRuntimeError()",
+    "Boolean Assertions.isSchemaValidationFailure()",
+    "String Assertions.toString()"
+  })
+  void testSampleModel_AssertionsGettersAndSetters() {
     // Arrange and Act
     Assertions actualAssertions = new Assertions(1, true, true);
     String actualToStringResult = actualAssertions.toString();
@@ -625,7 +840,8 @@ public class TestPackModelDiffblueTest {
     Boolean actualIsSchemaValidationFailureResult = actualAssertions.isSchemaValidationFailure();
 
     // Assert
-    assertEquals("Assertions{modelValidationFailures=1, schemaValidationFailure=true, runtimeError=true}",
+    assertEquals(
+        "Assertions{modelValidationFailures=1, schemaValidationFailure=true, runtimeError=true}",
         actualToStringResult);
     assertEquals(1, actualModelValidationFailures.intValue());
     assertTrue(actualIsRuntimeErrorResult);

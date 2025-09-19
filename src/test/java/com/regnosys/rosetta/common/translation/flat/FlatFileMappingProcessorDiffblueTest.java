@@ -20,23 +20,30 @@ package com.regnosys.rosetta.common.translation.flat;
  * ==============
  */
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertSame;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.fasterxml.jackson.databind.ser.BeanPropertyWriter;
 import com.regnosys.rosetta.common.translation.Path;
 import com.regnosys.rosetta.common.translation.flat.FlatFileMappingProcessor.PathValue;
-import org.junit.Test;
-import org.junit.experimental.categories.Category;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
 
-public class FlatFileMappingProcessorDiffblueTest {
+class FlatFileMappingProcessorDiffblueTest {
   /**
    * Test PathValue getters and setters.
+   *
    * <ul>
-   *   <li>When {@link FlatFileMappingProcessor#BASE_PATH}.</li>
+   *   <li>When {@link FlatFileMappingProcessor#BASE_PATH}.
    * </ul>
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link PathValue#PathValue(Path, Object)}
    *   <li>{@link PathValue#getModelPath()}
@@ -44,29 +51,41 @@ public class FlatFileMappingProcessorDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void PathValue.<init>(Path, Object)", "void PathValue.<init>(Path, Object, boolean)",
-      "Path PathValue.getModelPath()", "Object PathValue.getValue()"})
-  public void testPathValueGettersAndSetters_whenBase_path() {
+  @DisplayName("Test PathValue getters and setters; when BASE_PATH")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void PathValue.<init>(Path, Object)",
+    "void PathValue.<init>(Path, Object, boolean)",
+    "Path PathValue.getModelPath()",
+    "Object PathValue.getValue()"
+  })
+  void testPathValueGettersAndSetters_whenBase_path() {
     // Arrange
     Path modelPath = FlatFileMappingProcessor.BASE_PATH;
+    Object object = BeanPropertyWriter.MARKER_FOR_EMPTY;
 
     // Act
-    PathValue<Object> actualPathValue = new PathValue<>(modelPath, "Value");
+    PathValue<Object> actualPathValue = new PathValue<>(modelPath, object);
     Path actualModelPath = actualPathValue.getModelPath();
+    Object actualValue = actualPathValue.getValue();
 
     // Assert
-    assertEquals("Value", actualPathValue.getValue());
+    assertTrue(actualValue instanceof Include);
+    assertEquals(Include.NON_EMPTY, actualValue);
+    assertSame(object, actualValue);
     assertSame(modelPath, actualModelPath);
   }
 
   /**
    * Test PathValue getters and setters.
+   *
    * <ul>
-   *   <li>When {@code true}.</li>
+   *   <li>When {@code true}.
    * </ul>
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link PathValue#PathValue(Path, Object, boolean)}
    *   <li>{@link PathValue#getModelPath()}
@@ -74,19 +93,29 @@ public class FlatFileMappingProcessorDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void PathValue.<init>(Path, Object)", "void PathValue.<init>(Path, Object, boolean)",
-      "Path PathValue.getModelPath()", "Object PathValue.getValue()"})
-  public void testPathValueGettersAndSetters_whenTrue() {
+  @DisplayName("Test PathValue getters and setters; when 'true'")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void PathValue.<init>(Path, Object)",
+    "void PathValue.<init>(Path, Object, boolean)",
+    "Path PathValue.getModelPath()",
+    "Object PathValue.getValue()"
+  })
+  void testPathValueGettersAndSetters_whenTrue() {
     // Arrange
     Path modelPath = FlatFileMappingProcessor.BASE_PATH;
+    Object object = BeanPropertyWriter.MARKER_FOR_EMPTY;
 
     // Act
-    PathValue<Object> actualPathValue = new PathValue<>(modelPath, "Value", true);
+    PathValue<Object> actualPathValue = new PathValue<>(modelPath, object, true);
     Path actualModelPath = actualPathValue.getModelPath();
+    Object actualValue = actualPathValue.getValue();
 
     // Assert
-    assertEquals("Value", actualPathValue.getValue());
+    assertTrue(actualValue instanceof Include);
+    assertEquals(Include.NON_EMPTY, actualValue);
+    assertSame(object, actualValue);
     assertSame(modelPath, actualModelPath);
   }
 }

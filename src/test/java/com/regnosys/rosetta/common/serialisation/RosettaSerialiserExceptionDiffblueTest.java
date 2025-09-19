@@ -20,29 +20,33 @@ package com.regnosys.rosetta.common.serialisation;
  * ==============
  */
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertSame;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
-import org.junit.Test;
-import org.junit.experimental.categories.Category;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
 
-public class RosettaSerialiserExceptionDiffblueTest {
+class RosettaSerialiserExceptionDiffblueTest {
   /**
    * Test {@link RosettaSerialiserException#RosettaSerialiserException(String, Throwable)}.
-   * <p>
-   * Method under test: {@link RosettaSerialiserException#RosettaSerialiserException(String, Throwable)}
+   *
+   * <p>Method under test: {@link RosettaSerialiserException#RosettaSerialiserException(String,
+   * Throwable)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @DisplayName("Test new RosettaSerialiserException(String, Throwable)")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"void RosettaSerialiserException.<init>(String, Throwable)"})
-  public void testNewRosettaSerialiserException() {
+  void testNewRosettaSerialiserException() {
     // Arrange
     Throwable cause = new Throwable();
 
     // Act
-    RosettaSerialiserException actualRosettaSerialiserException = new RosettaSerialiserException("An error occurred",
-        cause);
+    RosettaSerialiserException actualRosettaSerialiserException =
+        new RosettaSerialiserException("An error occurred", cause);
 
     // Assert
     assertEquals("An error occurred", actualRosettaSerialiserException.getMessage());

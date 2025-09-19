@@ -20,26 +20,30 @@ package com.regnosys.rosetta.common.compile;
  * ==============
  */
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
-import org.junit.Test;
-import org.junit.experimental.categories.Category;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
 
-public class CompilationCancellationExceptionDiffblueTest {
+class CompilationCancellationExceptionDiffblueTest {
   /**
    * Test {@link CompilationCancellationException#CompilationCancellationException(String)}.
-   * <p>
-   * Method under test: {@link CompilationCancellationException#CompilationCancellationException(String)}
+   *
+   * <p>Method under test: {@link
+   * CompilationCancellationException#CompilationCancellationException(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @DisplayName("Test new CompilationCancellationException(String)")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"void CompilationCancellationException.<init>(String)"})
-  public void testNewCompilationCancellationException() {
+  void testNewCompilationCancellationException() {
     // Arrange and Act
-    CompilationCancellationException actualCompilationCancellationException = new CompilationCancellationException(
-        "An error occurred");
+    CompilationCancellationException actualCompilationCancellationException =
+        new CompilationCancellationException("An error occurred");
 
     // Assert
     assertEquals("An error occurred", actualCompilationCancellationException.getMessage());

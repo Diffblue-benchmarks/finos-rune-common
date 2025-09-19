@@ -20,28 +20,36 @@ package com.regnosys.rosetta.common.util;
  * ==============
  */
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertSame;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
-import org.junit.Test;
-import org.junit.experimental.categories.Category;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
 
-public class PathExceptionDiffblueTest {
+class PathExceptionDiffblueTest {
   /**
    * Test {@link PathException#PathException(String)}.
+   *
    * <ul>
-   *   <li>When {@code 0123456789ABCDEF}.</li>
-   *   <li>Then return Cause is {@code null}.</li>
+   *   <li>When {@code 0123456789ABCDEF}.
+   *   <li>Then return Cause is {@code null}.
    * </ul>
-   * <p>
-   * Method under test: {@link PathException#PathException(String)}
+   *
+   * <p>Method under test: {@link PathException#PathException(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void PathException.<init>(String)", "void PathException.<init>(String, Throwable)"})
-  public void testNewPathException_when0123456789abcdef_thenReturnCauseIsNull() {
+  @DisplayName(
+      "Test new PathException(String); when '0123456789ABCDEF'; then return Cause is 'null'")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void PathException.<init>(String)",
+    "void PathException.<init>(String, Throwable)"
+  })
+  void testNewPathException_when0123456789abcdef_thenReturnCauseIsNull() {
     // Arrange and Act
     PathException actualPathException = new PathException("0123456789ABCDEF");
 
@@ -53,17 +61,24 @@ public class PathExceptionDiffblueTest {
 
   /**
    * Test {@link PathException#PathException(String, Throwable)}.
+   *
    * <ul>
-   *   <li>When {@link Throwable#Throwable()}.</li>
-   *   <li>Then return Cause is {@link Throwable#Throwable()}.</li>
+   *   <li>When {@link Throwable#Throwable()}.
+   *   <li>Then return Cause is {@link Throwable#Throwable()}.
    * </ul>
-   * <p>
-   * Method under test: {@link PathException#PathException(String, Throwable)}
+   *
+   * <p>Method under test: {@link PathException#PathException(String, Throwable)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void PathException.<init>(String)", "void PathException.<init>(String, Throwable)"})
-  public void testNewPathException_whenThrowable_thenReturnCauseIsThrowable() {
+  @DisplayName(
+      "Test new PathException(String, Throwable); when Throwable(); then return Cause is Throwable()")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void PathException.<init>(String)",
+    "void PathException.<init>(String, Throwable)"
+  })
+  void testNewPathException_whenThrowable_thenReturnCauseIsThrowable() {
     // Arrange
     Throwable cause = new Throwable();
 

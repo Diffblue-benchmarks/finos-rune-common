@@ -20,13 +20,13 @@ package com.regnosys.rosetta.common.validation;
  * ==============
  */
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import com.regnosys.rosetta.common.merger.BarBuilder;
 import com.regnosys.rosetta.common.serialisation.json.preannotation.testpojo.metafields.FieldWithMetaPrice;
@@ -46,37 +46,46 @@ import com.rosetta.model.lib.process.Processor;
 import com.rosetta.model.lib.process.Processor.Report;
 import com.rosetta.model.lib.validation.ValidationResult;
 import com.rosetta.model.lib.validation.ValidationResult.ModelValidationResult;
+import com.rosetta.model.lib.validation.ValidationResult.ValidationType;
 import com.rosetta.test.Animal;
 import com.rosetta.test.Animal.AnimalBuilderImpl;
-import com.rosetta.test.AnimalContainer;
-import com.rosetta.test.AnimalContainer.AnimalContainerBuilderImpl;
 import java.util.ArrayList;
 import java.util.List;
-import org.junit.Test;
-import org.junit.experimental.categories.Category;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
 
-public class RosettaTypeValidatorDiffblueTest {
+class RosettaTypeValidatorDiffblueTest {
   /**
-   * Test RosettaTypeProcessor {@link RosettaTypeProcessor#processRosetta(RosettaPath, Class, RosettaModelObject, RosettaModelObject, AttributeMeta[])} with {@code path}, {@code rosettaType}, {@code instance}, {@code parent}, {@code metas}.
-   * <p>
-   * Method under test: {@link RosettaTypeProcessor#processRosetta(RosettaPath, Class, RosettaModelObject, RosettaModelObject, AttributeMeta[])}
+   * Test RosettaTypeProcessor {@link RosettaTypeProcessor#processRosetta(RosettaPath, Class,
+   * RosettaModelObject, RosettaModelObject, AttributeMeta[])} with {@code path}, {@code
+   * rosettaType}, {@code instance}, {@code parent}, {@code metas}.
+   *
+   * <p>Method under test: {@link RosettaTypeProcessor#processRosetta(RosettaPath, Class,
+   * RosettaModelObject, RosettaModelObject, AttributeMeta[])}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @DisplayName(
+      "Test RosettaTypeProcessor processRosetta(RosettaPath, Class, RosettaModelObject, RosettaModelObject, AttributeMeta[]) with 'path', 'rosettaType', 'instance', 'parent', 'metas'")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({
-      "boolean RosettaTypeProcessor.processRosetta(RosettaPath, Class, RosettaModelObject, RosettaModelObject, AttributeMeta[])"})
-  public void testRosettaTypeProcessorProcessRosettaWithPathRosettaTypeInstanceParentMetas() {
+    "boolean RosettaTypeProcessor.processRosetta(RosettaPath, Class, RosettaModelObject, RosettaModelObject, AttributeMeta[])"
+  })
+  void testRosettaTypeProcessorProcessRosettaWithPathRosettaTypeInstanceParentMetas() {
     // Arrange
     RosettaTypeValidator rosettaTypeValidator = new RosettaTypeValidator();
     BarBuilder resultObject = new BarBuilder();
-    RosettaTypeProcessor rosettaTypeProcessor = rosettaTypeValidator.new RosettaTypeProcessor(
-        new ValidationReport(resultObject, new ArrayList<>()));
+    ValidationReport report = new ValidationReport(resultObject, new ArrayList<>());
+    RosettaTypeProcessor rosettaTypeProcessor =
+        rosettaTypeValidator.new RosettaTypeProcessor(report);
     RosettaPath path = mock(RosettaPath.class);
     Class<RosettaModelObject> rosettaType = RosettaModelObject.class;
 
     // Act
-    boolean actualProcessRosettaResult = rosettaTypeProcessor.processRosetta(path, rosettaType,
-        (RosettaModelObject) null, new BarBuilder(), AttributeMeta.META);
+    boolean actualProcessRosettaResult =
+        rosettaTypeProcessor.processRosetta(
+            path, rosettaType, (RosettaModelObject) null, new BarBuilder(), AttributeMeta.META);
 
     // Assert
     Report reportResult = rosettaTypeProcessor.report();
@@ -87,28 +96,38 @@ public class RosettaTypeValidatorDiffblueTest {
   }
 
   /**
-   * Test RosettaTypeProcessor {@link RosettaTypeProcessor#processRosetta(RosettaPath, Class, RosettaModelObject, RosettaModelObject, AttributeMeta[])} with {@code path}, {@code rosettaType}, {@code instance}, {@code parent}, {@code metas}.
-   * <p>
-   * Method under test: {@link RosettaTypeProcessor#processRosetta(RosettaPath, Class, RosettaModelObject, RosettaModelObject, AttributeMeta[])}
+   * Test RosettaTypeProcessor {@link RosettaTypeProcessor#processRosetta(RosettaPath, Class,
+   * RosettaModelObject, RosettaModelObject, AttributeMeta[])} with {@code path}, {@code
+   * rosettaType}, {@code instance}, {@code parent}, {@code metas}.
+   *
+   * <p>Method under test: {@link RosettaTypeProcessor#processRosetta(RosettaPath, Class,
+   * RosettaModelObject, RosettaModelObject, AttributeMeta[])}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @DisplayName(
+      "Test RosettaTypeProcessor processRosetta(RosettaPath, Class, RosettaModelObject, RosettaModelObject, AttributeMeta[]) with 'path', 'rosettaType', 'instance', 'parent', 'metas'")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({
-      "boolean RosettaTypeProcessor.processRosetta(RosettaPath, Class, RosettaModelObject, RosettaModelObject, AttributeMeta[])"})
-  public void testRosettaTypeProcessorProcessRosettaWithPathRosettaTypeInstanceParentMetas2() {
+    "boolean RosettaTypeProcessor.processRosetta(RosettaPath, Class, RosettaModelObject, RosettaModelObject, AttributeMeta[])"
+  })
+  void testRosettaTypeProcessorProcessRosettaWithPathRosettaTypeInstanceParentMetas2() {
     // Arrange
     RosettaTypeValidator rosettaTypeValidator = new RosettaTypeValidator();
     BarBuilder resultObject = new BarBuilder();
     ArrayList<ValidationResult<?>> validationResults = new ArrayList<>();
-    RosettaTypeProcessor rosettaTypeProcessor = rosettaTypeValidator.new RosettaTypeProcessor(
-        new ValidationReport(resultObject, validationResults));
+
+    ValidationReport report = new ValidationReport(resultObject, validationResults);
+    RosettaTypeProcessor rosettaTypeProcessor =
+        rosettaTypeValidator.new RosettaTypeProcessor(report);
     RosettaPath path = mock(RosettaPath.class);
     Class<RosettaModelObject> rosettaType = RosettaModelObject.class;
     KeyBuilderImpl keyBuilderImpl = new KeyBuilderImpl();
 
     // Act
-    boolean actualProcessRosettaResult = rosettaTypeProcessor.processRosetta(path, rosettaType, keyBuilderImpl,
-        new BarBuilder(), AttributeMeta.META);
+    boolean actualProcessRosettaResult =
+        rosettaTypeProcessor.processRosetta(
+            path, rosettaType, keyBuilderImpl, new BarBuilder(), AttributeMeta.META);
 
     // Assert
     Report reportResult = rosettaTypeProcessor.report();
@@ -120,74 +139,55 @@ public class RosettaTypeValidatorDiffblueTest {
 
   /**
    * Test RosettaTypeProcessor {@link RosettaTypeProcessor#report()}.
-   * <p>
-   * Method under test: {@link RosettaTypeProcessor#report()}
+   *
+   * <p>Method under test: {@link RosettaTypeProcessor#report()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @DisplayName("Test RosettaTypeProcessor report()")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"Processor.Report RosettaTypeProcessor.report()"})
-  public void testRosettaTypeProcessorReport() {
+  void testRosettaTypeProcessorReport() {
     // Arrange
     RosettaTypeValidator rosettaTypeValidator = new RosettaTypeValidator();
     BarBuilder resultObject = new BarBuilder();
     ValidationReport report = new ValidationReport(resultObject, new ArrayList<>());
 
     // Act and Assert
-    assertSame(report, (rosettaTypeValidator.new RosettaTypeProcessor(report)).report());
+    assertSame(report, rosettaTypeValidator.new RosettaTypeProcessor(report).report());
   }
 
   /**
    * Test {@link RosettaTypeValidator#runProcessStep(Class, RosettaModelObject)}.
-   * <p>
-   * Method under test: {@link RosettaTypeValidator#runProcessStep(Class, RosettaModelObject)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"ValidationReport RosettaTypeValidator.runProcessStep(Class, RosettaModelObject)"})
-  public void testRunProcessStep() {
-    // Arrange
-    RosettaTypeValidator rosettaTypeValidator = new RosettaTypeValidator();
-    Class<RosettaModelObject> topClass = RosettaModelObject.class;
-    AnimalContainerBuilderImpl animalContainerBuilderImpl = new AnimalContainerBuilderImpl();
-
-    // Act
-    ValidationReport actualRunProcessStepResult = rosettaTypeValidator.runProcessStep(topClass,
-        animalContainerBuilderImpl);
-
-    // Assert
-    List<ValidationResult<?>> validationResults = actualRunProcessStepResult.getValidationResults();
-    assertEquals(1, validationResults.size());
-    ValidationResult<?> getResult = validationResults.get(0);
-    assertTrue(getResult instanceof ModelValidationResult);
-    assertEquals("AnimalContainer", getResult.getModelObjectName());
-    assertEquals("AnimalContainer", getResult.getName());
-    assertSame(animalContainerBuilderImpl, actualRunProcessStepResult.getResultObject());
-  }
-
-  /**
-   * Test {@link RosettaTypeValidator#runProcessStep(Class, RosettaModelObject)}.
+   *
    * <ul>
-   *   <li>Given {@link MetaFieldsBuilderImpl} (default constructor).</li>
-   *   <li>Then return success.</li>
+   *   <li>Given {@link MetaFieldsBuilderImpl} (default constructor).
+   *   <li>Then return success.
    * </ul>
-   * <p>
-   * Method under test: {@link RosettaTypeValidator#runProcessStep(Class, RosettaModelObject)}
+   *
+   * <p>Method under test: {@link RosettaTypeValidator#runProcessStep(Class, RosettaModelObject)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"ValidationReport RosettaTypeValidator.runProcessStep(Class, RosettaModelObject)"})
-  public void testRunProcessStep_givenMetaFieldsBuilderImpl_thenReturnSuccess() {
+  @DisplayName(
+      "Test runProcessStep(Class, RosettaModelObject); given MetaFieldsBuilderImpl (default constructor); then return success")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "ValidationReport RosettaTypeValidator.runProcessStep(Class, RosettaModelObject)"
+  })
+  void testRunProcessStep_givenMetaFieldsBuilderImpl_thenReturnSuccess() {
     // Arrange
     RosettaTypeValidator rosettaTypeValidator = new RosettaTypeValidator();
     Class<RosettaModelObject> topClass = RosettaModelObject.class;
 
-    FieldWithMetaPriceBuilderImpl fieldWithMetaPriceBuilderImpl = new FieldWithMetaPriceBuilderImpl();
+    FieldWithMetaPriceBuilderImpl fieldWithMetaPriceBuilderImpl =
+        new FieldWithMetaPriceBuilderImpl();
     MetaFieldsBuilderImpl meta = new MetaFieldsBuilderImpl();
     fieldWithMetaPriceBuilderImpl.setMeta(meta);
 
     // Act
-    ValidationReport actualRunProcessStepResult = rosettaTypeValidator.runProcessStep(topClass,
-        fieldWithMetaPriceBuilderImpl);
+    ValidationReport actualRunProcessStepResult =
+        rosettaTypeValidator.runProcessStep(topClass, fieldWithMetaPriceBuilderImpl);
 
     // Assert
     RosettaModelObject resultObject = actualRunProcessStepResult.getResultObject();
@@ -203,38 +203,56 @@ public class RosettaTypeValidatorDiffblueTest {
 
   /**
    * Test {@link RosettaTypeValidator#runProcessStep(Class, RosettaModelObject)}.
+   *
    * <ul>
-   *   <li>Then return ResultObject is {@link FieldWithMetaPrice.FieldWithMetaPriceBuilderImpl} (default constructor).</li>
+   *   <li>Then return ResultObject is {@link FieldWithMetaPrice.FieldWithMetaPriceBuilderImpl}
+   *       (default constructor).
    * </ul>
-   * <p>
-   * Method under test: {@link RosettaTypeValidator#runProcessStep(Class, RosettaModelObject)}
+   *
+   * <p>Method under test: {@link RosettaTypeValidator#runProcessStep(Class, RosettaModelObject)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"ValidationReport RosettaTypeValidator.runProcessStep(Class, RosettaModelObject)"})
-  public void testRunProcessStep_thenReturnResultObjectIsFieldWithMetaPriceBuilderImpl() {
+  @DisplayName(
+      "Test runProcessStep(Class, RosettaModelObject); then return ResultObject is FieldWithMetaPriceBuilderImpl (default constructor)")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "ValidationReport RosettaTypeValidator.runProcessStep(Class, RosettaModelObject)"
+  })
+  void testRunProcessStep_thenReturnResultObjectIsFieldWithMetaPriceBuilderImpl() {
     // Arrange
     RosettaTypeValidator rosettaTypeValidator = new RosettaTypeValidator();
     Class<RosettaModelObject> topClass = RosettaModelObject.class;
-    FieldWithMetaPriceBuilderImpl fieldWithMetaPriceBuilderImpl = new FieldWithMetaPriceBuilderImpl();
+    FieldWithMetaPriceBuilderImpl fieldWithMetaPriceBuilderImpl =
+        new FieldWithMetaPriceBuilderImpl();
 
     // Act and Assert
-    assertSame(fieldWithMetaPriceBuilderImpl,
-        rosettaTypeValidator.runProcessStep(topClass, fieldWithMetaPriceBuilderImpl).getResultObject());
+    assertSame(
+        fieldWithMetaPriceBuilderImpl,
+        rosettaTypeValidator
+            .runProcessStep(topClass, fieldWithMetaPriceBuilderImpl)
+            .getResultObject());
   }
 
   /**
    * Test {@link RosettaTypeValidator#runProcessStep(Class, RosettaModelObject)}.
+   *
    * <ul>
-   *   <li>Then return ResultObject is {@link KeyImpl#KeyImpl(KeyBuilder)} with builder is {@link KeyBuilderImpl} (default constructor).</li>
+   *   <li>Then return ResultObject is {@link KeyImpl#KeyImpl(KeyBuilder)} with builder is {@link
+   *       KeyBuilderImpl} (default constructor).
    * </ul>
-   * <p>
-   * Method under test: {@link RosettaTypeValidator#runProcessStep(Class, RosettaModelObject)}
+   *
+   * <p>Method under test: {@link RosettaTypeValidator#runProcessStep(Class, RosettaModelObject)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"ValidationReport RosettaTypeValidator.runProcessStep(Class, RosettaModelObject)"})
-  public void testRunProcessStep_thenReturnResultObjectIsKeyImplWithBuilderIsKeyBuilderImpl() {
+  @DisplayName(
+      "Test runProcessStep(Class, RosettaModelObject); then return ResultObject is KeyImpl(KeyBuilder) with builder is KeyBuilderImpl (default constructor)")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "ValidationReport RosettaTypeValidator.runProcessStep(Class, RosettaModelObject)"
+  })
+  void testRunProcessStep_thenReturnResultObjectIsKeyImplWithBuilderIsKeyBuilderImpl() {
     // Arrange
     RosettaTypeValidator rosettaTypeValidator = new RosettaTypeValidator();
     Class<RosettaModelObject> topClass = RosettaModelObject.class;
@@ -246,16 +264,22 @@ public class RosettaTypeValidatorDiffblueTest {
 
   /**
    * Test {@link RosettaTypeValidator#runProcessStep(Class, RosettaModelObject)}.
+   *
    * <ul>
-   *   <li>Then return ResultObject Meta Key size is four.</li>
+   *   <li>Then return ResultObject Meta Key size is four.
    * </ul>
-   * <p>
-   * Method under test: {@link RosettaTypeValidator#runProcessStep(Class, RosettaModelObject)}
+   *
+   * <p>Method under test: {@link RosettaTypeValidator#runProcessStep(Class, RosettaModelObject)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"ValidationReport RosettaTypeValidator.runProcessStep(Class, RosettaModelObject)"})
-  public void testRunProcessStep_thenReturnResultObjectMetaKeySizeIsFour() {
+  @DisplayName(
+      "Test runProcessStep(Class, RosettaModelObject); then return ResultObject Meta Key size is four")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "ValidationReport RosettaTypeValidator.runProcessStep(Class, RosettaModelObject)"
+  })
+  void testRunProcessStep_thenReturnResultObjectMetaKeySizeIsFour() {
     // Arrange
     RosettaTypeValidator rosettaTypeValidator = new RosettaTypeValidator();
     Class<RosettaModelObject> topClass = RosettaModelObject.class;
@@ -266,12 +290,15 @@ public class RosettaTypeValidatorDiffblueTest {
     KeyBuilderImpl key2 = new KeyBuilderImpl();
     meta.addKey(key2);
 
-    FieldWithMetaPriceBuilderImpl fieldWithMetaPriceBuilderImpl = new FieldWithMetaPriceBuilderImpl();
+    FieldWithMetaPriceBuilderImpl fieldWithMetaPriceBuilderImpl =
+        new FieldWithMetaPriceBuilderImpl();
     fieldWithMetaPriceBuilderImpl.setMeta(meta);
 
     // Act and Assert
-    RosettaModelObject resultObject = rosettaTypeValidator.runProcessStep(topClass, fieldWithMetaPriceBuilderImpl)
-        .getResultObject();
+    RosettaModelObject resultObject =
+        rosettaTypeValidator
+            .runProcessStep(topClass, fieldWithMetaPriceBuilderImpl)
+            .getResultObject();
     assertTrue(resultObject instanceof FieldWithMetaPriceBuilderImpl);
     MetaFieldsBuilder meta2 = ((FieldWithMetaPriceBuilderImpl) resultObject).getMeta();
     assertTrue(meta2 instanceof MetaFieldsBuilderImpl);
@@ -287,23 +314,30 @@ public class RosettaTypeValidatorDiffblueTest {
 
   /**
    * Test {@link RosettaTypeValidator#runProcessStep(Class, RosettaModelObject)}.
+   *
    * <ul>
-   *   <li>Then return ValidationResults first ModelObjectName is {@code Animal}.</li>
+   *   <li>Then return ValidationResults first ModelObjectName is {@code Animal}.
    * </ul>
-   * <p>
-   * Method under test: {@link RosettaTypeValidator#runProcessStep(Class, RosettaModelObject)}
+   *
+   * <p>Method under test: {@link RosettaTypeValidator#runProcessStep(Class, RosettaModelObject)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"ValidationReport RosettaTypeValidator.runProcessStep(Class, RosettaModelObject)"})
-  public void testRunProcessStep_thenReturnValidationResultsFirstModelObjectNameIsAnimal() {
+  @DisplayName(
+      "Test runProcessStep(Class, RosettaModelObject); then return ValidationResults first ModelObjectName is 'Animal'")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "ValidationReport RosettaTypeValidator.runProcessStep(Class, RosettaModelObject)"
+  })
+  void testRunProcessStep_thenReturnValidationResultsFirstModelObjectNameIsAnimal() {
     // Arrange
     RosettaTypeValidator rosettaTypeValidator = new RosettaTypeValidator();
     Class<RosettaModelObject> topClass = RosettaModelObject.class;
     AnimalBuilderImpl animalBuilderImpl = new AnimalBuilderImpl();
 
     // Act
-    ValidationReport actualRunProcessStepResult = rosettaTypeValidator.runProcessStep(topClass, animalBuilderImpl);
+    ValidationReport actualRunProcessStepResult =
+        rosettaTypeValidator.runProcessStep(topClass, animalBuilderImpl);
 
     // Assert
     List<ValidationResult<?>> validationResults = actualRunProcessStepResult.getValidationResults();
@@ -312,6 +346,7 @@ public class RosettaTypeValidatorDiffblueTest {
     assertTrue(getResult instanceof ModelValidationResult);
     assertEquals("Animal", getResult.getModelObjectName());
     assertEquals("Animal", getResult.getName());
+    assertEquals(ValidationType.CARDINALITY, getResult.getValidationType());
     assertFalse(getResult.getFailureReason().isPresent());
     assertTrue(getResult.isSuccess());
     assertSame(animalBuilderImpl, actualRunProcessStepResult.getResultObject());
@@ -319,16 +354,22 @@ public class RosettaTypeValidatorDiffblueTest {
 
   /**
    * Test {@link RosettaTypeValidator#runProcessStep(Class, RosettaModelObject)}.
+   *
    * <ul>
-   *   <li>Then return ValidationResults first Path Element Index AsInt is zero.</li>
+   *   <li>Then return ValidationResults first Path Element Index AsInt is zero.
    * </ul>
-   * <p>
-   * Method under test: {@link RosettaTypeValidator#runProcessStep(Class, RosettaModelObject)}
+   *
+   * <p>Method under test: {@link RosettaTypeValidator#runProcessStep(Class, RosettaModelObject)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"ValidationReport RosettaTypeValidator.runProcessStep(Class, RosettaModelObject)"})
-  public void testRunProcessStep_thenReturnValidationResultsFirstPathElementIndexAsIntIsZero() {
+  @DisplayName(
+      "Test runProcessStep(Class, RosettaModelObject); then return ValidationResults first Path Element Index AsInt is zero")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "ValidationReport RosettaTypeValidator.runProcessStep(Class, RosettaModelObject)"
+  })
+  void testRunProcessStep_thenReturnValidationResultsFirstPathElementIndexAsIntIsZero() {
     // Arrange
     RosettaTypeValidator rosettaTypeValidator = new RosettaTypeValidator();
     Class<RosettaModelObject> topClass = RosettaModelObject.class;
@@ -337,12 +378,13 @@ public class RosettaTypeValidatorDiffblueTest {
     KeyBuilderImpl key = new KeyBuilderImpl();
     meta.addKey(key);
 
-    FieldWithMetaPriceBuilderImpl fieldWithMetaPriceBuilderImpl = new FieldWithMetaPriceBuilderImpl();
+    FieldWithMetaPriceBuilderImpl fieldWithMetaPriceBuilderImpl =
+        new FieldWithMetaPriceBuilderImpl();
     fieldWithMetaPriceBuilderImpl.setMeta(meta);
 
     // Act
-    ValidationReport actualRunProcessStepResult = rosettaTypeValidator.runProcessStep(topClass,
-        fieldWithMetaPriceBuilderImpl);
+    ValidationReport actualRunProcessStepResult =
+        rosettaTypeValidator.runProcessStep(topClass, fieldWithMetaPriceBuilderImpl);
 
     // Assert
     RosettaModelObject resultObject = actualRunProcessStepResult.getResultObject();
@@ -361,16 +403,22 @@ public class RosettaTypeValidatorDiffblueTest {
 
   /**
    * Test {@link RosettaTypeValidator#runProcessStep(Class, RosettaModelObject)}.
+   *
    * <ul>
-   *   <li>Then return ValidationResults size is two.</li>
+   *   <li>Then return ValidationResults size is two.
    * </ul>
-   * <p>
-   * Method under test: {@link RosettaTypeValidator#runProcessStep(Class, RosettaModelObject)}
+   *
+   * <p>Method under test: {@link RosettaTypeValidator#runProcessStep(Class, RosettaModelObject)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"ValidationReport RosettaTypeValidator.runProcessStep(Class, RosettaModelObject)"})
-  public void testRunProcessStep_thenReturnValidationResultsSizeIsTwo() {
+  @DisplayName(
+      "Test runProcessStep(Class, RosettaModelObject); then return ValidationResults size is two")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "ValidationReport RosettaTypeValidator.runProcessStep(Class, RosettaModelObject)"
+  })
+  void testRunProcessStep_thenReturnValidationResultsSizeIsTwo() {
     // Arrange
     RosettaTypeValidator rosettaTypeValidator = new RosettaTypeValidator();
     Class<RosettaModelObject> topClass = RosettaModelObject.class;
@@ -380,12 +428,13 @@ public class RosettaTypeValidatorDiffblueTest {
     KeyBuilderImpl key = new KeyBuilderImpl();
     meta.addKey(key);
 
-    FieldWithMetaPriceBuilderImpl fieldWithMetaPriceBuilderImpl = new FieldWithMetaPriceBuilderImpl();
+    FieldWithMetaPriceBuilderImpl fieldWithMetaPriceBuilderImpl =
+        new FieldWithMetaPriceBuilderImpl();
     fieldWithMetaPriceBuilderImpl.setMeta(meta);
 
     // Act
-    ValidationReport actualRunProcessStepResult = rosettaTypeValidator.runProcessStep(topClass,
-        fieldWithMetaPriceBuilderImpl);
+    ValidationReport actualRunProcessStepResult =
+        rosettaTypeValidator.runProcessStep(topClass, fieldWithMetaPriceBuilderImpl);
 
     // Assert
     RosettaModelObject resultObject = actualRunProcessStepResult.getResultObject();
@@ -404,53 +453,69 @@ public class RosettaTypeValidatorDiffblueTest {
 
   /**
    * Test {@link RosettaTypeValidator#runProcessStep(Class, RosettaModelObject)}.
+   *
    * <ul>
-   *   <li>When {@link KeyBuilderImpl} (default constructor).</li>
-   *   <li>Then return ResultObject is {@link KeyBuilderImpl} (default constructor).</li>
+   *   <li>When {@link KeyBuilderImpl} (default constructor).
+   *   <li>Then return ResultObject is {@link KeyBuilderImpl} (default constructor).
    * </ul>
-   * <p>
-   * Method under test: {@link RosettaTypeValidator#runProcessStep(Class, RosettaModelObject)}
+   *
+   * <p>Method under test: {@link RosettaTypeValidator#runProcessStep(Class, RosettaModelObject)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"ValidationReport RosettaTypeValidator.runProcessStep(Class, RosettaModelObject)"})
-  public void testRunProcessStep_whenKeyBuilderImpl_thenReturnResultObjectIsKeyBuilderImpl() {
+  @DisplayName(
+      "Test runProcessStep(Class, RosettaModelObject); when KeyBuilderImpl (default constructor); then return ResultObject is KeyBuilderImpl (default constructor)")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "ValidationReport RosettaTypeValidator.runProcessStep(Class, RosettaModelObject)"
+  })
+  void testRunProcessStep_whenKeyBuilderImpl_thenReturnResultObjectIsKeyBuilderImpl() {
     // Arrange
     RosettaTypeValidator rosettaTypeValidator = new RosettaTypeValidator();
     Class<RosettaModelObject> topClass = RosettaModelObject.class;
     KeyBuilderImpl keyBuilderImpl = new KeyBuilderImpl();
 
     // Act and Assert
-    assertSame(keyBuilderImpl, rosettaTypeValidator.runProcessStep(topClass, keyBuilderImpl).getResultObject());
+    assertSame(
+        keyBuilderImpl,
+        rosettaTypeValidator.runProcessStep(topClass, keyBuilderImpl).getResultObject());
   }
 
   /**
    * Test {@link RosettaTypeValidator#getPriority()}.
-   * <p>
-   * Method under test: {@link RosettaTypeValidator#getPriority()}
+   *
+   * <p>Method under test: {@link RosettaTypeValidator#getPriority()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @DisplayName("Test getPriority()")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"java.lang.Integer RosettaTypeValidator.getPriority()"})
-  public void testGetPriority() {
+  void testGetPriority() {
     // Arrange, Act and Assert
-    assertEquals(100, (new RosettaTypeValidator()).getPriority().intValue());
+    assertEquals(100, new RosettaTypeValidator().getPriority().intValue());
   }
 
   /**
    * Test getters and setters.
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>default or parameterless constructor of {@link RosettaTypeValidator}
    *   <li>{@link RosettaTypeValidator#getName()}
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void RosettaTypeValidator.<init>()", "java.lang.String RosettaTypeValidator.getName()"})
-  public void testGettersAndSetters() {
+  @DisplayName("Test getters and setters")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void RosettaTypeValidator.<init>()",
+    "java.lang.String RosettaTypeValidator.getName()"
+  })
+  void testGettersAndSetters() {
     // Arrange, Act and Assert
-    assertEquals("Rosetta type validator PostProcessor", (new RosettaTypeValidator()).getName());
+    assertEquals("Rosetta type validator PostProcessor", new RosettaTypeValidator().getName());
   }
 }

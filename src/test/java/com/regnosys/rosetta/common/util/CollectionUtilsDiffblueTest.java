@@ -20,137 +20,50 @@ package com.regnosys.rosetta.common.util;
  * ==============
  */
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
+import com.fasterxml.jackson.databind.ser.BeanPropertyWriter;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.function.BiPredicate;
-import org.junit.Test;
-import org.junit.experimental.categories.Category;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
-public class CollectionUtilsDiffblueTest {
+class CollectionUtilsDiffblueTest {
   /**
    * Test {@link CollectionUtils#listMatch(List, List, BiPredicate)}.
+   *
    * <ul>
-   *   <li>Given {@code 42}.</li>
-   *   <li>When {@link ArrayList#ArrayList()}.</li>
-   *   <li>Then return {@code false}.</li>
+   *   <li>Given {@code false}.
+   *   <li>When {@link BiPredicate} {@link BiPredicate#test(Object, Object)} return {@code false}.
+   *   <li>Then calls {@link BiPredicate#test(Object, Object)}.
    * </ul>
-   * <p>
-   * Method under test: {@link CollectionUtils#listMatch(List, List, BiPredicate)}
+   *
+   * <p>Method under test: {@link CollectionUtils#listMatch(List, List, BiPredicate)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @DisplayName(
+      "Test listMatch(List, List, BiPredicate); given 'false'; when BiPredicate test(Object, Object) return 'false'; then calls test(Object, Object)")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean CollectionUtils.listMatch(List, List, BiPredicate)"})
-  public void testListMatch_given42_whenArrayList_thenReturnFalse() {
+  void testListMatch_givenFalse_whenBiPredicateTestReturnFalse_thenCallsTest() {
     // Arrange
     ArrayList<Object> list1 = new ArrayList<>();
-    list1.add("42");
-
-    // Act and Assert
-    assertFalse(CollectionUtils.listMatch(list1, new ArrayList<>(), mock(BiPredicate.class)));
-  }
-
-  /**
-   * Test {@link CollectionUtils#listMatch(List, List, BiPredicate)}.
-   * <ul>
-   *   <li>Given {@code 42}.</li>
-   *   <li>When {@link ArrayList#ArrayList()}.</li>
-   *   <li>Then return {@code false}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link CollectionUtils#listMatch(List, List, BiPredicate)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean CollectionUtils.listMatch(List, List, BiPredicate)"})
-  public void testListMatch_given42_whenArrayList_thenReturnFalse2() {
-    // Arrange
-    ArrayList<Object> list1 = new ArrayList<>();
-    list1.add("42");
-    list1.add("42");
-
-    // Act and Assert
-    assertFalse(CollectionUtils.listMatch(list1, new ArrayList<>(), mock(BiPredicate.class)));
-  }
-
-  /**
-   * Test {@link CollectionUtils#listMatch(List, List, BiPredicate)}.
-   * <ul>
-   *   <li>Given {@code 42}.</li>
-   *   <li>When {@link ArrayList#ArrayList()}.</li>
-   *   <li>Then return {@code false}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link CollectionUtils#listMatch(List, List, BiPredicate)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean CollectionUtils.listMatch(List, List, BiPredicate)"})
-  public void testListMatch_given42_whenArrayList_thenReturnFalse3() {
-    // Arrange
-    ArrayList<Object> list1 = new ArrayList<>();
+    list1.add(BeanPropertyWriter.MARKER_FOR_EMPTY);
 
     ArrayList<Object> list2 = new ArrayList<>();
-    list2.add("42");
+    list2.add(BeanPropertyWriter.MARKER_FOR_EMPTY);
 
-    // Act and Assert
-    assertFalse(CollectionUtils.listMatch(list1, list2, mock(BiPredicate.class)));
-  }
-
-  /**
-   * Test {@link CollectionUtils#listMatch(List, List, BiPredicate)}.
-   * <ul>
-   *   <li>Given {@code 42}.</li>
-   *   <li>When {@link ArrayList#ArrayList()}.</li>
-   *   <li>Then return {@code false}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link CollectionUtils#listMatch(List, List, BiPredicate)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean CollectionUtils.listMatch(List, List, BiPredicate)"})
-  public void testListMatch_given42_whenArrayList_thenReturnFalse4() {
-    // Arrange
-    ArrayList<Object> list1 = new ArrayList<>();
-
-    ArrayList<Object> list2 = new ArrayList<>();
-    list2.add("42");
-    list2.add("42");
-
-    // Act and Assert
-    assertFalse(CollectionUtils.listMatch(list1, list2, mock(BiPredicate.class)));
-  }
-
-  /**
-   * Test {@link CollectionUtils#listMatch(List, List, BiPredicate)}.
-   * <ul>
-   *   <li>Given {@code false}.</li>
-   *   <li>When {@link BiPredicate} {@link BiPredicate#test(Object, Object)} return {@code false}.</li>
-   *   <li>Then calls {@link BiPredicate#test(Object, Object)}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link CollectionUtils#listMatch(List, List, BiPredicate)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean CollectionUtils.listMatch(List, List, BiPredicate)"})
-  public void testListMatch_givenFalse_whenBiPredicateTestReturnFalse_thenCallsTest() {
-    // Arrange
-    ArrayList<Object> list1 = new ArrayList<>();
-    list1.add("42");
-
-    ArrayList<Object> list2 = new ArrayList<>();
-    list2.add("42");
     BiPredicate<Object, Object> comparer = mock(BiPredicate.class);
     when(comparer.test(Mockito.<Object>any(), Mockito.<Object>any())).thenReturn(false);
 
@@ -164,24 +77,155 @@ public class CollectionUtilsDiffblueTest {
 
   /**
    * Test {@link CollectionUtils#listMatch(List, List, BiPredicate)}.
+   *
    * <ul>
-   *   <li>Given {@code true}.</li>
-   *   <li>When {@link BiPredicate} {@link BiPredicate#test(Object, Object)} return {@code true}.</li>
-   *   <li>Then return {@code true}.</li>
+   *   <li>Given {@link BeanPropertyWriter#MARKER_FOR_EMPTY}.
+   *   <li>When {@link ArrayList#ArrayList()}.
+   *   <li>Then return {@code false}.
    * </ul>
-   * <p>
-   * Method under test: {@link CollectionUtils#listMatch(List, List, BiPredicate)}
+   *
+   * <p>Method under test: {@link CollectionUtils#listMatch(List, List, BiPredicate)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @DisplayName(
+      "Test listMatch(List, List, BiPredicate); given MARKER_FOR_EMPTY; when ArrayList(); then return 'false'")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean CollectionUtils.listMatch(List, List, BiPredicate)"})
-  public void testListMatch_givenTrue_whenBiPredicateTestReturnTrue_thenReturnTrue() {
+  void testListMatch_givenMarker_for_empty_whenArrayList_thenReturnFalse() {
     // Arrange
     ArrayList<Object> list1 = new ArrayList<>();
-    list1.add("42");
+    list1.add(BeanPropertyWriter.MARKER_FOR_EMPTY);
+
+    // Act
+    boolean actualListMatchResult =
+        CollectionUtils.listMatch(list1, new ArrayList<>(), mock(BiPredicate.class));
+
+    // Assert
+    assertFalse(actualListMatchResult);
+  }
+
+  /**
+   * Test {@link CollectionUtils#listMatch(List, List, BiPredicate)}.
+   *
+   * <ul>
+   *   <li>Given {@link BeanPropertyWriter#MARKER_FOR_EMPTY}.
+   *   <li>When {@link ArrayList#ArrayList()}.
+   *   <li>Then return {@code false}.
+   * </ul>
+   *
+   * <p>Method under test: {@link CollectionUtils#listMatch(List, List, BiPredicate)}
+   */
+  @Test
+  @DisplayName(
+      "Test listMatch(List, List, BiPredicate); given MARKER_FOR_EMPTY; when ArrayList(); then return 'false'")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
+  @MethodsUnderTest({"boolean CollectionUtils.listMatch(List, List, BiPredicate)"})
+  void testListMatch_givenMarker_for_empty_whenArrayList_thenReturnFalse2() {
+    // Arrange
+    ArrayList<Object> list1 = new ArrayList<>();
+    list1.add(BeanPropertyWriter.MARKER_FOR_EMPTY);
+    list1.add(BeanPropertyWriter.MARKER_FOR_EMPTY);
+
+    // Act
+    boolean actualListMatchResult =
+        CollectionUtils.listMatch(list1, new ArrayList<>(), mock(BiPredicate.class));
+
+    // Assert
+    assertFalse(actualListMatchResult);
+  }
+
+  /**
+   * Test {@link CollectionUtils#listMatch(List, List, BiPredicate)}.
+   *
+   * <ul>
+   *   <li>Given {@link BeanPropertyWriter#MARKER_FOR_EMPTY}.
+   *   <li>When {@link ArrayList#ArrayList()}.
+   *   <li>Then return {@code false}.
+   * </ul>
+   *
+   * <p>Method under test: {@link CollectionUtils#listMatch(List, List, BiPredicate)}
+   */
+  @Test
+  @DisplayName(
+      "Test listMatch(List, List, BiPredicate); given MARKER_FOR_EMPTY; when ArrayList(); then return 'false'")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
+  @MethodsUnderTest({"boolean CollectionUtils.listMatch(List, List, BiPredicate)"})
+  void testListMatch_givenMarker_for_empty_whenArrayList_thenReturnFalse3() {
+    // Arrange
+    ArrayList<Object> list1 = new ArrayList<>();
 
     ArrayList<Object> list2 = new ArrayList<>();
-    list2.add("42");
+    list2.add(BeanPropertyWriter.MARKER_FOR_EMPTY);
+
+    // Act
+    boolean actualListMatchResult =
+        CollectionUtils.listMatch(list1, list2, mock(BiPredicate.class));
+
+    // Assert
+    assertFalse(actualListMatchResult);
+  }
+
+  /**
+   * Test {@link CollectionUtils#listMatch(List, List, BiPredicate)}.
+   *
+   * <ul>
+   *   <li>Given {@link BeanPropertyWriter#MARKER_FOR_EMPTY}.
+   *   <li>When {@link ArrayList#ArrayList()}.
+   *   <li>Then return {@code false}.
+   * </ul>
+   *
+   * <p>Method under test: {@link CollectionUtils#listMatch(List, List, BiPredicate)}
+   */
+  @Test
+  @DisplayName(
+      "Test listMatch(List, List, BiPredicate); given MARKER_FOR_EMPTY; when ArrayList(); then return 'false'")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
+  @MethodsUnderTest({"boolean CollectionUtils.listMatch(List, List, BiPredicate)"})
+  void testListMatch_givenMarker_for_empty_whenArrayList_thenReturnFalse4() {
+    // Arrange
+    ArrayList<Object> list1 = new ArrayList<>();
+
+    ArrayList<Object> list2 = new ArrayList<>();
+    list2.add(BeanPropertyWriter.MARKER_FOR_EMPTY);
+    list2.add(BeanPropertyWriter.MARKER_FOR_EMPTY);
+
+    // Act
+    boolean actualListMatchResult =
+        CollectionUtils.listMatch(list1, list2, mock(BiPredicate.class));
+
+    // Assert
+    assertFalse(actualListMatchResult);
+  }
+
+  /**
+   * Test {@link CollectionUtils#listMatch(List, List, BiPredicate)}.
+   *
+   * <ul>
+   *   <li>Given {@code true}.
+   *   <li>When {@link BiPredicate} {@link BiPredicate#test(Object, Object)} return {@code true}.
+   *   <li>Then return {@code true}.
+   * </ul>
+   *
+   * <p>Method under test: {@link CollectionUtils#listMatch(List, List, BiPredicate)}
+   */
+  @Test
+  @DisplayName(
+      "Test listMatch(List, List, BiPredicate); given 'true'; when BiPredicate test(Object, Object) return 'true'; then return 'true'")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
+  @MethodsUnderTest({"boolean CollectionUtils.listMatch(List, List, BiPredicate)"})
+  void testListMatch_givenTrue_whenBiPredicateTestReturnTrue_thenReturnTrue() {
+    // Arrange
+    ArrayList<Object> list1 = new ArrayList<>();
+    list1.add(BeanPropertyWriter.MARKER_FOR_EMPTY);
+
+    ArrayList<Object> list2 = new ArrayList<>();
+    list2.add(BeanPropertyWriter.MARKER_FOR_EMPTY);
+
     BiPredicate<Object, Object> comparer = mock(BiPredicate.class);
     when(comparer.test(Mockito.<Object>any(), Mockito.<Object>any())).thenReturn(true);
 
@@ -195,143 +239,65 @@ public class CollectionUtilsDiffblueTest {
 
   /**
    * Test {@link CollectionUtils#listMatch(List, List, BiPredicate)}.
+   *
    * <ul>
-   *   <li>When {@link ArrayList#ArrayList()}.</li>
-   *   <li>Then return {@code true}.</li>
+   *   <li>When {@link ArrayList#ArrayList()}.
+   *   <li>Then return {@code true}.
    * </ul>
-   * <p>
-   * Method under test: {@link CollectionUtils#listMatch(List, List, BiPredicate)}
+   *
+   * <p>Method under test: {@link CollectionUtils#listMatch(List, List, BiPredicate)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @DisplayName("Test listMatch(List, List, BiPredicate); when ArrayList(); then return 'true'")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean CollectionUtils.listMatch(List, List, BiPredicate)"})
-  public void testListMatch_whenArrayList_thenReturnTrue() {
+  void testListMatch_whenArrayList_thenReturnTrue() {
     // Arrange
     ArrayList<Object> list1 = new ArrayList<>();
 
-    // Act and Assert
-    assertTrue(CollectionUtils.listMatch(list1, new ArrayList<>(), mock(BiPredicate.class)));
+    // Act
+    boolean actualListMatchResult =
+        CollectionUtils.listMatch(list1, new ArrayList<>(), mock(BiPredicate.class));
+
+    // Assert
+    assertTrue(actualListMatchResult);
   }
 
   /**
    * Test {@link CollectionUtils#collectionContains(Collection, Collection, BiPredicate)}.
+   *
    * <ul>
-   *   <li>Given {@code 42}.</li>
-   *   <li>When {@link ArrayList#ArrayList()}.</li>
-   *   <li>Then return {@code false}.</li>
+   *   <li>Given {@code false}.
+   *   <li>When {@link BiPredicate} {@link BiPredicate#test(Object, Object)} return {@code false}.
+   *   <li>Then calls {@link BiPredicate#test(Object, Object)}.
    * </ul>
-   * <p>
-   * Method under test: {@link CollectionUtils#collectionContains(Collection, Collection, BiPredicate)}
+   *
+   * <p>Method under test: {@link CollectionUtils#collectionContains(Collection, Collection,
+   * BiPredicate)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean CollectionUtils.collectionContains(Collection, Collection, BiPredicate)"})
-  public void testCollectionContains_given42_whenArrayList_thenReturnFalse() {
+  @DisplayName(
+      "Test collectionContains(Collection, Collection, BiPredicate); given 'false'; when BiPredicate test(Object, Object) return 'false'; then calls test(Object, Object)")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean CollectionUtils.collectionContains(Collection, Collection, BiPredicate)"
+  })
+  void testCollectionContains_givenFalse_whenBiPredicateTestReturnFalse_thenCallsTest() {
     // Arrange
     ArrayList<Object> col1 = new ArrayList<>();
-    col1.add("42");
-
-    // Act and Assert
-    assertFalse(CollectionUtils.collectionContains(col1, new ArrayList<>(), mock(BiPredicate.class)));
-  }
-
-  /**
-   * Test {@link CollectionUtils#collectionContains(Collection, Collection, BiPredicate)}.
-   * <ul>
-   *   <li>Given {@code 42}.</li>
-   *   <li>When {@link ArrayList#ArrayList()}.</li>
-   *   <li>Then return {@code false}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link CollectionUtils#collectionContains(Collection, Collection, BiPredicate)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean CollectionUtils.collectionContains(Collection, Collection, BiPredicate)"})
-  public void testCollectionContains_given42_whenArrayList_thenReturnFalse2() {
-    // Arrange
-    ArrayList<Object> col1 = new ArrayList<>();
-    col1.add("42");
-    col1.add("42");
-
-    // Act and Assert
-    assertFalse(CollectionUtils.collectionContains(col1, new ArrayList<>(), mock(BiPredicate.class)));
-  }
-
-  /**
-   * Test {@link CollectionUtils#collectionContains(Collection, Collection, BiPredicate)}.
-   * <ul>
-   *   <li>Given {@code 42}.</li>
-   *   <li>When {@link ArrayList#ArrayList()}.</li>
-   *   <li>Then return {@code true}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link CollectionUtils#collectionContains(Collection, Collection, BiPredicate)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean CollectionUtils.collectionContains(Collection, Collection, BiPredicate)"})
-  public void testCollectionContains_given42_whenArrayList_thenReturnTrue() {
-    // Arrange
-    ArrayList<Object> col1 = new ArrayList<>();
+    col1.add(BeanPropertyWriter.MARKER_FOR_EMPTY);
 
     ArrayList<Object> col2 = new ArrayList<>();
-    col2.add("42");
+    col2.add(BeanPropertyWriter.MARKER_FOR_EMPTY);
 
-    // Act and Assert
-    assertTrue(CollectionUtils.collectionContains(col1, col2, mock(BiPredicate.class)));
-  }
-
-  /**
-   * Test {@link CollectionUtils#collectionContains(Collection, Collection, BiPredicate)}.
-   * <ul>
-   *   <li>Given {@code 42}.</li>
-   *   <li>When {@link ArrayList#ArrayList()}.</li>
-   *   <li>Then return {@code true}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link CollectionUtils#collectionContains(Collection, Collection, BiPredicate)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean CollectionUtils.collectionContains(Collection, Collection, BiPredicate)"})
-  public void testCollectionContains_given42_whenArrayList_thenReturnTrue2() {
-    // Arrange
-    ArrayList<Object> col1 = new ArrayList<>();
-
-    ArrayList<Object> col2 = new ArrayList<>();
-    col2.add("42");
-    col2.add("42");
-
-    // Act and Assert
-    assertTrue(CollectionUtils.collectionContains(col1, col2, mock(BiPredicate.class)));
-  }
-
-  /**
-   * Test {@link CollectionUtils#collectionContains(Collection, Collection, BiPredicate)}.
-   * <ul>
-   *   <li>Given {@code false}.</li>
-   *   <li>When {@link BiPredicate} {@link BiPredicate#test(Object, Object)} return {@code false}.</li>
-   *   <li>Then calls {@link BiPredicate#test(Object, Object)}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link CollectionUtils#collectionContains(Collection, Collection, BiPredicate)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean CollectionUtils.collectionContains(Collection, Collection, BiPredicate)"})
-  public void testCollectionContains_givenFalse_whenBiPredicateTestReturnFalse_thenCallsTest() {
-    // Arrange
-    ArrayList<Object> col1 = new ArrayList<>();
-    col1.add("42");
-
-    ArrayList<Object> col2 = new ArrayList<>();
-    col2.add("42");
     BiPredicate<Object, Object> comparer = mock(BiPredicate.class);
     when(comparer.test(Mockito.<Object>any(), Mockito.<Object>any())).thenReturn(false);
 
     // Act
-    boolean actualCollectionContainsResult = CollectionUtils.collectionContains(col1, col2, comparer);
+    boolean actualCollectionContainsResult =
+        CollectionUtils.collectionContains(col1, col2, comparer);
 
     // Assert
     verify(comparer).test(isA(Object.class), isA(Object.class));
@@ -340,29 +306,176 @@ public class CollectionUtilsDiffblueTest {
 
   /**
    * Test {@link CollectionUtils#collectionContains(Collection, Collection, BiPredicate)}.
+   *
    * <ul>
-   *   <li>Given {@code true}.</li>
-   *   <li>When {@link BiPredicate} {@link BiPredicate#test(Object, Object)} return {@code true}.</li>
-   *   <li>Then calls {@link BiPredicate#test(Object, Object)}.</li>
+   *   <li>Given {@link BeanPropertyWriter#MARKER_FOR_EMPTY}.
+   *   <li>When {@link ArrayList#ArrayList()}.
+   *   <li>Then return {@code false}.
    * </ul>
-   * <p>
-   * Method under test: {@link CollectionUtils#collectionContains(Collection, Collection, BiPredicate)}
+   *
+   * <p>Method under test: {@link CollectionUtils#collectionContains(Collection, Collection,
+   * BiPredicate)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean CollectionUtils.collectionContains(Collection, Collection, BiPredicate)"})
-  public void testCollectionContains_givenTrue_whenBiPredicateTestReturnTrue_thenCallsTest() {
+  @DisplayName(
+      "Test collectionContains(Collection, Collection, BiPredicate); given MARKER_FOR_EMPTY; when ArrayList(); then return 'false'")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean CollectionUtils.collectionContains(Collection, Collection, BiPredicate)"
+  })
+  void testCollectionContains_givenMarker_for_empty_whenArrayList_thenReturnFalse() {
     // Arrange
     ArrayList<Object> col1 = new ArrayList<>();
-    col1.add("42");
+    col1.add(BeanPropertyWriter.MARKER_FOR_EMPTY);
+
+    // Act
+    boolean actualCollectionContainsResult =
+        CollectionUtils.collectionContains(col1, new ArrayList<>(), mock(BiPredicate.class));
+
+    // Assert
+    assertFalse(actualCollectionContainsResult);
+  }
+
+  /**
+   * Test {@link CollectionUtils#collectionContains(Collection, Collection, BiPredicate)}.
+   *
+   * <ul>
+   *   <li>Given {@link BeanPropertyWriter#MARKER_FOR_EMPTY}.
+   *   <li>When {@link ArrayList#ArrayList()}.
+   *   <li>Then return {@code false}.
+   * </ul>
+   *
+   * <p>Method under test: {@link CollectionUtils#collectionContains(Collection, Collection,
+   * BiPredicate)}
+   */
+  @Test
+  @DisplayName(
+      "Test collectionContains(Collection, Collection, BiPredicate); given MARKER_FOR_EMPTY; when ArrayList(); then return 'false'")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean CollectionUtils.collectionContains(Collection, Collection, BiPredicate)"
+  })
+  void testCollectionContains_givenMarker_for_empty_whenArrayList_thenReturnFalse2() {
+    // Arrange
+    ArrayList<Object> col1 = new ArrayList<>();
+    col1.add(BeanPropertyWriter.MARKER_FOR_EMPTY);
+    col1.add(BeanPropertyWriter.MARKER_FOR_EMPTY);
+
+    // Act
+    boolean actualCollectionContainsResult =
+        CollectionUtils.collectionContains(col1, new ArrayList<>(), mock(BiPredicate.class));
+
+    // Assert
+    assertFalse(actualCollectionContainsResult);
+  }
+
+  /**
+   * Test {@link CollectionUtils#collectionContains(Collection, Collection, BiPredicate)}.
+   *
+   * <ul>
+   *   <li>Given {@link BeanPropertyWriter#MARKER_FOR_EMPTY}.
+   *   <li>When {@link ArrayList#ArrayList()}.
+   *   <li>Then return {@code true}.
+   * </ul>
+   *
+   * <p>Method under test: {@link CollectionUtils#collectionContains(Collection, Collection,
+   * BiPredicate)}
+   */
+  @Test
+  @DisplayName(
+      "Test collectionContains(Collection, Collection, BiPredicate); given MARKER_FOR_EMPTY; when ArrayList(); then return 'true'")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean CollectionUtils.collectionContains(Collection, Collection, BiPredicate)"
+  })
+  void testCollectionContains_givenMarker_for_empty_whenArrayList_thenReturnTrue() {
+    // Arrange
+    ArrayList<Object> col1 = new ArrayList<>();
 
     ArrayList<Object> col2 = new ArrayList<>();
-    col2.add("42");
+    col2.add(BeanPropertyWriter.MARKER_FOR_EMPTY);
+
+    // Act
+    boolean actualCollectionContainsResult =
+        CollectionUtils.collectionContains(col1, col2, mock(BiPredicate.class));
+
+    // Assert
+    assertTrue(actualCollectionContainsResult);
+  }
+
+  /**
+   * Test {@link CollectionUtils#collectionContains(Collection, Collection, BiPredicate)}.
+   *
+   * <ul>
+   *   <li>Given {@link BeanPropertyWriter#MARKER_FOR_EMPTY}.
+   *   <li>When {@link ArrayList#ArrayList()}.
+   *   <li>Then return {@code true}.
+   * </ul>
+   *
+   * <p>Method under test: {@link CollectionUtils#collectionContains(Collection, Collection,
+   * BiPredicate)}
+   */
+  @Test
+  @DisplayName(
+      "Test collectionContains(Collection, Collection, BiPredicate); given MARKER_FOR_EMPTY; when ArrayList(); then return 'true'")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean CollectionUtils.collectionContains(Collection, Collection, BiPredicate)"
+  })
+  void testCollectionContains_givenMarker_for_empty_whenArrayList_thenReturnTrue2() {
+    // Arrange
+    ArrayList<Object> col1 = new ArrayList<>();
+
+    ArrayList<Object> col2 = new ArrayList<>();
+    col2.add(BeanPropertyWriter.MARKER_FOR_EMPTY);
+    col2.add(BeanPropertyWriter.MARKER_FOR_EMPTY);
+
+    // Act
+    boolean actualCollectionContainsResult =
+        CollectionUtils.collectionContains(col1, col2, mock(BiPredicate.class));
+
+    // Assert
+    assertTrue(actualCollectionContainsResult);
+  }
+
+  /**
+   * Test {@link CollectionUtils#collectionContains(Collection, Collection, BiPredicate)}.
+   *
+   * <ul>
+   *   <li>Given {@code true}.
+   *   <li>When {@link BiPredicate} {@link BiPredicate#test(Object, Object)} return {@code true}.
+   *   <li>Then calls {@link BiPredicate#test(Object, Object)}.
+   * </ul>
+   *
+   * <p>Method under test: {@link CollectionUtils#collectionContains(Collection, Collection,
+   * BiPredicate)}
+   */
+  @Test
+  @DisplayName(
+      "Test collectionContains(Collection, Collection, BiPredicate); given 'true'; when BiPredicate test(Object, Object) return 'true'; then calls test(Object, Object)")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean CollectionUtils.collectionContains(Collection, Collection, BiPredicate)"
+  })
+  void testCollectionContains_givenTrue_whenBiPredicateTestReturnTrue_thenCallsTest() {
+    // Arrange
+    ArrayList<Object> col1 = new ArrayList<>();
+    col1.add(BeanPropertyWriter.MARKER_FOR_EMPTY);
+
+    ArrayList<Object> col2 = new ArrayList<>();
+    col2.add(BeanPropertyWriter.MARKER_FOR_EMPTY);
+
     BiPredicate<Object, Object> comparer = mock(BiPredicate.class);
     when(comparer.test(Mockito.<Object>any(), Mockito.<Object>any())).thenReturn(true);
 
     // Act
-    boolean actualCollectionContainsResult = CollectionUtils.collectionContains(col1, col2, comparer);
+    boolean actualCollectionContainsResult =
+        CollectionUtils.collectionContains(col1, col2, comparer);
 
     // Assert
     verify(comparer).test(isA(Object.class), isA(Object.class));
@@ -371,21 +484,32 @@ public class CollectionUtilsDiffblueTest {
 
   /**
    * Test {@link CollectionUtils#collectionContains(Collection, Collection, BiPredicate)}.
+   *
    * <ul>
-   *   <li>When {@link ArrayList#ArrayList()}.</li>
-   *   <li>Then return {@code true}.</li>
+   *   <li>When {@link ArrayList#ArrayList()}.
+   *   <li>Then return {@code true}.
    * </ul>
-   * <p>
-   * Method under test: {@link CollectionUtils#collectionContains(Collection, Collection, BiPredicate)}
+   *
+   * <p>Method under test: {@link CollectionUtils#collectionContains(Collection, Collection,
+   * BiPredicate)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean CollectionUtils.collectionContains(Collection, Collection, BiPredicate)"})
-  public void testCollectionContains_whenArrayList_thenReturnTrue() {
+  @DisplayName(
+      "Test collectionContains(Collection, Collection, BiPredicate); when ArrayList(); then return 'true'")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean CollectionUtils.collectionContains(Collection, Collection, BiPredicate)"
+  })
+  void testCollectionContains_whenArrayList_thenReturnTrue() {
     // Arrange
     ArrayList<Object> col1 = new ArrayList<>();
 
-    // Act and Assert
-    assertTrue(CollectionUtils.collectionContains(col1, new ArrayList<>(), mock(BiPredicate.class)));
+    // Act
+    boolean actualCollectionContainsResult =
+        CollectionUtils.collectionContains(col1, new ArrayList<>(), mock(BiPredicate.class));
+
+    // Assert
+    assertTrue(actualCollectionContainsResult);
   }
 }

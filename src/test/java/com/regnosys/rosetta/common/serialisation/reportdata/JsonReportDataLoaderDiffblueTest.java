@@ -20,8 +20,8 @@ package com.regnosys.rosetta.common.serialisation.reportdata;
  * ==============
  */
 
-import static org.junit.Assert.assertEquals;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.rosetta.model.lib.ModelReportId;
@@ -30,107 +30,139 @@ import java.net.URL;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import javax.management.loading.MLet;
-import org.junit.Test;
-import org.junit.experimental.categories.Category;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
 
-public class JsonReportDataLoaderDiffblueTest {
+class JsonReportDataLoaderDiffblueTest {
   /**
    * Test {@link JsonReportDataLoader#loadInputFiles(ReportDataSet)} with {@code ReportDataSet}.
-   * <p>
-   * Method under test: {@link JsonReportDataLoader#loadInputFiles(ReportDataSet)}
+   *
+   * <p>Method under test: {@link JsonReportDataLoader#loadInputFiles(ReportDataSet)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @DisplayName("Test loadInputFiles(ReportDataSet) with 'ReportDataSet'")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"ReportDataSet JsonReportDataLoader.loadInputFiles(ReportDataSet)"})
-  public void testLoadInputFilesWithReportDataSet() throws MalformedURLException {
+  void testLoadInputFilesWithReportDataSet() throws MalformedURLException {
     // Arrange
     MLet classLoader = new MLet();
     JsonMapper rosettaObjectMapper = JsonMapper.builder().findAndAddModules().build();
-    URL descriptorPath = Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toUri().toURL();
-    JsonReportDataLoader jsonReportDataLoader = new JsonReportDataLoader(classLoader, rosettaObjectMapper,
-        descriptorPath, new ArrayList<>());
-    ArrayList<ModelReportId> applicableReports = new ArrayList<>();
-    ReportDataSet descriptor = new ReportDataSet("Data Set Name", "Input Type", applicableReports, new ArrayList<>());
+    URL descriptorPath =
+        Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toUri().toURL();
 
-    // Act and Assert
-    assertEquals(descriptor, jsonReportDataLoader.loadInputFiles(descriptor));
+    JsonReportDataLoader jsonReportDataLoader =
+        new JsonReportDataLoader(
+            classLoader, rosettaObjectMapper, descriptorPath, new ArrayList<>());
+    ArrayList<ModelReportId> applicableReports = new ArrayList<>();
+    ReportDataSet descriptor =
+        new ReportDataSet(null, "Input Type", applicableReports, new ArrayList<>());
+
+    // Act
+    ReportDataSet actualLoadInputFilesResult = jsonReportDataLoader.loadInputFiles(descriptor);
+
+    // Assert
+    assertEquals(descriptor, actualLoadInputFilesResult);
   }
 
   /**
    * Test {@link JsonReportDataLoader#loadInputFiles(ReportDataSet)} with {@code ReportDataSet}.
-   * <p>
-   * Method under test: {@link JsonReportDataLoader#loadInputFiles(ReportDataSet)}
+   *
+   * <p>Method under test: {@link JsonReportDataLoader#loadInputFiles(ReportDataSet)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @DisplayName("Test loadInputFiles(ReportDataSet) with 'ReportDataSet'")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"ReportDataSet JsonReportDataLoader.loadInputFiles(ReportDataSet)"})
-  public void testLoadInputFilesWithReportDataSet2() throws MalformedURLException {
+  void testLoadInputFilesWithReportDataSet2() throws MalformedURLException {
     // Arrange
     MLet classLoader = new MLet();
     JsonMapper rosettaObjectMapper = JsonMapper.builder().findAndAddModules().build();
-    URL descriptorPath = Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toUri().toURL();
-    JsonReportDataLoader jsonReportDataLoader = new JsonReportDataLoader(classLoader, rosettaObjectMapper,
-        descriptorPath, new ArrayList<>());
-    ArrayList<ModelReportId> applicableReports = new ArrayList<>();
-    ReportDataSet descriptor = new ReportDataSet("", "Input Type", applicableReports, new ArrayList<>());
+    URL descriptorPath =
+        Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toUri().toURL();
 
-    // Act and Assert
-    assertEquals(descriptor, jsonReportDataLoader.loadInputFiles(descriptor));
+    JsonReportDataLoader jsonReportDataLoader =
+        new JsonReportDataLoader(
+            classLoader, rosettaObjectMapper, descriptorPath, new ArrayList<>());
+    ArrayList<ModelReportId> applicableReports = new ArrayList<>();
+    ReportDataSet descriptor =
+        new ReportDataSet("", "Input Type", applicableReports, new ArrayList<>());
+
+    // Act
+    ReportDataSet actualLoadInputFilesResult = jsonReportDataLoader.loadInputFiles(descriptor);
+
+    // Assert
+    assertEquals(descriptor, actualLoadInputFilesResult);
   }
 
   /**
    * Test {@link JsonReportDataLoader#loadInputFiles(ReportDataSet)} with {@code ReportDataSet}.
+   *
+   * <p>Method under test: {@link JsonReportDataLoader#loadInputFiles(ReportDataSet)}
+   */
+  @Test
+  @DisplayName("Test loadInputFiles(ReportDataSet) with 'ReportDataSet'")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
+  @MethodsUnderTest({"ReportDataSet JsonReportDataLoader.loadInputFiles(ReportDataSet)"})
+  void testLoadInputFilesWithReportDataSet3() throws MalformedURLException {
+    // Arrange
+    MLet classLoader = new MLet();
+    JsonMapper rosettaObjectMapper = JsonMapper.builder().findAndAddModules().build();
+    URL descriptorPath =
+        Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toUri().toURL();
+
+    JsonReportDataLoader jsonReportDataLoader =
+        new JsonReportDataLoader(
+            classLoader, rosettaObjectMapper, descriptorPath, new ArrayList<>());
+    ArrayList<ModelReportId> applicableReports = new ArrayList<>();
+    ReportDataSet descriptor =
+        new ReportDataSet("Data Set Name", "Input Type", applicableReports, new ArrayList<>());
+
+    // Act
+    ReportDataSet actualLoadInputFilesResult = jsonReportDataLoader.loadInputFiles(descriptor);
+
+    // Assert
+    assertEquals(descriptor, actualLoadInputFilesResult);
+  }
+
+  /**
+   * Test {@link JsonReportDataLoader#loadInputFiles(ReportDataSet)} with {@code ReportDataSet}.
+   *
    * <ul>
-   *   <li>Given {@link ArrayList#ArrayList()}.</li>
-   *   <li>Then return {@link ReportDataSet#ReportDataSet()}.</li>
+   *   <li>Then return Data is {@link ArrayList#ArrayList()}.
    * </ul>
-   * <p>
-   * Method under test: {@link JsonReportDataLoader#loadInputFiles(ReportDataSet)}
+   *
+   * <p>Method under test: {@link JsonReportDataLoader#loadInputFiles(ReportDataSet)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @DisplayName(
+      "Test loadInputFiles(ReportDataSet) with 'ReportDataSet'; then return Data is ArrayList()")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"ReportDataSet JsonReportDataLoader.loadInputFiles(ReportDataSet)"})
-  public void testLoadInputFilesWithReportDataSet_givenArrayList_thenReturnReportDataSet()
+  void testLoadInputFilesWithReportDataSet_thenReturnDataIsArrayList()
       throws MalformedURLException {
     // Arrange
     MLet classLoader = new MLet();
     JsonMapper rosettaObjectMapper = JsonMapper.builder().findAndAddModules().build();
-    URL descriptorPath = Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toUri().toURL();
-    JsonReportDataLoader jsonReportDataLoader = new JsonReportDataLoader(classLoader, rosettaObjectMapper,
-        descriptorPath, new ArrayList<>());
+    URL descriptorPath =
+        Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toUri().toURL();
 
-    ReportDataSet descriptor = new ReportDataSet();
-    descriptor.setData(new ArrayList<>());
-
-    // Act and Assert
-    assertEquals(descriptor, jsonReportDataLoader.loadInputFiles(descriptor));
-  }
-
-  /**
-   * Test {@link JsonReportDataLoader#loadInputFiles(ReportDataSet)} with {@code ReportDataSet}.
-   * <ul>
-   *   <li>Then return Data is {@link ArrayList#ArrayList()}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link JsonReportDataLoader#loadInputFiles(ReportDataSet)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"ReportDataSet JsonReportDataLoader.loadInputFiles(ReportDataSet)"})
-  public void testLoadInputFilesWithReportDataSet_thenReturnDataIsArrayList() throws MalformedURLException {
-    // Arrange
-    MLet classLoader = new MLet();
-    JsonMapper rosettaObjectMapper = JsonMapper.builder().findAndAddModules().build();
-    URL descriptorPath = Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toUri().toURL();
-    JsonReportDataLoader jsonReportDataLoader = new JsonReportDataLoader(classLoader, rosettaObjectMapper,
-        descriptorPath, new ArrayList<>());
+    JsonReportDataLoader jsonReportDataLoader =
+        new JsonReportDataLoader(
+            classLoader, rosettaObjectMapper, descriptorPath, new ArrayList<>());
 
     ArrayList<ReportDataItem> data = new ArrayList<>();
     data.add(new ReportDataItem());
+    ReportDataSet descriptor = new ReportDataSet(null, "Input Type", new ArrayList<>(), data);
 
-    // Act and Assert
-    assertEquals(data,
-        jsonReportDataLoader.loadInputFiles(new ReportDataSet("Data Set Name", "Input Type", new ArrayList<>(), data))
-            .getData());
+    // Act
+    ReportDataSet actualLoadInputFilesResult = jsonReportDataLoader.loadInputFiles(descriptor);
+
+    // Assert
+    assertEquals(data, actualLoadInputFilesResult.getData());
   }
 }

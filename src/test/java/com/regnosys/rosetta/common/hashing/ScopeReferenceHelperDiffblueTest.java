@@ -20,39 +20,48 @@ package com.regnosys.rosetta.common.hashing;
  * ==============
  */
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.fasterxml.jackson.databind.ser.BeanPropertyWriter;
 import com.regnosys.rosetta.common.translation.Path;
 import com.rosetta.model.lib.path.RosettaPath;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.function.Supplier;
-import org.junit.Test;
-import org.junit.experimental.categories.Category;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
 
-public class ScopeReferenceHelperDiffblueTest {
+class ScopeReferenceHelperDiffblueTest {
   /**
    * Test getters and setters.
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link ScopeReferenceHelper#ScopeReferenceHelper(ReferenceConfig, Supplier)}
    *   <li>{@link ScopeReferenceHelper#getScopeToDataMap()}
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void ScopeReferenceHelper.<init>(ReferenceConfig, Supplier)",
-      "java.util.Map ScopeReferenceHelper.getScopeToDataMap()"})
-  public void testGettersAndSetters() {
+  @DisplayName("Test getters and setters")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void ScopeReferenceHelper.<init>(ReferenceConfig, Supplier)",
+    "java.util.Map ScopeReferenceHelper.getScopeToDataMap()"
+  })
+  void testGettersAndSetters() {
     // Arrange and Act
-    ScopeReferenceHelper<Object> actualScopeReferenceHelper = new ScopeReferenceHelper<>(
-        ReferenceConfig.noScopeOrExcludedPaths(), mock(Supplier.class));
+    ScopeReferenceHelper<Object> actualScopeReferenceHelper =
+        new ScopeReferenceHelper<>(ReferenceConfig.noScopeOrExcludedPaths(), mock(Supplier.class));
 
     // Assert
     assertTrue(actualScopeReferenceHelper.getScopeToDataMap().isEmpty());
@@ -60,16 +69,18 @@ public class ScopeReferenceHelperDiffblueTest {
 
   /**
    * Test {@link ScopeReferenceHelper#collectScopePath(RosettaPath, Class)}.
-   * <p>
-   * Method under test: {@link ScopeReferenceHelper#collectScopePath(RosettaPath, Class)}
+   *
+   * <p>Method under test: {@link ScopeReferenceHelper#collectScopePath(RosettaPath, Class)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @DisplayName("Test collectScopePath(RosettaPath, Class)")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"void ScopeReferenceHelper.collectScopePath(RosettaPath, Class)"})
-  public void testCollectScopePath() {
+  void testCollectScopePath() {
     // Arrange
-    ScopeReferenceHelper<Object> scopeReferenceHelper = new ScopeReferenceHelper<>(
-        ReferenceConfig.noScopeOrExcludedPaths(), mock(Supplier.class));
+    ScopeReferenceHelper<Object> scopeReferenceHelper =
+        new ScopeReferenceHelper<>(ReferenceConfig.noScopeOrExcludedPaths(), mock(Supplier.class));
     RosettaPath path = mock(RosettaPath.class);
     Class<Object> rosettaType = Object.class;
 
@@ -82,19 +93,24 @@ public class ScopeReferenceHelperDiffblueTest {
 
   /**
    * Test {@link ScopeReferenceHelper#collectScopePath(RosettaPath, Class)}.
-   * <p>
-   * Method under test: {@link ScopeReferenceHelper#collectScopePath(RosettaPath, Class)}
+   *
+   * <p>Method under test: {@link ScopeReferenceHelper#collectScopePath(RosettaPath, Class)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @DisplayName("Test collectScopePath(RosettaPath, Class)")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"void ScopeReferenceHelper.collectScopePath(RosettaPath, Class)"})
-  public void testCollectScopePath2() {
+  void testCollectScopePath2() {
     // Arrange
     Supplier<Object> newDataStructureSupplier = mock(Supplier.class);
-    when(newDataStructureSupplier.get()).thenReturn("Get");
+    when(newDataStructureSupplier.get()).thenReturn(BeanPropertyWriter.MARKER_FOR_EMPTY);
     Class<Object> scopeType = Object.class;
-    ScopeReferenceHelper<Object> scopeReferenceHelper = new ScopeReferenceHelper<>(
-        new ReferenceConfig(scopeType, new ArrayList<>()), newDataStructureSupplier);
+    ReferenceConfig referenceConfig = new ReferenceConfig(scopeType, new ArrayList<>());
+
+    ScopeReferenceHelper<Object> scopeReferenceHelper =
+        new ScopeReferenceHelper<>(referenceConfig, newDataStructureSupplier);
+
     RosettaPath path = mock(RosettaPath.class);
     when(path.allElements()).thenReturn(new LinkedList<>());
     Class<Object> rosettaType = Object.class;
@@ -110,25 +126,30 @@ public class ScopeReferenceHelperDiffblueTest {
 
   /**
    * Test {@link ScopeReferenceHelper#getDataForModelPath(Path)}.
-   * <p>
-   * Method under test: {@link ScopeReferenceHelper#getDataForModelPath(Path)}
+   *
+   * <p>Method under test: {@link ScopeReferenceHelper#getDataForModelPath(Path)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @DisplayName("Test getDataForModelPath(Path)")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"Object ScopeReferenceHelper.getDataForModelPath(Path)"})
-  public void testGetDataForModelPath() {
+  void testGetDataForModelPath() {
     // Arrange
     Supplier<Object> newDataStructureSupplier = mock(Supplier.class);
-    when(newDataStructureSupplier.get()).thenReturn("Get");
-    ScopeReferenceHelper<Object> scopeReferenceHelper = new ScopeReferenceHelper<>(
-        ReferenceConfig.noScopeOrExcludedPaths(), newDataStructureSupplier);
+    when(newDataStructureSupplier.get()).thenReturn(BeanPropertyWriter.MARKER_FOR_EMPTY);
+    ScopeReferenceHelper<Object> scopeReferenceHelper =
+        new ScopeReferenceHelper<>(
+            ReferenceConfig.noScopeOrExcludedPaths(), newDataStructureSupplier);
 
     // Act
-    Object actualDataForModelPath = scopeReferenceHelper.getDataForModelPath(ScopeReferenceHelper.EMPTY_SCOPE);
+    Object actualDataForModelPath =
+        scopeReferenceHelper.getDataForModelPath(ScopeReferenceHelper.EMPTY_SCOPE);
 
     // Assert
     verify(newDataStructureSupplier).get();
-    assertEquals("Get", actualDataForModelPath);
+    assertTrue(actualDataForModelPath instanceof Include);
     assertEquals(1, scopeReferenceHelper.getScopeToDataMap().size());
+    assertEquals(Include.NON_EMPTY, actualDataForModelPath);
   }
 }

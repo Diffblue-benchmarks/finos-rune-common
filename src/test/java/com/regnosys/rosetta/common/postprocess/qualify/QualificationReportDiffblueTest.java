@@ -20,10 +20,10 @@ package com.regnosys.rosetta.common.postprocess.qualify;
  * ==============
  */
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import com.regnosys.rosetta.common.merger.BarBuilder;
 import com.rosetta.model.lib.RosettaModelObject;
@@ -32,34 +32,41 @@ import com.rosetta.model.lib.meta.Key.KeyBuilderImpl;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import org.junit.Test;
-import org.junit.experimental.categories.Category;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
 
-public class QualificationReportDiffblueTest {
+class QualificationReportDiffblueTest {
   /**
    * Test {@link QualificationReport#QualificationReport(RosettaModelObject, Collection)}.
+   *
    * <ul>
-   *   <li>Given {@code Object}.</li>
-   *   <li>Then return Results size is one.</li>
+   *   <li>Given {@code Object}.
+   *   <li>Then return Results size is one.
    * </ul>
-   * <p>
-   * Method under test: {@link QualificationReport#QualificationReport(RosettaModelObject, Collection)}
+   *
+   * <p>Method under test: {@link QualificationReport#QualificationReport(RosettaModelObject,
+   * Collection)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @DisplayName(
+      "Test new QualificationReport(RosettaModelObject, Collection); given 'java.lang.Object'; then return Results size is one")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"void QualificationReport.<init>(RosettaModelObject, Collection)"})
-  public void testNewQualificationReport_givenJavaLangObject_thenReturnResultsSizeIsOne() {
+  void testNewQualificationReport_givenJavaLangObject_thenReturnResultsSizeIsOne() {
     // Arrange
     BarBuilder ingestedObject = new BarBuilder();
 
     ArrayList<QualificationResult> results = new ArrayList<>();
     Class<Object> qualifiedRosettaObjectType = Object.class;
-    QualificationResult qualificationResult = new QualificationResult(qualifiedRosettaObjectType, new ArrayList<>());
-
+    QualificationResult qualificationResult =
+        new QualificationResult(qualifiedRosettaObjectType, new ArrayList<>());
     results.add(qualificationResult);
 
     // Act
-    QualificationReport actualQualificationReport = new QualificationReport(ingestedObject, results);
+    QualificationReport actualQualificationReport =
+        new QualificationReport(ingestedObject, results);
 
     // Assert
     Collection<QualificationResult> results2 = actualQualificationReport.getResults();
@@ -71,58 +78,72 @@ public class QualificationReportDiffblueTest {
 
   /**
    * Test {@link QualificationReport#QualificationReport(RosettaModelObject, Collection)}.
+   *
    * <ul>
-   *   <li>Given {@code Object}.</li>
-   *   <li>Then return Results size is two.</li>
+   *   <li>Given {@code Object}.
+   *   <li>Then return Results size is two.
    * </ul>
-   * <p>
-   * Method under test: {@link QualificationReport#QualificationReport(RosettaModelObject, Collection)}
+   *
+   * <p>Method under test: {@link QualificationReport#QualificationReport(RosettaModelObject,
+   * Collection)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @DisplayName(
+      "Test new QualificationReport(RosettaModelObject, Collection); given 'java.lang.Object'; then return Results size is two")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"void QualificationReport.<init>(RosettaModelObject, Collection)"})
-  public void testNewQualificationReport_givenJavaLangObject_thenReturnResultsSizeIsTwo() {
+  void testNewQualificationReport_givenJavaLangObject_thenReturnResultsSizeIsTwo() {
     // Arrange
     BarBuilder ingestedObject = new BarBuilder();
 
     ArrayList<QualificationResult> results = new ArrayList<>();
     Class<Object> qualifiedRosettaObjectType = Object.class;
-    results.add(new QualificationResult(qualifiedRosettaObjectType, new ArrayList<>()));
-    Class<Object> qualifiedRosettaObjectType2 = Object.class;
-    QualificationResult qualificationResult = new QualificationResult(qualifiedRosettaObjectType2, new ArrayList<>());
-
+    QualificationResult qualificationResult =
+        new QualificationResult(qualifiedRosettaObjectType, new ArrayList<>());
     results.add(qualificationResult);
+    Class<Object> qualifiedRosettaObjectType2 = Object.class;
+    QualificationResult qualificationResult2 =
+        new QualificationResult(qualifiedRosettaObjectType2, new ArrayList<>());
+    results.add(qualificationResult2);
 
     // Act
-    QualificationReport actualQualificationReport = new QualificationReport(ingestedObject, results);
+    QualificationReport actualQualificationReport =
+        new QualificationReport(ingestedObject, results);
 
     // Assert
     Collection<QualificationResult> results2 = actualQualificationReport.getResults();
     assertEquals(2, results2.size());
     assertTrue(results2 instanceof List);
     assertEquals(2, actualQualificationReport.getQualifiableObjectsCount());
-    assertSame(qualificationResult, ((List<QualificationResult>) results2).get(1));
+    assertSame(qualificationResult2, ((List<QualificationResult>) results2).get(1));
   }
 
   /**
    * Test {@link QualificationReport#QualificationReport(RosettaModelObject, Collection)}.
+   *
    * <ul>
-   *   <li>When {@link ArrayList#ArrayList()}.</li>
-   *   <li>Then return QualifiableObjectsCount is zero.</li>
+   *   <li>When {@link ArrayList#ArrayList()}.
+   *   <li>Then return QualifiableObjectsCount is zero.
    * </ul>
-   * <p>
-   * Method under test: {@link QualificationReport#QualificationReport(RosettaModelObject, Collection)}
+   *
+   * <p>Method under test: {@link QualificationReport#QualificationReport(RosettaModelObject,
+   * Collection)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @DisplayName(
+      "Test new QualificationReport(RosettaModelObject, Collection); when ArrayList(); then return QualifiableObjectsCount is zero")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"void QualificationReport.<init>(RosettaModelObject, Collection)"})
-  public void testNewQualificationReport_whenArrayList_thenReturnQualifiableObjectsCountIsZero() {
+  void testNewQualificationReport_whenArrayList_thenReturnQualifiableObjectsCountIsZero() {
     // Arrange
     BarBuilder ingestedObject = new BarBuilder();
     ArrayList<QualificationResult> results = new ArrayList<>();
 
     // Act
-    QualificationReport actualQualificationReport = new QualificationReport(ingestedObject, results);
+    QualificationReport actualQualificationReport =
+        new QualificationReport(ingestedObject, results);
 
     // Assert
     assertEquals(0, actualQualificationReport.getQualifiableObjectsCount());
@@ -133,8 +154,9 @@ public class QualificationReportDiffblueTest {
 
   /**
    * Test getters and setters.
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link QualificationReport#getIngestedObject()}
    *   <li>{@link QualificationReport#getQualifiableObjectsCount()}
@@ -143,14 +165,20 @@ public class QualificationReportDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"RosettaModelObject QualificationReport.getIngestedObject()",
-      "int QualificationReport.getQualifiableObjectsCount()", "Collection QualificationReport.getResults()",
-      "int QualificationReport.getUniquelyQualifiedObjectsCount()"})
-  public void testGettersAndSetters() {
+  @DisplayName("Test getters and setters")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "RosettaModelObject QualificationReport.getIngestedObject()",
+    "int QualificationReport.getQualifiableObjectsCount()",
+    "Collection QualificationReport.getResults()",
+    "int QualificationReport.getUniquelyQualifiedObjectsCount()"
+  })
+  void testGettersAndSetters() {
     // Arrange
     BarBuilder ingestedObject = new BarBuilder();
     ArrayList<QualificationResult> results = new ArrayList<>();
+
     QualificationReport qualificationReport = new QualificationReport(ingestedObject, results);
 
     // Act
@@ -168,20 +196,25 @@ public class QualificationReportDiffblueTest {
 
   /**
    * Test {@link QualificationReport#getResultObject()}.
+   *
    * <ul>
-   *   <li>Then return {@link KeyBuilderImpl} (default constructor).</li>
+   *   <li>Then return {@link KeyBuilderImpl} (default constructor).
    * </ul>
-   * <p>
-   * Method under test: {@link QualificationReport#getResultObject()}
+   *
+   * <p>Method under test: {@link QualificationReport#getResultObject()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @DisplayName("Test getResultObject(); then return KeyBuilderImpl (default constructor)")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"RosettaModelObjectBuilder QualificationReport.getResultObject()"})
-  public void testGetResultObject_thenReturnKeyBuilderImpl() {
+  void testGetResultObject_thenReturnKeyBuilderImpl() {
     // Arrange
     KeyBuilderImpl ingestedObject = new KeyBuilderImpl();
+    QualificationReport qualificationReport =
+        new QualificationReport(ingestedObject, new ArrayList<>());
 
     // Act and Assert
-    assertSame(ingestedObject, (new QualificationReport(ingestedObject, new ArrayList<>())).getResultObject());
+    assertSame(ingestedObject, qualificationReport.getResultObject());
   }
 }

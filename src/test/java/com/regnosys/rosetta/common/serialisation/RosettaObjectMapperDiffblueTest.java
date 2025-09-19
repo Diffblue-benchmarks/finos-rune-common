@@ -20,11 +20,11 @@ package com.regnosys.rosetta.common.serialisation;
  * ==============
  */
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.databind.MappingJsonFactory;
@@ -38,32 +38,41 @@ import com.fasterxml.jackson.databind.ser.BeanSerializerFactory;
 import com.fasterxml.jackson.databind.ser.DefaultSerializerProvider;
 import com.fasterxml.jackson.databind.ser.DefaultSerializerProvider.Impl;
 import com.fasterxml.jackson.databind.util.StdDateFormat;
-import org.junit.Test;
-import org.junit.experimental.categories.Category;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
 
-public class RosettaObjectMapperDiffblueTest {
+class RosettaObjectMapperDiffblueTest {
   /**
    * Test {@link RosettaObjectMapper#getNewMinimalRosettaObjectMapper()}.
-   * <p>
-   * Method under test: {@link RosettaObjectMapper#getNewMinimalRosettaObjectMapper()}
+   *
+   * <p>Method under test: {@link RosettaObjectMapper#getNewMinimalRosettaObjectMapper()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @DisplayName("Test getNewMinimalRosettaObjectMapper()")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"ObjectMapper RosettaObjectMapper.getNewMinimalRosettaObjectMapper()"})
-  public void testGetNewMinimalRosettaObjectMapper() {
+  void testGetNewMinimalRosettaObjectMapper() {
     // Arrange and Act
-    ObjectMapper actualNewMinimalRosettaObjectMapper = RosettaObjectMapper.getNewMinimalRosettaObjectMapper();
+    ObjectMapper actualNewMinimalRosettaObjectMapper =
+        RosettaObjectMapper.getNewMinimalRosettaObjectMapper();
 
     // Assert
     JsonFactory factory = actualNewMinimalRosettaObjectMapper.getFactory();
     assertTrue(factory instanceof MappingJsonFactory);
     assertTrue(
-        actualNewMinimalRosettaObjectMapper.getDeserializationContext() instanceof DefaultDeserializationContext.Impl);
+        actualNewMinimalRosettaObjectMapper.getDeserializationContext()
+            instanceof DefaultDeserializationContext.Impl);
     assertTrue(actualNewMinimalRosettaObjectMapper.getVisibilityChecker() instanceof Std);
     assertTrue(
-        actualNewMinimalRosettaObjectMapper.getPolymorphicTypeValidator() instanceof LaissezFaireSubTypeValidator);
-    assertTrue(actualNewMinimalRosettaObjectMapper.getSubtypeResolver() instanceof StdSubtypeResolver);
-    assertTrue(actualNewMinimalRosettaObjectMapper.getSerializerFactory() instanceof BeanSerializerFactory);
+        actualNewMinimalRosettaObjectMapper.getPolymorphicTypeValidator()
+            instanceof LaissezFaireSubTypeValidator);
+    assertTrue(
+        actualNewMinimalRosettaObjectMapper.getSubtypeResolver() instanceof StdSubtypeResolver);
+    assertTrue(
+        actualNewMinimalRosettaObjectMapper.getSerializerFactory()
+            instanceof BeanSerializerFactory);
     assertTrue(actualNewMinimalRosettaObjectMapper.getSerializerProvider() instanceof Impl);
     assertTrue(actualNewMinimalRosettaObjectMapper.getSerializerProviderInstance() instanceof Impl);
     assertTrue(actualNewMinimalRosettaObjectMapper.getDateFormat() instanceof StdDateFormat);
@@ -75,24 +84,31 @@ public class RosettaObjectMapperDiffblueTest {
 
   /**
    * Test {@link RosettaObjectMapper#getNewRosettaObjectMapper()}.
-   * <p>
-   * Method under test: {@link RosettaObjectMapper#getNewRosettaObjectMapper()}
+   *
+   * <p>Method under test: {@link RosettaObjectMapper#getNewRosettaObjectMapper()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @DisplayName("Test getNewRosettaObjectMapper()")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"ObjectMapper RosettaObjectMapper.getNewRosettaObjectMapper()"})
-  public void testGetNewRosettaObjectMapper() {
+  void testGetNewRosettaObjectMapper() {
     // Arrange and Act
     ObjectMapper actualNewRosettaObjectMapper = RosettaObjectMapper.getNewRosettaObjectMapper();
 
     // Assert
     JsonFactory factory = actualNewRosettaObjectMapper.getFactory();
     assertTrue(factory instanceof MappingJsonFactory);
-    assertTrue(actualNewRosettaObjectMapper.getDeserializationContext() instanceof DefaultDeserializationContext.Impl);
+    assertTrue(
+        actualNewRosettaObjectMapper.getDeserializationContext()
+            instanceof DefaultDeserializationContext.Impl);
     assertTrue(actualNewRosettaObjectMapper.getVisibilityChecker() instanceof Std);
-    assertTrue(actualNewRosettaObjectMapper.getPolymorphicTypeValidator() instanceof LaissezFaireSubTypeValidator);
+    assertTrue(
+        actualNewRosettaObjectMapper.getPolymorphicTypeValidator()
+            instanceof LaissezFaireSubTypeValidator);
     assertTrue(actualNewRosettaObjectMapper.getSubtypeResolver() instanceof StdSubtypeResolver);
-    assertTrue(actualNewRosettaObjectMapper.getSerializerFactory() instanceof BeanSerializerFactory);
+    assertTrue(
+        actualNewRosettaObjectMapper.getSerializerFactory() instanceof BeanSerializerFactory);
     assertTrue(actualNewRosettaObjectMapper.getSerializerProvider() instanceof Impl);
     assertTrue(actualNewRosettaObjectMapper.getSerializerProviderInstance() instanceof Impl);
     assertTrue(actualNewRosettaObjectMapper.getDateFormat() instanceof StdDateFormat);

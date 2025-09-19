@@ -20,25 +20,27 @@ package com.regnosys.rosetta.common.serialisation.projectiondata;
  * ==============
  */
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import com.regnosys.rosetta.common.serialisation.reportdata.ReportDataItem;
 import com.rosetta.model.lib.ModelReportId;
 import java.util.ArrayList;
 import java.util.List;
-import org.junit.Test;
-import org.junit.experimental.categories.Category;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
 
-public class ProjectionDataSetDiffblueTest {
+class ProjectionDataSetDiffblueTest {
   /**
    * Test getters and setters.
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link ProjectionDataSet#ProjectionDataSet()}
    *   <li>{@link ProjectionDataSet#toString()}
@@ -47,10 +49,16 @@ public class ProjectionDataSetDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void ProjectionDataSet.<init>()", "List ProjectionDataSet.getApplicableProjections()",
-      "List ProjectionDataSet.getApplicableReports()", "String ProjectionDataSet.toString()"})
-  public void testGettersAndSetters() {
+  @DisplayName("Test getters and setters")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void ProjectionDataSet.<init>()",
+    "List ProjectionDataSet.getApplicableProjections()",
+    "List ProjectionDataSet.getApplicableReports()",
+    "String ProjectionDataSet.toString()"
+  })
+  void testGettersAndSetters() {
     // Arrange and Act
     ProjectionDataSet actualProjectionDataSet = new ProjectionDataSet();
     String actualToStringResult = actualProjectionDataSet.toString();
@@ -58,9 +66,11 @@ public class ProjectionDataSetDiffblueTest {
     List<ModelReportId> actualApplicableReports = actualProjectionDataSet.getApplicableReports();
 
     // Assert
-    assertEquals("ProjectionDataSet[dataSetName='null', inputType='null', expectedType='com.regnosys.rosetta.common"
-        + ".serialisation.reportdata.ExpectedResult', applicableReports=null, applicableProjections=null,"
-        + " data=null]", actualToStringResult);
+    assertEquals(
+        "ProjectionDataSet[dataSetName='null', inputType='null', expectedType='com.regnosys.rosetta.common"
+            + ".serialisation.reportdata.ExpectedResult', applicableReports=null, applicableProjections=null,"
+            + " data=null]",
+        actualToStringResult);
     assertNull(actualProjectionDataSet.getDataSetName());
     assertNull(actualProjectionDataSet.getDataSetShortName());
     assertNull(actualProjectionDataSet.getInputType());
@@ -71,17 +81,22 @@ public class ProjectionDataSetDiffblueTest {
 
   /**
    * Test {@link ProjectionDataSet#ProjectionDataSet(String, String, String, List, List, List)}.
+   *
    * <ul>
-   *   <li>Given {@code 42}.</li>
-   *   <li>When {@link ArrayList#ArrayList()} add {@code 42}.</li>
+   *   <li>Given {@code 42}.
+   *   <li>When {@link ArrayList#ArrayList()} add {@code 42}.
    * </ul>
-   * <p>
-   * Method under test: {@link ProjectionDataSet#ProjectionDataSet(String, String, String, List, List, List)}
+   *
+   * <p>Method under test: {@link ProjectionDataSet#ProjectionDataSet(String, String, String, List,
+   * List, List)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @DisplayName(
+      "Test new ProjectionDataSet(String, String, String, List, List, List); given '42'; when ArrayList() add '42'")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"void ProjectionDataSet.<init>(String, String, String, List, List, List)"})
-  public void testNewProjectionDataSet_given42_whenArrayListAdd42() {
+  void testNewProjectionDataSet_given42_whenArrayListAdd42() {
     // Arrange
     ArrayList<String> applicableProjections = new ArrayList<>();
     applicableProjections.add("42");
@@ -89,8 +104,14 @@ public class ProjectionDataSetDiffblueTest {
     ArrayList<ModelReportId> applicableReports = new ArrayList<>();
 
     // Act
-    ProjectionDataSet actualProjectionDataSet = new ProjectionDataSet("Data Set Name", "Data Set Short Name",
-        "Input Type", applicableProjections, applicableReports, new ArrayList<>());
+    ProjectionDataSet actualProjectionDataSet =
+        new ProjectionDataSet(
+            "Data Set Name",
+            "Data Set Short Name",
+            "Input Type",
+            applicableProjections,
+            applicableReports,
+            new ArrayList<>());
 
     // Assert
     assertEquals("Data Set Short Name", actualProjectionDataSet.getDataSetShortName());
@@ -101,25 +122,36 @@ public class ProjectionDataSetDiffblueTest {
 
   /**
    * Test {@link ProjectionDataSet#ProjectionDataSet(String, String, String, List, List, List)}.
+   *
    * <ul>
-   *   <li>Given {@code foo}.</li>
-   *   <li>Then return ApplicableProjections is {@link ArrayList#ArrayList()}.</li>
+   *   <li>Given {@code foo}.
+   *   <li>Then return ApplicableProjections is {@link ArrayList#ArrayList()}.
    * </ul>
-   * <p>
-   * Method under test: {@link ProjectionDataSet#ProjectionDataSet(String, String, String, List, List, List)}
+   *
+   * <p>Method under test: {@link ProjectionDataSet#ProjectionDataSet(String, String, String, List,
+   * List, List)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @DisplayName(
+      "Test new ProjectionDataSet(String, String, String, List, List, List); given 'foo'; then return ApplicableProjections is ArrayList()")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"void ProjectionDataSet.<init>(String, String, String, List, List, List)"})
-  public void testNewProjectionDataSet_givenFoo_thenReturnApplicableProjectionsIsArrayList() {
+  void testNewProjectionDataSet_givenFoo_thenReturnApplicableProjectionsIsArrayList() {
     // Arrange
     ArrayList<String> applicableProjections = new ArrayList<>();
     applicableProjections.add("foo");
     ArrayList<ModelReportId> applicableReports = new ArrayList<>();
 
     // Act
-    ProjectionDataSet actualProjectionDataSet = new ProjectionDataSet("Data Set Name", "Data Set Short Name",
-        "Input Type", applicableProjections, applicableReports, new ArrayList<>());
+    ProjectionDataSet actualProjectionDataSet =
+        new ProjectionDataSet(
+            "Data Set Name",
+            "Data Set Short Name",
+            "Input Type",
+            applicableProjections,
+            applicableReports,
+            new ArrayList<>());
 
     // Assert
     assertEquals("Data Set Short Name", actualProjectionDataSet.getDataSetShortName());
@@ -130,17 +162,22 @@ public class ProjectionDataSetDiffblueTest {
 
   /**
    * Test {@link ProjectionDataSet#ProjectionDataSet(String, String, String, List, List, List)}.
+   *
    * <ul>
-   *   <li>Given {@link ReportDataItem#ReportDataItem()}.</li>
-   *   <li>Then return Data is {@link ArrayList#ArrayList()}.</li>
+   *   <li>Given {@link ReportDataItem#ReportDataItem()}.
+   *   <li>Then return Data is {@link ArrayList#ArrayList()}.
    * </ul>
-   * <p>
-   * Method under test: {@link ProjectionDataSet#ProjectionDataSet(String, String, String, List, List, List)}
+   *
+   * <p>Method under test: {@link ProjectionDataSet#ProjectionDataSet(String, String, String, List,
+   * List, List)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @DisplayName(
+      "Test new ProjectionDataSet(String, String, String, List, List, List); given ReportDataItem(); then return Data is ArrayList()")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"void ProjectionDataSet.<init>(String, String, String, List, List, List)"})
-  public void testNewProjectionDataSet_givenReportDataItem_thenReturnDataIsArrayList() {
+  void testNewProjectionDataSet_givenReportDataItem_thenReturnDataIsArrayList() {
     // Arrange
     ArrayList<String> applicableProjections = new ArrayList<>();
     ArrayList<ModelReportId> applicableReports = new ArrayList<>();
@@ -148,24 +185,38 @@ public class ProjectionDataSetDiffblueTest {
     ArrayList<ReportDataItem> data = new ArrayList<>();
     data.add(new ReportDataItem());
 
-    // Act and Assert
-    assertSame(data, (new ProjectionDataSet("Data Set Name", "Data Set Short Name", "Input Type", applicableProjections,
-        applicableReports, data)).getData());
+    // Act
+    ProjectionDataSet actualProjectionDataSet =
+        new ProjectionDataSet(
+            "Data Set Name",
+            "Data Set Short Name",
+            "Input Type",
+            applicableProjections,
+            applicableReports,
+            data);
+
+    // Assert
+    assertSame(data, actualProjectionDataSet.getData());
   }
 
   /**
    * Test {@link ProjectionDataSet#ProjectionDataSet(String, String, String, List, List, List)}.
+   *
    * <ul>
-   *   <li>Given {@link ReportDataItem#ReportDataItem()}.</li>
-   *   <li>Then return Data size is two.</li>
+   *   <li>Given {@link ReportDataItem#ReportDataItem()}.
+   *   <li>Then return Data size is two.
    * </ul>
-   * <p>
-   * Method under test: {@link ProjectionDataSet#ProjectionDataSet(String, String, String, List, List, List)}
+   *
+   * <p>Method under test: {@link ProjectionDataSet#ProjectionDataSet(String, String, String, List,
+   * List, List)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @DisplayName(
+      "Test new ProjectionDataSet(String, String, String, List, List, List); given ReportDataItem(); then return Data size is two")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"void ProjectionDataSet.<init>(String, String, String, List, List, List)"})
-  public void testNewProjectionDataSet_givenReportDataItem_thenReturnDataSizeIsTwo() {
+  void testNewProjectionDataSet_givenReportDataItem_thenReturnDataSizeIsTwo() {
     // Arrange
     ArrayList<String> applicableProjections = new ArrayList<>();
     ArrayList<ModelReportId> applicableReports = new ArrayList<>();
@@ -175,33 +226,53 @@ public class ProjectionDataSetDiffblueTest {
     ReportDataItem reportDataItem = new ReportDataItem();
     data.add(reportDataItem);
 
-    // Act and Assert
-    List<ReportDataItem> data2 = (new ProjectionDataSet("Data Set Name", "Data Set Short Name", "Input Type",
-        applicableProjections, applicableReports, data)).getData();
+    // Act
+    ProjectionDataSet actualProjectionDataSet =
+        new ProjectionDataSet(
+            "Data Set Name",
+            "Data Set Short Name",
+            "Input Type",
+            applicableProjections,
+            applicableReports,
+            data);
+
+    // Assert
+    List<ReportDataItem> data2 = actualProjectionDataSet.getData();
     assertEquals(2, data2.size());
     assertSame(reportDataItem, data2.get(1));
   }
 
   /**
    * Test {@link ProjectionDataSet#ProjectionDataSet(String, String, String, List, List, List)}.
+   *
    * <ul>
-   *   <li>When {@code Data Set Short Name}.</li>
-   *   <li>Then return {@code Data Set Short Name}.</li>
+   *   <li>When {@code Data Set Short Name}.
+   *   <li>Then return {@code Data Set Short Name}.
    * </ul>
-   * <p>
-   * Method under test: {@link ProjectionDataSet#ProjectionDataSet(String, String, String, List, List, List)}
+   *
+   * <p>Method under test: {@link ProjectionDataSet#ProjectionDataSet(String, String, String, List,
+   * List, List)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @DisplayName(
+      "Test new ProjectionDataSet(String, String, String, List, List, List); when 'Data Set Short Name'; then return 'Data Set Short Name'")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"void ProjectionDataSet.<init>(String, String, String, List, List, List)"})
-  public void testNewProjectionDataSet_whenDataSetShortName_thenReturnDataSetShortName() {
+  void testNewProjectionDataSet_whenDataSetShortName_thenReturnDataSetShortName() {
     // Arrange
     ArrayList<String> applicableProjections = new ArrayList<>();
     ArrayList<ModelReportId> applicableReports = new ArrayList<>();
 
     // Act
-    ProjectionDataSet actualProjectionDataSet = new ProjectionDataSet("Data Set Name", "Data Set Short Name",
-        "Input Type", applicableProjections, applicableReports, new ArrayList<>());
+    ProjectionDataSet actualProjectionDataSet =
+        new ProjectionDataSet(
+            "Data Set Name",
+            "Data Set Short Name",
+            "Input Type",
+            applicableProjections,
+            applicableReports,
+            new ArrayList<>());
 
     // Assert
     assertEquals("Data Set Short Name", actualProjectionDataSet.getDataSetShortName());
@@ -212,20 +283,25 @@ public class ProjectionDataSetDiffblueTest {
 
   /**
    * Test {@link ProjectionDataSet#ProjectionDataSet(String, String, String, List, List, List)}.
+   *
    * <ul>
-   *   <li>When empty string.</li>
-   *   <li>Then return DataSetShortName is {@code Data Set Name}.</li>
+   *   <li>When empty string.
+   *   <li>Then return DataSetShortName is {@code Data Set Name}.
    * </ul>
-   * <p>
-   * Method under test: {@link ProjectionDataSet#ProjectionDataSet(String, String, String, List, List, List)}
+   *
+   * <p>Method under test: {@link ProjectionDataSet#ProjectionDataSet(String, String, String, List,
+   * List, List)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @DisplayName(
+      "Test new ProjectionDataSet(String, String, String, List, List, List); when empty string; then return DataSetShortName is 'Data Set Name'")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"void ProjectionDataSet.<init>(String, String, String, List, List, List)"})
-  public void testNewProjectionDataSet_whenEmptyString_thenReturnDataSetShortNameIsDataSetName() {
+  void testNewProjectionDataSet_whenEmptyString_thenReturnDataSetShortNameIsDataSetName() {
     // Arrange and Act
-    ProjectionDataSet actualProjectionDataSet = new ProjectionDataSet("Data Set Name", "", "Input Type", null, null,
-        new ArrayList<>());
+    ProjectionDataSet actualProjectionDataSet =
+        new ProjectionDataSet("Data Set Name", "", "Input Type", null, null, new ArrayList<>());
 
     // Assert
     assertEquals("Data Set Name", actualProjectionDataSet.getDataSetShortName());
@@ -237,20 +313,25 @@ public class ProjectionDataSetDiffblueTest {
 
   /**
    * Test {@link ProjectionDataSet#ProjectionDataSet(String, String, String, List, List, List)}.
+   *
    * <ul>
-   *   <li>When {@code null}.</li>
-   *   <li>Then return DataSetShortName is {@code Data Set Name}.</li>
+   *   <li>When {@code null}.
+   *   <li>Then return DataSetShortName is {@code Data Set Name}.
    * </ul>
-   * <p>
-   * Method under test: {@link ProjectionDataSet#ProjectionDataSet(String, String, String, List, List, List)}
+   *
+   * <p>Method under test: {@link ProjectionDataSet#ProjectionDataSet(String, String, String, List,
+   * List, List)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @DisplayName(
+      "Test new ProjectionDataSet(String, String, String, List, List, List); when 'null'; then return DataSetShortName is 'Data Set Name'")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"void ProjectionDataSet.<init>(String, String, String, List, List, List)"})
-  public void testNewProjectionDataSet_whenNull_thenReturnDataSetShortNameIsDataSetName() {
+  void testNewProjectionDataSet_whenNull_thenReturnDataSetShortNameIsDataSetName() {
     // Arrange and Act
-    ProjectionDataSet actualProjectionDataSet = new ProjectionDataSet("Data Set Name", null, "Input Type", null, null,
-        new ArrayList<>());
+    ProjectionDataSet actualProjectionDataSet =
+        new ProjectionDataSet("Data Set Name", null, "Input Type", null, null, new ArrayList<>());
 
     // Assert
     assertEquals("Data Set Name", actualProjectionDataSet.getDataSetShortName());
@@ -262,48 +343,61 @@ public class ProjectionDataSetDiffblueTest {
 
   /**
    * Test {@link ProjectionDataSet#equals(Object)}, and {@link ProjectionDataSet#hashCode()}.
+   *
    * <ul>
-   *   <li>When other is equal.</li>
-   *   <li>Then return equal.</li>
+   *   <li>When other is equal.
+   *   <li>Then return equal.
    * </ul>
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link ProjectionDataSet#equals(Object)}
    *   <li>{@link ProjectionDataSet#hashCode()}
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean ProjectionDataSet.equals(Object)", "int ProjectionDataSet.hashCode()"})
-  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
+  @DisplayName("Test equals(Object), and hashCode(); when other is equal; then return equal")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean ProjectionDataSet.equals(Object)",
+    "int ProjectionDataSet.hashCode()"
+  })
+  void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
     // Arrange
     ProjectionDataSet projectionDataSet = new ProjectionDataSet();
     ProjectionDataSet projectionDataSet2 = new ProjectionDataSet();
 
     // Act and Assert
     assertEquals(projectionDataSet, projectionDataSet2);
-    int expectedHashCodeResult = projectionDataSet.hashCode();
-    assertEquals(expectedHashCodeResult, projectionDataSet2.hashCode());
+    assertEquals(projectionDataSet.hashCode(), projectionDataSet2.hashCode());
   }
 
   /**
    * Test {@link ProjectionDataSet#equals(Object)}, and {@link ProjectionDataSet#hashCode()}.
+   *
    * <ul>
-   *   <li>When other is same.</li>
-   *   <li>Then return equal.</li>
+   *   <li>When other is same.
+   *   <li>Then return equal.
    * </ul>
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link ProjectionDataSet#equals(Object)}
    *   <li>{@link ProjectionDataSet#hashCode()}
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean ProjectionDataSet.equals(Object)", "int ProjectionDataSet.hashCode()"})
-  public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
+  @DisplayName("Test equals(Object), and hashCode(); when other is same; then return equal")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean ProjectionDataSet.equals(Object)",
+    "int ProjectionDataSet.hashCode()"
+  })
+  void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
     ProjectionDataSet projectionDataSet = new ProjectionDataSet();
 
@@ -315,22 +409,35 @@ public class ProjectionDataSetDiffblueTest {
 
   /**
    * Test {@link ProjectionDataSet#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is different.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link ProjectionDataSet#equals(Object)}
+   *
+   * <p>Method under test: {@link ProjectionDataSet#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean ProjectionDataSet.equals(Object)", "int ProjectionDataSet.hashCode()"})
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
+  @DisplayName("Test equals(Object); when other is different; then return not equal")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean ProjectionDataSet.equals(Object)",
+    "int ProjectionDataSet.hashCode()"
+  })
+  void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange
     ArrayList<String> applicableProjections = new ArrayList<>();
     ArrayList<ModelReportId> applicableReports = new ArrayList<>();
-    ProjectionDataSet projectionDataSet = new ProjectionDataSet("Data Set Name", "Data Set Short Name", "Input Type",
-        applicableProjections, applicableReports, new ArrayList<>());
+
+    ProjectionDataSet projectionDataSet =
+        new ProjectionDataSet(
+            "Data Set Name",
+            "Data Set Short Name",
+            "Input Type",
+            applicableProjections,
+            applicableReports,
+            new ArrayList<>());
 
     // Act and Assert
     assertNotEquals(projectionDataSet, new ProjectionDataSet());
@@ -338,34 +445,46 @@ public class ProjectionDataSetDiffblueTest {
 
   /**
    * Test {@link ProjectionDataSet#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is {@code null}.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is {@code null}.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link ProjectionDataSet#equals(Object)}
+   *
+   * <p>Method under test: {@link ProjectionDataSet#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean ProjectionDataSet.equals(Object)", "int ProjectionDataSet.hashCode()"})
-  public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
+  @DisplayName("Test equals(Object); when other is 'null'; then return not equal")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean ProjectionDataSet.equals(Object)",
+    "int ProjectionDataSet.hashCode()"
+  })
+  void testEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(new ProjectionDataSet(), null);
   }
 
   /**
    * Test {@link ProjectionDataSet#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is wrong type.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is wrong type.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link ProjectionDataSet#equals(Object)}
+   *
+   * <p>Method under test: {@link ProjectionDataSet#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean ProjectionDataSet.equals(Object)", "int ProjectionDataSet.hashCode()"})
-  public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
+  @DisplayName("Test equals(Object); when other is wrong type; then return not equal")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean ProjectionDataSet.equals(Object)",
+    "int ProjectionDataSet.hashCode()"
+  })
+  void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(new ProjectionDataSet(), "Different type to ProjectionDataSet");
   }

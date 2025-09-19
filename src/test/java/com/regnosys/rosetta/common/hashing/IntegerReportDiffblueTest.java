@@ -20,17 +20,19 @@ package com.regnosys.rosetta.common.hashing;
  * ==============
  */
 
-import static org.junit.Assert.assertEquals;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
-import org.junit.Test;
-import org.junit.experimental.categories.Category;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
 
-public class IntegerReportDiffblueTest {
+class IntegerReportDiffblueTest {
   /**
    * Test getters and setters.
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link IntegerReport#IntegerReport(int)}
    *   <li>{@link IntegerReport#accumulate(int)}
@@ -40,10 +42,17 @@ public class IntegerReportDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void IntegerReport.<init>(int)", "void IntegerReport.accumulate()",
-      "void IntegerReport.accumulate(int)", "int IntegerReport.getResult()", "String IntegerReport.toString()"})
-  public void testGettersAndSetters() {
+  @DisplayName("Test getters and setters")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void IntegerReport.<init>(int)",
+    "void IntegerReport.accumulate()",
+    "void IntegerReport.accumulate(int)",
+    "int IntegerReport.getResult()",
+    "String IntegerReport.toString()"
+  })
+  void testGettersAndSetters() {
     // Arrange and Act
     IntegerReport actualIntegerReport = new IntegerReport(1);
     actualIntegerReport.accumulate(42);

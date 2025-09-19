@@ -20,22 +20,25 @@ package com.regnosys.rosetta.common.serialisation.reportdata;
  * ==============
  */
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertNull;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
-import org.junit.Test;
-import org.junit.experimental.categories.Category;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
 
-public class ExpectedResultFieldDiffblueTest {
+class ExpectedResultFieldDiffblueTest {
   /**
    * Test getters and setters.
+   *
    * <ul>
-   *   <li>Then return toString is {@code ExpectedResultField[name='null', value='null']}.</li>
+   *   <li>Then return toString is {@code ExpectedResultField[name='null', value='null']}.
    * </ul>
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link ExpectedResultField#ExpectedResultField()}
    *   <li>{@link ExpectedResultField#toString()}
@@ -44,11 +47,18 @@ public class ExpectedResultFieldDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void ExpectedResultField.<init>()", "void ExpectedResultField.<init>(String, String)",
-      "String ExpectedResultField.getName()", "String ExpectedResultField.getValue()",
-      "String ExpectedResultField.toString()"})
-  public void testGettersAndSetters_thenReturnToStringIsExpectedResultFieldNameNullValueNull() {
+  @DisplayName(
+      "Test getters and setters; then return toString is 'ExpectedResultField[name='null', value='null']'")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void ExpectedResultField.<init>()",
+    "void ExpectedResultField.<init>(String, String)",
+    "String ExpectedResultField.getName()",
+    "String ExpectedResultField.getValue()",
+    "String ExpectedResultField.toString()"
+  })
+  void testGettersAndSetters_thenReturnToStringIsExpectedResultFieldNameNullValueNull() {
     // Arrange and Act
     ExpectedResultField actualExpectedResultField = new ExpectedResultField();
     String actualToStringResult = actualExpectedResultField.toString();
@@ -62,12 +72,14 @@ public class ExpectedResultFieldDiffblueTest {
 
   /**
    * Test getters and setters.
+   *
    * <ul>
-   *   <li>When {@code Name}.</li>
-   *   <li>Then return Value is {@code 42}.</li>
+   *   <li>When {@code Name}.
+   *   <li>Then return Value is {@code 42}.
    * </ul>
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link ExpectedResultField#ExpectedResultField(String, String)}
    *   <li>{@link ExpectedResultField#toString()}
@@ -76,11 +88,17 @@ public class ExpectedResultFieldDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void ExpectedResultField.<init>()", "void ExpectedResultField.<init>(String, String)",
-      "String ExpectedResultField.getName()", "String ExpectedResultField.getValue()",
-      "String ExpectedResultField.toString()"})
-  public void testGettersAndSetters_whenName_thenReturnValueIs42() {
+  @DisplayName("Test getters and setters; when 'Name'; then return Value is '42'")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void ExpectedResultField.<init>()",
+    "void ExpectedResultField.<init>(String, String)",
+    "String ExpectedResultField.getName()",
+    "String ExpectedResultField.getValue()",
+    "String ExpectedResultField.toString()"
+  })
+  void testGettersAndSetters_whenName_thenReturnValueIs42() {
     // Arrange and Act
     ExpectedResultField actualExpectedResultField = new ExpectedResultField("Name", "42");
     String actualToStringResult = actualExpectedResultField.toString();
@@ -94,48 +112,61 @@ public class ExpectedResultFieldDiffblueTest {
 
   /**
    * Test {@link ExpectedResultField#equals(Object)}, and {@link ExpectedResultField#hashCode()}.
+   *
    * <ul>
-   *   <li>When other is equal.</li>
-   *   <li>Then return equal.</li>
+   *   <li>When other is equal.
+   *   <li>Then return equal.
    * </ul>
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link ExpectedResultField#equals(Object)}
    *   <li>{@link ExpectedResultField#hashCode()}
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean ExpectedResultField.equals(Object)", "int ExpectedResultField.hashCode()"})
-  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
+  @DisplayName("Test equals(Object), and hashCode(); when other is equal; then return equal")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean ExpectedResultField.equals(Object)",
+    "int ExpectedResultField.hashCode()"
+  })
+  void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
     // Arrange
     ExpectedResultField expectedResultField = new ExpectedResultField("Name", "42");
     ExpectedResultField expectedResultField2 = new ExpectedResultField("Name", "42");
 
     // Act and Assert
     assertEquals(expectedResultField, expectedResultField2);
-    int expectedHashCodeResult = expectedResultField.hashCode();
-    assertEquals(expectedHashCodeResult, expectedResultField2.hashCode());
+    assertEquals(expectedResultField.hashCode(), expectedResultField2.hashCode());
   }
 
   /**
    * Test {@link ExpectedResultField#equals(Object)}, and {@link ExpectedResultField#hashCode()}.
+   *
    * <ul>
-   *   <li>When other is same.</li>
-   *   <li>Then return equal.</li>
+   *   <li>When other is same.
+   *   <li>Then return equal.
    * </ul>
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link ExpectedResultField#equals(Object)}
    *   <li>{@link ExpectedResultField#hashCode()}
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean ExpectedResultField.equals(Object)", "int ExpectedResultField.hashCode()"})
-  public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
+  @DisplayName("Test equals(Object), and hashCode(); when other is same; then return equal")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean ExpectedResultField.equals(Object)",
+    "int ExpectedResultField.hashCode()"
+  })
+  void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
     ExpectedResultField expectedResultField = new ExpectedResultField("Name", "42");
 
@@ -147,17 +178,23 @@ public class ExpectedResultFieldDiffblueTest {
 
   /**
    * Test {@link ExpectedResultField#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is different.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link ExpectedResultField#equals(Object)}
+   *
+   * <p>Method under test: {@link ExpectedResultField#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean ExpectedResultField.equals(Object)", "int ExpectedResultField.hashCode()"})
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
+  @DisplayName("Test equals(Object); when other is different; then return not equal")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean ExpectedResultField.equals(Object)",
+    "int ExpectedResultField.hashCode()"
+  })
+  void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange
     ExpectedResultField expectedResultField = new ExpectedResultField(null, "42");
 
@@ -167,17 +204,23 @@ public class ExpectedResultFieldDiffblueTest {
 
   /**
    * Test {@link ExpectedResultField#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is different.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link ExpectedResultField#equals(Object)}
+   *
+   * <p>Method under test: {@link ExpectedResultField#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean ExpectedResultField.equals(Object)", "int ExpectedResultField.hashCode()"})
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual2() {
+  @DisplayName("Test equals(Object); when other is different; then return not equal")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean ExpectedResultField.equals(Object)",
+    "int ExpectedResultField.hashCode()"
+  })
+  void testEquals_whenOtherIsDifferent_thenReturnNotEqual2() {
     // Arrange
     ExpectedResultField expectedResultField = new ExpectedResultField("Name", "Value");
 
@@ -187,34 +230,46 @@ public class ExpectedResultFieldDiffblueTest {
 
   /**
    * Test {@link ExpectedResultField#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is {@code null}.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is {@code null}.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link ExpectedResultField#equals(Object)}
+   *
+   * <p>Method under test: {@link ExpectedResultField#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean ExpectedResultField.equals(Object)", "int ExpectedResultField.hashCode()"})
-  public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
+  @DisplayName("Test equals(Object); when other is 'null'; then return not equal")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean ExpectedResultField.equals(Object)",
+    "int ExpectedResultField.hashCode()"
+  })
+  void testEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(new ExpectedResultField("Name", "42"), null);
   }
 
   /**
    * Test {@link ExpectedResultField#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is wrong type.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is wrong type.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link ExpectedResultField#equals(Object)}
+   *
+   * <p>Method under test: {@link ExpectedResultField#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean ExpectedResultField.equals(Object)", "int ExpectedResultField.hashCode()"})
-  public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
+  @DisplayName("Test equals(Object); when other is wrong type; then return not equal")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean ExpectedResultField.equals(Object)",
+    "int ExpectedResultField.hashCode()"
+  })
+  void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(new ExpectedResultField("Name", "42"), "Different type to ExpectedResultField");
   }

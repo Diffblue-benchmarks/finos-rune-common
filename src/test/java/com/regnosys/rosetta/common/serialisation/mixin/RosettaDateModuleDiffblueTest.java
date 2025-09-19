@@ -20,27 +20,30 @@ package com.regnosys.rosetta.common.serialisation.mixin;
  * ==============
  */
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import com.fasterxml.jackson.core.Version;
 import com.fasterxml.jackson.databind.Module;
 import java.util.List;
-import org.junit.Test;
-import org.junit.experimental.categories.Category;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
 
-public class RosettaDateModuleDiffblueTest {
+class RosettaDateModuleDiffblueTest {
   /**
    * Test new {@link RosettaDateModule} (default constructor).
-   * <p>
-   * Method under test: default or parameterless constructor of {@link RosettaDateModule}
+   *
+   * <p>Method under test: default or parameterless constructor of {@link RosettaDateModule}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @DisplayName("Test new RosettaDateModule (default constructor)")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"void RosettaDateModule.<init>()"})
-  public void testNewRosettaDateModule() {
+  void testNewRosettaDateModule() {
     // Arrange and Act
     RosettaDateModule actualRosettaDateModule = new RosettaDateModule();
 
@@ -51,9 +54,11 @@ public class RosettaDateModuleDiffblueTest {
     assertEquals("", versionResult.getArtifactId());
     assertEquals("", versionResult.getGroupId());
     assertEquals("//0.0.0", versionResult.toFullString());
-    assertEquals("com.regnosys.rosetta.common.serialisation.mixin.RosettaDateModule",
+    assertEquals(
+        "com.regnosys.rosetta.common.serialisation.mixin.RosettaDateModule",
         actualRosettaDateModule.getModuleName());
-    assertEquals("com.regnosys.rosetta.common.serialisation.mixin.RosettaDateModule",
+    assertEquals(
+        "com.regnosys.rosetta.common.serialisation.mixin.RosettaDateModule",
         actualRosettaDateModule.getTypeId());
     assertEquals(0, versionResult.getMajorVersion());
     assertEquals(0, versionResult.getMinorVersion());
