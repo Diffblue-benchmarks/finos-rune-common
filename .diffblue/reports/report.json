@@ -1,27 +1,28 @@
 {
   "meta" : {
-    "reportVersion" : "2.7"
+    "reportVersion" : "2.6"
   },
   "run" : {
-    "version" : "2025.09.01-44e352d-licensed",
-    "creationTimestamp" : "2025-10-15T15:26:33.785314793Z",
+    "version" : "2025.02.02-08b2a5a-licensed",
+    "creationTimestamp" : "2025-10-21T10:16:55.847973486Z",
     "command" : "dcover create --coverage-reports --upload http://localhost:8080 --project-name finos-rune-common --name with-diffblue-tests",
-    "totalTime" : 6533.769,
-    "environmentDetectionTime" : 1.499,
-    "indexingTime" : 0.334,
-    "entryPointsTime" : 1.469,
-    "generationTime" : 6159.657,
-    "timeToFirstTest" : 107.705,
-    "timeToLastTest" : 6393.62,
-    "indexQueryTime" : 9.672,
-    "verificationTime" : 145.743,
-    "validationTime" : 42.928
+    "totalTime" : 3363.146,
+    "environmentDetectionTime" : 2.902,
+    "indexingTime" : 0.297,
+    "entryPointsTime" : 2.78,
+    "generationTime" : 3013.391,
+    "timeToFirstTest" : 109.166,
+    "timeToLastTest" : 3232.094,
+    "indexQueryTime" : 14.033,
+    "verificationTime" : 129.235,
+    "validationTime" : 61.186
   },
   "codes" : {
     "F009" : "Internal error",
     "R000" : "Success",
     "R002" : "Missing observers",
     "R004" : "No meaningful assertions found",
+    "R011" : "Sandboxing policy violation",
     "R013" : "No inputs found that don't throw a trivial exception",
     "R015" : "Method may be nondeterministic",
     "R024" : "Analysis service shutdown unexpectedly",
@@ -39,7 +40,6 @@
     "T010" : "Abstract or interface method",
     "T012" : "Synthetic method",
     "T020" : "Other trivial method",
-    "T023" : "Testability unknown",
     "V000" : "Validated successfully",
     "W001" : "Test did not compile",
     "W002" : "Test compiled, but did not pass"
@@ -47,35 +47,35 @@
   "summary" : {
     "classesCount" : 176,
     "methodsCount" : 1244,
-    "cumulativeDiffblueTestCount" : 1192,
+    "cumulativeDiffblueTestCount" : 1113,
     "cumulativeManualTestCount" : 94,
-    "completeTestCount" : 1192,
+    "completeTestCount" : 1113,
     "incompleteTestCount" : 0,
     "skeletonTestCount" : 0,
     "totalPhysicalLineCount" : 7705,
     "perMethodTestability" : {
-      "T000" : 447,
+      "T000" : 448,
       "T001" : 160,
       "T002" : 18,
       "T003" : 119,
       "T004" : 18,
-      "T005" : 106,
+      "T005" : 105,
       "T008" : 2,
       "T009" : 30,
       "T010" : 55,
-      "T012" : 233,
-      "T020" : 24,
-      "T023" : 32
+      "T012" : 265,
+      "T020" : 24
     },
     "perMethodOutcome" : {
-      "F009" : 4,
-      "R000" : 604,
-      "R002" : 32,
-      "R004" : 3,
-      "R013" : 49,
+      "F009" : 6,
+      "R000" : 596,
+      "R002" : 30,
+      "R004" : 5,
+      "R011" : 1,
+      "R013" : 63,
       "R015" : 1,
-      "R024" : 3,
-      "R034" : 13,
+      "R024" : 6,
+      "R034" : 3,
       "R081" : 14,
       "R083" : 2,
       "T003" : 119,
@@ -84,18 +84,17 @@
       "T008" : 2,
       "T009" : 30,
       "T010" : 55,
-      "T012" : 233,
-      "T023" : 32,
-      "W001" : 7
+      "T012" : 265,
+      "W001" : 10
     },
     "perTestOutcome" : {
-      "R000" : 1192
+      "R000" : 1113
     },
     "perTestValidation" : {
-      "V000" : 1192
+      "V000" : 1113
     },
     "warnings" : {
-      "W001" : 10,
+      "W001" : 14,
       "W002" : 3
     }
   },
@@ -107,11 +106,11 @@
       "perMethodTestability" : {
         "T001" : 1,
         "T005" : 1,
-        "T023" : 1
+        "T012" : 1
       },
       "perMethodOutcome" : {
         "R000" : 2,
-        "T023" : 1
+        "T012" : 1
       },
       "perTestOutcome" : {
         "R000" : 1
@@ -138,18 +137,16 @@
       "incompleteTestCount" : 0,
       "perMethodTestability" : {
         "T003" : 1,
-        "T012" : 3,
-        "T023" : 1
+        "T012" : 4
       },
       "perMethodOutcome" : {
         "T003" : 1,
-        "T012" : 3,
-        "T023" : 1
+        "T012" : 4
       }
     },
     "com.regnosys.granite.projector.ProjectionReport" : {
       "methodsCount" : 6,
-      "completeTestCount" : 6,
+      "completeTestCount" : 5,
       "incompleteTestCount" : 0,
       "perMethodTestability" : {
         "T000" : 2,
@@ -159,7 +156,7 @@
         "R000" : 6
       },
       "perTestOutcome" : {
-        "R000" : 6
+        "R000" : 5
       }
     },
     "com.regnosys.granite.projector.ProjectionService" : {
@@ -181,11 +178,11 @@
         "T000" : 6,
         "T001" : 5,
         "T005" : 1,
-        "T023" : 1
+        "T012" : 1
       },
       "perMethodOutcome" : {
         "R000" : 12,
-        "T023" : 1
+        "T012" : 1
       },
       "perTestOutcome" : {
         "R000" : 11
@@ -222,13 +219,11 @@
       "incompleteTestCount" : 0,
       "perMethodTestability" : {
         "T003" : 1,
-        "T012" : 3,
-        "T023" : 1
+        "T012" : 4
       },
       "perMethodOutcome" : {
         "T003" : 1,
-        "T012" : 3,
-        "T023" : 1
+        "T012" : 4
       }
     },
     "com.regnosys.rosetta.common.compile.CompilationTargetDeletionException" : {
@@ -253,13 +248,13 @@
         "T000" : 1,
         "T003" : 5,
         "T005" : 2,
-        "T023" : 1
+        "T012" : 1
       },
       "perMethodOutcome" : {
         "R002" : 2,
-        "R013" : 1,
+        "R011" : 1,
         "T003" : 5,
-        "T023" : 1
+        "T012" : 1
       }
     },
     "com.regnosys.rosetta.common.compile.JavaCancellableCompiler" : {
@@ -296,14 +291,12 @@
       "perMethodTestability" : {
         "T001" : 1,
         "T003" : 1,
-        "T012" : 3,
-        "T023" : 1
+        "T012" : 4
       },
       "perMethodOutcome" : {
         "R000" : 1,
         "T003" : 1,
-        "T012" : 3,
-        "T023" : 1
+        "T012" : 4
       },
       "perTestOutcome" : {
         "R000" : 1
@@ -406,22 +399,23 @@
     },
     "com.regnosys.rosetta.common.hashing.NonNullHashCollector" : {
       "methodsCount" : 13,
-      "completeTestCount" : 20,
+      "completeTestCount" : 19,
       "incompleteTestCount" : 0,
       "perMethodTestability" : {
         "T000" : 4,
         "T003" : 7,
-        "T012" : 1,
-        "T023" : 1
+        "T012" : 2
       },
       "perMethodOutcome" : {
         "R000" : 4,
         "T003" : 7,
-        "T012" : 1,
-        "T023" : 1
+        "T012" : 2
       },
       "perTestOutcome" : {
-        "R000" : 20
+        "R000" : 19
+      },
+      "warnings" : {
+        "W002" : 1
       }
     },
     "com.regnosys.rosetta.common.hashing.NonNullHashCollector$Result" : {
@@ -439,7 +433,7 @@
     },
     "com.regnosys.rosetta.common.hashing.ReKeyProcessStep" : {
       "methodsCount" : 4,
-      "completeTestCount" : 13,
+      "completeTestCount" : 2,
       "incompleteTestCount" : 0,
       "perMethodTestability" : {
         "T000" : 2,
@@ -447,10 +441,11 @@
         "T005" : 1
       },
       "perMethodOutcome" : {
-        "R000" : 4
+        "R000" : 3,
+        "R013" : 1
       },
       "perTestOutcome" : {
-        "R000" : 13
+        "R000" : 2
       }
     },
     "com.regnosys.rosetta.common.hashing.ReKeyProcessStep$ReKeyPostProcessReport" : {
@@ -497,7 +492,7 @@
     },
     "com.regnosys.rosetta.common.hashing.ReferenceResolverProcessStep" : {
       "methodsCount" : 4,
-      "completeTestCount" : 21,
+      "completeTestCount" : 2,
       "incompleteTestCount" : 0,
       "perMethodTestability" : {
         "T000" : 2,
@@ -505,10 +500,11 @@
         "T005" : 1
       },
       "perMethodOutcome" : {
-        "R000" : 4
+        "R000" : 3,
+        "R013" : 1
       },
       "perTestOutcome" : {
-        "R000" : 21
+        "R000" : 2
       }
     },
     "com.regnosys.rosetta.common.hashing.ReferenceResolverProcessStep$ReferenceCollector" : {
@@ -517,13 +513,11 @@
       "incompleteTestCount" : 0,
       "perMethodTestability" : {
         "T003" : 5,
-        "T012" : 7,
-        "T023" : 1
+        "T012" : 8
       },
       "perMethodOutcome" : {
         "T003" : 5,
-        "T012" : 7,
-        "T023" : 1
+        "T012" : 8
       }
     },
     "com.regnosys.rosetta.common.hashing.ReferenceResolverProcessStep$ReferenceResolver" : {
@@ -532,13 +526,11 @@
       "incompleteTestCount" : 0,
       "perMethodTestability" : {
         "T003" : 5,
-        "T012" : 4,
-        "T023" : 1
+        "T012" : 5
       },
       "perMethodOutcome" : {
         "T003" : 5,
-        "T012" : 4,
-        "T023" : 1
+        "T012" : 5
       }
     },
     "com.regnosys.rosetta.common.hashing.ReferenceResolverProcessStep$ReferenceResolverPostProcessorReport" : {
@@ -581,14 +573,12 @@
         "T001" : 1,
         "T003" : 1,
         "T005" : 1,
-        "T012" : 2,
-        "T023" : 1
+        "T012" : 3
       },
       "perMethodOutcome" : {
         "R000" : 4,
         "T003" : 1,
-        "T012" : 2,
-        "T023" : 1
+        "T012" : 3
       },
       "perTestOutcome" : {
         "R000" : 4
@@ -602,14 +592,12 @@
         "T000" : 2,
         "T001" : 1,
         "T005" : 1,
-        "T012" : 4,
-        "T023" : 1
+        "T012" : 5
       },
       "perMethodOutcome" : {
         "R000" : 3,
         "R013" : 1,
-        "T012" : 4,
-        "T023" : 1
+        "T012" : 5
       },
       "perTestOutcome" : {
         "R000" : 2
@@ -630,7 +618,7 @@
     },
     "com.regnosys.rosetta.common.merging.SimpleMerger" : {
       "methodsCount" : 10,
-      "completeTestCount" : 24,
+      "completeTestCount" : 23,
       "incompleteTestCount" : 0,
       "perMethodTestability" : {
         "T000" : 5,
@@ -645,12 +633,12 @@
         "T012" : 2
       },
       "perTestOutcome" : {
-        "R000" : 24
+        "R000" : 23
       }
     },
     "com.regnosys.rosetta.common.merging.SimpleSplitter" : {
       "methodsCount" : 8,
-      "completeTestCount" : 14,
+      "completeTestCount" : 12,
       "incompleteTestCount" : 0,
       "perMethodTestability" : {
         "T000" : 5,
@@ -663,7 +651,7 @@
         "T012" : 1
       },
       "perTestOutcome" : {
-        "R000" : 14
+        "R000" : 12
       }
     },
     "com.regnosys.rosetta.common.model.CachingMethodInterceptor" : {
@@ -673,12 +661,12 @@
       "perMethodTestability" : {
         "T000" : 2,
         "T003" : 2,
-        "T023" : 1
+        "T012" : 1
       },
       "perMethodOutcome" : {
         "R013" : 2,
         "T003" : 2,
-        "T023" : 1
+        "T012" : 1
       }
     },
     "com.regnosys.rosetta.common.model.CachingMethodInterceptor$1" : {
@@ -754,7 +742,7 @@
     },
     "com.regnosys.rosetta.common.model.MemoiseCacheKey" : {
       "methodsCount" : 4,
-      "completeTestCount" : 8,
+      "completeTestCount" : 7,
       "incompleteTestCount" : 0,
       "perMethodTestability" : {
         "T000" : 3,
@@ -766,21 +754,22 @@
         "T003" : 1
       },
       "perTestOutcome" : {
-        "R000" : 8
+        "R000" : 7
       }
     },
     "com.regnosys.rosetta.common.postprocess.WorkflowPostProcessor" : {
       "methodsCount" : 2,
-      "completeTestCount" : 3,
+      "completeTestCount" : 1,
       "incompleteTestCount" : 0,
       "perMethodTestability" : {
         "T000" : 2
       },
       "perMethodOutcome" : {
-        "R000" : 2
+        "R000" : 1,
+        "R013" : 1
       },
       "perTestOutcome" : {
-        "R000" : 3
+        "R000" : 1
       }
     },
     "com.regnosys.rosetta.common.postprocess.qualify.EmptyQualificationHandlerProvider" : {
@@ -827,12 +816,12 @@
       "perMethodTestability" : {
         "T000" : 3,
         "T001" : 4,
-        "T023" : 1
+        "T012" : 1
       },
       "perMethodOutcome" : {
         "R000" : 6,
         "R013" : 1,
-        "T023" : 1
+        "T012" : 1
       },
       "perTestOutcome" : {
         "R000" : 5
@@ -929,11 +918,11 @@
       "perMethodTestability" : {
         "T000" : 1,
         "T005" : 1,
-        "T023" : 1
+        "T012" : 1
       },
       "perMethodOutcome" : {
         "R000" : 2,
-        "T023" : 1
+        "T012" : 1
       },
       "perTestOutcome" : {
         "R000" : 2
@@ -946,11 +935,11 @@
       "perMethodTestability" : {
         "T000" : 9,
         "T005" : 1,
-        "T023" : 1
+        "T012" : 1
       },
       "perMethodOutcome" : {
         "R000" : 10,
-        "T023" : 1
+        "T012" : 1
       },
       "perTestOutcome" : {
         "R000" : 16
@@ -1012,22 +1001,20 @@
     },
     "com.regnosys.rosetta.common.serialisation.AbstractJsonDataLoader" : {
       "methodsCount" : 9,
-      "completeTestCount" : 17,
+      "completeTestCount" : 11,
       "incompleteTestCount" : 0,
       "perMethodTestability" : {
         "T000" : 4,
         "T010" : 1,
-        "T012" : 3,
-        "T023" : 1
+        "T012" : 4
       },
       "perMethodOutcome" : {
         "R000" : 4,
         "T010" : 1,
-        "T012" : 3,
-        "T023" : 1
+        "T012" : 4
       },
       "perTestOutcome" : {
-        "R000" : 17
+        "R000" : 11
       }
     },
     "com.regnosys.rosetta.common.serialisation.BackwardsCompatibleAnnotationIntrospector" : {
@@ -1062,7 +1049,7 @@
     },
     "com.regnosys.rosetta.common.serialisation.ConstantAttributePropertyWriter" : {
       "methodsCount" : 2,
-      "completeTestCount" : 3,
+      "completeTestCount" : 7,
       "incompleteTestCount" : 0,
       "perMethodTestability" : {
         "T000" : 2
@@ -1071,7 +1058,7 @@
         "R000" : 2
       },
       "perTestOutcome" : {
-        "R000" : 3
+        "R000" : 7
       }
     },
     "com.regnosys.rosetta.common.serialisation.DataLoader" : {
@@ -1092,12 +1079,12 @@
       "perMethodTestability" : {
         "T000" : 8,
         "T010" : 2,
-        "T023" : 1
+        "T012" : 1
       },
       "perMethodOutcome" : {
         "R000" : 8,
         "T010" : 2,
-        "T023" : 1
+        "T012" : 1
       },
       "perTestOutcome" : {
         "R000" : 16
@@ -1116,7 +1103,7 @@
     },
     "com.regnosys.rosetta.common.serialisation.JsonDataLoaderUtil" : {
       "methodsCount" : 8,
-      "completeTestCount" : 90,
+      "completeTestCount" : 45,
       "incompleteTestCount" : 0,
       "perMethodTestability" : {
         "T000" : 7,
@@ -1127,7 +1114,7 @@
         "T005" : 1
       },
       "perTestOutcome" : {
-        "R000" : 90
+        "R000" : 45
       }
     },
     "com.regnosys.rosetta.common.serialisation.ObjectMapperCreator" : {
@@ -1175,7 +1162,7 @@
     },
     "com.regnosys.rosetta.common.serialisation.RosettaObjectMapperCreator" : {
       "methodsCount" : 6,
-      "completeTestCount" : 15,
+      "completeTestCount" : 16,
       "incompleteTestCount" : 0,
       "perMethodTestability" : {
         "T000" : 5,
@@ -1187,7 +1174,7 @@
         "R013" : 1
       },
       "perTestOutcome" : {
-        "R000" : 15
+        "R000" : 16
       }
     },
     "com.regnosys.rosetta.common.serialisation.RosettaSerialiserException" : {
@@ -1275,23 +1262,20 @@
     },
     "com.regnosys.rosetta.common.serialisation.mixin.EnumAsStringBuilderIntrospector" : {
       "methodsCount" : 2,
-      "completeTestCount" : 1,
+      "completeTestCount" : 0,
       "incompleteTestCount" : 0,
       "perMethodTestability" : {
         "T000" : 1,
         "T005" : 1
       },
       "perMethodOutcome" : {
-        "R000" : 1,
-        "R002" : 1
-      },
-      "perTestOutcome" : {
-        "R000" : 1
+        "R002" : 1,
+        "R013" : 1
       }
     },
     "com.regnosys.rosetta.common.serialisation.mixin.ReferenceFilter" : {
       "methodsCount" : 5,
-      "completeTestCount" : 6,
+      "completeTestCount" : 1,
       "incompleteTestCount" : 0,
       "perMethodTestability" : {
         "T000" : 2,
@@ -1305,7 +1289,7 @@
         "T003" : 2
       },
       "perTestOutcome" : {
-        "R000" : 6
+        "R000" : 1
       }
     },
     "com.regnosys.rosetta.common.serialisation.mixin.ReferenceWithMetaMixIn" : {
@@ -1359,24 +1343,21 @@
     },
     "com.regnosys.rosetta.common.serialisation.mixin.RosettaEnumBuilderIntrospector" : {
       "methodsCount" : 7,
-      "completeTestCount" : 4,
+      "completeTestCount" : 0,
       "incompleteTestCount" : 0,
       "perMethodTestability" : {
         "T000" : 4,
         "T012" : 3
       },
       "perMethodOutcome" : {
-        "R000" : 3,
         "R002" : 1,
+        "R013" : 3,
         "T012" : 3
-      },
-      "perTestOutcome" : {
-        "R000" : 4
       }
     },
     "com.regnosys.rosetta.common.serialisation.mixin.RosettaJSONAnnotationIntrospector" : {
       "methodsCount" : 14,
-      "completeTestCount" : 22,
+      "completeTestCount" : 9,
       "incompleteTestCount" : 0,
       "perMethodTestability" : {
         "T000" : 10,
@@ -1384,12 +1365,17 @@
         "T012" : 3
       },
       "perMethodOutcome" : {
-        "R000" : 10,
+        "R000" : 7,
+        "R013" : 1,
         "T003" : 1,
-        "T012" : 3
+        "T012" : 3,
+        "W001" : 2
       },
       "perTestOutcome" : {
-        "R000" : 22
+        "R000" : 9
+      },
+      "warnings" : {
+        "W001" : 3
       }
     },
     "com.regnosys.rosetta.common.serialisation.mixin.RosettaJSONModule" : {
@@ -1441,7 +1427,7 @@
     },
     "com.regnosys.rosetta.common.serialisation.mixin.legacy.LegacyRosettaBuilderIntrospector" : {
       "methodsCount" : 6,
-      "completeTestCount" : 11,
+      "completeTestCount" : 2,
       "incompleteTestCount" : 0,
       "perMethodTestability" : {
         "T000" : 3,
@@ -1449,12 +1435,13 @@
         "T012" : 2
       },
       "perMethodOutcome" : {
-        "R000" : 3,
+        "R000" : 2,
         "R002" : 1,
+        "R013" : 1,
         "T012" : 2
       },
       "perTestOutcome" : {
-        "R000" : 11
+        "R000" : 2
       }
     },
     "com.regnosys.rosetta.common.serialisation.projectiondata.JsonProjectionDataLoader" : {
@@ -1563,7 +1550,7 @@
     },
     "com.regnosys.rosetta.common.serialisation.reportdata.ReportDataItem" : {
       "methodsCount" : 10,
-      "completeTestCount" : 14,
+      "completeTestCount" : 15,
       "incompleteTestCount" : 0,
       "perMethodTestability" : {
         "T000" : 4,
@@ -1571,11 +1558,10 @@
         "T005" : 3
       },
       "perMethodOutcome" : {
-        "F009" : 1,
-        "R000" : 9
+        "R000" : 10
       },
       "perTestOutcome" : {
-        "R000" : 14
+        "R000" : 15
       }
     },
     "com.regnosys.rosetta.common.serialisation.reportdata.ReportDataSet" : {
@@ -1649,7 +1635,7 @@
     },
     "com.regnosys.rosetta.common.serialisation.xml.RosettaBeanSerializerModifier" : {
       "methodsCount" : 4,
-      "completeTestCount" : 11,
+      "completeTestCount" : 16,
       "incompleteTestCount" : 0,
       "perMethodTestability" : {
         "T000" : 3,
@@ -1660,49 +1646,43 @@
         "R002" : 1
       },
       "perTestOutcome" : {
-        "R000" : 11
+        "R000" : 16
       }
     },
     "com.regnosys.rosetta.common.serialisation.xml.RosettaSerialiserFactory" : {
       "methodsCount" : 4,
-      "completeTestCount" : 2,
+      "completeTestCount" : 4,
       "incompleteTestCount" : 0,
       "perMethodTestability" : {
-        "T000" : 2,
-        "T005" : 1,
-        "T023" : 1
+        "T000" : 3,
+        "T012" : 1
       },
       "perMethodOutcome" : {
         "R000" : 2,
         "R013" : 1,
-        "T023" : 1
+        "T012" : 1
       },
       "perTestOutcome" : {
-        "R000" : 2
+        "R000" : 4
       }
     },
     "com.regnosys.rosetta.common.serialisation.xml.RosettaXMLAnnotationIntrospector" : {
       "methodsCount" : 62,
-      "completeTestCount" : 43,
+      "completeTestCount" : 15,
       "incompleteTestCount" : 0,
       "perMethodTestability" : {
         "T000" : 16,
         "T003" : 10,
-        "T012" : 35,
-        "T023" : 1
+        "T012" : 36
       },
       "perMethodOutcome" : {
-        "R000" : 16,
+        "R000" : 10,
+        "R013" : 6,
         "T003" : 10,
-        "T012" : 35,
-        "T023" : 1
+        "T012" : 36
       },
       "perTestOutcome" : {
-        "R000" : 43
-      },
-      "warnings" : {
-        "W001" : 1,
-        "W002" : 3
+        "R000" : 15
       }
     },
     "com.regnosys.rosetta.common.serialisation.xml.RosettaXMLModule" : {
@@ -1745,19 +1725,15 @@
     },
     "com.regnosys.rosetta.common.serialisation.xml.SubstitutedMethodProperty" : {
       "methodsCount" : 16,
-      "completeTestCount" : 1,
+      "completeTestCount" : 0,
       "incompleteTestCount" : 0,
       "perMethodTestability" : {
         "T000" : 14,
         "T001" : 2
       },
       "perMethodOutcome" : {
-        "R000" : 1,
-        "R013" : 13,
+        "R013" : 14,
         "R081" : 2
-      },
-      "perTestOutcome" : {
-        "R000" : 1
       }
     },
     "com.regnosys.rosetta.common.serialisation.xml.SubstitutingBeanPropertyWriter" : {
@@ -1772,7 +1748,7 @@
         "W001" : 3
       },
       "warnings" : {
-        "W001" : 6
+        "W001" : 5
       }
     },
     "com.regnosys.rosetta.common.serialisation.xml.SubstitutionMap" : {
@@ -1793,7 +1769,7 @@
     },
     "com.regnosys.rosetta.common.serialisation.xml.UnwrappableIndexedListSerializer" : {
       "methodsCount" : 17,
-      "completeTestCount" : 0,
+      "completeTestCount" : 27,
       "incompleteTestCount" : 0,
       "perMethodTestability" : {
         "T000" : 11,
@@ -1802,34 +1778,38 @@
         "T012" : 4
       },
       "perMethodOutcome" : {
-        "R013" : 5,
-        "R034" : 6,
+        "R000" : 8,
+        "R013" : 2,
+        "R034" : 1,
         "R081" : 1,
         "T003" : 1,
         "T012" : 4
+      },
+      "perTestOutcome" : {
+        "R000" : 27
       }
     },
     "com.regnosys.rosetta.common.serialisation.xml.UnwrappingAsArraySerializerBase" : {
       "methodsCount" : 13,
-      "completeTestCount" : 8,
+      "completeTestCount" : 6,
       "incompleteTestCount" : 0,
       "perMethodTestability" : {
         "T000" : 8,
         "T010" : 5
       },
       "perMethodOutcome" : {
-        "R000" : 6,
-        "R013" : 1,
+        "R000" : 5,
+        "R013" : 2,
         "R083" : 1,
         "T010" : 5
       },
       "perTestOutcome" : {
-        "R000" : 8
+        "R000" : 6
       }
     },
     "com.regnosys.rosetta.common.serialisation.xml.UnwrappingIndexedListSerializer" : {
       "methodsCount" : 15,
-      "completeTestCount" : 2,
+      "completeTestCount" : 9,
       "incompleteTestCount" : 0,
       "perMethodTestability" : {
         "T000" : 10,
@@ -1837,14 +1817,14 @@
         "T012" : 4
       },
       "perMethodOutcome" : {
-        "R000" : 2,
-        "R013" : 2,
-        "R034" : 6,
+        "R000" : 5,
+        "R013" : 4,
+        "R034" : 1,
         "R081" : 1,
         "T012" : 4
       },
       "perTestOutcome" : {
-        "R000" : 2
+        "R000" : 9
       }
     },
     "com.regnosys.rosetta.common.serialisation.xml.VirtualXMLAttribute" : {
@@ -1888,7 +1868,7 @@
     },
     "com.regnosys.rosetta.common.testing.ExecutionDescriptor" : {
       "methodsCount" : 11,
-      "completeTestCount" : 11,
+      "completeTestCount" : 9,
       "incompleteTestCount" : 0,
       "perMethodTestability" : {
         "T000" : 2,
@@ -1899,7 +1879,7 @@
         "R000" : 11
       },
       "perTestOutcome" : {
-        "R000" : 11
+        "R000" : 9
       }
     },
     "com.regnosys.rosetta.common.testing.ExecutionDescriptor$1" : {
@@ -1925,7 +1905,7 @@
       }
     },
     "com.regnosys.rosetta.common.testing.FunctionRunner" : {
-      "methodsCount" : 16,
+      "methodsCount" : 17,
       "completeTestCount" : 1,
       "incompleteTestCount" : 0,
       "perMethodTestability" : {
@@ -1933,14 +1913,12 @@
         "T001" : 1,
         "T003" : 9,
         "T005" : 1,
-        "T012" : 4,
-        "T023" : 1
+        "T012" : 5
       },
       "perMethodOutcome" : {
-        "R024" : 2,
+        "R024" : 3,
         "T003" : 9,
-        "T012" : 4,
-        "T023" : 1
+        "T012" : 5
       },
       "perTestOutcome" : {
         "R000" : 1
@@ -2047,13 +2025,11 @@
       "incompleteTestCount" : 0,
       "perMethodTestability" : {
         "T003" : 1,
-        "T012" : 3,
-        "T023" : 1
+        "T012" : 4
       },
       "perMethodOutcome" : {
         "T003" : 1,
-        "T012" : 3,
-        "T023" : 1
+        "T012" : 4
       }
     },
     "com.regnosys.rosetta.common.transform.PipelineModel$Transform" : {
@@ -2075,7 +2051,7 @@
     },
     "com.regnosys.rosetta.common.transform.TestPackModel" : {
       "methodsCount" : 8,
-      "completeTestCount" : 9,
+      "completeTestCount" : 7,
       "incompleteTestCount" : 0,
       "perMethodTestability" : {
         "T000" : 2,
@@ -2087,7 +2063,7 @@
         "R000" : 8
       },
       "perTestOutcome" : {
-        "R000" : 9
+        "R000" : 7
       }
     },
     "com.regnosys.rosetta.common.transform.TestPackModel$SampleModel" : {
@@ -2126,24 +2102,22 @@
     },
     "com.regnosys.rosetta.common.transform.TestPackUtils" : {
       "methodsCount" : 22,
-      "completeTestCount" : 30,
+      "completeTestCount" : 27,
       "incompleteTestCount" : 0,
       "perMethodTestability" : {
         "T000" : 12,
         "T003" : 2,
         "T005" : 1,
-        "T012" : 6,
-        "T023" : 1
+        "T012" : 7
       },
       "perMethodOutcome" : {
         "R000" : 12,
         "T003" : 2,
         "T005" : 1,
-        "T012" : 6,
-        "T023" : 1
+        "T012" : 7
       },
       "perTestOutcome" : {
-        "R000" : 30
+        "R000" : 27
       }
     },
     "com.regnosys.rosetta.common.transform.TransformType" : {
@@ -2153,14 +2127,12 @@
       "perMethodTestability" : {
         "T001" : 1,
         "T003" : 4,
-        "T012" : 4,
-        "T023" : 1
+        "T012" : 5
       },
       "perMethodOutcome" : {
         "R000" : 1,
         "T003" : 4,
-        "T012" : 4,
-        "T023" : 1
+        "T012" : 5
       },
       "perTestOutcome" : {
         "R000" : 1
@@ -2186,17 +2158,21 @@
     },
     "com.regnosys.rosetta.common.translation.MappingContext" : {
       "methodsCount" : 9,
-      "completeTestCount" : 8,
+      "completeTestCount" : 5,
       "incompleteTestCount" : 0,
       "perMethodTestability" : {
         "T000" : 3,
         "T001" : 6
       },
       "perMethodOutcome" : {
-        "R000" : 9
+        "R000" : 8,
+        "W001" : 1
       },
       "perTestOutcome" : {
-        "R000" : 8
+        "R000" : 5
+      },
+      "warnings" : {
+        "W001" : 3
       }
     },
     "com.regnosys.rosetta.common.translation.MappingDelegate" : {
@@ -2233,15 +2209,13 @@
         "T000" : 4,
         "T001" : 1,
         "T003" : 1,
-        "T012" : 2,
-        "T023" : 1
+        "T012" : 3
       },
       "perMethodOutcome" : {
         "R000" : 4,
         "R013" : 1,
         "T003" : 1,
-        "T012" : 2,
-        "T023" : 1
+        "T012" : 3
       },
       "perTestOutcome" : {
         "R000" : 4
@@ -2275,7 +2249,7 @@
     },
     "com.regnosys.rosetta.common.translation.MappingProcessorUtils" : {
       "methodsCount" : 55,
-      "completeTestCount" : 111,
+      "completeTestCount" : 151,
       "incompleteTestCount" : 0,
       "perMethodTestability" : {
         "T000" : 23,
@@ -2284,19 +2258,18 @@
         "T012" : 30
       },
       "perMethodOutcome" : {
-        "F009" : 1,
-        "R000" : 22,
+        "R000" : 23,
         "T003" : 1,
         "T005" : 1,
         "T012" : 30
       },
       "perTestOutcome" : {
-        "R000" : 111
+        "R000" : 151
       }
     },
     "com.regnosys.rosetta.common.translation.Path" : {
       "methodsCount" : 32,
-      "completeTestCount" : 73,
+      "completeTestCount" : 79,
       "incompleteTestCount" : 0,
       "perMethodTestability" : {
         "T000" : 24,
@@ -2312,7 +2285,7 @@
         "T012" : 4
       },
       "perTestOutcome" : {
-        "R000" : 73
+        "R000" : 79
       }
     },
     "com.regnosys.rosetta.common.translation.Path$PathElement" : {
@@ -2322,14 +2295,12 @@
       "perMethodTestability" : {
         "T000" : 10,
         "T001" : 3,
-        "T012" : 3,
-        "T020" : 1,
-        "T023" : 1
+        "T012" : 4,
+        "T020" : 1
       },
       "perMethodOutcome" : {
         "R000" : 14,
-        "T012" : 3,
-        "T023" : 1
+        "T012" : 4
       },
       "perTestOutcome" : {
         "R000" : 21
@@ -2376,15 +2347,13 @@
         "T003" : 3,
         "T009" : 11,
         "T010" : 2,
-        "T012" : 6,
-        "T023" : 1
+        "T012" : 7
       },
       "perMethodOutcome" : {
         "T003" : 3,
         "T009" : 11,
         "T010" : 2,
-        "T012" : 6,
-        "T023" : 1
+        "T012" : 7
       }
     },
     "com.regnosys.rosetta.common.translation.flat.FlatFileMappingProcessor$MappingConsumer" : {
@@ -2417,7 +2386,7 @@
     },
     "com.regnosys.rosetta.common.translation.flat.IndexCapturePath" : {
       "methodsCount" : 16,
-      "completeTestCount" : 20,
+      "completeTestCount" : 19,
       "incompleteTestCount" : 0,
       "perMethodTestability" : {
         "T000" : 8,
@@ -2431,29 +2400,27 @@
         "T012" : 6
       },
       "perTestOutcome" : {
-        "R000" : 20
+        "R000" : 19
       }
     },
     "com.regnosys.rosetta.common.translation.flat.IndexCapturePath$IndexCapturePathElement" : {
       "methodsCount" : 14,
-      "completeTestCount" : 13,
+      "completeTestCount" : 12,
       "incompleteTestCount" : 0,
       "perMethodTestability" : {
         "T000" : 7,
         "T003" : 1,
-        "T012" : 4,
-        "T020" : 1,
-        "T023" : 1
+        "T012" : 5,
+        "T020" : 1
       },
       "perMethodOutcome" : {
         "R000" : 7,
         "R004" : 1,
         "T003" : 1,
-        "T012" : 4,
-        "T023" : 1
+        "T012" : 5
       },
       "perTestOutcome" : {
-        "R000" : 13
+        "R000" : 12
       }
     },
     "com.regnosys.rosetta.common.util.AbstractHierarchicalPathMatcher" : {
@@ -2470,25 +2437,28 @@
       }
     },
     "com.regnosys.rosetta.common.util.ClassPathUtils" : {
-      "methodsCount" : 10,
-      "completeTestCount" : 3,
+      "methodsCount" : 15,
+      "completeTestCount" : 5,
       "incompleteTestCount" : 0,
       "perMethodTestability" : {
         "T000" : 10,
         "T003" : 2,
         "T005" : 1,
-        "T012" : 5,
-        "T023" : 1
+        "T012" : 6
       },
       "perMethodOutcome" : {
-        "R024" : 1,
+        "F009" : 3,
+        "R000" : 1,
+        "R024" : 2,
         "T003" : 2,
         "T005" : 1,
-        "T012" : 5,
-        "T023" : 1
+        "T012" : 6
       },
       "perTestOutcome" : {
-        "R000" : 3
+        "R000" : 5
+      },
+      "warnings" : {
+        "W002" : 2
       }
     },
     "com.regnosys.rosetta.common.util.CollectionUtils" : {
@@ -2530,7 +2500,7 @@
       },
       "perMethodOutcome" : {
         "R000" : 7,
-        "R002" : 1
+        "R004" : 1
       },
       "perTestOutcome" : {
         "R000" : 3
@@ -2538,7 +2508,7 @@
     },
     "com.regnosys.rosetta.common.util.Pair" : {
       "methodsCount" : 7,
-      "completeTestCount" : 11,
+      "completeTestCount" : 10,
       "incompleteTestCount" : 0,
       "perMethodTestability" : {
         "T000" : 3,
@@ -2551,7 +2521,7 @@
         "T003" : 1
       },
       "perTestOutcome" : {
-        "R000" : 11
+        "R000" : 10
       }
     },
     "com.regnosys.rosetta.common.util.PathCollectorBuilderProcessor" : {
@@ -2600,7 +2570,7 @@
       }
     },
     "com.regnosys.rosetta.common.util.PathLoader" : {
-      "methodsCount" : 1,
+      "methodsCount" : 2,
       "completeTestCount" : 0,
       "incompleteTestCount" : 0,
       "perMethodTestability" : {
@@ -2608,6 +2578,7 @@
         "T005" : 1
       },
       "perMethodOutcome" : {
+        "F009" : 1,
         "T005" : 1
       }
     },
@@ -2640,12 +2611,12 @@
         "T000" : 2,
         "T001" : 2,
         "T005" : 1,
-        "T020" : 1,
-        "T023" : 1
+        "T012" : 1,
+        "T020" : 1
       },
       "perMethodOutcome" : {
         "R000" : 6,
-        "T023" : 1
+        "T012" : 1
       },
       "perTestOutcome" : {
         "R000" : 10
@@ -2734,7 +2705,7 @@
     },
     "com.regnosys.rosetta.common.util.SimpleProcessor" : {
       "methodsCount" : 4,
-      "completeTestCount" : 3,
+      "completeTestCount" : 2,
       "incompleteTestCount" : 0,
       "perMethodTestability" : {
         "T000" : 3,
@@ -2742,17 +2713,17 @@
       },
       "perMethodOutcome" : {
         "R000" : 1,
-        "R002" : 1,
+        "R004" : 1,
         "R013" : 1,
         "T010" : 1
       },
       "perTestOutcome" : {
-        "R000" : 3
+        "R000" : 2
       }
     },
     "com.regnosys.rosetta.common.util.StreamUtils" : {
       "methodsCount" : 26,
-      "completeTestCount" : 40,
+      "completeTestCount" : 33,
       "incompleteTestCount" : 0,
       "perMethodTestability" : {
         "T000" : 17,
@@ -2766,7 +2737,7 @@
         "T012" : 8
       },
       "perTestOutcome" : {
-        "R000" : 40
+        "R000" : 33
       },
       "warnings" : {
         "W001" : 1
@@ -2789,8 +2760,8 @@
       }
     },
     "com.regnosys.rosetta.common.util.TeeReader" : {
-      "methodsCount" : 9,
-      "completeTestCount" : 2,
+      "methodsCount" : 7,
+      "completeTestCount" : 0,
       "incompleteTestCount" : 0,
       "perMethodTestability" : {
         "T000" : 3,
@@ -2798,13 +2769,9 @@
         "T012" : 5
       },
       "perMethodOutcome" : {
-        "R000" : 2,
-        "R013" : 1,
+        "R024" : 1,
         "T003" : 1,
         "T012" : 5
-      },
-      "perTestOutcome" : {
-        "R000" : 2
       }
     },
     "com.regnosys.rosetta.common.util.TeeReader$1" : {
@@ -2838,16 +2805,14 @@
       "perMethodTestability" : {
         "T000" : 9,
         "T005" : 1,
-        "T012" : 1,
-        "T023" : 1
+        "T012" : 2
       },
       "perMethodOutcome" : {
         "R000" : 7,
         "R013" : 1,
         "R015" : 1,
         "T005" : 1,
-        "T012" : 1,
-        "T023" : 1
+        "T012" : 2
       },
       "perTestOutcome" : {
         "R000" : 10
@@ -2855,22 +2820,20 @@
     },
     "com.regnosys.rosetta.common.validation.RosettaTypeValidator" : {
       "methodsCount" : 6,
-      "completeTestCount" : 10,
+      "completeTestCount" : 11,
       "incompleteTestCount" : 0,
       "perMethodTestability" : {
         "T000" : 2,
         "T001" : 1,
         "T005" : 1,
-        "T012" : 1,
-        "T023" : 1
+        "T012" : 2
       },
       "perMethodOutcome" : {
         "R000" : 4,
-        "T012" : 1,
-        "T023" : 1
+        "T012" : 2
       },
       "perTestOutcome" : {
-        "R000" : 10
+        "R000" : 11
       }
     },
     "com.regnosys.rosetta.common.validation.RosettaTypeValidator$RosettaTypeProcessor" : {
@@ -2914,14 +2877,12 @@
         "T000" : 5,
         "T001" : 2,
         "T003" : 1,
-        "T012" : 1,
-        "T023" : 1
+        "T012" : 2
       },
       "perMethodOutcome" : {
         "R000" : 7,
         "T003" : 1,
-        "T012" : 1,
-        "T023" : 1
+        "T012" : 2
       },
       "perTestOutcome" : {
         "R000" : 15
@@ -2932,8 +2893,11 @@
     "com.regnosys.granite.ingestor.parser.InputValidationReport.<clinit>:()V" : {
       "completeTestCount" : 0,
       "incompleteTestCount" : 0,
-      "perMethodTestability" : "T023",
-      "perMethodOutcome" : "T023"
+      "perMethodTestability" : "T012",
+      "perMethodOutcome" : "T012",
+      "lineNumbers" : [
+        28
+      ]
     },
     "com.regnosys.granite.ingestor.parser.InputValidationReport.<init>:(Ljava/util/List;)V" : {
       "completeTestCount" : 1,
@@ -2973,8 +2937,13 @@
     "com.regnosys.granite.projector.ProjectionEnvironment$FileFormat.<clinit>:()V" : {
       "completeTestCount" : 0,
       "incompleteTestCount" : 0,
-      "perMethodTestability" : "T023",
-      "perMethodOutcome" : "T023"
+      "perMethodTestability" : "T012",
+      "perMethodOutcome" : "T012",
+      "lineNumbers" : [
+        32,
+        33,
+        31
+      ]
     },
     "com.regnosys.granite.projector.ProjectionEnvironment$FileFormat.<init>:(Ljava/lang/String;I)V" : {
       "completeTestCount" : 0,
@@ -3167,12 +3136,12 @@
       ]
     },
     "com.regnosys.granite.projector.ProjectionReport.isSuccess:()Z" : {
-      "completeTestCount" : 4,
+      "completeTestCount" : 3,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 4
+        "R000" : 3
       },
       "lineNumbers" : [
         46
@@ -3187,8 +3156,15 @@
     "com.regnosys.rosetta.common.RegPaths.<clinit>:()V" : {
       "completeTestCount" : 0,
       "incompleteTestCount" : 0,
-      "perMethodTestability" : "T023",
-      "perMethodOutcome" : "T023"
+      "perMethodTestability" : "T012",
+      "perMethodOutcome" : "T012",
+      "lineNumbers" : [
+        32,
+        33,
+        34,
+        35,
+        38
+      ]
     },
     "com.regnosys.rosetta.common.RegPaths.<init>:(Ljava/nio/file/Path;Ljava/nio/file/Path;Ljava/nio/file/Path;Ljava/nio/file/Path;Ljava/nio/file/Path;)V" : {
       "completeTestCount" : 1,
@@ -3380,8 +3356,14 @@
     "com.regnosys.rosetta.common.compile.CompilationCompletionState.<clinit>:()V" : {
       "completeTestCount" : 0,
       "incompleteTestCount" : 0,
-      "perMethodTestability" : "T023",
-      "perMethodOutcome" : "T023"
+      "perMethodTestability" : "T012",
+      "perMethodOutcome" : "T012",
+      "lineNumbers" : [
+        24,
+        25,
+        26,
+        23
+      ]
     },
     "com.regnosys.rosetta.common.compile.CompilationCompletionState.<init>:(Ljava/lang/String;I)V" : {
       "completeTestCount" : 0,
@@ -3426,8 +3408,11 @@
     "com.regnosys.rosetta.common.compile.JavaCSourceCancellableCompiler.<clinit>:()V" : {
       "completeTestCount" : 0,
       "incompleteTestCount" : 0,
-      "perMethodTestability" : "T023",
-      "perMethodOutcome" : "T023"
+      "perMethodTestability" : "T012",
+      "perMethodOutcome" : "T012",
+      "lineNumbers" : [
+        39
+      ]
     },
     "com.regnosys.rosetta.common.compile.JavaCSourceCancellableCompiler.<init>:(IILjava/util/concurrent/ExecutorService;ZZZLcom/regnosys/rosetta/common/compile/JavaCompileReleaseFlag;[Ljava/nio/file/Path;)V" : {
       "completeTestCount" : 0,
@@ -3461,7 +3446,7 @@
       "completeTestCount" : 0,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
-      "perMethodOutcome" : "R013",
+      "perMethodOutcome" : "R011",
       "lineNumbers" : [
         90,
         91,
@@ -3642,8 +3627,14 @@
     "com.regnosys.rosetta.common.compile.JavaCompileReleaseFlag.<clinit>:()V" : {
       "completeTestCount" : 0,
       "incompleteTestCount" : 0,
-      "perMethodTestability" : "T023",
-      "perMethodOutcome" : "T023"
+      "perMethodTestability" : "T012",
+      "perMethodOutcome" : "T012",
+      "lineNumbers" : [
+        24,
+        25,
+        26,
+        23
+      ]
     },
     "com.regnosys.rosetta.common.compile.JavaCompileReleaseFlag.<init>:(Ljava/lang/String;ILjava/lang/String;)V" : {
       "completeTestCount" : 0,
@@ -4090,8 +4081,11 @@
     "com.regnosys.rosetta.common.hashing.NonNullHashCollector.<clinit>:()V" : {
       "completeTestCount" : 0,
       "incompleteTestCount" : 0,
-      "perMethodTestability" : "T023",
-      "perMethodOutcome" : "T023"
+      "perMethodTestability" : "T012",
+      "perMethodOutcome" : "T012",
+      "lineNumbers" : [
+        44
+      ]
     },
     "com.regnosys.rosetta.common.hashing.NonNullHashCollector.<init>:()V" : {
       "completeTestCount" : 1,
@@ -4186,6 +4180,9 @@
       "perTestOutcome" : {
         "R000" : 7
       },
+      "warnings" : {
+        "W002" : 1
+      },
       "lineNumbers" : [
         64,
         65,
@@ -4195,12 +4192,12 @@
       ]
     },
     "com.regnosys.rosetta.common.hashing.NonNullHashCollector.processRosetta:(Lcom/rosetta/model/lib/path/RosettaPath;Ljava/lang/Class;Lcom/rosetta/model/lib/RosettaModelObject;Lcom/rosetta/model/lib/RosettaModelObject;[Lcom/rosetta/model/lib/process/AttributeMeta;)Z" : {
-      "completeTestCount" : 11,
+      "completeTestCount" : 10,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 11
+        "R000" : 10
       },
       "lineNumbers" : [
         54,
@@ -4356,13 +4353,10 @@
       ]
     },
     "com.regnosys.rosetta.common.hashing.ReKeyProcessStep.runProcessStep:(Ljava/lang/Class;Lcom/rosetta/model/lib/RosettaModelObject;)Lcom/rosetta/lib/postprocess/PostProcessorReport;" : {
-      "completeTestCount" : 11,
+      "completeTestCount" : 0,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
-      "perMethodOutcome" : "R000",
-      "perTestOutcome" : {
-        "R000" : 11
-      },
+      "perMethodOutcome" : "R013",
       "lineNumbers" : [
         51,
         52,
@@ -4427,8 +4421,11 @@
     "com.regnosys.rosetta.common.hashing.ReferenceResolverProcessStep$ReferenceCollector.<clinit>:()V" : {
       "completeTestCount" : 0,
       "incompleteTestCount" : 0,
-      "perMethodTestability" : "T023",
-      "perMethodOutcome" : "T023"
+      "perMethodTestability" : "T012",
+      "perMethodOutcome" : "T012",
+      "lineNumbers" : [
+        85
+      ]
     },
     "com.regnosys.rosetta.common.hashing.ReferenceResolverProcessStep$ReferenceCollector.<init>:(Lcom/regnosys/rosetta/common/hashing/ReferenceConfig;)V" : {
       "completeTestCount" : 0,
@@ -4571,8 +4568,11 @@
     "com.regnosys.rosetta.common.hashing.ReferenceResolverProcessStep$ReferenceResolver.<clinit>:()V" : {
       "completeTestCount" : 0,
       "incompleteTestCount" : 0,
-      "perMethodTestability" : "T023",
-      "perMethodOutcome" : "T023"
+      "perMethodTestability" : "T012",
+      "perMethodOutcome" : "T012",
+      "lineNumbers" : [
+        154
+      ]
     },
     "com.regnosys.rosetta.common.hashing.ReferenceResolverProcessStep$ReferenceResolver.<init>:(Lcom/regnosys/rosetta/common/hashing/ReferenceConfig;Lcom/google/common/collect/Table;Lcom/regnosys/rosetta/common/hashing/ScopeReferenceHelper;)V" : {
       "completeTestCount" : 0,
@@ -4752,13 +4752,10 @@
       ]
     },
     "com.regnosys.rosetta.common.hashing.ReferenceResolverProcessStep.runProcessStep:(Ljava/lang/Class;Lcom/rosetta/model/lib/RosettaModelObject;)Lcom/regnosys/rosetta/common/hashing/ReferenceResolverProcessStep$ReferenceResolverPostProcessorReport;" : {
-      "completeTestCount" : 19,
+      "completeTestCount" : 0,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
-      "perMethodOutcome" : "R000",
-      "perTestOutcome" : {
-        "R000" : 19
-      },
+      "perMethodOutcome" : "R013",
       "lineNumbers" : [
         73,
         74,
@@ -4868,8 +4865,11 @@
     "com.regnosys.rosetta.common.hashing.ScopeReferenceHelper.<clinit>:()V" : {
       "completeTestCount" : 0,
       "incompleteTestCount" : 0,
-      "perMethodTestability" : "T023",
-      "perMethodOutcome" : "T023"
+      "perMethodTestability" : "T012",
+      "perMethodOutcome" : "T012",
+      "lineNumbers" : [
+        33
+      ]
     },
     "com.regnosys.rosetta.common.hashing.ScopeReferenceHelper.<init>:(Lcom/regnosys/rosetta/common/hashing/ReferenceConfig;Ljava/util/function/Supplier;)V" : {
       "completeTestCount" : 1,
@@ -5035,8 +5035,11 @@
     "com.regnosys.rosetta.common.merging.MergeTemplateProcessStep.<clinit>:()V" : {
       "completeTestCount" : 0,
       "incompleteTestCount" : 0,
-      "perMethodTestability" : "T023",
-      "perMethodOutcome" : "T023"
+      "perMethodTestability" : "T012",
+      "perMethodOutcome" : "T012",
+      "lineNumbers" : [
+        42
+      ]
     },
     "com.regnosys.rosetta.common.merging.MergeTemplateProcessStep.<init>:(Lcom/rosetta/model/lib/process/BuilderMerger;Lcom/regnosys/rosetta/common/util/RosettaModelObjectSupplier;Ljava/util/function/Consumer;)V" : {
       "completeTestCount" : 1,
@@ -5170,12 +5173,12 @@
       ]
     },
     "com.regnosys.rosetta.common.merging.SimpleMerger.mergeBasic:(Ljava/lang/Object;Ljava/lang/Object;Ljava/util/function/Consumer;[Lcom/rosetta/model/lib/process/AttributeMeta;)V" : {
-      "completeTestCount" : 4,
+      "completeTestCount" : 5,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 4
+        "R000" : 5
       },
       "lineNumbers" : [
         86,
@@ -5188,12 +5191,12 @@
       ]
     },
     "com.regnosys.rosetta.common.merging.SimpleMerger.mergeBasic:(Ljava/util/List;Ljava/util/List;Ljava/util/function/Consumer;)V" : {
-      "completeTestCount" : 3,
+      "completeTestCount" : 2,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 3
+        "R000" : 2
       },
       "lineNumbers" : [
         101,
@@ -5201,12 +5204,12 @@
       ]
     },
     "com.regnosys.rosetta.common.merging.SimpleMerger.mergeRosetta:(Lcom/rosetta/model/lib/RosettaModelObjectBuilder;Lcom/rosetta/model/lib/RosettaModelObjectBuilder;Ljava/util/function/Consumer;)V" : {
-      "completeTestCount" : 2,
+      "completeTestCount" : 3,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 2
+        "R000" : 3
       },
       "lineNumbers" : [
         63,
@@ -5216,12 +5219,12 @@
       ]
     },
     "com.regnosys.rosetta.common.merging.SimpleMerger.mergeRosetta:(Ljava/util/List;Ljava/util/List;Ljava/util/function/Function;)V" : {
-      "completeTestCount" : 9,
+      "completeTestCount" : 7,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 9
+        "R000" : 7
       },
       "lineNumbers" : [
         76,
@@ -5324,12 +5327,12 @@
       ]
     },
     "com.regnosys.rosetta.common.merging.SimpleSplitter.mergeRosetta:(Ljava/util/List;Ljava/util/List;Ljava/util/function/Function;)V" : {
-      "completeTestCount" : 7,
+      "completeTestCount" : 5,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 7
+        "R000" : 5
       },
       "lineNumbers" : [
         73,
@@ -5375,8 +5378,12 @@
     "com.regnosys.rosetta.common.model.CachingMethodInterceptor.<clinit>:()V" : {
       "completeTestCount" : 0,
       "incompleteTestCount" : 0,
-      "perMethodTestability" : "T023",
-      "perMethodOutcome" : "T023"
+      "perMethodTestability" : "T012",
+      "perMethodOutcome" : "T012",
+      "lineNumbers" : [
+        35,
+        37
+      ]
     },
     "com.regnosys.rosetta.common.model.CachingMethodInterceptor.<init>:(Lcom/google/common/cache/CacheBuilder;Ljava/util/Set;)V" : {
       "completeTestCount" : 0,
@@ -5689,12 +5696,12 @@
       ]
     },
     "com.regnosys.rosetta.common.model.MemoiseCacheKey.equals:(Ljava/lang/Object;)Z" : {
-      "completeTestCount" : 8,
+      "completeTestCount" : 7,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 8
+        "R000" : 7
       },
       "lineNumbers" : [
         41,
@@ -5704,25 +5711,22 @@
       ]
     },
     "com.regnosys.rosetta.common.model.MemoiseCacheKey.hashCode:()I" : {
-      "completeTestCount" : 8,
+      "completeTestCount" : 7,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 8
+        "R000" : 7
       },
       "lineNumbers" : [
         49
       ]
     },
     "com.regnosys.rosetta.common.postprocess.WorkflowPostProcessor.<init>:(Lcom/regnosys/rosetta/common/postprocess/qualify/QualifyProcessorStep;Lcom/regnosys/rosetta/common/hashing/ReferenceConfig;)V" : {
-      "completeTestCount" : 2,
+      "completeTestCount" : 0,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
-      "perMethodOutcome" : "R000",
-      "perTestOutcome" : {
-        "R000" : 2
-      },
+      "perMethodOutcome" : "R013",
       "lineNumbers" : [
         38,
         39,
@@ -5801,8 +5805,12 @@
     "com.regnosys.rosetta.common.postprocess.qualify.QualificationReport.<clinit>:()V" : {
       "completeTestCount" : 0,
       "incompleteTestCount" : 0,
-      "perMethodTestability" : "T023",
-      "perMethodOutcome" : "T023"
+      "perMethodTestability" : "T012",
+      "perMethodOutcome" : "T012",
+      "lineNumbers" : [
+        38,
+        40
+      ]
     },
     "com.regnosys.rosetta.common.postprocess.qualify.QualificationReport.<init>:(Lcom/rosetta/model/lib/RosettaModelObject;Ljava/util/Collection;)V" : {
       "completeTestCount" : 3,
@@ -6403,8 +6411,12 @@
     "com.regnosys.rosetta.common.projection.RegProjectionPaths.<clinit>:()V" : {
       "completeTestCount" : 0,
       "incompleteTestCount" : 0,
-      "perMethodTestability" : "T023",
-      "perMethodOutcome" : "T023"
+      "perMethodTestability" : "T012",
+      "perMethodOutcome" : "T012",
+      "lineNumbers" : [
+        31,
+        32
+      ]
     },
     "com.regnosys.rosetta.common.projection.RegProjectionPaths.<init>:(Ljava/nio/file/Path;Ljava/nio/file/Path;Ljava/nio/file/Path;Ljava/nio/file/Path;Ljava/nio/file/Path;)V" : {
       "completeTestCount" : 1,
@@ -6441,8 +6453,11 @@
     "com.regnosys.rosetta.common.reports.RegReportPaths.<clinit>:()V" : {
       "completeTestCount" : 0,
       "incompleteTestCount" : 0,
-      "perMethodTestability" : "T023",
-      "perMethodOutcome" : "T023"
+      "perMethodTestability" : "T012",
+      "perMethodOutcome" : "T012",
+      "lineNumbers" : [
+        32
+      ]
     },
     "com.regnosys.rosetta.common.reports.RegReportPaths.<init>:(Ljava/nio/file/Path;Ljava/nio/file/Path;Ljava/nio/file/Path;Ljava/nio/file/Path;Ljava/nio/file/Path;)V" : {
       "completeTestCount" : 1,
@@ -6858,8 +6873,11 @@
     "com.regnosys.rosetta.common.serialisation.AbstractJsonDataLoader.<clinit>:()V" : {
       "completeTestCount" : 0,
       "incompleteTestCount" : 0,
-      "perMethodTestability" : "T023",
-      "perMethodOutcome" : "T023"
+      "perMethodTestability" : "T012",
+      "perMethodOutcome" : "T012",
+      "lineNumbers" : [
+        41
+      ]
     },
     "com.regnosys.rosetta.common.serialisation.AbstractJsonDataLoader.<init>:(Ljava/lang/ClassLoader;Lcom/fasterxml/jackson/databind/ObjectMapper;Ljava/net/URL;Ljava/util/List;Ljava/lang/Class;Z)V" : {
       "completeTestCount" : 0,
@@ -6899,12 +6917,12 @@
       ]
     },
     "com.regnosys.rosetta.common.serialisation.AbstractJsonDataLoader.getInput:(Ljava/lang/String;Lcom/regnosys/rosetta/common/serialisation/reportdata/ReportDataItem;Ljava/net/URL;)Ljava/lang/Object;" : {
-      "completeTestCount" : 10,
+      "completeTestCount" : 4,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 10
+        "R000" : 4
       },
       "lineNumbers" : [
         85,
@@ -7037,12 +7055,12 @@
       ]
     },
     "com.regnosys.rosetta.common.serialisation.ConstantAttributePropertyWriter.<init>:(Ljava/lang/String;Lcom/fasterxml/jackson/databind/introspect/BeanPropertyDefinition;Lcom/fasterxml/jackson/databind/util/Annotations;Lcom/fasterxml/jackson/databind/JavaType;Ljava/lang/String;)V" : {
-      "completeTestCount" : 2,
+      "completeTestCount" : 6,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 2
+        "R000" : 6
       },
       "lineNumbers" : [
         33,
@@ -7071,8 +7089,11 @@
     "com.regnosys.rosetta.common.serialisation.DataSet.<clinit>:()V" : {
       "completeTestCount" : 0,
       "incompleteTestCount" : 0,
-      "perMethodTestability" : "T023",
-      "perMethodOutcome" : "T023"
+      "perMethodTestability" : "T012",
+      "perMethodOutcome" : "T012",
+      "lineNumbers" : [
+        32
+      ]
     },
     "com.regnosys.rosetta.common.serialisation.DataSet.<init>:()V" : {
       "completeTestCount" : 0,
@@ -7220,12 +7241,12 @@
       ]
     },
     "com.regnosys.rosetta.common.serialisation.JsonDataLoaderUtil.fromObject:(Ljava/lang/Object;Ljava/lang/Class;Lcom/fasterxml/jackson/databind/ObjectMapper;)Ljava/lang/Object;" : {
-      "completeTestCount" : 34,
+      "completeTestCount" : 8,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 34
+        "R000" : 8
       },
       "lineNumbers" : [
         70,
@@ -7264,12 +7285,12 @@
       ]
     },
     "com.regnosys.rosetta.common.serialisation.JsonDataLoaderUtil.readType:(Ljava/lang/Class;Lcom/fasterxml/jackson/databind/ObjectMapper;Ljava/lang/String;)Ljava/lang/Object;" : {
-      "completeTestCount" : 21,
+      "completeTestCount" : 16,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 21
+        "R000" : 16
       },
       "lineNumbers" : [
         46,
@@ -7278,12 +7299,12 @@
       ]
     },
     "com.regnosys.rosetta.common.serialisation.JsonDataLoaderUtil.readType:(Ljava/lang/Class;Lcom/fasterxml/jackson/databind/ObjectMapper;Ljava/net/URL;)Ljava/lang/Object;" : {
-      "completeTestCount" : 7,
+      "completeTestCount" : 3,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 7
+        "R000" : 3
       },
       "lineNumbers" : [
         38,
@@ -7292,12 +7313,12 @@
       ]
     },
     "com.regnosys.rosetta.common.serialisation.JsonDataLoaderUtil.readTypeList:(Ljava/lang/Class;Lcom/fasterxml/jackson/databind/ObjectMapper;Ljava/io/Reader;)Ljava/util/List;" : {
-      "completeTestCount" : 20,
+      "completeTestCount" : 11,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 20
+        "R000" : 11
       },
       "lineNumbers" : [
         62,
@@ -7306,12 +7327,12 @@
       ]
     },
     "com.regnosys.rosetta.common.serialisation.JsonDataLoaderUtil.readTypeList:(Ljava/lang/Class;Lcom/fasterxml/jackson/databind/ObjectMapper;Ljava/net/URL;)Ljava/util/List;" : {
-      "completeTestCount" : 4,
+      "completeTestCount" : 3,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 4
+        "R000" : 3
       },
       "lineNumbers" : [
         54,
@@ -7402,12 +7423,12 @@
       ]
     },
     "com.regnosys.rosetta.common.serialisation.RosettaObjectMapperCreator.create:()Lcom/fasterxml/jackson/databind/ObjectMapper;" : {
-      "completeTestCount" : 12,
+      "completeTestCount" : 13,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 12
+        "R000" : 13
       },
       "lineNumbers" : [
         101,
@@ -7851,13 +7872,10 @@
       ]
     },
     "com.regnosys.rosetta.common.serialisation.mixin.EnumAsStringBuilderIntrospector.findEnumValues:(Lcom/fasterxml/jackson/databind/introspect/AnnotatedClass;[Ljava/lang/Enum;[Ljava/lang/String;)V" : {
-      "completeTestCount" : 1,
+      "completeTestCount" : 0,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
-      "perMethodOutcome" : "R000",
-      "perTestOutcome" : {
-        "R000" : 1
-      },
+      "perMethodOutcome" : "R013",
       "lineNumbers" : [
         34,
         35,
@@ -7900,12 +7918,12 @@
       ]
     },
     "com.regnosys.rosetta.common.serialisation.mixin.ReferenceFilter.serializeAsField:(Ljava/lang/Object;Lcom/fasterxml/jackson/core/JsonGenerator;Lcom/fasterxml/jackson/databind/SerializerProvider;Lcom/fasterxml/jackson/databind/ser/BeanPropertyWriter;)V" : {
-      "completeTestCount" : 6,
+      "completeTestCount" : 1,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 6
+        "R000" : 1
       },
       "lineNumbers" : [
         45,
@@ -8006,13 +8024,10 @@
       ]
     },
     "com.regnosys.rosetta.common.serialisation.mixin.RosettaEnumBuilderIntrospector.findEnumAliases:(Lcom/fasterxml/jackson/databind/introspect/AnnotatedClass;[Ljava/lang/Enum;[[Ljava/lang/String;)V" : {
-      "completeTestCount" : 1,
+      "completeTestCount" : 0,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
-      "perMethodOutcome" : "R000",
-      "perTestOutcome" : {
-        "R000" : 1
-      },
+      "perMethodOutcome" : "R013",
       "lineNumbers" : [
         68,
         69,
@@ -8028,13 +8043,10 @@
       ]
     },
     "com.regnosys.rosetta.common.serialisation.mixin.RosettaEnumBuilderIntrospector.findEnumValues:(Lcom/fasterxml/jackson/databind/introspect/AnnotatedClass;[Ljava/lang/Enum;[Ljava/lang/String;)V" : {
-      "completeTestCount" : 1,
+      "completeTestCount" : 0,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
-      "perMethodOutcome" : "R000",
-      "perTestOutcome" : {
-        "R000" : 1
-      },
+      "perMethodOutcome" : "R013",
       "lineNumbers" : [
         53,
         54,
@@ -8050,13 +8062,10 @@
       ]
     },
     "com.regnosys.rosetta.common.serialisation.mixin.RosettaEnumBuilderIntrospector.isApplicable:(Lcom/fasterxml/jackson/databind/introspect/AnnotatedClass;)Z" : {
-      "completeTestCount" : 2,
+      "completeTestCount" : 0,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
-      "perMethodOutcome" : "R000",
-      "perTestOutcome" : {
-        "R000" : 2
-      },
+      "perMethodOutcome" : "R013",
       "lineNumbers" : [
         49
       ]
@@ -8121,12 +8130,12 @@
       ]
     },
     "com.regnosys.rosetta.common.serialisation.mixin.RosettaJSONAnnotationIntrospector.findEnumAliases:(Lcom/fasterxml/jackson/databind/cfg/MapperConfig;Lcom/fasterxml/jackson/databind/introspect/AnnotatedClass;[Ljava/lang/Enum;[[Ljava/lang/String;)V" : {
-      "completeTestCount" : 1,
+      "completeTestCount" : 0,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
-      "perMethodOutcome" : "R000",
-      "perTestOutcome" : {
-        "R000" : 1
+      "perMethodOutcome" : "W001",
+      "warnings" : {
+        "W001" : 1
       },
       "lineNumbers" : [
         98,
@@ -8136,12 +8145,12 @@
       ]
     },
     "com.regnosys.rosetta.common.serialisation.mixin.RosettaJSONAnnotationIntrospector.findEnumValues:(Lcom/fasterxml/jackson/databind/cfg/MapperConfig;Lcom/fasterxml/jackson/databind/introspect/AnnotatedClass;[Ljava/lang/Enum;[Ljava/lang/String;)[Ljava/lang/String;" : {
-      "completeTestCount" : 1,
+      "completeTestCount" : 0,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
-      "perMethodOutcome" : "R000",
-      "perTestOutcome" : {
-        "R000" : 1
+      "perMethodOutcome" : "W001",
+      "warnings" : {
+        "W001" : 2
       },
       "lineNumbers" : [
         87,
@@ -8151,12 +8160,12 @@
       ]
     },
     "com.regnosys.rosetta.common.serialisation.mixin.RosettaJSONAnnotationIntrospector.findNameForDeserialization:(Lcom/fasterxml/jackson/databind/introspect/Annotated;)Lcom/fasterxml/jackson/databind/PropertyName;" : {
-      "completeTestCount" : 2,
+      "completeTestCount" : 1,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 2
+        "R000" : 1
       },
       "lineNumbers" : [
         77,
@@ -8167,12 +8176,12 @@
       ]
     },
     "com.regnosys.rosetta.common.serialisation.mixin.RosettaJSONAnnotationIntrospector.findNameForSerialization:(Lcom/fasterxml/jackson/databind/introspect/Annotated;)Lcom/fasterxml/jackson/databind/PropertyName;" : {
-      "completeTestCount" : 3,
+      "completeTestCount" : 1,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 3
+        "R000" : 1
       },
       "lineNumbers" : [
         69,
@@ -8181,13 +8190,10 @@
       ]
     },
     "com.regnosys.rosetta.common.serialisation.mixin.RosettaJSONAnnotationIntrospector.findPOJOBuilder:(Lcom/fasterxml/jackson/databind/introspect/AnnotatedClass;)Ljava/lang/Class;" : {
-      "completeTestCount" : 4,
+      "completeTestCount" : 0,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
-      "perMethodOutcome" : "R000",
-      "perTestOutcome" : {
-        "R000" : 4
-      },
+      "perMethodOutcome" : "R013",
       "lineNumbers" : [
         60,
         61,
@@ -8197,24 +8203,24 @@
       ]
     },
     "com.regnosys.rosetta.common.serialisation.mixin.RosettaJSONAnnotationIntrospector.findPropertyIgnoralByName:(Lcom/fasterxml/jackson/databind/cfg/MapperConfig;Lcom/fasterxml/jackson/databind/introspect/Annotated;)Lcom/fasterxml/jackson/annotation/JsonIgnoreProperties$Value;" : {
-      "completeTestCount" : 4,
+      "completeTestCount" : 2,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 4
+        "R000" : 2
       },
       "lineNumbers" : [
         107
       ]
     },
     "com.regnosys.rosetta.common.serialisation.mixin.RosettaJSONAnnotationIntrospector.findPropertyIgnorals:(Lcom/fasterxml/jackson/databind/introspect/Annotated;)Lcom/fasterxml/jackson/annotation/JsonIgnoreProperties$Value;" : {
-      "completeTestCount" : 3,
+      "completeTestCount" : 1,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 3
+        "R000" : 1
       },
       "lineNumbers" : [
         113,
@@ -8389,13 +8395,10 @@
       ]
     },
     "com.regnosys.rosetta.common.serialisation.mixin.legacy.LegacyRosettaBuilderIntrospector.findPOJOBuilder:(Lcom/fasterxml/jackson/databind/introspect/AnnotatedClass;)Ljava/util/Optional;" : {
-      "completeTestCount" : 5,
+      "completeTestCount" : 0,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
-      "perMethodOutcome" : "R000",
-      "perTestOutcome" : {
-        "R000" : 5
-      },
+      "perMethodOutcome" : "R013",
       "lineNumbers" : [
         50,
         52,
@@ -8414,12 +8417,12 @@
       ]
     },
     "com.regnosys.rosetta.common.serialisation.mixin.legacy.LegacyRosettaBuilderIntrospector.findPropertyIgnorals:(Lcom/fasterxml/jackson/databind/introspect/Annotated;)Ljava/util/Optional;" : {
-      "completeTestCount" : 5,
+      "completeTestCount" : 1,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 5
+        "R000" : 1
       },
       "lineNumbers" : [
         94,
@@ -8982,10 +8985,13 @@
       ]
     },
     "com.regnosys.rosetta.common.serialisation.reportdata.ReportDataItem.getInput:()Ljava/lang/Object;" : {
-      "completeTestCount" : 0,
+      "completeTestCount" : 1,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
-      "perMethodOutcome" : "F009",
+      "perMethodOutcome" : "R000",
+      "perTestOutcome" : {
+        "R000" : 1
+      },
       "lineNumbers" : [
         56,
         57,
@@ -9440,12 +9446,12 @@
       ]
     },
     "com.regnosys.rosetta.common.serialisation.xml.RosettaBeanSerializerModifier.changeProperties:(Lcom/fasterxml/jackson/databind/SerializationConfig;Lcom/fasterxml/jackson/databind/BeanDescription;Ljava/util/List;)Ljava/util/List;" : {
-      "completeTestCount" : 7,
+      "completeTestCount" : 9,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 7
+        "R000" : 9
       },
       "lineNumbers" : [
         50,
@@ -9460,12 +9466,12 @@
       ]
     },
     "com.regnosys.rosetta.common.serialisation.xml.RosettaBeanSerializerModifier.findSubstitutionMap:(Lcom/fasterxml/jackson/databind/cfg/MapperConfig;Lcom/fasterxml/jackson/databind/AnnotationIntrospector;Lcom/fasterxml/jackson/databind/introspect/AnnotatedMember;)Lcom/regnosys/rosetta/common/serialisation/xml/SubstitutionMap;" : {
-      "completeTestCount" : 3,
+      "completeTestCount" : 6,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 3
+        "R000" : 6
       },
       "lineNumbers" : [
         66,
@@ -9495,16 +9501,19 @@
     "com.regnosys.rosetta.common.serialisation.xml.RosettaSerialiserFactory.<clinit>:()V" : {
       "completeTestCount" : 0,
       "incompleteTestCount" : 0,
-      "perMethodTestability" : "T023",
-      "perMethodOutcome" : "T023"
+      "perMethodTestability" : "T012",
+      "perMethodOutcome" : "T012",
+      "lineNumbers" : [
+        47
+      ]
     },
     "com.regnosys.rosetta.common.serialisation.xml.RosettaSerialiserFactory.<init>:(Lcom/fasterxml/jackson/databind/cfg/SerializerFactoryConfig;)V" : {
-      "completeTestCount" : 1,
+      "completeTestCount" : 2,
       "incompleteTestCount" : 0,
-      "perMethodTestability" : "T005",
+      "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 1
+        "R000" : 2
       },
       "lineNumbers" : [
         50,
@@ -9521,12 +9530,12 @@
       ]
     },
     "com.regnosys.rosetta.common.serialisation.xml.RosettaSerialiserFactory.withConfig:(Lcom/fasterxml/jackson/databind/cfg/SerializerFactoryConfig;)Lcom/fasterxml/jackson/databind/ser/SerializerFactory;" : {
-      "completeTestCount" : 1,
+      "completeTestCount" : 2,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 1
+        "R000" : 2
       },
       "lineNumbers" : [
         55,
@@ -9539,8 +9548,11 @@
     "com.regnosys.rosetta.common.serialisation.xml.RosettaXMLAnnotationIntrospector.<clinit>:()V" : {
       "completeTestCount" : 0,
       "incompleteTestCount" : 0,
-      "perMethodTestability" : "T023",
-      "perMethodOutcome" : "T023"
+      "perMethodTestability" : "T012",
+      "perMethodOutcome" : "T012",
+      "lineNumbers" : [
+        62
+      ]
     },
     "com.regnosys.rosetta.common.serialisation.xml.RosettaXMLAnnotationIntrospector.<init>:(Lcom/fasterxml/jackson/databind/ObjectMapper;Lcom/rosetta/util/serialisation/RosettaXMLConfiguration;Lcom/regnosys/rosetta/common/serialisation/mixin/RosettaEnumBuilderIntrospector;Lcom/regnosys/rosetta/common/serialisation/mixin/EnumAsStringBuilderIntrospector;)V" : {
       "completeTestCount" : 1,
@@ -9573,15 +9585,12 @@
       ]
     },
     "com.regnosys.rosetta.common.serialisation.xml.RosettaXMLAnnotationIntrospector._findXmlName:(Lcom/fasterxml/jackson/databind/introspect/Annotated;)Lcom/fasterxml/jackson/databind/PropertyName;" : {
-      "completeTestCount" : 4,
+      "completeTestCount" : 1,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 4
-      },
-      "warnings" : {
-        "W001" : 1
+        "R000" : 1
       },
       "lineNumbers" : [
         163,
@@ -9633,13 +9642,10 @@
       ]
     },
     "com.regnosys.rosetta.common.serialisation.xml.RosettaXMLAnnotationIntrospector.findAndAddVirtualProperties:(Lcom/fasterxml/jackson/databind/cfg/MapperConfig;Lcom/fasterxml/jackson/databind/introspect/AnnotatedClass;Ljava/util/List;)V" : {
-      "completeTestCount" : 5,
+      "completeTestCount" : 0,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
-      "perMethodOutcome" : "R000",
-      "perTestOutcome" : {
-        "R000" : 5
-      },
+      "perMethodOutcome" : "R013",
       "lineNumbers" : [
         191,
         192,
@@ -9648,13 +9654,10 @@
       ]
     },
     "com.regnosys.rosetta.common.serialisation.xml.RosettaXMLAnnotationIntrospector.findEnumAliases:(Lcom/fasterxml/jackson/databind/cfg/MapperConfig;Lcom/fasterxml/jackson/databind/introspect/AnnotatedClass;[Ljava/lang/Enum;[[Ljava/lang/String;)V" : {
-      "completeTestCount" : 2,
+      "completeTestCount" : 0,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
-      "perMethodOutcome" : "R000",
-      "perTestOutcome" : {
-        "R000" : 2
-      },
+      "perMethodOutcome" : "R013",
       "lineNumbers" : [
         321,
         322,
@@ -9663,13 +9666,10 @@
       ]
     },
     "com.regnosys.rosetta.common.serialisation.xml.RosettaXMLAnnotationIntrospector.findEnumValues:(Lcom/fasterxml/jackson/databind/cfg/MapperConfig;Lcom/fasterxml/jackson/databind/introspect/AnnotatedClass;[Ljava/lang/Enum;[Ljava/lang/String;)[Ljava/lang/String;" : {
-      "completeTestCount" : 5,
+      "completeTestCount" : 0,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
-      "perMethodOutcome" : "R000",
-      "perTestOutcome" : {
-        "R000" : 5
-      },
+      "perMethodOutcome" : "R013",
       "lineNumbers" : [
         292,
         293,
@@ -9679,16 +9679,10 @@
       ]
     },
     "com.regnosys.rosetta.common.serialisation.xml.RosettaXMLAnnotationIntrospector.findPOJOBuilder:(Lcom/fasterxml/jackson/databind/introspect/AnnotatedClass;)Ljava/lang/Class;" : {
-      "completeTestCount" : 3,
+      "completeTestCount" : 0,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
-      "perMethodOutcome" : "R000",
-      "perTestOutcome" : {
-        "R000" : 3
-      },
-      "warnings" : {
-        "W002" : 1
-      },
+      "perMethodOutcome" : "R013",
       "lineNumbers" : [
         129,
         130,
@@ -9696,16 +9690,10 @@
       ]
     },
     "com.regnosys.rosetta.common.serialisation.xml.RosettaXMLAnnotationIntrospector.findPOJOBuilderConfig:(Lcom/fasterxml/jackson/databind/introspect/AnnotatedClass;)Lcom/fasterxml/jackson/databind/annotation/JsonPOJOBuilder$Value;" : {
-      "completeTestCount" : 1,
+      "completeTestCount" : 0,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
-      "perMethodOutcome" : "R000",
-      "perTestOutcome" : {
-        "R000" : 1
-      },
-      "warnings" : {
-        "W002" : 2
-      },
+      "perMethodOutcome" : "R013",
       "lineNumbers" : [
         137,
         138,
@@ -9713,12 +9701,12 @@
       ]
     },
     "com.regnosys.rosetta.common.serialisation.xml.RosettaXMLAnnotationIntrospector.findPropertyIgnoralByName:(Lcom/fasterxml/jackson/databind/cfg/MapperConfig;Lcom/fasterxml/jackson/databind/introspect/Annotated;)Lcom/fasterxml/jackson/annotation/JsonIgnoreProperties$Value;" : {
-      "completeTestCount" : 3,
+      "completeTestCount" : 1,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 3
+        "R000" : 1
       },
       "lineNumbers" : [
         249,
@@ -9732,13 +9720,10 @@
       ]
     },
     "com.regnosys.rosetta.common.serialisation.xml.RosettaXMLAnnotationIntrospector.findRootName:(Lcom/fasterxml/jackson/databind/introspect/AnnotatedClass;)Lcom/fasterxml/jackson/databind/PropertyName;" : {
-      "completeTestCount" : 2,
+      "completeTestCount" : 0,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
-      "perMethodOutcome" : "R000",
-      "perTestOutcome" : {
-        "R000" : 2
-      },
+      "perMethodOutcome" : "R013",
       "lineNumbers" : [
         148,
         149,
@@ -9750,12 +9735,12 @@
       ]
     },
     "com.regnosys.rosetta.common.serialisation.xml.RosettaXMLAnnotationIntrospector.findSubstitutionMap:(Lcom/fasterxml/jackson/databind/cfg/MapperConfig;Lcom/fasterxml/jackson/databind/introspect/AnnotatedMember;)Lcom/regnosys/rosetta/common/serialisation/xml/SubstitutionMap;" : {
-      "completeTestCount" : 2,
+      "completeTestCount" : 5,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 2
+        "R000" : 5
       },
       "lineNumbers" : [
         90,
@@ -9790,12 +9775,12 @@
       ]
     },
     "com.regnosys.rosetta.common.serialisation.xml.RosettaXMLAnnotationIntrospector.findWrapperName:(Lcom/fasterxml/jackson/databind/introspect/Annotated;)Lcom/fasterxml/jackson/databind/PropertyName;" : {
-      "completeTestCount" : 8,
+      "completeTestCount" : 1,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 8
+        "R000" : 1
       },
       "lineNumbers" : [
         268,
@@ -9900,12 +9885,12 @@
       ]
     },
     "com.regnosys.rosetta.common.serialisation.xml.RosettaXMLAnnotationIntrospector.isOutputAsAttribute:(Lcom/fasterxml/jackson/databind/cfg/MapperConfig;Lcom/fasterxml/jackson/databind/introspect/Annotated;)Ljava/lang/Boolean;" : {
-      "completeTestCount" : 2,
+      "completeTestCount" : 1,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 2
+        "R000" : 1
       },
       "lineNumbers" : [
         215,
@@ -10433,13 +10418,10 @@
       ]
     },
     "com.regnosys.rosetta.common.serialisation.xml.SubstitutedMethodProperty.<init>:(Lcom/regnosys/rosetta/common/serialisation/xml/SubstitutedMethodProperty;Ljava/lang/reflect/Method;)V" : {
-      "completeTestCount" : 1,
+      "completeTestCount" : 0,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
-      "perMethodOutcome" : "R000",
-      "perTestOutcome" : {
-        "R000" : 1
-      },
+      "perMethodOutcome" : "R013",
       "lineNumbers" : [
         91,
         92,
@@ -10613,7 +10595,7 @@
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "W001",
       "warnings" : {
-        "W001" : 2
+        "W001" : 1
       },
       "lineNumbers" : [
         41,
@@ -10797,10 +10779,13 @@
       ]
     },
     "com.regnosys.rosetta.common.serialisation.xml.UnwrappableIndexedListSerializer.<init>:(Lcom/regnosys/rosetta/common/serialisation/xml/UnwrappableIndexedListSerializer;Lcom/fasterxml/jackson/databind/BeanProperty;Lcom/fasterxml/jackson/databind/jsontype/TypeSerializer;Lcom/fasterxml/jackson/databind/JsonSerializer;Ljava/lang/Boolean;)V" : {
-      "completeTestCount" : 0,
+      "completeTestCount" : 1,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
-      "perMethodOutcome" : "R013",
+      "perMethodOutcome" : "R000",
+      "perTestOutcome" : {
+        "R000" : 1
+      },
       "lineNumbers" : [
         50,
         40,
@@ -10808,10 +10793,13 @@
       ]
     },
     "com.regnosys.rosetta.common.serialisation.xml.UnwrappableIndexedListSerializer._withValueTypeSerializer:(Lcom/fasterxml/jackson/databind/jsontype/TypeSerializer;)Lcom/regnosys/rosetta/common/serialisation/xml/UnwrappableIndexedListSerializer;" : {
-      "completeTestCount" : 0,
+      "completeTestCount" : 1,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
-      "perMethodOutcome" : "R013",
+      "perMethodOutcome" : "R000",
+      "perTestOutcome" : {
+        "R000" : 1
+      },
       "lineNumbers" : [
         87
       ]
@@ -10826,10 +10814,13 @@
       ]
     },
     "com.regnosys.rosetta.common.serialisation.xml.UnwrappableIndexedListSerializer.hasSingleElement:(Ljava/util/List;)Z" : {
-      "completeTestCount" : 0,
+      "completeTestCount" : 3,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
-      "perMethodOutcome" : "R034",
+      "perMethodOutcome" : "R000",
+      "perTestOutcome" : {
+        "R000" : 3
+      },
       "lineNumbers" : [
         82
       ]
@@ -10844,10 +10835,13 @@
       ]
     },
     "com.regnosys.rosetta.common.serialisation.xml.UnwrappableIndexedListSerializer.isEmpty:(Lcom/fasterxml/jackson/databind/SerializerProvider;Ljava/util/List;)Z" : {
-      "completeTestCount" : 0,
+      "completeTestCount" : 3,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
-      "perMethodOutcome" : "R034",
+      "perMethodOutcome" : "R000",
+      "perTestOutcome" : {
+        "R000" : 3
+      },
       "lineNumbers" : [
         77
       ]
@@ -10862,10 +10856,13 @@
       ]
     },
     "com.regnosys.rosetta.common.serialisation.xml.UnwrappableIndexedListSerializer.serialize:(Ljava/util/List;Lcom/fasterxml/jackson/core/JsonGenerator;Lcom/fasterxml/jackson/databind/SerializerProvider;)V" : {
-      "completeTestCount" : 0,
+      "completeTestCount" : 11,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
-      "perMethodOutcome" : "R034",
+      "perMethodOutcome" : "R000",
+      "perTestOutcome" : {
+        "R000" : 11
+      },
       "lineNumbers" : [
         94,
         95,
@@ -10889,10 +10886,13 @@
       ]
     },
     "com.regnosys.rosetta.common.serialisation.xml.UnwrappableIndexedListSerializer.serializeContents:(Ljava/util/List;Lcom/fasterxml/jackson/core/JsonGenerator;Lcom/fasterxml/jackson/databind/SerializerProvider;)V" : {
-      "completeTestCount" : 0,
+      "completeTestCount" : 4,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
-      "perMethodOutcome" : "R034",
+      "perMethodOutcome" : "R000",
+      "perTestOutcome" : {
+        "R000" : 4
+      },
       "lineNumbers" : [
         118,
         119,
@@ -10958,7 +10958,7 @@
       "completeTestCount" : 0,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
-      "perMethodOutcome" : "R034",
+      "perMethodOutcome" : "R013",
       "lineNumbers" : [
         189,
         190,
@@ -11012,19 +11012,25 @@
       ]
     },
     "com.regnosys.rosetta.common.serialisation.xml.UnwrappableIndexedListSerializer.unwrappingSerializer:(Lcom/fasterxml/jackson/databind/util/NameTransformer;)Lcom/regnosys/rosetta/common/serialisation/xml/UnwrappingIndexedListSerializer;" : {
-      "completeTestCount" : 0,
+      "completeTestCount" : 3,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
-      "perMethodOutcome" : "R013",
+      "perMethodOutcome" : "R000",
+      "perTestOutcome" : {
+        "R000" : 3
+      },
       "lineNumbers" : [
         59
       ]
     },
     "com.regnosys.rosetta.common.serialisation.xml.UnwrappableIndexedListSerializer.withResolved:(Lcom/fasterxml/jackson/databind/BeanProperty;Lcom/fasterxml/jackson/databind/jsontype/TypeSerializer;Lcom/fasterxml/jackson/databind/JsonSerializer;Ljava/lang/Boolean;)Lcom/regnosys/rosetta/common/serialisation/xml/UnwrappableIndexedListSerializer;" : {
-      "completeTestCount" : 0,
+      "completeTestCount" : 1,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
-      "perMethodOutcome" : "R013",
+      "perMethodOutcome" : "R000",
+      "perTestOutcome" : {
+        "R000" : 1
+      },
       "lineNumbers" : [
         66
       ]
@@ -11089,12 +11095,12 @@
       ]
     },
     "com.regnosys.rosetta.common.serialisation.xml.UnwrappingAsArraySerializerBase._findAndAddDynamic:(Lcom/fasterxml/jackson/databind/ser/impl/PropertySerializerMap;Ljava/lang/Class;Lcom/fasterxml/jackson/databind/SerializerProvider;)Lcom/fasterxml/jackson/databind/JsonSerializer;" : {
-      "completeTestCount" : 1,
+      "completeTestCount" : 2,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 1
+        "R000" : 2
       },
       "lineNumbers" : [
         236,
@@ -11104,6 +11110,15 @@
       ]
     },
     "com.regnosys.rosetta.common.serialisation.xml.UnwrappingAsArraySerializerBase.acceptJsonFormatVisitor:(Lcom/fasterxml/jackson/databind/jsonFormatVisitors/JsonFormatVisitorWrapper;Lcom/fasterxml/jackson/databind/JavaType;)V" : {
+      "completeTestCount" : 0,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : "T000",
+      "perMethodOutcome" : "R013",
+      "lineNumbers" : [
+        232
+      ]
+    },
+    "com.regnosys.rosetta.common.serialisation.xml.UnwrappingAsArraySerializerBase.createContextual:(Lcom/fasterxml/jackson/databind/SerializerProvider;Lcom/fasterxml/jackson/databind/BeanProperty;)Lcom/fasterxml/jackson/databind/JsonSerializer;" : {
       "completeTestCount" : 1,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
@@ -11111,15 +11126,6 @@
       "perTestOutcome" : {
         "R000" : 1
       },
-      "lineNumbers" : [
-        232
-      ]
-    },
-    "com.regnosys.rosetta.common.serialisation.xml.UnwrappingAsArraySerializerBase.createContextual:(Lcom/fasterxml/jackson/databind/SerializerProvider;Lcom/fasterxml/jackson/databind/BeanProperty;)Lcom/fasterxml/jackson/databind/JsonSerializer;" : {
-      "completeTestCount" : 0,
-      "incompleteTestCount" : 0,
-      "perMethodTestability" : "T000",
-      "perMethodOutcome" : "R013",
       "lineNumbers" : [
         146,
         147,
@@ -11185,13 +11191,10 @@
       "perMethodOutcome" : "T010"
     },
     "com.regnosys.rosetta.common.serialisation.xml.UnwrappingAsArraySerializerBase.serializeWithType:(Ljava/lang/Object;Lcom/fasterxml/jackson/core/JsonGenerator;Lcom/fasterxml/jackson/databind/SerializerProvider;Lcom/fasterxml/jackson/databind/jsontype/TypeSerializer;)V" : {
-      "completeTestCount" : 3,
+      "completeTestCount" : 0,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
-      "perMethodOutcome" : "R000",
-      "perTestOutcome" : {
-        "R000" : 3
-      },
+      "perMethodOutcome" : "R013",
       "lineNumbers" : [
         218,
         219,
@@ -11217,10 +11220,13 @@
       ]
     },
     "com.regnosys.rosetta.common.serialisation.xml.UnwrappingIndexedListSerializer.<init>:(Lcom/regnosys/rosetta/common/serialisation/xml/UnwrappingIndexedListSerializer;Lcom/fasterxml/jackson/databind/BeanProperty;Lcom/fasterxml/jackson/databind/jsontype/TypeSerializer;Lcom/fasterxml/jackson/databind/JsonSerializer;)V" : {
-      "completeTestCount" : 0,
+      "completeTestCount" : 1,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
-      "perMethodOutcome" : "R013",
+      "perMethodOutcome" : "R000",
+      "perTestOutcome" : {
+        "R000" : 1
+      },
       "lineNumbers" : [
         46,
         47
@@ -11248,10 +11254,13 @@
       ]
     },
     "com.regnosys.rosetta.common.serialisation.xml.UnwrappingIndexedListSerializer.hasSingleElement:(Ljava/util/List;)Z" : {
-      "completeTestCount" : 0,
+      "completeTestCount" : 3,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
-      "perMethodOutcome" : "R034",
+      "perMethodOutcome" : "R000",
+      "perTestOutcome" : {
+        "R000" : 3
+      },
       "lineNumbers" : [
         73
       ]
@@ -11266,10 +11275,13 @@
       ]
     },
     "com.regnosys.rosetta.common.serialisation.xml.UnwrappingIndexedListSerializer.isEmpty:(Lcom/fasterxml/jackson/databind/SerializerProvider;Ljava/util/List;)Z" : {
-      "completeTestCount" : 0,
+      "completeTestCount" : 3,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
-      "perMethodOutcome" : "R034",
+      "perMethodOutcome" : "R000",
+      "perTestOutcome" : {
+        "R000" : 3
+      },
       "lineNumbers" : [
         68
       ]
@@ -11296,7 +11308,7 @@
       "completeTestCount" : 0,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
-      "perMethodOutcome" : "R034",
+      "perMethodOutcome" : "R013",
       "lineNumbers" : [
         85,
         86
@@ -11315,7 +11327,7 @@
       "completeTestCount" : 0,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
-      "perMethodOutcome" : "R034",
+      "perMethodOutcome" : "R013",
       "lineNumbers" : [
         91,
         92,
@@ -11377,7 +11389,7 @@
       "completeTestCount" : 0,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
-      "perMethodOutcome" : "R034",
+      "perMethodOutcome" : "R013",
       "lineNumbers" : [
         158,
         159,
@@ -11589,12 +11601,12 @@
       ]
     },
     "com.regnosys.rosetta.common.testing.ExecutionDescriptor.loadExecutionDescriptor:(Lcom/fasterxml/jackson/databind/ObjectMapper;Ljava/lang/String;Ljava/io/InputStream;)Ljava/util/List;" : {
-      "completeTestCount" : 9,
+      "completeTestCount" : 7,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 9
+        "R000" : 7
       },
       "lineNumbers" : [
         53,
@@ -11716,8 +11728,11 @@
     "com.regnosys.rosetta.common.testing.FunctionRunner.<clinit>:()V" : {
       "completeTestCount" : 0,
       "incompleteTestCount" : 0,
-      "perMethodTestability" : "T023",
-      "perMethodOutcome" : "T023"
+      "perMethodTestability" : "T012",
+      "perMethodOutcome" : "T012",
+      "lineNumbers" : [
+        53
+      ]
     },
     "com.regnosys.rosetta.common.testing.FunctionRunner.<init>:(Lcom/regnosys/rosetta/common/testing/ExecutionDescriptor;Lcom/regnosys/rosetta/common/testing/FunctionRunner$InstanceLoader;Ljava/lang/ClassLoader;Lcom/fasterxml/jackson/databind/ObjectMapper;)V" : {
       "completeTestCount" : 1,
@@ -11872,7 +11887,7 @@
       "completeTestCount" : 0,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
-      "perMethodOutcome" : "F009",
+      "perMethodOutcome" : "R024",
       "lineNumbers" : [
         241,
         242,
@@ -12196,8 +12211,13 @@
     "com.regnosys.rosetta.common.transform.PipelineModel$Serialisation$Format.<clinit>:()V" : {
       "completeTestCount" : 0,
       "incompleteTestCount" : 0,
-      "perMethodTestability" : "T023",
-      "perMethodOutcome" : "T023"
+      "perMethodTestability" : "T012",
+      "perMethodOutcome" : "T012",
+      "lineNumbers" : [
+        200,
+        201,
+        199
+      ]
     },
     "com.regnosys.rosetta.common.transform.PipelineModel$Serialisation$Format.<init>:(Ljava/lang/String;I)V" : {
       "completeTestCount" : 0,
@@ -12764,12 +12784,12 @@
       ]
     },
     "com.regnosys.rosetta.common.transform.TestPackModel.equals:(Ljava/lang/Object;)Z" : {
-      "completeTestCount" : 8,
+      "completeTestCount" : 6,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 8
+        "R000" : 6
       },
       "lineNumbers" : [
         65,
@@ -12827,12 +12847,12 @@
       ]
     },
     "com.regnosys.rosetta.common.transform.TestPackModel.hashCode:()I" : {
-      "completeTestCount" : 8,
+      "completeTestCount" : 6,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 8
+        "R000" : 6
       },
       "lineNumbers" : [
         73
@@ -12853,8 +12873,14 @@
     "com.regnosys.rosetta.common.transform.TestPackUtils.<clinit>:()V" : {
       "completeTestCount" : 0,
       "incompleteTestCount" : 0,
-      "perMethodTestability" : "T023",
-      "perMethodOutcome" : "T023"
+      "perMethodTestability" : "T012",
+      "perMethodOutcome" : "T012",
+      "lineNumbers" : [
+        46,
+        47,
+        48,
+        49
+      ]
     },
     "com.regnosys.rosetta.common.transform.TestPackUtils.<init>:()V" : {
       "completeTestCount" : 0,
@@ -12929,12 +12955,12 @@
       ]
     },
     "com.regnosys.rosetta.common.transform.TestPackUtils.getObjectMapper:(Lcom/regnosys/rosetta/common/transform/PipelineModel$Serialisation;)Ljava/util/Optional;" : {
-      "completeTestCount" : 4,
+      "completeTestCount" : 3,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 4
+        "R000" : 3
       },
       "lineNumbers" : [
         106,
@@ -13104,12 +13130,12 @@
       ]
     },
     "com.regnosys.rosetta.common.transform.TestPackUtils.readFile:(Ljava/net/URL;Lcom/fasterxml/jackson/databind/ObjectMapper;Ljava/lang/Class;)Ljava/lang/Object;" : {
-      "completeTestCount" : 4,
+      "completeTestCount" : 2,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 4
+        "R000" : 2
       },
       "lineNumbers" : [
         144,
@@ -13133,8 +13159,24 @@
     "com.regnosys.rosetta.common.transform.TransformType.<clinit>:()V" : {
       "completeTestCount" : 0,
       "incompleteTestCount" : 0,
-      "perMethodTestability" : "T023",
-      "perMethodOutcome" : "T023"
+      "perMethodTestability" : "T012",
+      "perMethodOutcome" : "T012",
+      "lineNumbers" : [
+        26,
+        27,
+        28,
+        29,
+        31,
+        32,
+        33,
+        35,
+        36,
+        37,
+        39,
+        40,
+        41,
+        25
+      ]
     },
     "com.regnosys.rosetta.common.transform.TransformType.<init>:(Ljava/lang/String;ILjava/lang/String;)V" : {
       "completeTestCount" : 0,
@@ -13465,12 +13507,12 @@
       ]
     },
     "com.regnosys.rosetta.common.translation.MappingContext.<init>:(Ljava/util/List;Ljava/util/Map;Ljava/util/Map;Ljava/util/concurrent/ExecutorService;)V" : {
-      "completeTestCount" : 3,
+      "completeTestCount" : 0,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
-      "perMethodOutcome" : "R000",
-      "perTestOutcome" : {
-        "R000" : 3
+      "perMethodOutcome" : "W001",
+      "warnings" : {
+        "W001" : 3
       },
       "lineNumbers" : [
         62,
@@ -13918,8 +13960,12 @@
     "com.regnosys.rosetta.common.translation.MappingProcessorStep.<clinit>:()V" : {
       "completeTestCount" : 0,
       "incompleteTestCount" : 0,
-      "perMethodTestability" : "T023",
-      "perMethodOutcome" : "T023"
+      "perMethodTestability" : "T012",
+      "perMethodOutcome" : "T012",
+      "lineNumbers" : [
+        41,
+        153
+      ]
     },
     "com.regnosys.rosetta.common.translation.MappingProcessorStep.<init>:(Ljava/util/Collection;Lcom/regnosys/rosetta/common/translation/MappingContext;)V" : {
       "completeTestCount" : 1,
@@ -14088,12 +14134,12 @@
       ]
     },
     "com.regnosys.rosetta.common.translation.MappingProcessorUtils.filterMappings:(Ljava/util/List;Lcom/regnosys/rosetta/common/translation/Path;)Ljava/util/List;" : {
-      "completeTestCount" : 3,
+      "completeTestCount" : 7,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 3
+        "R000" : 7
       },
       "lineNumbers" : [
         82,
@@ -14103,12 +14149,12 @@
       ]
     },
     "com.regnosys.rosetta.common.translation.MappingProcessorUtils.filterMappings:(Ljava/util/List;Lcom/regnosys/rosetta/common/translation/Path;Lcom/regnosys/rosetta/common/translation/Path;)Ljava/util/List;" : {
-      "completeTestCount" : 5,
+      "completeTestCount" : 12,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 5
+        "R000" : 12
       },
       "lineNumbers" : [
         114,
@@ -14120,12 +14166,12 @@
       ]
     },
     "com.regnosys.rosetta.common.translation.MappingProcessorUtils.filterMappings:(Ljava/util/List;Lcom/rosetta/model/lib/path/RosettaPath;)Ljava/util/List;" : {
-      "completeTestCount" : 8,
+      "completeTestCount" : 6,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 8
+        "R000" : 6
       },
       "lineNumbers" : [
         107,
@@ -14136,12 +14182,12 @@
       ]
     },
     "com.regnosys.rosetta.common.translation.MappingProcessorUtils.getEmptyMappings:(Ljava/util/List;Lcom/regnosys/rosetta/common/translation/Path;)Ljava/util/List;" : {
-      "completeTestCount" : 8,
+      "completeTestCount" : 9,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 8
+        "R000" : 9
       },
       "lineNumbers" : [
         122,
@@ -14152,12 +14198,12 @@
       ]
     },
     "com.regnosys.rosetta.common.translation.MappingProcessorUtils.getNonNullMappedValue:(Lcom/regnosys/rosetta/common/translation/Path;Ljava/util/List;)Ljava/util/Optional;" : {
-      "completeTestCount" : 5,
+      "completeTestCount" : 9,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 5
+        "R000" : 9
       },
       "lineNumbers" : [
         149
@@ -14213,12 +14259,12 @@
       ]
     },
     "com.regnosys.rosetta.common.translation.MappingProcessorUtils.getNonNullMapping:(Ljava/util/List;Lcom/regnosys/rosetta/common/translation/Path;)Ljava/util/Optional;" : {
-      "completeTestCount" : 4,
+      "completeTestCount" : 9,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 4
+        "R000" : 9
       },
       "lineNumbers" : [
         159,
@@ -14264,12 +14310,12 @@
       ]
     },
     "com.regnosys.rosetta.common.translation.MappingProcessorUtils.getNonNullMappingForModelPath:(Ljava/util/List;Lcom/regnosys/rosetta/common/translation/Path;)Ljava/util/Optional;" : {
-      "completeTestCount" : 9,
+      "completeTestCount" : 10,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 9
+        "R000" : 10
       },
       "lineNumbers" : [
         184,
@@ -14281,12 +14327,12 @@
       ]
     },
     "com.regnosys.rosetta.common.translation.MappingProcessorUtils.getValueAndUpdateMappings:(Lcom/regnosys/rosetta/common/translation/Path;Ljava/util/List;Lcom/rosetta/model/lib/path/RosettaPath;)Ljava/util/Optional;" : {
-      "completeTestCount" : 5,
+      "completeTestCount" : 9,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 5
+        "R000" : 9
       },
       "lineNumbers" : [
         39,
@@ -14603,12 +14649,12 @@
       ]
     },
     "com.regnosys.rosetta.common.translation.MappingProcessorUtils.setValueAndOptionallyUpdateMappings:(Lcom/regnosys/rosetta/common/translation/Path;Ljava/util/function/Function;Ljava/util/List;Lcom/rosetta/model/lib/path/RosettaPath;)V" : {
-      "completeTestCount" : 5,
+      "completeTestCount" : 9,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 5
+        "R000" : 9
       },
       "lineNumbers" : [
         61,
@@ -14617,10 +14663,13 @@
       ]
     },
     "com.regnosys.rosetta.common.translation.MappingProcessorUtils.setValueAndUpdateMappings:(Lcom/regnosys/rosetta/common/translation/Path;Ljava/util/function/Consumer;Ljava/util/List;Lcom/rosetta/model/lib/path/RosettaPath;)V" : {
-      "completeTestCount" : 0,
+      "completeTestCount" : 8,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
-      "perMethodOutcome" : "F009",
+      "perMethodOutcome" : "R000",
+      "perTestOutcome" : {
+        "R000" : 8
+      },
       "lineNumbers" : [
         53,
         54
@@ -14701,12 +14750,12 @@
       ]
     },
     "com.regnosys.rosetta.common.translation.MappingProcessorUtils.updateMappings:(Lcom/regnosys/rosetta/common/translation/Path;Ljava/util/List;Lcom/rosetta/model/lib/path/RosettaPath;)V" : {
-      "completeTestCount" : 2,
+      "completeTestCount" : 6,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 2
+        "R000" : 6
       },
       "lineNumbers" : [
         202,
@@ -14718,8 +14767,12 @@
     "com.regnosys.rosetta.common.translation.Path$PathElement.<clinit>:()V" : {
       "completeTestCount" : 0,
       "incompleteTestCount" : 0,
-      "perMethodTestability" : "T023",
-      "perMethodOutcome" : "T023"
+      "perMethodTestability" : "T012",
+      "perMethodOutcome" : "T012",
+      "lineNumbers" : [
+        313,
+        314
+      ]
     },
     "com.regnosys.rosetta.common.translation.Path$PathElement.<init>:(Ljava/lang/String;)V" : {
       "completeTestCount" : 1,
@@ -15121,12 +15174,12 @@
       ]
     },
     "com.regnosys.rosetta.common.translation.Path.fullStartMatches:(Lcom/regnosys/rosetta/common/translation/Path;)Z" : {
-      "completeTestCount" : 4,
+      "completeTestCount" : 5,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 4
+        "R000" : 5
       },
       "lineNumbers" : [
         145
@@ -15260,12 +15313,12 @@
       ]
     },
     "com.regnosys.rosetta.common.translation.Path.nameIndexMatches:(Lcom/regnosys/rosetta/common/translation/Path;)Z" : {
-      "completeTestCount" : 4,
+      "completeTestCount" : 5,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 4
+        "R000" : 5
       },
       "lineNumbers" : [
         167,
@@ -15283,24 +15336,24 @@
       ]
     },
     "com.regnosys.rosetta.common.translation.Path.nameStartMatches:(Lcom/regnosys/rosetta/common/translation/Path;)Z" : {
-      "completeTestCount" : 4,
+      "completeTestCount" : 5,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 4
+        "R000" : 5
       },
       "lineNumbers" : [
         113
       ]
     },
     "com.regnosys.rosetta.common.translation.Path.nameStartMatches:(Lcom/regnosys/rosetta/common/translation/Path;Z)Z" : {
-      "completeTestCount" : 4,
+      "completeTestCount" : 8,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 4
+        "R000" : 8
       },
       "lineNumbers" : [
         121,
@@ -15331,12 +15384,12 @@
       ]
     },
     "com.regnosys.rosetta.common.translation.Path.parse:(Ljava/lang/String;Z)Lcom/regnosys/rosetta/common/translation/Path;" : {
-      "completeTestCount" : 5,
+      "completeTestCount" : 4,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 5
+        "R000" : 4
       },
       "lineNumbers" : [
         233,
@@ -15591,8 +15644,11 @@
     "com.regnosys.rosetta.common.translation.flat.FlatFileMappingProcessor.<clinit>:()V" : {
       "completeTestCount" : 0,
       "incompleteTestCount" : 0,
-      "perMethodTestability" : "T023",
-      "perMethodOutcome" : "T023"
+      "perMethodTestability" : "T012",
+      "perMethodOutcome" : "T012",
+      "lineNumbers" : [
+        49
+      ]
     },
     "com.regnosys.rosetta.common.translation.flat.FlatFileMappingProcessor.<init>:(Lcom/rosetta/model/lib/path/RosettaPath;Ljava/util/List;Lcom/regnosys/rosetta/common/translation/MappingContext;)V" : {
       "completeTestCount" : 0,
@@ -15846,8 +15902,11 @@
     "com.regnosys.rosetta.common.translation.flat.IndexCapturePath$IndexCapturePathElement.<clinit>:()V" : {
       "completeTestCount" : 0,
       "incompleteTestCount" : 0,
-      "perMethodTestability" : "T023",
-      "perMethodOutcome" : "T023"
+      "perMethodTestability" : "T012",
+      "perMethodOutcome" : "T012",
+      "lineNumbers" : [
+        119
+      ]
     },
     "com.regnosys.rosetta.common.translation.flat.IndexCapturePath$IndexCapturePathElement.<init>:(Ljava/lang/String;Ljava/util/Optional;Ljava/util/Optional;)V" : {
       "completeTestCount" : 0,
@@ -15904,12 +15963,12 @@
       ]
     },
     "com.regnosys.rosetta.common.translation.flat.IndexCapturePath$IndexCapturePathElement.equals:(Ljava/lang/Object;)Z" : {
-      "completeTestCount" : 6,
+      "completeTestCount" : 5,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 6
+        "R000" : 5
       },
       "lineNumbers" : [
         162,
@@ -15938,12 +15997,12 @@
       ]
     },
     "com.regnosys.rosetta.common.translation.flat.IndexCapturePath$IndexCapturePathElement.hashCode:()I" : {
-      "completeTestCount" : 6,
+      "completeTestCount" : 5,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 6
+        "R000" : 5
       },
       "lineNumbers" : [
         152,
@@ -16099,12 +16158,12 @@
       ]
     },
     "com.regnosys.rosetta.common.translation.flat.IndexCapturePath.equals:(Ljava/lang/Object;)Z" : {
-      "completeTestCount" : 6,
+      "completeTestCount" : 5,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 6
+        "R000" : 5
       },
       "lineNumbers" : [
         68,
@@ -16136,12 +16195,12 @@
       ]
     },
     "com.regnosys.rosetta.common.translation.flat.IndexCapturePath.hashCode:()I" : {
-      "completeTestCount" : 6,
+      "completeTestCount" : 5,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 6
+        "R000" : 5
       },
       "lineNumbers" : [
         60,
@@ -16284,8 +16343,11 @@
     "com.regnosys.rosetta.common.util.ClassPathUtils.<clinit>:()V" : {
       "completeTestCount" : 0,
       "incompleteTestCount" : 0,
-      "perMethodTestability" : "T023",
-      "perMethodOutcome" : "T023"
+      "perMethodTestability" : "T012",
+      "perMethodOutcome" : "T012",
+      "lineNumbers" : [
+        41
+      ]
     },
     "com.regnosys.rosetta.common.util.ClassPathUtils.<init>:()V" : {
       "completeTestCount" : 0,
@@ -16297,12 +16359,15 @@
       ]
     },
     "com.regnosys.rosetta.common.util.ClassPathUtils.expandPaths:(Ljava/util/Collection;Ljava/lang/String;Ljava/util/Optional;)Ljava/util/List;" : {
-      "completeTestCount" : 3,
+      "completeTestCount" : 4,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
-      "perMethodOutcome" : "R024",
+      "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 3
+        "R000" : 4
+      },
+      "warnings" : {
+        "W002" : 2
       },
       "lineNumbers" : [
         73,
@@ -16345,10 +16410,13 @@
       ]
     },
     "com.regnosys.rosetta.common.util.ClassPathUtils.getResource:(Ljava/nio/file/Path;)Ljava/net/URL;" : {
-      "completeTestCount" : 0,
+      "completeTestCount" : 1,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
-      "perMethodOutcome" : "F009",
+      "perMethodOutcome" : "R024",
+      "perTestOutcome" : {
+        "R000" : 1
+      },
       "lineNumbers" : [
         80
       ]
@@ -16357,7 +16425,7 @@
       "completeTestCount" : 0,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
-      "perMethodOutcome" : "F009",
+      "perMethodOutcome" : "R024",
       "lineNumbers" : [
         84
       ]
@@ -16602,7 +16670,7 @@
       "completeTestCount" : 0,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
-      "perMethodOutcome" : "R002",
+      "perMethodOutcome" : "R004",
       "lineNumbers" : [
         60,
         61,
@@ -16662,12 +16730,12 @@
       ]
     },
     "com.regnosys.rosetta.common.util.Pair.equals:(Ljava/lang/Object;)Z" : {
-      "completeTestCount" : 9,
+      "completeTestCount" : 8,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 9
+        "R000" : 8
       },
       "lineNumbers" : [
         49,
@@ -16679,12 +16747,12 @@
       ]
     },
     "com.regnosys.rosetta.common.util.Pair.hashCode:()I" : {
-      "completeTestCount" : 9,
+      "completeTestCount" : 8,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 9
+        "R000" : 8
       },
       "lineNumbers" : [
         61
@@ -17063,8 +17131,11 @@
     "com.regnosys.rosetta.common.util.PathValue.<clinit>:()V" : {
       "completeTestCount" : 0,
       "incompleteTestCount" : 0,
-      "perMethodTestability" : "T023",
-      "perMethodOutcome" : "T023"
+      "perMethodTestability" : "T012",
+      "perMethodOutcome" : "T012",
+      "lineNumbers" : [
+        27
+      ]
     },
     "com.regnosys.rosetta.common.util.PathValue.<init>:(Lcom/rosetta/model/lib/path/RosettaPath;Ljava/lang/String;)V" : {
       "completeTestCount" : 1,
@@ -17370,7 +17441,7 @@
       "completeTestCount" : 0,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
-      "perMethodOutcome" : "R002",
+      "perMethodOutcome" : "R004",
       "lineNumbers" : [
         61
       ]
@@ -17390,12 +17461,12 @@
       ]
     },
     "com.regnosys.rosetta.common.util.SimpleProcessor.processRosetta:(Lcom/rosetta/model/lib/path/RosettaPath;Ljava/lang/Class;Ljava/util/List;Lcom/rosetta/model/lib/RosettaModelObject;[Lcom/rosetta/model/lib/process/AttributeMeta;)Z" : {
-      "completeTestCount" : 3,
+      "completeTestCount" : 2,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 3
+        "R000" : 2
       },
       "lineNumbers" : [
         38,
@@ -17453,12 +17524,12 @@
       ]
     },
     "com.regnosys.rosetta.common.util.StreamUtils.flattenTree:(Ljava/util/function/Function;Ljava/util/Collection;)Ljava/util/function/Function;" : {
-      "completeTestCount" : 5,
+      "completeTestCount" : 4,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 5
+        "R000" : 4
       },
       "lineNumbers" : [
         58
@@ -17639,24 +17710,24 @@
       ]
     },
     "com.regnosys.rosetta.common.util.StreamUtils.recurse:(Ljava/lang/Object;Ljava/util/function/Function;)Ljava/util/stream/Stream;" : {
-      "completeTestCount" : 4,
+      "completeTestCount" : 3,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 4
+        "R000" : 3
       },
       "lineNumbers" : [
         114
       ]
     },
     "com.regnosys.rosetta.common.util.StreamUtils.recurse:(Ljava/lang/Object;Ljava/util/function/Function;Ljava/util/Collection;)Ljava/util/stream/Stream;" : {
-      "completeTestCount" : 5,
+      "completeTestCount" : 4,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 5
+        "R000" : 4
       },
       "lineNumbers" : [
         118,
@@ -17668,12 +17739,12 @@
       ]
     },
     "com.regnosys.rosetta.common.util.StreamUtils.visitBiTree:(Ljava/lang/Object;Ljava/util/function/Consumer;Ljava/util/function/Function;Ljava/util/function/Function;)V" : {
-      "completeTestCount" : 5,
+      "completeTestCount" : 3,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 5
+        "R000" : 3
       },
       "lineNumbers" : [
         83,
@@ -17694,12 +17765,12 @@
       ]
     },
     "com.regnosys.rosetta.common.util.StreamUtils.visitTreeC:(Ljava/lang/Object;Ljava/util/function/Consumer;Ljava/util/function/Function;)V" : {
-      "completeTestCount" : 4,
+      "completeTestCount" : 3,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 4
+        "R000" : 3
       },
       "lineNumbers" : [
         67,
@@ -17718,12 +17789,12 @@
       ]
     },
     "com.regnosys.rosetta.common.util.StreamUtils.visitTreeS:(Ljava/lang/Object;Ljava/util/function/Consumer;Ljava/util/function/Function;)V" : {
-      "completeTestCount" : 4,
+      "completeTestCount" : 3,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 4
+        "R000" : 3
       },
       "lineNumbers" : [
         100,
@@ -17881,13 +17952,10 @@
       ]
     },
     "com.regnosys.rosetta.common.util.TeeReader.<init>:(Ljava/io/Reader;)V" : {
-      "completeTestCount" : 1,
+      "completeTestCount" : 0,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
-      "perMethodOutcome" : "R000",
-      "perTestOutcome" : {
-        "R000" : 1
-      },
+      "perMethodOutcome" : "R024",
       "lineNumbers" : [
         40,
         31,
@@ -17967,7 +18035,7 @@
       "completeTestCount" : 0,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
-      "perMethodOutcome" : "R013",
+      "perMethodOutcome" : "F009",
       "lineNumbers" : [
         46,
         47,
@@ -17976,13 +18044,10 @@
       ]
     },
     "com.regnosys.rosetta.common.util.TeeReader.splitInto:(I)[Ljava/io/Reader;" : {
-      "completeTestCount" : 1,
+      "completeTestCount" : 0,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
-      "perMethodOutcome" : "R000",
-      "perTestOutcome" : {
-        "R000" : 1
-      },
+      "perMethodOutcome" : "F009",
       "lineNumbers" : [
         53,
         54,
@@ -17995,8 +18060,11 @@
     "com.regnosys.rosetta.common.util.UrlUtils.<clinit>:()V" : {
       "completeTestCount" : 0,
       "incompleteTestCount" : 0,
-      "perMethodTestability" : "T023",
-      "perMethodOutcome" : "T023"
+      "perMethodTestability" : "T012",
+      "perMethodOutcome" : "T012",
+      "lineNumbers" : [
+        41
+      ]
     },
     "com.regnosys.rosetta.common.util.UrlUtils.<init>:()V" : {
       "completeTestCount" : 0,
@@ -18188,8 +18256,11 @@
     "com.regnosys.rosetta.common.validation.RosettaTypeValidator.<clinit>:()V" : {
       "completeTestCount" : 0,
       "incompleteTestCount" : 0,
-      "perMethodTestability" : "T023",
-      "perMethodOutcome" : "T023"
+      "perMethodTestability" : "T012",
+      "perMethodOutcome" : "T012",
+      "lineNumbers" : [
+        45
+      ]
     },
     "com.regnosys.rosetta.common.validation.RosettaTypeValidator.<init>:()V" : {
       "completeTestCount" : 1,
@@ -18237,12 +18308,12 @@
       ]
     },
     "com.regnosys.rosetta.common.validation.RosettaTypeValidator.runProcessStep:(Ljava/lang/Class;Lcom/rosetta/model/lib/RosettaModelObject;)Lcom/regnosys/rosetta/common/validation/ValidationReport;" : {
-      "completeTestCount" : 8,
+      "completeTestCount" : 9,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 8
+        "R000" : 9
       },
       "lineNumbers" : [
         52,
@@ -18322,8 +18393,11 @@
     "com.regnosys.rosetta.common.validation.ValidationReport.<clinit>:()V" : {
       "completeTestCount" : 0,
       "incompleteTestCount" : 0,
-      "perMethodTestability" : "T023",
-      "perMethodOutcome" : "T023"
+      "perMethodTestability" : "T012",
+      "perMethodOutcome" : "T012",
+      "lineNumbers" : [
+        39
+      ]
     },
     "com.regnosys.rosetta.common.validation.ValidationReport.<init>:(Lcom/rosetta/model/lib/RosettaModelObject;Ljava/util/List;)V" : {
       "completeTestCount" : 3,
@@ -18439,6 +18513,5 @@
         58
       ]
     }
-  },
-  "validationMetrics" : { }
+  }
 }

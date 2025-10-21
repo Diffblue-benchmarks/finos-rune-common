@@ -20,15 +20,15 @@ package com.regnosys.rosetta.common.translation;
  * ==============
  */
 
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertSame;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertThrows;
+import static org.junit.Assert.assertTrue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import com.regnosys.rosetta.common.hashing.ScopeReferenceHelper;
 import com.regnosys.rosetta.common.translation.Path.PathElement;
@@ -38,16 +38,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Tag;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
-class PathDiffblueTest {
+public class PathDiffblueTest {
   /**
    * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link Path#Path(List)}
    *   <li>{@link Path#toString()}
@@ -55,11 +53,9 @@ class PathDiffblueTest {
    * </ul>
    */
   @Test
-  @DisplayName("Test getters and setters")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void Path.<init>(List)", "List Path.getElements()", "String Path.toString()"})
-  void testGettersAndSetters() {
+  public void testGettersAndSetters() {
     // Arrange
     ArrayList<PathElement> elements = new ArrayList<>();
 
@@ -76,15 +72,13 @@ class PathDiffblueTest {
 
   /**
    * Test {@link Path#Path()}.
-   *
-   * <p>Method under test: {@link Path#Path()}
+   * <p>
+   * Method under test: {@link Path#Path()}
    */
   @Test
-  @DisplayName("Test new Path()")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void Path.<init>()"})
-  void testNewPath() {
+  public void testNewPath() {
     // Arrange and Act
     Path actualPath = new Path();
 
@@ -96,57 +90,48 @@ class PathDiffblueTest {
 
   /**
    * Test PathElement {@link PathElement#equals(Object)}, and {@link PathElement#hashCode()}.
-   *
    * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
+   *   <li>When other is equal.</li>
+   *   <li>Then return equal.</li>
    * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link PathElement#equals(Object)}
    *   <li>{@link PathElement#hashCode()}
    * </ul>
    */
   @Test
-  @DisplayName(
-      "Test PathElement equals(Object), and hashCode(); when other is equal; then return equal")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean PathElement.equals(Object)", "int PathElement.hashCode()"})
-  void testPathElementEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
+  public void testPathElementEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
     // Arrange
     PathElement parseResult = PathElement.parse("foo", true);
     PathElement parseResult2 = PathElement.parse("foo", true);
 
     // Act and Assert
     assertEquals(parseResult, parseResult2);
-    assertEquals(parseResult.hashCode(), parseResult2.hashCode());
+    int expectedHashCodeResult = parseResult.hashCode();
+    assertEquals(expectedHashCodeResult, parseResult2.hashCode());
   }
 
   /**
    * Test PathElement {@link PathElement#equals(Object)}, and {@link PathElement#hashCode()}.
-   *
    * <ul>
-   *   <li>When other is same.
-   *   <li>Then return equal.
+   *   <li>When other is same.</li>
+   *   <li>Then return equal.</li>
    * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link PathElement#equals(Object)}
    *   <li>{@link PathElement#hashCode()}
    * </ul>
    */
   @Test
-  @DisplayName(
-      "Test PathElement equals(Object), and hashCode(); when other is same; then return equal")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean PathElement.equals(Object)", "int PathElement.hashCode()"})
-  void testPathElementEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
+  public void testPathElementEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
     PathElement parseResult = PathElement.parse("foo", true);
 
@@ -158,43 +143,17 @@ class PathDiffblueTest {
 
   /**
    * Test PathElement {@link PathElement#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link PathElement#equals(Object)}
+   * <p>
+   * Method under test: {@link PathElement#equals(Object)}
    */
   @Test
-  @DisplayName("Test PathElement equals(Object); when other is different; then return not equal")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean PathElement.equals(Object)", "int PathElement.hashCode()"})
-  void testPathElementEquals_whenOtherIsDifferent_thenReturnNotEqual() {
-    // Arrange
-    PathElement pathElement = new PathElement("foo", 1);
-
-    // Act and Assert
-    assertNotEquals(pathElement, PathElement.parse("foo", true));
-  }
-
-  /**
-   * Test PathElement {@link PathElement#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link PathElement#equals(Object)}
-   */
-  @Test
-  @DisplayName("Test PathElement equals(Object); when other is different; then return not equal")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean PathElement.equals(Object)", "int PathElement.hashCode()"})
-  void testPathElementEquals_whenOtherIsDifferent_thenReturnNotEqual2() {
+  public void testPathElementEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange
     PathElement parseResult = PathElement.parse("42", true);
 
@@ -204,60 +163,71 @@ class PathDiffblueTest {
 
   /**
    * Test PathElement {@link PathElement#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is {@code null}.
-   *   <li>Then return not equal.
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link PathElement#equals(Object)}
+   * <p>
+   * Method under test: {@link PathElement#equals(Object)}
    */
   @Test
-  @DisplayName("Test PathElement equals(Object); when other is 'null'; then return not equal")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean PathElement.equals(Object)", "int PathElement.hashCode()"})
-  void testPathElementEquals_whenOtherIsNull_thenReturnNotEqual() {
+  public void testPathElementEquals_whenOtherIsDifferent_thenReturnNotEqual2() {
+    // Arrange
+    PathElement pathElement = new PathElement("foo", 1);
+
+    // Act and Assert
+    assertNotEquals(pathElement, PathElement.parse("foo", true));
+  }
+
+  /**
+   * Test PathElement {@link PathElement#equals(Object)}.
+   * <ul>
+   *   <li>When other is {@code null}.</li>
+   *   <li>Then return not equal.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link PathElement#equals(Object)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean PathElement.equals(Object)", "int PathElement.hashCode()"})
+  public void testPathElementEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(PathElement.parse("foo", true), null);
   }
 
   /**
    * Test PathElement {@link PathElement#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is wrong type.
-   *   <li>Then return not equal.
+   *   <li>When other is wrong type.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link PathElement#equals(Object)}
+   * <p>
+   * Method under test: {@link PathElement#equals(Object)}
    */
   @Test
-  @DisplayName("Test PathElement equals(Object); when other is wrong type; then return not equal")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean PathElement.equals(Object)", "int PathElement.hashCode()"})
-  void testPathElementEquals_whenOtherIsWrongType_thenReturnNotEqual() {
+  public void testPathElementEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(PathElement.parse("foo", true), "Different type to PathElement");
   }
 
   /**
    * Test PathElement {@link PathElement#forceGetIndex()}.
-   *
    * <ul>
-   *   <li>Given parse {@code foo} and {@code true}.
-   *   <li>Then return zero.
+   *   <li>Given parse {@code foo} and {@code true}.</li>
+   *   <li>Then return zero.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link PathElement#forceGetIndex()}
+   * <p>
+   * Method under test: {@link PathElement#forceGetIndex()}
    */
   @Test
-  @DisplayName("Test PathElement forceGetIndex(); given parse 'foo' and 'true'; then return zero")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"int PathElement.forceGetIndex()"})
-  void testPathElementForceGetIndex_givenParseFooAndTrue_thenReturnZero() {
+  public void testPathElementForceGetIndex_givenParseFooAndTrue_thenReturnZero() {
     // Arrange
     PathElement parseResult = PathElement.parse("foo", true);
 
@@ -270,19 +240,16 @@ class PathDiffblueTest {
 
   /**
    * Test PathElement {@link PathElement#forceGetIndex()}.
-   *
    * <ul>
-   *   <li>Then return one.
+   *   <li>Then return one.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link PathElement#forceGetIndex()}
+   * <p>
+   * Method under test: {@link PathElement#forceGetIndex()}
    */
   @Test
-  @DisplayName("Test PathElement forceGetIndex(); then return one")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"int PathElement.forceGetIndex()"})
-  void testPathElementForceGetIndex_thenReturnOne() {
+  public void testPathElementForceGetIndex_thenReturnOne() {
     // Arrange
     PathElement pathElement = new PathElement("Path Name", 1);
 
@@ -295,9 +262,8 @@ class PathDiffblueTest {
 
   /**
    * Test PathElement getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link PathElement#toString()}
    *   <li>{@link PathElement#getIndex()}
@@ -306,16 +272,10 @@ class PathDiffblueTest {
    * </ul>
    */
   @Test
-  @DisplayName("Test PathElement getters and setters")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "Optional PathElement.getIndex()",
-    "Map PathElement.getMetas()",
-    "String PathElement.getPathName()",
-    "String PathElement.toString()"
-  })
-  void testPathElementGettersAndSetters() {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Optional PathElement.getIndex()", "Map PathElement.getMetas()",
+      "String PathElement.getPathName()", "String PathElement.toString()"})
+  public void testPathElementGettersAndSetters() {
     // Arrange
     PathElement parseResult = PathElement.parse("foo", true);
 
@@ -333,15 +293,13 @@ class PathDiffblueTest {
 
   /**
    * Test PathElement {@link PathElement#PathElement(String)}.
-   *
-   * <p>Method under test: {@link PathElement#PathElement(String)}
+   * <p>
+   * Method under test: {@link PathElement#PathElement(String)}
    */
   @Test
-  @DisplayName("Test PathElement new PathElement(String)")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void PathElement.<init>(String)"})
-  void testPathElementNewPathElement() {
+  public void testPathElementNewPathElement() {
     // Arrange and Act
     PathElement actualPathElement = new PathElement("Path Name");
 
@@ -353,15 +311,13 @@ class PathDiffblueTest {
 
   /**
    * Test PathElement {@link PathElement#PathElement(String, int)}.
-   *
-   * <p>Method under test: {@link PathElement#PathElement(String, int)}
+   * <p>
+   * Method under test: {@link PathElement#PathElement(String, int)}
    */
   @Test
-  @DisplayName("Test PathElement new PathElement(String, int)")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void PathElement.<init>(String, int)"})
-  void testPathElementNewPathElement2() {
+  public void testPathElementNewPathElement2() {
     // Arrange and Act
     PathElement actualPathElement = new PathElement("Path Name", 1);
 
@@ -375,15 +331,13 @@ class PathDiffblueTest {
 
   /**
    * Test PathElement {@link PathElement#PathElement(String, int, Map)}.
-   *
-   * <p>Method under test: {@link PathElement#PathElement(String, int, Map)}
+   * <p>
+   * Method under test: {@link PathElement#PathElement(String, int, Map)}
    */
   @Test
-  @DisplayName("Test PathElement new PathElement(String, int, Map)")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void PathElement.<init>(String, int, Map)"})
-  void testPathElementNewPathElement3() {
+  public void testPathElementNewPathElement3() {
     // Arrange and Act
     PathElement actualPathElement = new PathElement("Path Name", 1, new HashMap<>());
 
@@ -397,15 +351,13 @@ class PathDiffblueTest {
 
   /**
    * Test PathElement {@link PathElement#PathElement(String, Map)}.
-   *
-   * <p>Method under test: {@link PathElement#PathElement(String, Map)}
+   * <p>
+   * Method under test: {@link PathElement#PathElement(String, Map)}
    */
   @Test
-  @DisplayName("Test PathElement new PathElement(String, Map)")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void PathElement.<init>(String, Map)"})
-  void testPathElementNewPathElement4() {
+  public void testPathElementNewPathElement4() {
     // Arrange and Act
     PathElement actualPathElement = new PathElement("Path Name", new HashMap<>());
 
@@ -417,17 +369,15 @@ class PathDiffblueTest {
 
   /**
    * Test PathElement {@link PathElement#PathElement(String, Optional, Map)}.
-   *
-   * <p>Method under test: {@link PathElement#PathElement(String, Optional, Map)}
+   * <p>
+   * Method under test: {@link PathElement#PathElement(String, Optional, Map)}
    */
   @Test
-  @DisplayName("Test PathElement new PathElement(String, Optional, Map)")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void PathElement.<init>(String, Optional, Map)"})
-  void testPathElementNewPathElement5() {
+  public void testPathElementNewPathElement5() {
     // Arrange
-    Optional<Integer> index = Optional.of(1);
+    Optional<Integer> index = Optional.<Integer>of(1);
 
     // Act
     PathElement actualPathElement = new PathElement("Path Name", index, new HashMap<>());
@@ -439,23 +389,18 @@ class PathDiffblueTest {
   }
 
   /**
-   * Test PathElement {@link PathElement#parse(String, boolean)} with {@code s}, {@code
-   * allowWildcard}.
-   *
+   * Test PathElement {@link PathElement#parse(String, boolean)} with {@code s}, {@code allowWildcard}.
    * <ul>
-   *   <li>When {@code *[9]}.
-   *   <li>Then return PathName is {@code *}.
+   *   <li>When {@code *[9]}.</li>
+   *   <li>Then return PathName is {@code *}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link PathElement#parse(String, boolean)}
+   * <p>
+   * Method under test: {@link PathElement#parse(String, boolean)}
    */
   @Test
-  @DisplayName(
-      "Test PathElement parse(String, boolean) with 's', 'allowWildcard'; when '*[9]'; then return PathName is '*'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"PathElement PathElement.parse(String, boolean)"})
-  void testPathElementParseWithSAllowWildcard_when9_thenReturnPathNameIsAsterisk() {
+  public void testPathElementParseWithSAllowWildcard_when9_thenReturnPathNameIsAsterisk() {
     // Arrange and Act
     PathElement actualParseResult = PathElement.parse("*[9]", true);
 
@@ -468,23 +413,18 @@ class PathDiffblueTest {
   }
 
   /**
-   * Test PathElement {@link PathElement#parse(String, boolean)} with {@code s}, {@code
-   * allowWildcard}.
-   *
+   * Test PathElement {@link PathElement#parse(String, boolean)} with {@code s}, {@code allowWildcard}.
    * <ul>
-   *   <li>When {@code foo}.
-   *   <li>Then return PathName is {@code foo}.
+   *   <li>When {@code foo}.</li>
+   *   <li>Then return PathName is {@code foo}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link PathElement#parse(String, boolean)}
+   * <p>
+   * Method under test: {@link PathElement#parse(String, boolean)}
    */
   @Test
-  @DisplayName(
-      "Test PathElement parse(String, boolean) with 's', 'allowWildcard'; when 'foo'; then return PathName is 'foo'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"PathElement PathElement.parse(String, boolean)"})
-  void testPathElementParseWithSAllowWildcard_whenFoo_thenReturnPathNameIsFoo() {
+  public void testPathElementParseWithSAllowWildcard_whenFoo_thenReturnPathNameIsFoo() {
     // Arrange and Act
     PathElement actualParseResult = PathElement.parse("foo", true);
 
@@ -495,23 +435,18 @@ class PathDiffblueTest {
   }
 
   /**
-   * Test PathElement {@link PathElement#parse(String, boolean)} with {@code s}, {@code
-   * allowWildcard}.
-   *
+   * Test PathElement {@link PathElement#parse(String, boolean)} with {@code s}, {@code allowWildcard}.
    * <ul>
-   *   <li>When {@code foo}.
-   *   <li>Then return PathName is {@code foo}.
+   *   <li>When {@code foo}.</li>
+   *   <li>Then return PathName is {@code foo}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link PathElement#parse(String, boolean)}
+   * <p>
+   * Method under test: {@link PathElement#parse(String, boolean)}
    */
   @Test
-  @DisplayName(
-      "Test PathElement parse(String, boolean) with 's', 'allowWildcard'; when 'foo'; then return PathName is 'foo'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"PathElement PathElement.parse(String, boolean)"})
-  void testPathElementParseWithSAllowWildcard_whenFoo_thenReturnPathNameIsFoo2() {
+  public void testPathElementParseWithSAllowWildcard_whenFoo_thenReturnPathNameIsFoo2() {
     // Arrange and Act
     PathElement actualParseResult = PathElement.parse("foo", false);
 
@@ -522,43 +457,35 @@ class PathDiffblueTest {
   }
 
   /**
-   * Test PathElement {@link PathElement#parse(String, boolean)} with {@code s}, {@code
-   * allowWildcard}.
-   *
+   * Test PathElement {@link PathElement#parse(String, boolean)} with {@code s}, {@code allowWildcard}.
    * <ul>
-   *   <li>When {@code ([*]|\w*)(\[(\d*)])?}.
-   *   <li>Then throw {@link PathException}.
+   *   <li>When {@code ([*]|\w*)(\[(\d*)])?}.</li>
+   *   <li>Then throw {@link PathException}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link PathElement#parse(String, boolean)}
+   * <p>
+   * Method under test: {@link PathElement#parse(String, boolean)}
    */
   @Test
-  @DisplayName(
-      "Test PathElement parse(String, boolean) with 's', 'allowWildcard'; when '([*]|\\w*)(\\[(\\d*)])?'; then throw PathException")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"PathElement PathElement.parse(String, boolean)"})
-  void testPathElementParseWithSAllowWildcard_whenWD_thenThrowPathException() {
+  public void testPathElementParseWithSAllowWildcard_whenWD_thenThrowPathException() {
     // Arrange, Act and Assert
     assertThrows(PathException.class, () -> PathElement.parse("([*]|\\w*)(\\[(\\d*)])?", true));
   }
 
   /**
    * Test PathElement {@link PathElement#parse(String)} with {@code s}.
-   *
    * <ul>
-   *   <li>When {@code foo}.
-   *   <li>Then return PathName is {@code foo}.
+   *   <li>When {@code foo}.</li>
+   *   <li>Then return PathName is {@code foo}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link PathElement#parse(String)}
+   * <p>
+   * Method under test: {@link PathElement#parse(String)}
    */
   @Test
-  @DisplayName("Test PathElement parse(String) with 's'; when 'foo'; then return PathName is 'foo'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"PathElement PathElement.parse(String)"})
-  void testPathElementParseWithS_whenFoo_thenReturnPathNameIsFoo() {
+  public void testPathElementParseWithS_whenFoo_thenReturnPathNameIsFoo() {
     // Arrange and Act
     PathElement actualParseResult = PathElement.parse("foo");
 
@@ -570,20 +497,17 @@ class PathDiffblueTest {
 
   /**
    * Test PathElement {@link PathElement#parse(String)} with {@code s}.
-   *
    * <ul>
-   *   <li>When {@code U[9]}.
-   *   <li>Then return PathName is {@code U}.
+   *   <li>When {@code U[9]}.</li>
+   *   <li>Then return PathName is {@code U}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link PathElement#parse(String)}
+   * <p>
+   * Method under test: {@link PathElement#parse(String)}
    */
   @Test
-  @DisplayName("Test PathElement parse(String) with 's'; when 'U[9]'; then return PathName is 'U'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"PathElement PathElement.parse(String)"})
-  void testPathElementParseWithS_whenU9_thenReturnPathNameIsU() {
+  public void testPathElementParseWithS_whenU9_thenReturnPathNameIsU() {
     // Arrange and Act
     PathElement actualParseResult = PathElement.parse("U[9]");
 
@@ -597,43 +521,35 @@ class PathDiffblueTest {
 
   /**
    * Test PathElement {@link PathElement#parse(String)} with {@code s}.
-   *
    * <ul>
-   *   <li>When {@code ([*]|\w*)(\[(\d*)])?}.
-   *   <li>Then throw {@link PathException}.
+   *   <li>When {@code ([*]|\w*)(\[(\d*)])?}.</li>
+   *   <li>Then throw {@link PathException}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link PathElement#parse(String)}
+   * <p>
+   * Method under test: {@link PathElement#parse(String)}
    */
   @Test
-  @DisplayName(
-      "Test PathElement parse(String) with 's'; when '([*]|\\w*)(\\[(\\d*)])?'; then throw PathException")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"PathElement PathElement.parse(String)"})
-  void testPathElementParseWithS_whenWD_thenThrowPathException() {
+  public void testPathElementParseWithS_whenWD_thenThrowPathException() {
     // Arrange, Act and Assert
     assertThrows(PathException.class, () -> PathElement.parse("([*]|\\w*)(\\[(\\d*)])?"));
   }
 
   /**
    * Test {@link Path#valueOf(List)} with {@code List}.
-   *
    * <ul>
-   *   <li>Given {@code 42}.
-   *   <li>When {@link ArrayList#ArrayList()} add {@code 42}.
-   *   <li>Then return Parent Elements size is one.
+   *   <li>Given {@code 42}.</li>
+   *   <li>When {@link ArrayList#ArrayList()} add {@code 42}.</li>
+   *   <li>Then return Parent Elements size is one.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link Path#valueOf(List)}
+   * <p>
+   * Method under test: {@link Path#valueOf(List)}
    */
   @Test
-  @DisplayName(
-      "Test valueOf(List) with 'List'; given '42'; when ArrayList() add '42'; then return Parent Elements size is one")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Path Path.valueOf(List)"})
-  void testValueOfWithList_given42_whenArrayListAdd42_thenReturnParentElementsSizeIsOne() {
+  public void testValueOfWithList_given42_whenArrayListAdd42_thenReturnParentElementsSizeIsOne() {
     // Arrange
     ArrayList<String> path = new ArrayList<>();
     path.add("42");
@@ -648,27 +564,24 @@ class PathDiffblueTest {
     assertEquals(1, parent.getPathNames().length);
     List<PathElement> elements = actualValueOfResult.getElements();
     assertEquals(2, elements.size());
-    assertSame(elements.get(0), parent.getLastElement());
-    assertArrayEquals(new String[] {"42", "foo"}, actualValueOfResult.getPathNames());
+    PathElement expectedLastElement = elements.get(0);
+    assertSame(expectedLastElement, parent.getLastElement());
+    assertArrayEquals(new String[]{"42", "foo"}, actualValueOfResult.getPathNames());
   }
 
   /**
    * Test {@link Path#valueOf(List)} with {@code List}.
-   *
    * <ul>
-   *   <li>Given {@code foo}.
-   *   <li>Then return Parent LastElement is {@code null}.
+   *   <li>Given {@code foo}.</li>
+   *   <li>Then return Parent LastElement is {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link Path#valueOf(List)}
+   * <p>
+   * Method under test: {@link Path#valueOf(List)}
    */
   @Test
-  @DisplayName(
-      "Test valueOf(List) with 'List'; given 'foo'; then return Parent LastElement is 'null'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Path Path.valueOf(List)"})
-  void testValueOfWithList_givenFoo_thenReturnParentLastElementIsNull() {
+  public void testValueOfWithList_givenFoo_thenReturnParentLastElementIsNull() {
     // Arrange
     ArrayList<String> path = new ArrayList<>();
     path.add("foo");
@@ -682,26 +595,22 @@ class PathDiffblueTest {
     assertEquals(0, parent.getPathNames().length);
     assertEquals(1, actualValueOfResult.getElements().size());
     assertTrue(parent.getElements().isEmpty());
-    assertArrayEquals(new String[] {"foo"}, actualValueOfResult.getPathNames());
+    assertArrayEquals(new String[]{"foo"}, actualValueOfResult.getPathNames());
   }
 
   /**
    * Test {@link Path#valueOf(List)} with {@code List}.
-   *
    * <ul>
-   *   <li>When {@link ArrayList#ArrayList()}.
-   *   <li>Then return LastElement is {@code null}.
+   *   <li>When {@link ArrayList#ArrayList()}.</li>
+   *   <li>Then return LastElement is {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link Path#valueOf(List)}
+   * <p>
+   * Method under test: {@link Path#valueOf(List)}
    */
   @Test
-  @DisplayName(
-      "Test valueOf(List) with 'List'; when ArrayList(); then return LastElement is 'null'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Path Path.valueOf(List)"})
-  void testValueOfWithList_whenArrayList_thenReturnLastElementIsNull() {
+  public void testValueOfWithList_whenArrayList_thenReturnLastElementIsNull() {
     // Arrange and Act
     Path actualValueOfResult = Path.valueOf(new ArrayList<>());
 
@@ -713,15 +622,13 @@ class PathDiffblueTest {
 
   /**
    * Test {@link Path#valueOf(String)} with {@code String}.
-   *
-   * <p>Method under test: {@link Path#valueOf(String)}
+   * <p>
+   * Method under test: {@link Path#valueOf(String)}
    */
   @Test
-  @DisplayName("Test valueOf(String) with 'String'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Path Path.valueOf(String)"})
-  void testValueOfWithString() {
+  public void testValueOfWithString() {
     // Arrange and Act
     Path actualValueOfResult = Path.valueOf("Path");
 
@@ -737,26 +644,22 @@ class PathDiffblueTest {
     assertTrue(parent.getElements().isEmpty());
     assertTrue(lastElement.getMetas().isEmpty());
     assertSame(lastElement, elements.get(0));
-    assertArrayEquals(new String[] {"Path"}, actualValueOfResult.getPathNames());
+    assertArrayEquals(new String[]{"Path"}, actualValueOfResult.getPathNames());
   }
 
   /**
    * Test {@link Path#addElement(PathElement)} with {@code element}.
-   *
    * <ul>
-   *   <li>Given {@link ScopeReferenceHelper#EMPTY_SCOPE}.
-   *   <li>Then return Elements size is two.
+   *   <li>Given {@link ScopeReferenceHelper#EMPTY_SCOPE}.</li>
+   *   <li>Then return Elements size is two.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link Path#addElement(PathElement)}
+   * <p>
+   * Method under test: {@link Path#addElement(PathElement)}
    */
   @Test
-  @DisplayName(
-      "Test addElement(PathElement) with 'element'; given EMPTY_SCOPE; then return Elements size is two")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Path Path.addElement(PathElement)"})
-  void testAddElementWithElement_givenEmpty_scope_thenReturnElementsSizeIsTwo() {
+  public void testAddElementWithElement_givenEmpty_scope_thenReturnElementsSizeIsTwo() {
     // Arrange
     Path path = ScopeReferenceHelper.EMPTY_SCOPE;
     PathElement element = PathElement.parse("foo", true);
@@ -769,26 +672,22 @@ class PathDiffblueTest {
     assertEquals(2, elements.size());
     assertEquals(path, actualAddElementResult.getParent());
     assertSame(element, elements.get(1));
-    assertArrayEquals(new String[] {"emptyScope", "foo"}, actualAddElementResult.getPathNames());
+    assertArrayEquals(new String[]{"emptyScope", "foo"}, actualAddElementResult.getPathNames());
   }
 
   /**
    * Test {@link Path#addElement(PathElement)} with {@code element}.
-   *
    * <ul>
-   *   <li>Given {@link Path#Path()}.
-   *   <li>Then return Elements size is one.
+   *   <li>Given {@link Path#Path()}.</li>
+   *   <li>Then return Elements size is one.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link Path#addElement(PathElement)}
+   * <p>
+   * Method under test: {@link Path#addElement(PathElement)}
    */
   @Test
-  @DisplayName(
-      "Test addElement(PathElement) with 'element'; given Path(); then return Elements size is one")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Path Path.addElement(PathElement)"})
-  void testAddElementWithElement_givenPath_thenReturnElementsSizeIsOne() {
+  public void testAddElementWithElement_givenPath_thenReturnElementsSizeIsOne() {
     // Arrange
     Path path = new Path();
     PathElement element = PathElement.parse("foo", true);
@@ -801,26 +700,22 @@ class PathDiffblueTest {
     assertEquals(1, elements.size());
     assertEquals(path, actualAddElementResult.getParent());
     assertSame(element, elements.get(0));
-    assertArrayEquals(new String[] {"foo"}, actualAddElementResult.getPathNames());
+    assertArrayEquals(new String[]{"foo"}, actualAddElementResult.getPathNames());
   }
 
   /**
    * Test {@link Path#addElement(String, Integer)} with {@code name}, {@code index}.
-   *
    * <ul>
-   *   <li>Given {@link ScopeReferenceHelper#EMPTY_SCOPE}.
-   *   <li>Then return Elements size is two.
+   *   <li>Given {@link ScopeReferenceHelper#EMPTY_SCOPE}.</li>
+   *   <li>Then return Elements size is two.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link Path#addElement(String, Integer)}
+   * <p>
+   * Method under test: {@link Path#addElement(String, Integer)}
    */
   @Test
-  @DisplayName(
-      "Test addElement(String, Integer) with 'name', 'index'; given EMPTY_SCOPE; then return Elements size is two")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Path Path.addElement(String, Integer)"})
-  void testAddElementWithNameIndex_givenEmpty_scope_thenReturnElementsSizeIsTwo() {
+  public void testAddElementWithNameIndex_givenEmpty_scope_thenReturnElementsSizeIsTwo() {
     // Arrange
     Path path = ScopeReferenceHelper.EMPTY_SCOPE;
 
@@ -830,26 +725,22 @@ class PathDiffblueTest {
     // Assert
     assertEquals(2, actualAddElementResult.getElements().size());
     assertEquals(path, actualAddElementResult.getParent());
-    assertArrayEquals(new String[] {"emptyScope", "Name"}, actualAddElementResult.getPathNames());
+    assertArrayEquals(new String[]{"emptyScope", "Name"}, actualAddElementResult.getPathNames());
   }
 
   /**
    * Test {@link Path#addElement(String, Integer)} with {@code name}, {@code index}.
-   *
    * <ul>
-   *   <li>Given {@link Path#Path()}.
-   *   <li>Then return Elements size is one.
+   *   <li>Given {@link Path#Path()}.</li>
+   *   <li>Then return Elements size is one.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link Path#addElement(String, Integer)}
+   * <p>
+   * Method under test: {@link Path#addElement(String, Integer)}
    */
   @Test
-  @DisplayName(
-      "Test addElement(String, Integer) with 'name', 'index'; given Path(); then return Elements size is one")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Path Path.addElement(String, Integer)"})
-  void testAddElementWithNameIndex_givenPath_thenReturnElementsSizeIsOne() {
+  public void testAddElementWithNameIndex_givenPath_thenReturnElementsSizeIsOne() {
     // Arrange
     Path path = new Path();
 
@@ -859,26 +750,22 @@ class PathDiffblueTest {
     // Assert
     assertEquals(1, actualAddElementResult.getElements().size());
     assertEquals(path, actualAddElementResult.getParent());
-    assertArrayEquals(new String[] {"Name"}, actualAddElementResult.getPathNames());
+    assertArrayEquals(new String[]{"Name"}, actualAddElementResult.getPathNames());
   }
 
   /**
    * Test {@link Path#addElement(String)} with {@code name}.
-   *
    * <ul>
-   *   <li>Given {@link ScopeReferenceHelper#EMPTY_SCOPE}.
-   *   <li>Then return Elements size is two.
+   *   <li>Given {@link ScopeReferenceHelper#EMPTY_SCOPE}.</li>
+   *   <li>Then return Elements size is two.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link Path#addElement(String)}
+   * <p>
+   * Method under test: {@link Path#addElement(String)}
    */
   @Test
-  @DisplayName(
-      "Test addElement(String) with 'name'; given EMPTY_SCOPE; then return Elements size is two")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Path Path.addElement(String)"})
-  void testAddElementWithName_givenEmpty_scope_thenReturnElementsSizeIsTwo() {
+  public void testAddElementWithName_givenEmpty_scope_thenReturnElementsSizeIsTwo() {
     // Arrange
     Path path = ScopeReferenceHelper.EMPTY_SCOPE;
 
@@ -888,26 +775,22 @@ class PathDiffblueTest {
     // Assert
     assertEquals(2, actualAddElementResult.getElements().size());
     assertEquals(path, actualAddElementResult.getParent());
-    assertArrayEquals(new String[] {"emptyScope", "Name"}, actualAddElementResult.getPathNames());
+    assertArrayEquals(new String[]{"emptyScope", "Name"}, actualAddElementResult.getPathNames());
   }
 
   /**
    * Test {@link Path#addElement(String)} with {@code name}.
-   *
    * <ul>
-   *   <li>Given {@link Path#Path()}.
-   *   <li>Then return Elements size is one.
+   *   <li>Given {@link Path#Path()}.</li>
+   *   <li>Then return Elements size is one.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link Path#addElement(String)}
+   * <p>
+   * Method under test: {@link Path#addElement(String)}
    */
   @Test
-  @DisplayName(
-      "Test addElement(String) with 'name'; given Path(); then return Elements size is one")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Path Path.addElement(String)"})
-  void testAddElementWithName_givenPath_thenReturnElementsSizeIsOne() {
+  public void testAddElementWithName_givenPath_thenReturnElementsSizeIsOne() {
     // Arrange
     Path path = new Path();
 
@@ -917,40 +800,35 @@ class PathDiffblueTest {
     // Assert
     assertEquals(1, actualAddElementResult.getElements().size());
     assertEquals(path, actualAddElementResult.getParent());
-    assertArrayEquals(new String[] {"Name"}, actualAddElementResult.getPathNames());
+    assertArrayEquals(new String[]{"Name"}, actualAddElementResult.getPathNames());
   }
 
   /**
    * Test {@link Path#getPathNames()}.
-   *
-   * <p>Method under test: {@link Path#getPathNames()}
+   * <p>
+   * Method under test: {@link Path#getPathNames()}
    */
   @Test
-  @DisplayName("Test getPathNames()")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String[] Path.getPathNames()"})
-  void testGetPathNames() {
+  public void testGetPathNames() {
     // Arrange, Act and Assert
-    assertArrayEquals(new String[] {"emptyScope"}, ScopeReferenceHelper.EMPTY_SCOPE.getPathNames());
+    assertArrayEquals(new String[]{"emptyScope"}, ScopeReferenceHelper.EMPTY_SCOPE.getPathNames());
   }
 
   /**
    * Test {@link Path#getParent()}.
-   *
    * <ul>
-   *   <li>Given {@link ScopeReferenceHelper#EMPTY_SCOPE}.
-   *   <li>Then return LastElement is {@code null}.
+   *   <li>Given {@link ScopeReferenceHelper#EMPTY_SCOPE}.</li>
+   *   <li>Then return LastElement is {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link Path#getParent()}
+   * <p>
+   * Method under test: {@link Path#getParent()}
    */
   @Test
-  @DisplayName("Test getParent(); given EMPTY_SCOPE; then return LastElement is 'null'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Path Path.getParent()"})
-  void testGetParent_givenEmpty_scope_thenReturnLastElementIsNull() {
+  public void testGetParent_givenEmpty_scope_thenReturnLastElementIsNull() {
     // Arrange and Act
     Path actualParent = ScopeReferenceHelper.EMPTY_SCOPE.getParent();
 
@@ -962,20 +840,17 @@ class PathDiffblueTest {
 
   /**
    * Test {@link Path#getLastElement()}.
-   *
    * <ul>
-   *   <li>Given {@link ScopeReferenceHelper#EMPTY_SCOPE}.
-   *   <li>Then return PathName is {@code emptyScope}.
+   *   <li>Given {@link ScopeReferenceHelper#EMPTY_SCOPE}.</li>
+   *   <li>Then return PathName is {@code emptyScope}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link Path#getLastElement()}
+   * <p>
+   * Method under test: {@link Path#getLastElement()}
    */
   @Test
-  @DisplayName("Test getLastElement(); given EMPTY_SCOPE; then return PathName is 'emptyScope'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"PathElement Path.getLastElement()"})
-  void testGetLastElement_givenEmpty_scope_thenReturnPathNameIsEmptyScope() {
+  public void testGetLastElement_givenEmpty_scope_thenReturnPathNameIsEmptyScope() {
     // Arrange and Act
     PathElement actualLastElement = ScopeReferenceHelper.EMPTY_SCOPE.getLastElement();
 
@@ -987,42 +862,35 @@ class PathDiffblueTest {
 
   /**
    * Test {@link Path#getLastElement()}.
-   *
    * <ul>
-   *   <li>Given {@link Path#Path()}.
-   *   <li>Then return {@code null}.
+   *   <li>Given {@link Path#Path()}.</li>
+   *   <li>Then return {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link Path#getLastElement()}
+   * <p>
+   * Method under test: {@link Path#getLastElement()}
    */
   @Test
-  @DisplayName("Test getLastElement(); given Path(); then return 'null'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"PathElement Path.getLastElement()"})
-  void testGetLastElement_givenPath_thenReturnNull() {
+  public void testGetLastElement_givenPath_thenReturnNull() {
     // Arrange, Act and Assert
-    assertNull(new Path().getLastElement());
+    assertNull((new Path()).getLastElement());
   }
 
   /**
    * Test {@link Path#append(Path)}.
-   *
    * <ul>
-   *   <li>Given {@link ScopeReferenceHelper#EMPTY_SCOPE}.
-   *   <li>When {@link ScopeReferenceHelper#EMPTY_SCOPE}.
-   *   <li>Then return second element is {@code emptyScope}.
+   *   <li>Given {@link ScopeReferenceHelper#EMPTY_SCOPE}.</li>
+   *   <li>When {@link ScopeReferenceHelper#EMPTY_SCOPE}.</li>
+   *   <li>Then return second element is {@code emptyScope}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link Path#append(Path)}
+   * <p>
+   * Method under test: {@link Path#append(Path)}
    */
   @Test
-  @DisplayName(
-      "Test append(Path); given EMPTY_SCOPE; when EMPTY_SCOPE; then return second element is 'emptyScope'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Path Path.append(Path)"})
-  void testAppend_givenEmpty_scope_whenEmpty_scope_thenReturnSecondElementIsEmptyScope() {
+  public void testAppend_givenEmpty_scope_whenEmpty_scope_thenReturnSecondElementIsEmptyScope() {
     // Arrange
     Path append = ScopeReferenceHelper.EMPTY_SCOPE;
 
@@ -1039,50 +907,39 @@ class PathDiffblueTest {
 
   /**
    * Test {@link Path#append(Path)}.
-   *
    * <ul>
-   *   <li>Given parse empty string and {@code true}.
-   *   <li>When {@link ScopeReferenceHelper#EMPTY_SCOPE}.
-   *   <li>Then return {@link ScopeReferenceHelper#EMPTY_SCOPE}.
+   *   <li>Given parse empty string and {@code true}.</li>
+   *   <li>When {@link ScopeReferenceHelper#EMPTY_SCOPE}.</li>
+   *   <li>Then return {@link ScopeReferenceHelper#EMPTY_SCOPE}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link Path#append(Path)}
+   * <p>
+   * Method under test: {@link Path#append(Path)}
    */
   @Test
-  @DisplayName(
-      "Test append(Path); given parse empty string and 'true'; when EMPTY_SCOPE; then return EMPTY_SCOPE")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Path Path.append(Path)"})
-  void testAppend_givenParseEmptyStringAndTrue_whenEmpty_scope_thenReturnEmpty_scope() {
+  public void testAppend_givenParseEmptyStringAndTrue_whenEmpty_scope_thenReturnEmpty_scope() {
     // Arrange
     Path append = ScopeReferenceHelper.EMPTY_SCOPE;
 
-    // Act
-    Path actualAppendResult = Path.parse("", true).append(append);
-
-    // Assert
-    assertEquals(append, actualAppendResult);
+    // Act and Assert
+    assertEquals(append, Path.parse("", true).append(append));
   }
 
   /**
    * Test {@link Path#append(Path)}.
-   *
    * <ul>
-   *   <li>Given {@link Path#Path()}.
-   *   <li>When {@link ScopeReferenceHelper#EMPTY_SCOPE}.
-   *   <li>Then return Elements size is one.
+   *   <li>Given {@link Path#Path()}.</li>
+   *   <li>When {@link ScopeReferenceHelper#EMPTY_SCOPE}.</li>
+   *   <li>Then return Elements size is one.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link Path#append(Path)}
+   * <p>
+   * Method under test: {@link Path#append(Path)}
    */
   @Test
-  @DisplayName(
-      "Test append(Path); given Path(); when EMPTY_SCOPE; then return Elements size is one")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Path Path.append(Path)"})
-  void testAppend_givenPath_whenEmpty_scope_thenReturnElementsSizeIsOne() {
+  public void testAppend_givenPath_whenEmpty_scope_thenReturnElementsSizeIsOne() {
     // Arrange
     Path path = new Path();
 
@@ -1096,46 +953,37 @@ class PathDiffblueTest {
 
   /**
    * Test {@link Path#append(Path)}.
-   *
    * <ul>
-   *   <li>Given {@link Path#Path()}.
-   *   <li>When {@link Path#Path()}.
-   *   <li>Then return {@link Path#Path()}.
+   *   <li>Given {@link Path#Path()}.</li>
+   *   <li>When {@link Path#Path()}.</li>
+   *   <li>Then return {@link Path#Path()}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link Path#append(Path)}
+   * <p>
+   * Method under test: {@link Path#append(Path)}
    */
   @Test
-  @DisplayName("Test append(Path); given Path(); when Path(); then return Path()")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Path Path.append(Path)"})
-  void testAppend_givenPath_whenPath_thenReturnPath() {
+  public void testAppend_givenPath_whenPath_thenReturnPath() {
     // Arrange
     Path path = new Path();
 
-    // Act
-    Path actualAppendResult = path.append(new Path());
-
-    // Assert
-    assertEquals(path, actualAppendResult);
+    // Act and Assert
+    assertEquals(path, path.append(new Path()));
   }
 
   /**
    * Test {@link Path#append(Path)}.
-   *
    * <ul>
-   *   <li>Then return Elements size is seven.
+   *   <li>Then return Elements size is seven.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link Path#append(Path)}
+   * <p>
+   * Method under test: {@link Path#append(Path)}
    */
   @Test
-  @DisplayName("Test append(Path); then return Elements size is seven")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Path Path.append(Path)"})
-  void testAppend_thenReturnElementsSizeIsSeven() {
+  public void testAppend_thenReturnElementsSizeIsSeven() {
     // Arrange
     Path parseResult = Path.parse("com.regnosys.rosetta.common.translation.Path", true);
 
@@ -1145,27 +993,23 @@ class PathDiffblueTest {
     // Assert
     assertEquals(7, actualAppendResult.getElements().size());
     assertEquals(parseResult, actualAppendResult.getParent());
-    assertArrayEquals(
-        new String[] {"com", "regnosys", "rosetta", "common", "translation", "Path", "emptyScope"},
+    assertArrayEquals(new String[]{"com", "regnosys", "rosetta", "common", "translation", "Path", "emptyScope"},
         actualAppendResult.getPathNames());
   }
 
   /**
    * Test {@link Path#prefixWithWildcard()}.
-   *
    * <ul>
-   *   <li>Given {@link Path#Path()}.
-   *   <li>Then return Parent is {@link Path#Path()}.
+   *   <li>Given {@link Path#Path()}.</li>
+   *   <li>Then return Parent is {@link Path#Path()}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link Path#prefixWithWildcard()}
+   * <p>
+   * Method under test: {@link Path#prefixWithWildcard()}
    */
   @Test
-  @DisplayName("Test prefixWithWildcard(); given Path(); then return Parent is Path()")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Path Path.prefixWithWildcard()"})
-  void testPrefixWithWildcard_givenPath_thenReturnParentIsPath() {
+  public void testPrefixWithWildcard_givenPath_thenReturnParentIsPath() {
     // Arrange
     Path path = new Path();
 
@@ -1179,19 +1023,16 @@ class PathDiffblueTest {
 
   /**
    * Test {@link Path#prefixWithWildcard()}.
-   *
    * <ul>
-   *   <li>Then return LastElement PathName is {@code *}.
+   *   <li>Then return LastElement PathName is {@code *}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link Path#prefixWithWildcard()}
+   * <p>
+   * Method under test: {@link Path#prefixWithWildcard()}
    */
   @Test
-  @DisplayName("Test prefixWithWildcard(); then return LastElement PathName is '*'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Path Path.prefixWithWildcard()"})
-  void testPrefixWithWildcard_thenReturnLastElementPathNameIsAsterisk() {
+  public void testPrefixWithWildcard_thenReturnLastElementPathNameIsAsterisk() {
     // Arrange
     Path parseResult = Path.parse("", true);
 
@@ -1210,19 +1051,16 @@ class PathDiffblueTest {
 
   /**
    * Test {@link Path#prefixWithWildcard()}.
-   *
    * <ul>
-   *   <li>Then return LastElement PathName is {@code emptyScope}.
+   *   <li>Then return LastElement PathName is {@code emptyScope}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link Path#prefixWithWildcard()}
+   * <p>
+   * Method under test: {@link Path#prefixWithWildcard()}
    */
   @Test
-  @DisplayName("Test prefixWithWildcard(); then return LastElement PathName is 'emptyScope'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Path Path.prefixWithWildcard()"})
-  void testPrefixWithWildcard_thenReturnLastElementPathNameIsEmptyScope() {
+  public void testPrefixWithWildcard_thenReturnLastElementPathNameIsEmptyScope() {
     // Arrange and Act
     Path actualPrefixWithWildcardResult = ScopeReferenceHelper.EMPTY_SCOPE.prefixWithWildcard();
 
@@ -1250,22 +1088,19 @@ class PathDiffblueTest {
 
   /**
    * Test {@link Path#prefixWithWildcard()}.
-   *
    * <ul>
-   *   <li>Then return LastElement PathName is {@code Path}.
+   *   <li>Then return LastElement PathName is {@code Path}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link Path#prefixWithWildcard()}
+   * <p>
+   * Method under test: {@link Path#prefixWithWildcard()}
    */
   @Test
-  @DisplayName("Test prefixWithWildcard(); then return LastElement PathName is 'Path'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Path Path.prefixWithWildcard()"})
-  void testPrefixWithWildcard_thenReturnLastElementPathNameIsPath() {
+  public void testPrefixWithWildcard_thenReturnLastElementPathNameIsPath() {
     // Arrange and Act
-    Path actualPrefixWithWildcardResult =
-        Path.parse("com.regnosys.rosetta.common.translation.Path", true).prefixWithWildcard();
+    Path actualPrefixWithWildcardResult = Path.parse("com.regnosys.rosetta.common.translation.Path", true)
+        .prefixWithWildcard();
 
     // Assert
     PathElement lastElement = actualPrefixWithWildcardResult.getLastElement();
@@ -1284,25 +1119,23 @@ class PathDiffblueTest {
     assertEquals(7, elements.size());
     assertEquals(7, pathNames.length);
     assertSame(lastElement, elements.get(6));
-    assertSame(elements.get(5), parent.getLastElement());
+    PathElement expectedLastElement = elements.get(5);
+    assertSame(expectedLastElement, parent.getLastElement());
   }
 
   /**
    * Test {@link Path#trimFirst()}.
-   *
    * <ul>
-   *   <li>Given {@link ScopeReferenceHelper#EMPTY_SCOPE}.
-   *   <li>Then return LastElement is {@code null}.
+   *   <li>Given {@link ScopeReferenceHelper#EMPTY_SCOPE}.</li>
+   *   <li>Then return LastElement is {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link Path#trimFirst()}
+   * <p>
+   * Method under test: {@link Path#trimFirst()}
    */
   @Test
-  @DisplayName("Test trimFirst(); given EMPTY_SCOPE; then return LastElement is 'null'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Path Path.trimFirst()"})
-  void testTrimFirst_givenEmpty_scope_thenReturnLastElementIsNull() {
+  public void testTrimFirst_givenEmpty_scope_thenReturnLastElementIsNull() {
     // Arrange and Act
     Path actualTrimFirstResult = ScopeReferenceHelper.EMPTY_SCOPE.trimFirst();
 
@@ -1314,22 +1147,52 @@ class PathDiffblueTest {
 
   /**
    * Test {@link Path#nameStartMatches(Path, boolean)} with {@code other}, {@code allowWildcard}.
-   *
    * <ul>
-   *   <li>Given {@link Path#Path()}.
-   *   <li>When {@link Path#Path()}.
-   *   <li>Then return {@code true}.
+   *   <li>Given {@link ScopeReferenceHelper#EMPTY_SCOPE}.</li>
+   *   <li>Then return {@code true}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link Path#nameStartMatches(Path, boolean)}
+   * <p>
+   * Method under test: {@link Path#nameStartMatches(Path, boolean)}
    */
   @Test
-  @DisplayName(
-      "Test nameStartMatches(Path, boolean) with 'other', 'allowWildcard'; given Path(); when Path(); then return 'true'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean Path.nameStartMatches(Path, boolean)"})
-  void testNameStartMatchesWithOtherAllowWildcard_givenPath_whenPath_thenReturnTrue() {
+  public void testNameStartMatchesWithOtherAllowWildcard_givenEmpty_scope_thenReturnTrue() {
+    // Arrange, Act and Assert
+    assertTrue(ScopeReferenceHelper.EMPTY_SCOPE.nameStartMatches(ScopeReferenceHelper.EMPTY_SCOPE, true));
+  }
+
+  /**
+   * Test {@link Path#nameStartMatches(Path, boolean)} with {@code other}, {@code allowWildcard}.
+   * <ul>
+   *   <li>Given {@link Path#Path()}.</li>
+   *   <li>Then return {@code false}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link Path#nameStartMatches(Path, boolean)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean Path.nameStartMatches(Path, boolean)"})
+  public void testNameStartMatchesWithOtherAllowWildcard_givenPath_thenReturnFalse() {
+    // Arrange, Act and Assert
+    assertFalse((new Path()).nameStartMatches(ScopeReferenceHelper.EMPTY_SCOPE, true));
+  }
+
+  /**
+   * Test {@link Path#nameStartMatches(Path, boolean)} with {@code other}, {@code allowWildcard}.
+   * <ul>
+   *   <li>Given {@link Path#Path()}.</li>
+   *   <li>When {@link Path#Path()}.</li>
+   *   <li>Then return {@code true}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link Path#nameStartMatches(Path, boolean)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean Path.nameStartMatches(Path, boolean)"})
+  public void testNameStartMatchesWithOtherAllowWildcard_givenPath_whenPath_thenReturnTrue() {
     // Arrange
     Path path = new Path();
 
@@ -1339,152 +1202,157 @@ class PathDiffblueTest {
 
   /**
    * Test {@link Path#nameStartMatches(Path, boolean)} with {@code other}, {@code allowWildcard}.
-   *
    * <ul>
-   *   <li>When {@link ScopeReferenceHelper#EMPTY_SCOPE}.
-   *   <li>Then return {@code false}.
+   *   <li>Given valueOf {@code *}.</li>
+   *   <li>Then return {@code true}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link Path#nameStartMatches(Path, boolean)}
+   * <p>
+   * Method under test: {@link Path#nameStartMatches(Path, boolean)}
    */
   @Test
-  @DisplayName(
-      "Test nameStartMatches(Path, boolean) with 'other', 'allowWildcard'; when EMPTY_SCOPE; then return 'false'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean Path.nameStartMatches(Path, boolean)"})
-  void testNameStartMatchesWithOtherAllowWildcard_whenEmpty_scope_thenReturnFalse() {
+  public void testNameStartMatchesWithOtherAllowWildcard_givenValueOfAsterisk_thenReturnTrue() {
     // Arrange, Act and Assert
-    assertFalse(new Path().nameStartMatches(ScopeReferenceHelper.EMPTY_SCOPE, true));
+    assertTrue(Path.valueOf("*").nameStartMatches(ScopeReferenceHelper.EMPTY_SCOPE, true));
   }
 
   /**
    * Test {@link Path#nameStartMatches(Path, boolean)} with {@code other}, {@code allowWildcard}.
-   *
    * <ul>
-   *   <li>When {@link ScopeReferenceHelper#EMPTY_SCOPE}.
-   *   <li>Then return {@code true}.
+   *   <li>Given valueOf {@code Path}.</li>
+   *   <li>Then return {@code false}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link Path#nameStartMatches(Path, boolean)}
+   * <p>
+   * Method under test: {@link Path#nameStartMatches(Path, boolean)}
    */
   @Test
-  @DisplayName(
-      "Test nameStartMatches(Path, boolean) with 'other', 'allowWildcard'; when EMPTY_SCOPE; then return 'true'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean Path.nameStartMatches(Path, boolean)"})
-  void testNameStartMatchesWithOtherAllowWildcard_whenEmpty_scope_thenReturnTrue() {
+  public void testNameStartMatchesWithOtherAllowWildcard_givenValueOfPath_thenReturnFalse() {
     // Arrange, Act and Assert
-    assertTrue(
-        ScopeReferenceHelper.EMPTY_SCOPE.nameStartMatches(ScopeReferenceHelper.EMPTY_SCOPE, true));
+    assertFalse(Path.valueOf("Path").nameStartMatches(ScopeReferenceHelper.EMPTY_SCOPE, true));
   }
 
   /**
    * Test {@link Path#nameStartMatches(Path, boolean)} with {@code other}, {@code allowWildcard}.
-   *
    * <ul>
-   *   <li>When {@link Path#Path()}.
-   *   <li>Then return {@code false}.
+   *   <li>Given valueOf {@code Path}.</li>
+   *   <li>When {@code false}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link Path#nameStartMatches(Path, boolean)}
+   * <p>
+   * Method under test: {@link Path#nameStartMatches(Path, boolean)}
    */
   @Test
-  @DisplayName(
-      "Test nameStartMatches(Path, boolean) with 'other', 'allowWildcard'; when Path(); then return 'false'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean Path.nameStartMatches(Path, boolean)"})
-  void testNameStartMatchesWithOtherAllowWildcard_whenPath_thenReturnFalse() {
+  public void testNameStartMatchesWithOtherAllowWildcard_givenValueOfPath_whenFalse() {
+    // Arrange, Act and Assert
+    assertFalse(Path.valueOf("Path").nameStartMatches(ScopeReferenceHelper.EMPTY_SCOPE, false));
+  }
+
+  /**
+   * Test {@link Path#nameStartMatches(Path, boolean)} with {@code other}, {@code allowWildcard}.
+   * <ul>
+   *   <li>When {@link Path#Path()}.</li>
+   *   <li>Then return {@code false}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link Path#nameStartMatches(Path, boolean)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean Path.nameStartMatches(Path, boolean)"})
+  public void testNameStartMatchesWithOtherAllowWildcard_whenPath_thenReturnFalse() {
     // Arrange, Act and Assert
     assertFalse(ScopeReferenceHelper.EMPTY_SCOPE.nameStartMatches(new Path(), true));
   }
 
   /**
-   * Test {@link Path#nameStartMatches(Path)} with {@code other}.
-   *
+   * Test {@link Path#nameStartMatches(Path, boolean)} with {@code other}, {@code allowWildcard}.
    * <ul>
-   *   <li>Given {@link ScopeReferenceHelper#EMPTY_SCOPE}.
-   *   <li>When {@link ScopeReferenceHelper#EMPTY_SCOPE}.
-   *   <li>Then return {@code true}.
+   *   <li>When valueOf {@code *}.</li>
+   *   <li>Then return {@code true}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link Path#nameStartMatches(Path)}
+   * <p>
+   * Method under test: {@link Path#nameStartMatches(Path, boolean)}
    */
   @Test
-  @DisplayName(
-      "Test nameStartMatches(Path) with 'other'; given EMPTY_SCOPE; when EMPTY_SCOPE; then return 'true'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean Path.nameStartMatches(Path, boolean)"})
+  public void testNameStartMatchesWithOtherAllowWildcard_whenValueOfAsterisk_thenReturnTrue() {
+    // Arrange, Act and Assert
+    assertTrue(ScopeReferenceHelper.EMPTY_SCOPE.nameStartMatches(Path.valueOf("*"), true));
+  }
+
+  /**
+   * Test {@link Path#nameStartMatches(Path)} with {@code other}.
+   * <ul>
+   *   <li>Given {@link ScopeReferenceHelper#EMPTY_SCOPE}.</li>
+   *   <li>When {@link ScopeReferenceHelper#EMPTY_SCOPE}.</li>
+   *   <li>Then return {@code true}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link Path#nameStartMatches(Path)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean Path.nameStartMatches(Path)"})
-  void testNameStartMatchesWithOther_givenEmpty_scope_whenEmpty_scope_thenReturnTrue() {
+  public void testNameStartMatchesWithOther_givenEmpty_scope_whenEmpty_scope_thenReturnTrue() {
     // Arrange, Act and Assert
     assertTrue(ScopeReferenceHelper.EMPTY_SCOPE.nameStartMatches(ScopeReferenceHelper.EMPTY_SCOPE));
   }
 
   /**
    * Test {@link Path#nameStartMatches(Path)} with {@code other}.
-   *
    * <ul>
-   *   <li>Given {@link ScopeReferenceHelper#EMPTY_SCOPE}.
-   *   <li>When {@link Path#Path()}.
-   *   <li>Then return {@code false}.
+   *   <li>Given {@link ScopeReferenceHelper#EMPTY_SCOPE}.</li>
+   *   <li>When {@link Path#Path()}.</li>
+   *   <li>Then return {@code false}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link Path#nameStartMatches(Path)}
+   * <p>
+   * Method under test: {@link Path#nameStartMatches(Path)}
    */
   @Test
-  @DisplayName(
-      "Test nameStartMatches(Path) with 'other'; given EMPTY_SCOPE; when Path(); then return 'false'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean Path.nameStartMatches(Path)"})
-  void testNameStartMatchesWithOther_givenEmpty_scope_whenPath_thenReturnFalse() {
+  public void testNameStartMatchesWithOther_givenEmpty_scope_whenPath_thenReturnFalse() {
     // Arrange, Act and Assert
     assertFalse(ScopeReferenceHelper.EMPTY_SCOPE.nameStartMatches(new Path()));
   }
 
   /**
    * Test {@link Path#nameStartMatches(Path)} with {@code other}.
-   *
    * <ul>
-   *   <li>Given {@link Path#Path()}.
-   *   <li>When {@link ScopeReferenceHelper#EMPTY_SCOPE}.
-   *   <li>Then return {@code false}.
+   *   <li>Given {@link Path#Path()}.</li>
+   *   <li>When {@link ScopeReferenceHelper#EMPTY_SCOPE}.</li>
+   *   <li>Then return {@code false}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link Path#nameStartMatches(Path)}
+   * <p>
+   * Method under test: {@link Path#nameStartMatches(Path)}
    */
   @Test
-  @DisplayName(
-      "Test nameStartMatches(Path) with 'other'; given Path(); when EMPTY_SCOPE; then return 'false'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean Path.nameStartMatches(Path)"})
-  void testNameStartMatchesWithOther_givenPath_whenEmpty_scope_thenReturnFalse() {
+  public void testNameStartMatchesWithOther_givenPath_whenEmpty_scope_thenReturnFalse() {
     // Arrange, Act and Assert
-    assertFalse(new Path().nameStartMatches(ScopeReferenceHelper.EMPTY_SCOPE));
+    assertFalse((new Path()).nameStartMatches(ScopeReferenceHelper.EMPTY_SCOPE));
   }
 
   /**
    * Test {@link Path#nameStartMatches(Path)} with {@code other}.
-   *
    * <ul>
-   *   <li>Given {@link Path#Path()}.
-   *   <li>When {@link Path#Path()}.
-   *   <li>Then return {@code true}.
+   *   <li>Given {@link Path#Path()}.</li>
+   *   <li>When {@link Path#Path()}.</li>
+   *   <li>Then return {@code true}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link Path#nameStartMatches(Path)}
+   * <p>
+   * Method under test: {@link Path#nameStartMatches(Path)}
    */
   @Test
-  @DisplayName(
-      "Test nameStartMatches(Path) with 'other'; given Path(); when Path(); then return 'true'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean Path.nameStartMatches(Path)"})
-  void testNameStartMatchesWithOther_givenPath_whenPath_thenReturnTrue() {
+  public void testNameStartMatchesWithOther_givenPath_whenPath_thenReturnTrue() {
     // Arrange
     Path path = new Path();
 
@@ -1493,66 +1361,71 @@ class PathDiffblueTest {
   }
 
   /**
-   * Test {@link Path#fullStartMatches(Path, boolean)} with {@code other}, {@code allowWildcard}.
-   *
+   * Test {@link Path#nameStartMatches(Path)} with {@code other}.
    * <ul>
-   *   <li>Given {@link ScopeReferenceHelper#EMPTY_SCOPE}.
-   *   <li>Then return {@code true}.
+   *   <li>Given valueOf {@code Path}.</li>
+   *   <li>When {@link ScopeReferenceHelper#EMPTY_SCOPE}.</li>
+   *   <li>Then return {@code false}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link Path#fullStartMatches(Path, boolean)}
+   * <p>
+   * Method under test: {@link Path#nameStartMatches(Path)}
    */
   @Test
-  @DisplayName(
-      "Test fullStartMatches(Path, boolean) with 'other', 'allowWildcard'; given EMPTY_SCOPE; then return 'true'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean Path.fullStartMatches(Path, boolean)"})
-  void testFullStartMatchesWithOtherAllowWildcard_givenEmpty_scope_thenReturnTrue() {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean Path.nameStartMatches(Path)"})
+  public void testNameStartMatchesWithOther_givenValueOfPath_whenEmpty_scope_thenReturnFalse() {
     // Arrange, Act and Assert
-    assertTrue(
-        ScopeReferenceHelper.EMPTY_SCOPE.fullStartMatches(ScopeReferenceHelper.EMPTY_SCOPE, true));
+    assertFalse(Path.valueOf("Path").nameStartMatches(ScopeReferenceHelper.EMPTY_SCOPE));
   }
 
   /**
    * Test {@link Path#fullStartMatches(Path, boolean)} with {@code other}, {@code allowWildcard}.
-   *
    * <ul>
-   *   <li>Given {@link Path#Path()}.
-   *   <li>Then return {@code false}.
+   *   <li>Given {@link ScopeReferenceHelper#EMPTY_SCOPE}.</li>
+   *   <li>Then return {@code true}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link Path#fullStartMatches(Path, boolean)}
+   * <p>
+   * Method under test: {@link Path#fullStartMatches(Path, boolean)}
    */
   @Test
-  @DisplayName(
-      "Test fullStartMatches(Path, boolean) with 'other', 'allowWildcard'; given Path(); then return 'false'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean Path.fullStartMatches(Path, boolean)"})
-  void testFullStartMatchesWithOtherAllowWildcard_givenPath_thenReturnFalse() {
+  public void testFullStartMatchesWithOtherAllowWildcard_givenEmpty_scope_thenReturnTrue() {
     // Arrange, Act and Assert
-    assertFalse(new Path().fullStartMatches(ScopeReferenceHelper.EMPTY_SCOPE, true));
+    assertTrue(ScopeReferenceHelper.EMPTY_SCOPE.fullStartMatches(ScopeReferenceHelper.EMPTY_SCOPE, true));
   }
 
   /**
    * Test {@link Path#fullStartMatches(Path, boolean)} with {@code other}, {@code allowWildcard}.
-   *
    * <ul>
-   *   <li>Given {@link Path#Path()}.
-   *   <li>When {@link Path#Path()}.
-   *   <li>Then return {@code true}.
+   *   <li>Given {@link Path#Path()}.</li>
+   *   <li>Then return {@code false}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link Path#fullStartMatches(Path, boolean)}
+   * <p>
+   * Method under test: {@link Path#fullStartMatches(Path, boolean)}
    */
   @Test
-  @DisplayName(
-      "Test fullStartMatches(Path, boolean) with 'other', 'allowWildcard'; given Path(); when Path(); then return 'true'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean Path.fullStartMatches(Path, boolean)"})
-  void testFullStartMatchesWithOtherAllowWildcard_givenPath_whenPath_thenReturnTrue() {
+  public void testFullStartMatchesWithOtherAllowWildcard_givenPath_thenReturnFalse() {
+    // Arrange, Act and Assert
+    assertFalse((new Path()).fullStartMatches(ScopeReferenceHelper.EMPTY_SCOPE, true));
+  }
+
+  /**
+   * Test {@link Path#fullStartMatches(Path, boolean)} with {@code other}, {@code allowWildcard}.
+   * <ul>
+   *   <li>Given {@link Path#Path()}.</li>
+   *   <li>When {@link Path#Path()}.</li>
+   *   <li>Then return {@code true}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link Path#fullStartMatches(Path, boolean)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean Path.fullStartMatches(Path, boolean)"})
+  public void testFullStartMatchesWithOtherAllowWildcard_givenPath_whenPath_thenReturnTrue() {
     // Arrange
     Path path = new Path();
 
@@ -1562,194 +1435,157 @@ class PathDiffblueTest {
 
   /**
    * Test {@link Path#fullStartMatches(Path, boolean)} with {@code other}, {@code allowWildcard}.
-   *
    * <ul>
-   *   <li>Given valueOf {@code *}.
-   *   <li>Then return {@code true}.
+   *   <li>Given valueOf {@code *}.</li>
+   *   <li>Then return {@code true}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link Path#fullStartMatches(Path, boolean)}
+   * <p>
+   * Method under test: {@link Path#fullStartMatches(Path, boolean)}
    */
   @Test
-  @DisplayName(
-      "Test fullStartMatches(Path, boolean) with 'other', 'allowWildcard'; given valueOf '*'; then return 'true'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean Path.fullStartMatches(Path, boolean)"})
-  void testFullStartMatchesWithOtherAllowWildcard_givenValueOfAsterisk_thenReturnTrue() {
+  public void testFullStartMatchesWithOtherAllowWildcard_givenValueOfAsterisk_thenReturnTrue() {
     // Arrange, Act and Assert
     assertTrue(Path.valueOf("*").fullStartMatches(ScopeReferenceHelper.EMPTY_SCOPE, true));
   }
 
   /**
    * Test {@link Path#fullStartMatches(Path, boolean)} with {@code other}, {@code allowWildcard}.
-   *
    * <ul>
-   *   <li>Given valueOf {@code *}.
-   *   <li>When {@code false}.
+   *   <li>Given valueOf {@code Path}.</li>
+   *   <li>Then return {@code false}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link Path#fullStartMatches(Path, boolean)}
+   * <p>
+   * Method under test: {@link Path#fullStartMatches(Path, boolean)}
    */
   @Test
-  @DisplayName(
-      "Test fullStartMatches(Path, boolean) with 'other', 'allowWildcard'; given valueOf '*'; when 'false'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean Path.fullStartMatches(Path, boolean)"})
-  void testFullStartMatchesWithOtherAllowWildcard_givenValueOfAsterisk_whenFalse() {
+  public void testFullStartMatchesWithOtherAllowWildcard_givenValueOfPath_thenReturnFalse() {
     // Arrange, Act and Assert
-    assertFalse(Path.valueOf("*").fullStartMatches(ScopeReferenceHelper.EMPTY_SCOPE, false));
+    assertFalse(Path.valueOf("Path").fullStartMatches(ScopeReferenceHelper.EMPTY_SCOPE, true));
   }
 
   /**
    * Test {@link Path#fullStartMatches(Path, boolean)} with {@code other}, {@code allowWildcard}.
-   *
    * <ul>
-   *   <li>When {@code false}.
-   *   <li>Then return {@code true}.
+   *   <li>When {@code false}.</li>
+   *   <li>Then return {@code true}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link Path#fullStartMatches(Path, boolean)}
+   * <p>
+   * Method under test: {@link Path#fullStartMatches(Path, boolean)}
    */
   @Test
-  @DisplayName(
-      "Test fullStartMatches(Path, boolean) with 'other', 'allowWildcard'; when 'false'; then return 'true'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean Path.fullStartMatches(Path, boolean)"})
-  void testFullStartMatchesWithOtherAllowWildcard_whenFalse_thenReturnTrue() {
+  public void testFullStartMatchesWithOtherAllowWildcard_whenFalse_thenReturnTrue() {
     // Arrange, Act and Assert
-    assertTrue(
-        ScopeReferenceHelper.EMPTY_SCOPE.fullStartMatches(ScopeReferenceHelper.EMPTY_SCOPE, false));
+    assertTrue(ScopeReferenceHelper.EMPTY_SCOPE.fullStartMatches(ScopeReferenceHelper.EMPTY_SCOPE, false));
   }
 
   /**
    * Test {@link Path#fullStartMatches(Path, boolean)} with {@code other}, {@code allowWildcard}.
-   *
    * <ul>
-   *   <li>When {@link Path#Path()}.
-   *   <li>Then return {@code false}.
+   *   <li>When {@link Path#Path()}.</li>
+   *   <li>Then return {@code false}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link Path#fullStartMatches(Path, boolean)}
+   * <p>
+   * Method under test: {@link Path#fullStartMatches(Path, boolean)}
    */
   @Test
-  @DisplayName(
-      "Test fullStartMatches(Path, boolean) with 'other', 'allowWildcard'; when Path(); then return 'false'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean Path.fullStartMatches(Path, boolean)"})
-  void testFullStartMatchesWithOtherAllowWildcard_whenPath_thenReturnFalse() {
+  public void testFullStartMatchesWithOtherAllowWildcard_whenPath_thenReturnFalse() {
     // Arrange, Act and Assert
     assertFalse(ScopeReferenceHelper.EMPTY_SCOPE.fullStartMatches(new Path(), true));
   }
 
   /**
    * Test {@link Path#fullStartMatches(Path, boolean)} with {@code other}, {@code allowWildcard}.
-   *
    * <ul>
-   *   <li>When valueOf {@code *}.
-   *   <li>Then return {@code true}.
+   *   <li>When valueOf {@code *}.</li>
+   *   <li>Then return {@code true}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link Path#fullStartMatches(Path, boolean)}
+   * <p>
+   * Method under test: {@link Path#fullStartMatches(Path, boolean)}
    */
   @Test
-  @DisplayName(
-      "Test fullStartMatches(Path, boolean) with 'other', 'allowWildcard'; when valueOf '*'; then return 'true'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean Path.fullStartMatches(Path, boolean)"})
-  void testFullStartMatchesWithOtherAllowWildcard_whenValueOfAsterisk_thenReturnTrue() {
+  public void testFullStartMatchesWithOtherAllowWildcard_whenValueOfAsterisk_thenReturnTrue() {
     // Arrange, Act and Assert
     assertTrue(ScopeReferenceHelper.EMPTY_SCOPE.fullStartMatches(Path.valueOf("*"), true));
   }
 
   /**
    * Test {@link Path#fullStartMatches(Path)} with {@code other}.
-   *
    * <ul>
-   *   <li>Given {@link ScopeReferenceHelper#EMPTY_SCOPE}.
-   *   <li>When {@link ScopeReferenceHelper#EMPTY_SCOPE}.
-   *   <li>Then return {@code true}.
+   *   <li>Given {@link ScopeReferenceHelper#EMPTY_SCOPE}.</li>
+   *   <li>When {@link ScopeReferenceHelper#EMPTY_SCOPE}.</li>
+   *   <li>Then return {@code true}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link Path#fullStartMatches(Path)}
+   * <p>
+   * Method under test: {@link Path#fullStartMatches(Path)}
    */
   @Test
-  @DisplayName(
-      "Test fullStartMatches(Path) with 'other'; given EMPTY_SCOPE; when EMPTY_SCOPE; then return 'true'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean Path.fullStartMatches(Path)"})
-  void testFullStartMatchesWithOther_givenEmpty_scope_whenEmpty_scope_thenReturnTrue() {
+  public void testFullStartMatchesWithOther_givenEmpty_scope_whenEmpty_scope_thenReturnTrue() {
     // Arrange, Act and Assert
     assertTrue(ScopeReferenceHelper.EMPTY_SCOPE.fullStartMatches(ScopeReferenceHelper.EMPTY_SCOPE));
   }
 
   /**
    * Test {@link Path#fullStartMatches(Path)} with {@code other}.
-   *
    * <ul>
-   *   <li>Given {@link ScopeReferenceHelper#EMPTY_SCOPE}.
-   *   <li>When {@link Path#Path()}.
-   *   <li>Then return {@code false}.
+   *   <li>Given {@link ScopeReferenceHelper#EMPTY_SCOPE}.</li>
+   *   <li>When {@link Path#Path()}.</li>
+   *   <li>Then return {@code false}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link Path#fullStartMatches(Path)}
+   * <p>
+   * Method under test: {@link Path#fullStartMatches(Path)}
    */
   @Test
-  @DisplayName(
-      "Test fullStartMatches(Path) with 'other'; given EMPTY_SCOPE; when Path(); then return 'false'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean Path.fullStartMatches(Path)"})
-  void testFullStartMatchesWithOther_givenEmpty_scope_whenPath_thenReturnFalse() {
+  public void testFullStartMatchesWithOther_givenEmpty_scope_whenPath_thenReturnFalse() {
     // Arrange, Act and Assert
     assertFalse(ScopeReferenceHelper.EMPTY_SCOPE.fullStartMatches(new Path()));
   }
 
   /**
    * Test {@link Path#fullStartMatches(Path)} with {@code other}.
-   *
    * <ul>
-   *   <li>Given {@link Path#Path()}.
-   *   <li>When {@link ScopeReferenceHelper#EMPTY_SCOPE}.
-   *   <li>Then return {@code false}.
+   *   <li>Given {@link Path#Path()}.</li>
+   *   <li>When {@link ScopeReferenceHelper#EMPTY_SCOPE}.</li>
+   *   <li>Then return {@code false}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link Path#fullStartMatches(Path)}
+   * <p>
+   * Method under test: {@link Path#fullStartMatches(Path)}
    */
   @Test
-  @DisplayName(
-      "Test fullStartMatches(Path) with 'other'; given Path(); when EMPTY_SCOPE; then return 'false'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean Path.fullStartMatches(Path)"})
-  void testFullStartMatchesWithOther_givenPath_whenEmpty_scope_thenReturnFalse() {
+  public void testFullStartMatchesWithOther_givenPath_whenEmpty_scope_thenReturnFalse() {
     // Arrange, Act and Assert
-    assertFalse(new Path().fullStartMatches(ScopeReferenceHelper.EMPTY_SCOPE));
+    assertFalse((new Path()).fullStartMatches(ScopeReferenceHelper.EMPTY_SCOPE));
   }
 
   /**
    * Test {@link Path#fullStartMatches(Path)} with {@code other}.
-   *
    * <ul>
-   *   <li>Given {@link Path#Path()}.
-   *   <li>When {@link Path#Path()}.
-   *   <li>Then return {@code true}.
+   *   <li>Given {@link Path#Path()}.</li>
+   *   <li>When {@link Path#Path()}.</li>
+   *   <li>Then return {@code true}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link Path#fullStartMatches(Path)}
+   * <p>
+   * Method under test: {@link Path#fullStartMatches(Path)}
    */
   @Test
-  @DisplayName(
-      "Test fullStartMatches(Path) with 'other'; given Path(); when Path(); then return 'true'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean Path.fullStartMatches(Path)"})
-  void testFullStartMatchesWithOther_givenPath_whenPath_thenReturnTrue() {
+  public void testFullStartMatchesWithOther_givenPath_whenPath_thenReturnTrue() {
     // Arrange
     Path path = new Path();
 
@@ -1758,86 +1594,91 @@ class PathDiffblueTest {
   }
 
   /**
-   * Test {@link Path#nameIndexMatches(Path)}.
-   *
+   * Test {@link Path#fullStartMatches(Path)} with {@code other}.
    * <ul>
-   *   <li>Given {@link ScopeReferenceHelper#EMPTY_SCOPE}.
-   *   <li>When {@link ScopeReferenceHelper#EMPTY_SCOPE}.
-   *   <li>Then return {@code true}.
+   *   <li>Given valueOf {@code Path}.</li>
+   *   <li>When {@link ScopeReferenceHelper#EMPTY_SCOPE}.</li>
+   *   <li>Then return {@code false}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link Path#nameIndexMatches(Path)}
+   * <p>
+   * Method under test: {@link Path#fullStartMatches(Path)}
    */
   @Test
-  @DisplayName(
-      "Test nameIndexMatches(Path); given EMPTY_SCOPE; when EMPTY_SCOPE; then return 'true'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean Path.fullStartMatches(Path)"})
+  public void testFullStartMatchesWithOther_givenValueOfPath_whenEmpty_scope_thenReturnFalse() {
+    // Arrange, Act and Assert
+    assertFalse(Path.valueOf("Path").fullStartMatches(ScopeReferenceHelper.EMPTY_SCOPE));
+  }
+
+  /**
+   * Test {@link Path#nameIndexMatches(Path)}.
+   * <ul>
+   *   <li>Given {@link ScopeReferenceHelper#EMPTY_SCOPE}.</li>
+   *   <li>When {@link ScopeReferenceHelper#EMPTY_SCOPE}.</li>
+   *   <li>Then return {@code true}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link Path#nameIndexMatches(Path)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean Path.nameIndexMatches(Path)"})
-  void testNameIndexMatches_givenEmpty_scope_whenEmpty_scope_thenReturnTrue() {
+  public void testNameIndexMatches_givenEmpty_scope_whenEmpty_scope_thenReturnTrue() {
     // Arrange, Act and Assert
     assertTrue(ScopeReferenceHelper.EMPTY_SCOPE.nameIndexMatches(ScopeReferenceHelper.EMPTY_SCOPE));
   }
 
   /**
    * Test {@link Path#nameIndexMatches(Path)}.
-   *
    * <ul>
-   *   <li>Given {@link ScopeReferenceHelper#EMPTY_SCOPE}.
-   *   <li>When {@link Path#Path()}.
-   *   <li>Then return {@code false}.
+   *   <li>Given {@link ScopeReferenceHelper#EMPTY_SCOPE}.</li>
+   *   <li>When {@link Path#Path()}.</li>
+   *   <li>Then return {@code false}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link Path#nameIndexMatches(Path)}
+   * <p>
+   * Method under test: {@link Path#nameIndexMatches(Path)}
    */
   @Test
-  @DisplayName("Test nameIndexMatches(Path); given EMPTY_SCOPE; when Path(); then return 'false'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean Path.nameIndexMatches(Path)"})
-  void testNameIndexMatches_givenEmpty_scope_whenPath_thenReturnFalse() {
+  public void testNameIndexMatches_givenEmpty_scope_whenPath_thenReturnFalse() {
     // Arrange, Act and Assert
     assertFalse(ScopeReferenceHelper.EMPTY_SCOPE.nameIndexMatches(new Path()));
   }
 
   /**
    * Test {@link Path#nameIndexMatches(Path)}.
-   *
    * <ul>
-   *   <li>Given {@link Path#Path()}.
-   *   <li>When {@link ScopeReferenceHelper#EMPTY_SCOPE}.
-   *   <li>Then return {@code false}.
+   *   <li>Given {@link Path#Path()}.</li>
+   *   <li>When {@link ScopeReferenceHelper#EMPTY_SCOPE}.</li>
+   *   <li>Then return {@code false}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link Path#nameIndexMatches(Path)}
+   * <p>
+   * Method under test: {@link Path#nameIndexMatches(Path)}
    */
   @Test
-  @DisplayName("Test nameIndexMatches(Path); given Path(); when EMPTY_SCOPE; then return 'false'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean Path.nameIndexMatches(Path)"})
-  void testNameIndexMatches_givenPath_whenEmpty_scope_thenReturnFalse() {
+  public void testNameIndexMatches_givenPath_whenEmpty_scope_thenReturnFalse() {
     // Arrange, Act and Assert
-    assertFalse(new Path().nameIndexMatches(ScopeReferenceHelper.EMPTY_SCOPE));
+    assertFalse((new Path()).nameIndexMatches(ScopeReferenceHelper.EMPTY_SCOPE));
   }
 
   /**
    * Test {@link Path#nameIndexMatches(Path)}.
-   *
    * <ul>
-   *   <li>Given {@link Path#Path()}.
-   *   <li>When {@link Path#Path()}.
-   *   <li>Then return {@code true}.
+   *   <li>Given {@link Path#Path()}.</li>
+   *   <li>When {@link Path#Path()}.</li>
+   *   <li>Then return {@code true}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link Path#nameIndexMatches(Path)}
+   * <p>
+   * Method under test: {@link Path#nameIndexMatches(Path)}
    */
   @Test
-  @DisplayName("Test nameIndexMatches(Path); given Path(); when Path(); then return 'true'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean Path.nameIndexMatches(Path)"})
-  void testNameIndexMatches_givenPath_whenPath_thenReturnTrue() {
+  public void testNameIndexMatches_givenPath_whenPath_thenReturnTrue() {
     // Arrange
     Path path = new Path();
 
@@ -1846,207 +1687,190 @@ class PathDiffblueTest {
   }
 
   /**
-   * Test {@link Path#endsWith(Path)} with {@code other}.
-   *
+   * Test {@link Path#nameIndexMatches(Path)}.
    * <ul>
-   *   <li>Given {@link ScopeReferenceHelper#EMPTY_SCOPE}.
-   *   <li>When {@link ScopeReferenceHelper#EMPTY_SCOPE}.
-   *   <li>Then return {@code true}.
+   *   <li>Given valueOf {@code Path}.</li>
+   *   <li>When {@link ScopeReferenceHelper#EMPTY_SCOPE}.</li>
+   *   <li>Then return {@code false}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link Path#endsWith(Path)}
+   * <p>
+   * Method under test: {@link Path#nameIndexMatches(Path)}
    */
   @Test
-  @DisplayName(
-      "Test endsWith(Path) with 'other'; given EMPTY_SCOPE; when EMPTY_SCOPE; then return 'true'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean Path.nameIndexMatches(Path)"})
+  public void testNameIndexMatches_givenValueOfPath_whenEmpty_scope_thenReturnFalse() {
+    // Arrange, Act and Assert
+    assertFalse(Path.valueOf("Path").nameIndexMatches(ScopeReferenceHelper.EMPTY_SCOPE));
+  }
+
+  /**
+   * Test {@link Path#endsWith(Path)} with {@code other}.
+   * <ul>
+   *   <li>Given {@link ScopeReferenceHelper#EMPTY_SCOPE}.</li>
+   *   <li>When {@link ScopeReferenceHelper#EMPTY_SCOPE}.</li>
+   *   <li>Then return {@code true}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link Path#endsWith(Path)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean Path.endsWith(Path)"})
-  void testEndsWithWithOther_givenEmpty_scope_whenEmpty_scope_thenReturnTrue() {
+  public void testEndsWithWithOther_givenEmpty_scope_whenEmpty_scope_thenReturnTrue() {
     // Arrange, Act and Assert
     assertTrue(ScopeReferenceHelper.EMPTY_SCOPE.endsWith(ScopeReferenceHelper.EMPTY_SCOPE));
   }
 
   /**
    * Test {@link Path#endsWith(Path)} with {@code other}.
-   *
    * <ul>
-   *   <li>Given {@link Path#Path()}.
-   *   <li>When {@link ScopeReferenceHelper#EMPTY_SCOPE}.
-   *   <li>Then return {@code false}.
+   *   <li>Given {@link Path#Path()}.</li>
+   *   <li>When {@link ScopeReferenceHelper#EMPTY_SCOPE}.</li>
+   *   <li>Then return {@code false}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link Path#endsWith(Path)}
+   * <p>
+   * Method under test: {@link Path#endsWith(Path)}
    */
   @Test
-  @DisplayName(
-      "Test endsWith(Path) with 'other'; given Path(); when EMPTY_SCOPE; then return 'false'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean Path.endsWith(Path)"})
-  void testEndsWithWithOther_givenPath_whenEmpty_scope_thenReturnFalse() {
+  public void testEndsWithWithOther_givenPath_whenEmpty_scope_thenReturnFalse() {
     // Arrange, Act and Assert
-    assertFalse(new Path().endsWith(ScopeReferenceHelper.EMPTY_SCOPE));
+    assertFalse((new Path()).endsWith(ScopeReferenceHelper.EMPTY_SCOPE));
   }
 
   /**
    * Test {@link Path#endsWith(Path)} with {@code other}.
-   *
    * <ul>
-   *   <li>Given valueOf {@code Path}.
-   *   <li>When {@link ScopeReferenceHelper#EMPTY_SCOPE}.
-   *   <li>Then return {@code false}.
+   *   <li>Given valueOf {@code emptyScope}.</li>
+   *   <li>When {@link ScopeReferenceHelper#EMPTY_SCOPE}.</li>
+   *   <li>Then return {@code true}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link Path#endsWith(Path)}
+   * <p>
+   * Method under test: {@link Path#endsWith(Path)}
    */
   @Test
-  @DisplayName(
-      "Test endsWith(Path) with 'other'; given valueOf 'Path'; when EMPTY_SCOPE; then return 'false'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean Path.endsWith(Path)"})
-  void testEndsWithWithOther_givenValueOfPath_whenEmpty_scope_thenReturnFalse() {
+  public void testEndsWithWithOther_givenValueOfEmptyScope_whenEmpty_scope_thenReturnTrue() {
+    // Arrange, Act and Assert
+    assertTrue(Path.valueOf("emptyScope").endsWith(ScopeReferenceHelper.EMPTY_SCOPE));
+  }
+
+  /**
+   * Test {@link Path#endsWith(Path)} with {@code other}.
+   * <ul>
+   *   <li>Given valueOf {@code Path}.</li>
+   *   <li>When {@link ScopeReferenceHelper#EMPTY_SCOPE}.</li>
+   *   <li>Then return {@code false}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link Path#endsWith(Path)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean Path.endsWith(Path)"})
+  public void testEndsWithWithOther_givenValueOfPath_whenEmpty_scope_thenReturnFalse() {
     // Arrange, Act and Assert
     assertFalse(Path.valueOf("Path").endsWith(ScopeReferenceHelper.EMPTY_SCOPE));
   }
 
   /**
-   * Test {@link Path#endsWith(Path)} with {@code other}.
-   *
-   * <ul>
-   *   <li>Given valueOf {@code Path}.
-   *   <li>When valueOf {@code Path}.
-   *   <li>Then return {@code true}.
-   * </ul>
-   *
-   * <p>Method under test: {@link Path#endsWith(Path)}
-   */
-  @Test
-  @DisplayName(
-      "Test endsWith(Path) with 'other'; given valueOf 'Path'; when valueOf 'Path'; then return 'true'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean Path.endsWith(Path)"})
-  void testEndsWithWithOther_givenValueOfPath_whenValueOfPath_thenReturnTrue() {
-    // Arrange, Act and Assert
-    assertTrue(Path.valueOf("Path").endsWith(Path.valueOf("Path")));
-  }
-
-  /**
    * Test {@link Path#endsWith(String[])} with {@code path}.
-   *
    * <ul>
-   *   <li>Given {@link ScopeReferenceHelper#EMPTY_SCOPE}.
-   *   <li>Then return {@code false}.
+   *   <li>Given {@link ScopeReferenceHelper#EMPTY_SCOPE}.</li>
+   *   <li>Then return {@code false}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link Path#endsWith(String[])}
+   * <p>
+   * Method under test: {@link Path#endsWith(String[])}
    */
   @Test
-  @DisplayName("Test endsWith(String[]) with 'path'; given EMPTY_SCOPE; then return 'false'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean Path.endsWith(String[])"})
-  void testEndsWithWithPath_givenEmpty_scope_thenReturnFalse() {
+  public void testEndsWithWithPath_givenEmpty_scope_thenReturnFalse() {
     // Arrange, Act and Assert
     assertFalse(ScopeReferenceHelper.EMPTY_SCOPE.endsWith("Path"));
   }
 
   /**
    * Test {@link Path#endsWith(String[])} with {@code path}.
-   *
    * <ul>
-   *   <li>Given {@link Path#Path()}.
-   *   <li>Then return {@code false}.
+   *   <li>Given {@link Path#Path()}.</li>
+   *   <li>Then return {@code false}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link Path#endsWith(String[])}
+   * <p>
+   * Method under test: {@link Path#endsWith(String[])}
    */
   @Test
-  @DisplayName("Test endsWith(String[]) with 'path'; given Path(); then return 'false'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean Path.endsWith(String[])"})
-  void testEndsWithWithPath_givenPath_thenReturnFalse() {
+  public void testEndsWithWithPath_givenPath_thenReturnFalse() {
     // Arrange, Act and Assert
-    assertFalse(new Path().endsWith("Path"));
+    assertFalse((new Path()).endsWith("Path"));
   }
 
   /**
    * Test {@link Path#endsWith(String[])} with {@code path}.
-   *
    * <ul>
-   *   <li>Given valueOf {@code Path}.
-   *   <li>Then return {@code true}.
+   *   <li>Given valueOf {@code Path}.</li>
+   *   <li>Then return {@code true}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link Path#endsWith(String[])}
+   * <p>
+   * Method under test: {@link Path#endsWith(String[])}
    */
   @Test
-  @DisplayName("Test endsWith(String[]) with 'path'; given valueOf 'Path'; then return 'true'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean Path.endsWith(String[])"})
-  void testEndsWithWithPath_givenValueOfPath_thenReturnTrue() {
+  public void testEndsWithWithPath_givenValueOfPath_thenReturnTrue() {
     // Arrange, Act and Assert
     assertTrue(Path.valueOf("Path").endsWith("Path"));
   }
 
   /**
    * Test {@link Path#cardinality()}.
-   *
    * <ul>
-   *   <li>Given {@link ScopeReferenceHelper#EMPTY_SCOPE}.
+   *   <li>Given {@link ScopeReferenceHelper#EMPTY_SCOPE}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link Path#cardinality()}
+   * <p>
+   * Method under test: {@link Path#cardinality()}
    */
   @Test
-  @DisplayName("Test cardinality(); given EMPTY_SCOPE")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"int Path.cardinality()"})
-  void testCardinality_givenEmpty_scope() {
+  public void testCardinality_givenEmpty_scope() {
     // Arrange, Act and Assert
     assertEquals(0, ScopeReferenceHelper.EMPTY_SCOPE.cardinality());
   }
 
   /**
    * Test {@link Path#cardinality()}.
-   *
    * <ul>
-   *   <li>Given {@link Path#Path()}.
+   *   <li>Given {@link Path#Path()}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link Path#cardinality()}
+   * <p>
+   * Method under test: {@link Path#cardinality()}
    */
   @Test
-  @DisplayName("Test cardinality(); given Path()")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"int Path.cardinality()"})
-  void testCardinality_givenPath() {
+  public void testCardinality_givenPath() {
     // Arrange, Act and Assert
-    assertEquals(0, new Path().cardinality());
+    assertEquals(0, (new Path()).cardinality());
   }
 
   /**
    * Test {@link Path#parse(String, boolean)} with {@code pathString}, {@code allowWildcard}.
-   *
    * <ul>
-   *   <li>Then return LastElement Index intValue is nine.
+   *   <li>Then return LastElement Index intValue is nine.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link Path#parse(String, boolean)}
+   * <p>
+   * Method under test: {@link Path#parse(String, boolean)}
    */
   @Test
-  @DisplayName(
-      "Test parse(String, boolean) with 'pathString', 'allowWildcard'; then return LastElement Index intValue is nine")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Path Path.parse(String, boolean)"})
-  void testParseWithPathStringAllowWildcard_thenReturnLastElementIndexIntValueIsNine() {
+  public void testParseWithPathStringAllowWildcard_thenReturnLastElementIndexIntValueIsNine() {
     // Arrange and Act
     Path actualParseResult = Path.parse("*[9]", true);
 
@@ -2063,78 +1887,51 @@ class PathDiffblueTest {
     assertTrue(parent.getElements().isEmpty());
     assertTrue(index.isPresent());
     assertSame(lastElement, elements.get(0));
-    assertArrayEquals(new String[] {"*"}, actualParseResult.getPathNames());
+    assertArrayEquals(new String[]{"*"}, actualParseResult.getPathNames());
   }
 
   /**
    * Test {@link Path#parse(String, boolean)} with {@code pathString}, {@code allowWildcard}.
-   *
    * <ul>
-   *   <li>Then return Parent Elements size is five.
+   *   <li>Then return LastElement PathName is {@code Path}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link Path#parse(String, boolean)}
+   * <p>
+   * Method under test: {@link Path#parse(String, boolean)}
    */
   @Test
-  @DisplayName(
-      "Test parse(String, boolean) with 'pathString', 'allowWildcard'; then return Parent Elements size is five")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Path Path.parse(String, boolean)"})
-  void testParseWithPathStringAllowWildcard_thenReturnParentElementsSizeIsFive() {
+  public void testParseWithPathStringAllowWildcard_thenReturnLastElementPathNameIsPath() {
     // Arrange and Act
     Path actualParseResult = Path.parse("com.regnosys.rosetta.common.translation.Path", true);
 
     // Assert
+    PathElement lastElement = actualParseResult.getLastElement();
+    assertEquals("Path", lastElement.getPathName());
     Path parent = actualParseResult.getParent();
     assertEquals(5, parent.getElements().size());
+    assertEquals(5, parent.getPathNames().length);
     List<PathElement> elements = actualParseResult.getElements();
     assertEquals(6, elements.size());
-    assertSame(elements.get(4), parent.getLastElement());
+    assertSame(lastElement, elements.get(5));
+    PathElement expectedLastElement = elements.get(4);
+    assertSame(expectedLastElement, parent.getLastElement());
+    assertArrayEquals(new String[]{"com", "regnosys", "rosetta", "common", "translation", "Path"},
+        actualParseResult.getPathNames());
   }
 
   /**
    * Test {@link Path#parse(String, boolean)} with {@code pathString}, {@code allowWildcard}.
-   *
    * <ul>
-   *   <li>Then return Parent Elements size is five.
+   *   <li>Then return not LastElement Index Present.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link Path#parse(String, boolean)}
+   * <p>
+   * Method under test: {@link Path#parse(String, boolean)}
    */
   @Test
-  @DisplayName(
-      "Test parse(String, boolean) with 'pathString', 'allowWildcard'; then return Parent Elements size is five")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Path Path.parse(String, boolean)"})
-  void testParseWithPathStringAllowWildcard_thenReturnParentElementsSizeIsFive2() {
-    // Arrange and Act
-    Path actualParseResult = Path.parse("com.regnosys.rosetta.common.translation.Path", false);
-
-    // Assert
-    Path parent = actualParseResult.getParent();
-    assertEquals(5, parent.getElements().size());
-    List<PathElement> elements = actualParseResult.getElements();
-    assertEquals(6, elements.size());
-    assertSame(elements.get(4), parent.getLastElement());
-  }
-
-  /**
-   * Test {@link Path#parse(String, boolean)} with {@code pathString}, {@code allowWildcard}.
-   *
-   * <ul>
-   *   <li>When {@code *}.
-   * </ul>
-   *
-   * <p>Method under test: {@link Path#parse(String, boolean)}
-   */
-  @Test
-  @DisplayName("Test parse(String, boolean) with 'pathString', 'allowWildcard'; when '*'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Path Path.parse(String, boolean)"})
-  void testParseWithPathStringAllowWildcard_whenAsterisk() {
+  public void testParseWithPathStringAllowWildcard_thenReturnNotLastElementIndexPresent() {
     // Arrange and Act
     Path actualParseResult = Path.parse("*", true);
 
@@ -2146,28 +1943,25 @@ class PathDiffblueTest {
     assertEquals(0, parent.getPathNames().length);
     List<PathElement> elements = actualParseResult.getElements();
     assertEquals(1, elements.size());
+    assertFalse(lastElement.getIndex().isPresent());
     assertTrue(parent.getElements().isEmpty());
     assertSame(lastElement, elements.get(0));
-    assertArrayEquals(new String[] {"*"}, actualParseResult.getPathNames());
+    assertArrayEquals(new String[]{"*"}, actualParseResult.getPathNames());
   }
 
   /**
    * Test {@link Path#parse(String, boolean)} with {@code pathString}, {@code allowWildcard}.
-   *
    * <ul>
-   *   <li>When empty string.
-   *   <li>Then return LastElement is {@code null}.
+   *   <li>When empty string.</li>
+   *   <li>Then return LastElement is {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link Path#parse(String, boolean)}
+   * <p>
+   * Method under test: {@link Path#parse(String, boolean)}
    */
   @Test
-  @DisplayName(
-      "Test parse(String, boolean) with 'pathString', 'allowWildcard'; when empty string; then return LastElement is 'null'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Path Path.parse(String, boolean)"})
-  void testParseWithPathStringAllowWildcard_whenEmptyString_thenReturnLastElementIsNull() {
+  public void testParseWithPathStringAllowWildcard_whenEmptyString_thenReturnLastElementIsNull() {
     // Arrange and Act
     Path actualParseResult = Path.parse("", true);
 
@@ -2179,19 +1973,16 @@ class PathDiffblueTest {
 
   /**
    * Test {@link Path#parse(String)} with {@code pathString}.
-   *
    * <ul>
-   *   <li>Then return LastElement PathName is {@code Path}.
+   *   <li>Then return LastElement PathName is {@code Path}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link Path#parse(String)}
+   * <p>
+   * Method under test: {@link Path#parse(String)}
    */
   @Test
-  @DisplayName("Test parse(String) with 'pathString'; then return LastElement PathName is 'Path'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Path Path.parse(String)"})
-  void testParseWithPathString_thenReturnLastElementPathNameIsPath() {
+  public void testParseWithPathString_thenReturnLastElementPathNameIsPath() {
     // Arrange and Act
     Path actualParseResult = Path.parse("com.regnosys.rosetta.common.translation.Path");
 
@@ -2204,29 +1995,25 @@ class PathDiffblueTest {
     List<PathElement> elements = actualParseResult.getElements();
     assertEquals(6, elements.size());
     assertSame(lastElement, elements.get(5));
-    assertSame(elements.get(4), parent.getLastElement());
-    assertArrayEquals(
-        new String[] {"com", "regnosys", "rosetta", "common", "translation", "Path"},
+    PathElement expectedLastElement = elements.get(4);
+    assertSame(expectedLastElement, parent.getLastElement());
+    assertArrayEquals(new String[]{"com", "regnosys", "rosetta", "common", "translation", "Path"},
         actualParseResult.getPathNames());
   }
 
   /**
    * Test {@link Path#parse(String)} with {@code pathString}.
-   *
    * <ul>
-   *   <li>When {@code 42}.
-   *   <li>Then return LastElement PathName is {@code 42}.
+   *   <li>When {@code 42}.</li>
+   *   <li>Then return LastElement PathName is {@code 42}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link Path#parse(String)}
+   * <p>
+   * Method under test: {@link Path#parse(String)}
    */
   @Test
-  @DisplayName(
-      "Test parse(String) with 'pathString'; when '42'; then return LastElement PathName is '42'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Path Path.parse(String)"})
-  void testParseWithPathString_when42_thenReturnLastElementPathNameIs42() {
+  public void testParseWithPathString_when42_thenReturnLastElementPathNameIs42() {
     // Arrange and Act
     Path actualParseResult = Path.parse("42");
 
@@ -2241,26 +2028,22 @@ class PathDiffblueTest {
     assertFalse(lastElement.getIndex().isPresent());
     assertTrue(parent.getElements().isEmpty());
     assertSame(lastElement, elements.get(0));
-    assertArrayEquals(new String[] {"42"}, actualParseResult.getPathNames());
+    assertArrayEquals(new String[]{"42"}, actualParseResult.getPathNames());
   }
 
   /**
    * Test {@link Path#parse(String)} with {@code pathString}.
-   *
    * <ul>
-   *   <li>When empty string.
-   *   <li>Then return LastElement is {@code null}.
+   *   <li>When empty string.</li>
+   *   <li>Then return LastElement is {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link Path#parse(String)}
+   * <p>
+   * Method under test: {@link Path#parse(String)}
    */
   @Test
-  @DisplayName(
-      "Test parse(String) with 'pathString'; when empty string; then return LastElement is 'null'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Path Path.parse(String)"})
-  void testParseWithPathString_whenEmptyString_thenReturnLastElementIsNull() {
+  public void testParseWithPathString_whenEmptyString_thenReturnLastElementIsNull() {
     // Arrange and Act
     Path actualParseResult = Path.parse("");
 
@@ -2272,21 +2055,17 @@ class PathDiffblueTest {
 
   /**
    * Test {@link Path#parse(String)} with {@code pathString}.
-   *
    * <ul>
-   *   <li>When {@code U[9]}.
-   *   <li>Then return LastElement PathName is {@code U}.
+   *   <li>When {@code U[9]}.</li>
+   *   <li>Then return LastElement PathName is {@code U}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link Path#parse(String)}
+   * <p>
+   * Method under test: {@link Path#parse(String)}
    */
   @Test
-  @DisplayName(
-      "Test parse(String) with 'pathString'; when 'U[9]'; then return LastElement PathName is 'U'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Path Path.parse(String)"})
-  void testParseWithPathString_whenU9_thenReturnLastElementPathNameIsU() {
+  public void testParseWithPathString_whenU9_thenReturnLastElementPathNameIsU() {
     // Arrange and Act
     Path actualParseResult = Path.parse("U[9]");
 
@@ -2299,60 +2078,53 @@ class PathDiffblueTest {
     assertEquals(9, index.get().intValue());
     assertTrue(index.isPresent());
     assertSame(lastElement, elements.get(0));
-    assertArrayEquals(new String[] {"U"}, actualParseResult.getPathNames());
+    assertArrayEquals(new String[]{"U"}, actualParseResult.getPathNames());
   }
 
   /**
    * Test {@link Path#equals(Object)}, and {@link Path#hashCode()}.
-   *
    * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
+   *   <li>When other is equal.</li>
+   *   <li>Then return equal.</li>
    * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link Path#equals(Object)}
    *   <li>{@link Path#hashCode()}
    * </ul>
    */
   @Test
-  @DisplayName("Test equals(Object), and hashCode(); when other is equal; then return equal")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean Path.equals(Object)", "int Path.hashCode()"})
-  void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
+  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
     // Arrange
     Path path = ScopeReferenceHelper.EMPTY_SCOPE;
     Path path2 = ScopeReferenceHelper.EMPTY_SCOPE;
 
     // Act and Assert
     assertEquals(path, path2);
-    assertEquals(path.hashCode(), path2.hashCode());
+    int expectedHashCodeResult = path.hashCode();
+    assertEquals(expectedHashCodeResult, path2.hashCode());
   }
 
   /**
    * Test {@link Path#equals(Object)}, and {@link Path#hashCode()}.
-   *
    * <ul>
-   *   <li>When other is same.
-   *   <li>Then return equal.
+   *   <li>When other is same.</li>
+   *   <li>Then return equal.</li>
    * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link Path#equals(Object)}
    *   <li>{@link Path#hashCode()}
    * </ul>
    */
   @Test
-  @DisplayName("Test equals(Object), and hashCode(); when other is same; then return equal")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean Path.equals(Object)", "int Path.hashCode()"})
-  void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
+  public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
     Path path = ScopeReferenceHelper.EMPTY_SCOPE;
 
@@ -2364,60 +2136,51 @@ class PathDiffblueTest {
 
   /**
    * Test {@link Path#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link Path#equals(Object)}
+   * <p>
+   * Method under test: {@link Path#equals(Object)}
    */
   @Test
-  @DisplayName("Test equals(Object); when other is different; then return not equal")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean Path.equals(Object)", "int Path.hashCode()"})
-  void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(new Path(), ScopeReferenceHelper.EMPTY_SCOPE);
   }
 
   /**
    * Test {@link Path#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is {@code null}.
-   *   <li>Then return not equal.
+   *   <li>When other is {@code null}.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link Path#equals(Object)}
+   * <p>
+   * Method under test: {@link Path#equals(Object)}
    */
   @Test
-  @DisplayName("Test equals(Object); when other is 'null'; then return not equal")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean Path.equals(Object)", "int Path.hashCode()"})
-  void testEquals_whenOtherIsNull_thenReturnNotEqual() {
+  public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(ScopeReferenceHelper.EMPTY_SCOPE, null);
   }
 
   /**
    * Test {@link Path#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is wrong type.
-   *   <li>Then return not equal.
+   *   <li>When other is wrong type.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link Path#equals(Object)}
+   * <p>
+   * Method under test: {@link Path#equals(Object)}
    */
   @Test
-  @DisplayName("Test equals(Object); when other is wrong type; then return not equal")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean Path.equals(Object)", "int Path.hashCode()"})
-  void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
+  public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(ScopeReferenceHelper.EMPTY_SCOPE, "Different type to Path");
   }

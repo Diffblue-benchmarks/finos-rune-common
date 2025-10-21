@@ -20,223 +20,153 @@ package com.regnosys.rosetta.common.model;
  * ==============
  */
 
-import static org.junit.jupiter.api.Assertions.assertSame;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import static org.junit.Assert.assertSame;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import com.rosetta.model.lib.functions.RosettaFunction;
 import java.util.HashMap;
 import java.util.Map;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Tag;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
-class FunctionMemoisingModuleBuilderDiffblueTest {
+public class FunctionMemoisingModuleBuilderDiffblueTest {
   /**
    * Test {@link FunctionMemoisingModuleBuilder#setPackages(String[])}.
-   *
-   * <p>Method under test: {@link FunctionMemoisingModuleBuilder#setPackages(String[])}
+   * <p>
+   * Method under test: {@link FunctionMemoisingModuleBuilder#setPackages(String[])}
    */
   @Test
-  @DisplayName("Test setPackages(String[])")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "FunctionMemoisingModuleBuilder FunctionMemoisingModuleBuilder.setPackages(String[])"
-  })
-  void testSetPackages() {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"FunctionMemoisingModuleBuilder FunctionMemoisingModuleBuilder.setPackages(String[])"})
+  public void testSetPackages() {
     // Arrange
-    FunctionMemoisingModuleBuilder functionMemoisingModuleBuilder =
-        new FunctionMemoisingModuleBuilder();
+    FunctionMemoisingModuleBuilder functionMemoisingModuleBuilder = new FunctionMemoisingModuleBuilder();
 
-    // Act
-    FunctionMemoisingModuleBuilder actualSetPackagesResult =
-        functionMemoisingModuleBuilder.setPackages("java.text");
-
-    // Assert
-    assertSame(functionMemoisingModuleBuilder, actualSetPackagesResult);
+    // Act and Assert
+    assertSame(functionMemoisingModuleBuilder, functionMemoisingModuleBuilder.setPackages("java.text"));
   }
 
   /**
    * Test {@link FunctionMemoisingModuleBuilder#setDebugLoggingFunctions(Class[])}.
-   *
    * <ul>
-   *   <li>Then return {@link FunctionMemoisingModuleBuilder} (default constructor).
+   *   <li>Then return {@link FunctionMemoisingModuleBuilder} (default constructor).</li>
    * </ul>
-   *
-   * <p>Method under test: {@link FunctionMemoisingModuleBuilder#setDebugLoggingFunctions(Class[])}
+   * <p>
+   * Method under test: {@link FunctionMemoisingModuleBuilder#setDebugLoggingFunctions(Class[])}
    */
   @Test
-  @DisplayName(
-      "Test setDebugLoggingFunctions(Class[]); then return FunctionMemoisingModuleBuilder (default constructor)")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "FunctionMemoisingModuleBuilder FunctionMemoisingModuleBuilder.setDebugLoggingFunctions(Class[])"
-  })
-  void testSetDebugLoggingFunctions_thenReturnFunctionMemoisingModuleBuilder() {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"FunctionMemoisingModuleBuilder FunctionMemoisingModuleBuilder.setDebugLoggingFunctions(Class[])"})
+  public void testSetDebugLoggingFunctions_thenReturnFunctionMemoisingModuleBuilder() {
     // Arrange
-    FunctionMemoisingModuleBuilder functionMemoisingModuleBuilder =
-        new FunctionMemoisingModuleBuilder();
+    FunctionMemoisingModuleBuilder functionMemoisingModuleBuilder = new FunctionMemoisingModuleBuilder();
     Class<RosettaFunction> forNameResult = RosettaFunction.class;
 
-    // Act
-    FunctionMemoisingModuleBuilder actualSetDebugLoggingFunctionsResult =
-        functionMemoisingModuleBuilder.setDebugLoggingFunctions(forNameResult);
-
-    // Assert
-    assertSame(functionMemoisingModuleBuilder, actualSetDebugLoggingFunctionsResult);
+    // Act and Assert
+    assertSame(functionMemoisingModuleBuilder, functionMemoisingModuleBuilder.setDebugLoggingFunctions(forNameResult));
   }
 
   /**
    * Test {@link FunctionMemoisingModuleBuilder#setFromMap(Map)}.
-   *
    * <ul>
-   *   <li>Given {@code 42}.
-   *   <li>When {@link HashMap#HashMap()} {@code 42} is {@code foo}.
+   *   <li>Given {@code 42}.</li>
+   *   <li>When {@link HashMap#HashMap()} {@code 42} is {@code foo}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link FunctionMemoisingModuleBuilder#setFromMap(Map)}
+   * <p>
+   * Method under test: {@link FunctionMemoisingModuleBuilder#setFromMap(Map)}
    */
   @Test
-  @DisplayName("Test setFromMap(Map); given '42'; when HashMap() '42' is 'foo'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "FunctionMemoisingModuleBuilder FunctionMemoisingModuleBuilder.setFromMap(Map)"
-  })
-  void testSetFromMap_given42_whenHashMap42IsFoo() {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"FunctionMemoisingModuleBuilder FunctionMemoisingModuleBuilder.setFromMap(Map)"})
+  public void testSetFromMap_given42_whenHashMap42IsFoo() {
     // Arrange
-    FunctionMemoisingModuleBuilder functionMemoisingModuleBuilder =
-        new FunctionMemoisingModuleBuilder();
+    FunctionMemoisingModuleBuilder functionMemoisingModuleBuilder = new FunctionMemoisingModuleBuilder();
 
     HashMap<String, String> map = new HashMap<>();
     map.put("42", "foo");
     map.put("foo", "foo");
 
-    // Act
-    FunctionMemoisingModuleBuilder actualSetFromMapResult =
-        functionMemoisingModuleBuilder.setFromMap(map);
-
-    // Assert
-    assertSame(functionMemoisingModuleBuilder, actualSetFromMapResult);
+    // Act and Assert
+    assertSame(functionMemoisingModuleBuilder, functionMemoisingModuleBuilder.setFromMap(map));
   }
 
   /**
    * Test {@link FunctionMemoisingModuleBuilder#setFromMap(Map)}.
-   *
    * <ul>
-   *   <li>Given {@link FunctionMemoisingModuleBuilder#DEBUG_FUNCTION_ENV_PREFIX}.
+   *   <li>Given {@link FunctionMemoisingModuleBuilder#DEBUG_FUNCTION_ENV_PREFIX}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link FunctionMemoisingModuleBuilder#setFromMap(Map)}
+   * <p>
+   * Method under test: {@link FunctionMemoisingModuleBuilder#setFromMap(Map)}
    */
   @Test
-  @DisplayName("Test setFromMap(Map); given DEBUG_FUNCTION_ENV_PREFIX")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "FunctionMemoisingModuleBuilder FunctionMemoisingModuleBuilder.setFromMap(Map)"
-  })
-  void testSetFromMap_givenDebug_function_env_prefix() {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"FunctionMemoisingModuleBuilder FunctionMemoisingModuleBuilder.setFromMap(Map)"})
+  public void testSetFromMap_givenDebug_function_env_prefix() {
     // Arrange
-    FunctionMemoisingModuleBuilder functionMemoisingModuleBuilder =
-        new FunctionMemoisingModuleBuilder();
+    FunctionMemoisingModuleBuilder functionMemoisingModuleBuilder = new FunctionMemoisingModuleBuilder();
 
     HashMap<String, String> map = new HashMap<>();
     map.put(FunctionMemoisingModuleBuilder.DEBUG_FUNCTION_ENV_PREFIX, "foo");
 
-    // Act
-    FunctionMemoisingModuleBuilder actualSetFromMapResult =
-        functionMemoisingModuleBuilder.setFromMap(map);
-
-    // Assert
-    assertSame(functionMemoisingModuleBuilder, actualSetFromMapResult);
+    // Act and Assert
+    assertSame(functionMemoisingModuleBuilder, functionMemoisingModuleBuilder.setFromMap(map));
   }
 
   /**
    * Test {@link FunctionMemoisingModuleBuilder#setFromMap(Map)}.
-   *
    * <ul>
-   *   <li>Given {@code foo}.
-   *   <li>When {@link HashMap#HashMap()} {@code foo} is {@code foo}.
+   *   <li>Given {@code foo}.</li>
+   *   <li>When {@link HashMap#HashMap()} {@code foo} is {@code foo}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link FunctionMemoisingModuleBuilder#setFromMap(Map)}
+   * <p>
+   * Method under test: {@link FunctionMemoisingModuleBuilder#setFromMap(Map)}
    */
   @Test
-  @DisplayName("Test setFromMap(Map); given 'foo'; when HashMap() 'foo' is 'foo'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "FunctionMemoisingModuleBuilder FunctionMemoisingModuleBuilder.setFromMap(Map)"
-  })
-  void testSetFromMap_givenFoo_whenHashMapFooIsFoo() {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"FunctionMemoisingModuleBuilder FunctionMemoisingModuleBuilder.setFromMap(Map)"})
+  public void testSetFromMap_givenFoo_whenHashMapFooIsFoo() {
     // Arrange
-    FunctionMemoisingModuleBuilder functionMemoisingModuleBuilder =
-        new FunctionMemoisingModuleBuilder();
+    FunctionMemoisingModuleBuilder functionMemoisingModuleBuilder = new FunctionMemoisingModuleBuilder();
 
     HashMap<String, String> map = new HashMap<>();
     map.put("foo", "foo");
 
-    // Act
-    FunctionMemoisingModuleBuilder actualSetFromMapResult =
-        functionMemoisingModuleBuilder.setFromMap(map);
-
-    // Assert
-    assertSame(functionMemoisingModuleBuilder, actualSetFromMapResult);
+    // Act and Assert
+    assertSame(functionMemoisingModuleBuilder, functionMemoisingModuleBuilder.setFromMap(map));
   }
 
   /**
    * Test {@link FunctionMemoisingModuleBuilder#setFromMap(Map)}.
-   *
    * <ul>
-   *   <li>When {@link HashMap#HashMap()}.
+   *   <li>When {@link HashMap#HashMap()}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link FunctionMemoisingModuleBuilder#setFromMap(Map)}
+   * <p>
+   * Method under test: {@link FunctionMemoisingModuleBuilder#setFromMap(Map)}
    */
   @Test
-  @DisplayName("Test setFromMap(Map); when HashMap()")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "FunctionMemoisingModuleBuilder FunctionMemoisingModuleBuilder.setFromMap(Map)"
-  })
-  void testSetFromMap_whenHashMap() {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"FunctionMemoisingModuleBuilder FunctionMemoisingModuleBuilder.setFromMap(Map)"})
+  public void testSetFromMap_whenHashMap() {
     // Arrange
-    FunctionMemoisingModuleBuilder functionMemoisingModuleBuilder =
-        new FunctionMemoisingModuleBuilder();
+    FunctionMemoisingModuleBuilder functionMemoisingModuleBuilder = new FunctionMemoisingModuleBuilder();
 
-    // Act
-    FunctionMemoisingModuleBuilder actualSetFromMapResult =
-        functionMemoisingModuleBuilder.setFromMap(new HashMap<>());
-
-    // Assert
-    assertSame(functionMemoisingModuleBuilder, actualSetFromMapResult);
+    // Act and Assert
+    assertSame(functionMemoisingModuleBuilder, functionMemoisingModuleBuilder.setFromMap(new HashMap<>()));
   }
 
   /**
    * Test {@link FunctionMemoisingModuleBuilder#setFromEnvironment()}.
-   *
-   * <p>Method under test: {@link FunctionMemoisingModuleBuilder#setFromEnvironment()}
+   * <p>
+   * Method under test: {@link FunctionMemoisingModuleBuilder#setFromEnvironment()}
    */
   @Test
-  @DisplayName("Test setFromEnvironment()")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "FunctionMemoisingModuleBuilder FunctionMemoisingModuleBuilder.setFromEnvironment()"
-  })
-  void testSetFromEnvironment() {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"FunctionMemoisingModuleBuilder FunctionMemoisingModuleBuilder.setFromEnvironment()"})
+  public void testSetFromEnvironment() {
     // Arrange
-    FunctionMemoisingModuleBuilder functionMemoisingModuleBuilder =
-        new FunctionMemoisingModuleBuilder();
+    FunctionMemoisingModuleBuilder functionMemoisingModuleBuilder = new FunctionMemoisingModuleBuilder();
 
-    // Act
-    FunctionMemoisingModuleBuilder actualSetFromEnvironmentResult =
-        functionMemoisingModuleBuilder.setFromEnvironment();
-
-    // Assert
-    assertSame(functionMemoisingModuleBuilder, actualSetFromEnvironmentResult);
+    // Act and Assert
+    assertSame(functionMemoisingModuleBuilder, functionMemoisingModuleBuilder.setFromEnvironment());
   }
 }

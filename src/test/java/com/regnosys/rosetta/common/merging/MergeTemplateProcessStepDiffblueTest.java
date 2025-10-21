@@ -20,64 +20,50 @@ package com.regnosys.rosetta.common.merging;
  * ==============
  */
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import com.regnosys.rosetta.common.util.RosettaModelObjectSupplier;
 import com.rosetta.model.lib.process.BuilderMerger;
 import java.util.function.Consumer;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Tag;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
-class MergeTemplateProcessStepDiffblueTest {
+public class MergeTemplateProcessStepDiffblueTest {
   /**
    * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
-   *   <li>{@link MergeTemplateProcessStep#MergeTemplateProcessStep(BuilderMerger,
-   *       RosettaModelObjectSupplier, Consumer)}
+   *   <li>{@link MergeTemplateProcessStep#MergeTemplateProcessStep(BuilderMerger, RosettaModelObjectSupplier, Consumer)}
    *   <li>{@link MergeTemplateProcessStep#getName()}
    * </ul>
    */
   @Test
-  @DisplayName("Test getters and setters")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void MergeTemplateProcessStep.<init>(BuilderMerger, RosettaModelObjectSupplier, Consumer)",
-    "java.lang.String MergeTemplateProcessStep.getName()"
-  })
-  void testGettersAndSetters() {
-    // Arrange and Act
-    MergeTemplateProcessStep actualMergeTemplateProcessStep =
-        new MergeTemplateProcessStep(
-            new SimpleMerger(), mock(RosettaModelObjectSupplier.class), mock(Consumer.class));
-
-    // Assert
-    assertEquals("Merge Template Post Processor", actualMergeTemplateProcessStep.getName());
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void MergeTemplateProcessStep.<init>(BuilderMerger, RosettaModelObjectSupplier, Consumer)",
+      "java.lang.String MergeTemplateProcessStep.getName()"})
+  public void testGettersAndSetters() {
+    // Arrange, Act and Assert
+    assertEquals("Merge Template Post Processor",
+        (new MergeTemplateProcessStep(new SimpleMerger(), mock(RosettaModelObjectSupplier.class), mock(Consumer.class)))
+            .getName());
   }
 
   /**
    * Test {@link MergeTemplateProcessStep#getPriority()}.
-   *
-   * <p>Method under test: {@link MergeTemplateProcessStep#getPriority()}
+   * <p>
+   * Method under test: {@link MergeTemplateProcessStep#getPriority()}
    */
   @Test
-  @DisplayName("Test getPriority()")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"java.lang.Integer MergeTemplateProcessStep.getPriority()"})
-  void testGetPriority() {
-    // Arrange
-    MergeTemplateProcessStep mergeTemplateProcessStep =
-        new MergeTemplateProcessStep(
-            new SimpleMerger(), mock(RosettaModelObjectSupplier.class), mock(Consumer.class));
-
-    // Act and Assert
-    assertEquals(1, mergeTemplateProcessStep.getPriority().intValue());
+  public void testGetPriority() {
+    // Arrange, Act and Assert
+    assertEquals(1,
+        (new MergeTemplateProcessStep(new SimpleMerger(), mock(RosettaModelObjectSupplier.class), mock(Consumer.class)))
+            .getPriority()
+            .intValue());
   }
 }

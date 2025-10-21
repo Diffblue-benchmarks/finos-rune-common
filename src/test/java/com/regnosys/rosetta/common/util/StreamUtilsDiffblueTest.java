@@ -20,10 +20,9 @@ package com.regnosys.rosetta.common.util;
  * ==============
  */
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertSame;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThrows;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.doNothing;
@@ -31,11 +30,8 @@ import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonInclude.Include;
-import com.fasterxml.jackson.databind.ser.BeanPropertyWriter;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -45,31 +41,23 @@ import java.util.function.Predicate;
 import java.util.function.UnaryOperator;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Tag;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.mockito.Mockito;
 
-class StreamUtilsDiffblueTest {
+public class StreamUtilsDiffblueTest {
   /**
    * Test {@link StreamUtils#flattenTreeC(Function)} with {@code extract}.
-   *
-   * <ul>
-   *   <li>Then throw {@link RuntimeException}.
-   * </ul>
-   *
-   * <p>Method under test: {@link StreamUtils#flattenTreeC(Function)}
+   * <p>
+   * Method under test: {@link StreamUtils#flattenTreeC(Function)}
    */
   @Test
-  @DisplayName("Test flattenTreeC(Function) with 'extract'; then throw RuntimeException")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Function StreamUtils.flattenTreeC(Function)"})
-  void testFlattenTreeCWithExtract_thenThrowRuntimeException() {
+  public void testFlattenTreeCWithExtract() {
     // Arrange
     Function<Object, Object> function = mock(Function.class);
-    when(function.apply(Mockito.<Object>any())).thenThrow(new RuntimeException());
-
+    when(function.apply(Mockito.<Object>any())).thenThrow(new RuntimeException("foo"));
     Function<Object, Collection<Object>> extract = mock(Function.class);
     when(extract.andThen(Mockito.<Function<Collection<Object>, Object>>any())).thenReturn(function);
 
@@ -77,25 +65,20 @@ class StreamUtilsDiffblueTest {
     Function<Object, Stream<Object>> actualFlattenTreeCResult = StreamUtils.flattenTreeC(extract);
 
     // Assert
-    assertThrows(
-        RuntimeException.class,
-        () -> actualFlattenTreeCResult.apply(BeanPropertyWriter.MARKER_FOR_EMPTY));
+    assertThrows(RuntimeException.class, () -> actualFlattenTreeCResult.apply("42"));
     verify(extract).andThen(isA(Function.class));
     verify(function).apply(isA(Object.class));
   }
 
   /**
-   * Test {@link StreamUtils#flattenTree(Function, Collection)} with {@code extract}, {@code
-   * visited}.
-   *
-   * <p>Method under test: {@link StreamUtils#flattenTree(Function, Collection)}
+   * Test {@link StreamUtils#flattenTree(Function, Collection)} with {@code extract}, {@code visited}.
+   * <p>
+   * Method under test: {@link StreamUtils#flattenTree(Function, Collection)}
    */
   @Test
-  @DisplayName("Test flattenTree(Function, Collection) with 'extract', 'visited'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Function StreamUtils.flattenTree(Function, Collection)"})
-  void testFlattenTreeWithExtractVisited() {
+  public void testFlattenTreeWithExtractVisited() {
     // Arrange
     Function<Object, Stream<Object>> extract = mock(Function.class);
 
@@ -105,178 +88,115 @@ class StreamUtilsDiffblueTest {
     ArrayList<Object> visited = new ArrayList<>();
 
     // Act
-    Function<Object, Stream<Object>> actualFlattenTreeResult =
-        StreamUtils.flattenTree(extract, visited);
-    Object object = BeanPropertyWriter.MARKER_FOR_EMPTY;
-    Stream<Object> actualApplyResult = actualFlattenTreeResult.apply(object);
+    Function<Object, Stream<Object>> actualFlattenTreeResult = StreamUtils.flattenTree(extract, visited);
+    Stream<Object> actualApplyResult = actualFlattenTreeResult.apply("42");
 
     // Assert
     verify(extract).apply(isA(Object.class));
-    assertTrue(object instanceof Include);
     assertEquals(1, visited.size());
+    assertEquals("42", visited.get(0));
     List<Object> collectResult = actualApplyResult.limit(5).collect(Collectors.toList());
     assertEquals(1, collectResult.size());
-    assertEquals(Include.NON_EMPTY, object);
-    assertSame(object, visited.get(0));
-    assertSame(object, collectResult.get(0));
+    assertEquals("42", collectResult.get(0));
   }
 
   /**
-   * Test {@link StreamUtils#flattenTree(Function, Collection)} with {@code extract}, {@code
-   * visited}.
-   *
+   * Test {@link StreamUtils#flattenTree(Function, Collection)} with {@code extract}, {@code visited}.
    * <ul>
-   *   <li>Given {@link BeanPropertyWriter#MARKER_FOR_EMPTY}.
-   *   <li>Then {@link ArrayList#ArrayList()} size is one.
+   *   <li>Given {@code 42}.</li>
+   *   <li>When {@link Function}.</li>
+   *   <li>Then {@link ArrayList#ArrayList()} size is one.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link StreamUtils#flattenTree(Function, Collection)}
+   * <p>
+   * Method under test: {@link StreamUtils#flattenTree(Function, Collection)}
    */
   @Test
-  @DisplayName(
-      "Test flattenTree(Function, Collection) with 'extract', 'visited'; given MARKER_FOR_EMPTY; then ArrayList() size is one")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Function StreamUtils.flattenTree(Function, Collection)"})
-  void testFlattenTreeWithExtractVisited_givenMarker_for_empty_thenArrayListSizeIsOne() {
+  public void testFlattenTreeWithExtractVisited_given42_whenFunction_thenArrayListSizeIsOne() {
     // Arrange
     Function<Object, Stream<Object>> extract = mock(Function.class);
 
     ArrayList<Object> visited = new ArrayList<>();
-    visited.add(BeanPropertyWriter.MARKER_FOR_EMPTY);
+    visited.add("42");
 
     // Act
-    Function<Object, Stream<Object>> actualFlattenTreeResult =
-        StreamUtils.flattenTree(extract, visited);
-    Object object = BeanPropertyWriter.MARKER_FOR_EMPTY;
-    Stream<Object> actualApplyResult = actualFlattenTreeResult.apply(object);
+    Function<Object, Stream<Object>> actualFlattenTreeResult = StreamUtils.flattenTree(extract, visited);
+    Stream<Object> actualApplyResult = actualFlattenTreeResult.apply("42");
 
     // Assert
-    assertTrue(object instanceof Include);
     assertEquals(1, visited.size());
-    assertEquals(Include.NON_EMPTY, object);
+    assertEquals("42", visited.get(0));
     assertTrue(actualApplyResult.limit(5).collect(Collectors.toList()).isEmpty());
-    assertSame(object, visited.get(0));
   }
 
   /**
-   * Test {@link StreamUtils#flattenTree(Function, Collection)} with {@code extract}, {@code
-   * visited}.
-   *
+   * Test {@link StreamUtils#flattenTree(Function, Collection)} with {@code extract}, {@code visited}.
    * <ul>
-   *   <li>Given {@link BeanPropertyWriter#MARKER_FOR_EMPTY}.
-   *   <li>Then {@link ArrayList#ArrayList()} size is two.
+   *   <li>Given {@code 42}.</li>
+   *   <li>When {@link Function}.</li>
+   *   <li>Then {@link ArrayList#ArrayList()} size is two.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link StreamUtils#flattenTree(Function, Collection)}
+   * <p>
+   * Method under test: {@link StreamUtils#flattenTree(Function, Collection)}
    */
   @Test
-  @DisplayName(
-      "Test flattenTree(Function, Collection) with 'extract', 'visited'; given MARKER_FOR_EMPTY; then ArrayList() size is two")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Function StreamUtils.flattenTree(Function, Collection)"})
-  void testFlattenTreeWithExtractVisited_givenMarker_for_empty_thenArrayListSizeIsTwo() {
+  public void testFlattenTreeWithExtractVisited_given42_whenFunction_thenArrayListSizeIsTwo() {
     // Arrange
     Function<Object, Stream<Object>> extract = mock(Function.class);
 
     ArrayList<Object> visited = new ArrayList<>();
-    visited.add(BeanPropertyWriter.MARKER_FOR_EMPTY);
-    visited.add(BeanPropertyWriter.MARKER_FOR_EMPTY);
+    visited.add("42");
+    visited.add("42");
 
     // Act
-    Function<Object, Stream<Object>> actualFlattenTreeResult =
-        StreamUtils.flattenTree(extract, visited);
-    Object object = BeanPropertyWriter.MARKER_FOR_EMPTY;
-    Stream<Object> actualApplyResult = actualFlattenTreeResult.apply(object);
+    Function<Object, Stream<Object>> actualFlattenTreeResult = StreamUtils.flattenTree(extract, visited);
+    Stream<Object> actualApplyResult = actualFlattenTreeResult.apply("42");
 
     // Assert
-    assertTrue(object instanceof Include);
     assertEquals(2, visited.size());
-    assertEquals(Include.NON_EMPTY, object);
+    assertEquals("42", visited.get(0));
     assertTrue(actualApplyResult.limit(5).collect(Collectors.toList()).isEmpty());
-    assertSame(object, visited.get(0));
-    assertSame(object, visited.get(1));
   }
 
   /**
-   * Test {@link StreamUtils#flattenTree(Function, Collection)} with {@code extract}, {@code
-   * visited}.
-   *
+   * Test {@link StreamUtils#flattenTree(Function, Collection)} with {@code extract}, {@code visited}.
    * <ul>
-   *   <li>Then throw {@link RuntimeException}.
+   *   <li>Then throw {@link RuntimeException}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link StreamUtils#flattenTree(Function, Collection)}
+   * <p>
+   * Method under test: {@link StreamUtils#flattenTree(Function, Collection)}
    */
   @Test
-  @DisplayName(
-      "Test flattenTree(Function, Collection) with 'extract', 'visited'; then throw RuntimeException")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Function StreamUtils.flattenTree(Function, Collection)"})
-  void testFlattenTreeWithExtractVisited_thenThrowRuntimeException() {
+  public void testFlattenTreeWithExtractVisited_thenThrowRuntimeException() {
     // Arrange
     Function<Object, Stream<Object>> extract = mock(Function.class);
-    when(extract.apply(Mockito.<Object>any())).thenThrow(new RuntimeException());
+    when(extract.apply(Mockito.<Object>any())).thenThrow(new RuntimeException("foo"));
 
     // Act
-    Function<Object, Stream<Object>> actualFlattenTreeResult =
-        StreamUtils.flattenTree(extract, new ArrayList<>());
+    Function<Object, Stream<Object>> actualFlattenTreeResult = StreamUtils.flattenTree(extract, new ArrayList<>());
 
     // Assert
-    assertThrows(
-        RuntimeException.class,
-        () -> actualFlattenTreeResult.apply(BeanPropertyWriter.MARKER_FOR_EMPTY));
+    assertThrows(RuntimeException.class, () -> actualFlattenTreeResult.apply("42"));
     verify(extract).apply(isA(Object.class));
   }
 
   /**
-   * Test {@link StreamUtils#flattenTree(Function, Collection)} with {@code extract}, {@code
-   * visited}.
-   *
-   * <ul>
-   *   <li>When {@link Function}.
-   *   <li>Then {@link ArrayList#ArrayList()} Empty.
-   * </ul>
-   *
-   * <p>Method under test: {@link StreamUtils#flattenTree(Function, Collection)}
-   */
-  @Test
-  @DisplayName(
-      "Test flattenTree(Function, Collection) with 'extract', 'visited'; when Function; then ArrayList() Empty")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Function StreamUtils.flattenTree(Function, Collection)"})
-  void testFlattenTreeWithExtractVisited_whenFunction_thenArrayListEmpty() {
-    // Arrange
-    Function<Object, Stream<Object>> extract = mock(Function.class);
-    ArrayList<Object> visited = new ArrayList<>();
-
-    // Act
-    StreamUtils.flattenTree(extract, visited);
-
-    // Assert that nothing has changed
-    assertTrue(visited.isEmpty());
-  }
-
-  /**
    * Test {@link StreamUtils#flattenTree(Function)} with {@code extract}.
-   *
    * <ul>
-   *   <li>Given {@link ArrayList#ArrayList()} stream.
-   *   <li>Then {@link BeanPropertyWriter#MARKER_FOR_EMPTY} {@link JsonInclude.Include}.
+   *   <li>Then return apply {@code 42} limit five collect toList size is one.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link StreamUtils#flattenTree(Function)}
+   * <p>
+   * Method under test: {@link StreamUtils#flattenTree(Function)}
    */
   @Test
-  @DisplayName(
-      "Test flattenTree(Function) with 'extract'; given ArrayList() stream; then MARKER_FOR_EMPTY Include")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Function StreamUtils.flattenTree(Function)"})
-  void testFlattenTreeWithExtract_givenArrayListStream_thenMarker_for_emptyInclude() {
+  public void testFlattenTreeWithExtract_thenReturnApply42LimitFiveCollectToListSizeIsOne() {
     // Arrange
     Function<Object, Stream<Object>> extract = mock(Function.class);
 
@@ -286,112 +206,92 @@ class StreamUtilsDiffblueTest {
 
     // Act
     Function<Object, Stream<Object>> actualFlattenTreeResult = StreamUtils.flattenTree(extract);
-    Object object = BeanPropertyWriter.MARKER_FOR_EMPTY;
-    Stream<Object> actualApplyResult = actualFlattenTreeResult.apply(object);
+    Stream<Object> actualApplyResult = actualFlattenTreeResult.apply("42");
 
     // Assert
     verify(extract).apply(isA(Object.class));
-    assertTrue(object instanceof Include);
     List<Object> collectResult = actualApplyResult.limit(5).collect(Collectors.toList());
     assertEquals(1, collectResult.size());
-    assertEquals(Include.NON_EMPTY, object);
-    assertSame(object, collectResult.get(0));
+    assertEquals("42", collectResult.get(0));
   }
 
   /**
    * Test {@link StreamUtils#flattenTree(Function)} with {@code extract}.
-   *
    * <ul>
-   *   <li>Given {@link RuntimeException#RuntimeException()}.
-   *   <li>Then throw {@link RuntimeException}.
+   *   <li>Then throw {@link RuntimeException}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link StreamUtils#flattenTree(Function)}
+   * <p>
+   * Method under test: {@link StreamUtils#flattenTree(Function)}
    */
   @Test
-  @DisplayName(
-      "Test flattenTree(Function) with 'extract'; given RuntimeException(); then throw RuntimeException")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Function StreamUtils.flattenTree(Function)"})
-  void testFlattenTreeWithExtract_givenRuntimeException_thenThrowRuntimeException() {
+  public void testFlattenTreeWithExtract_thenThrowRuntimeException() {
     // Arrange
     Function<Object, Stream<Object>> extract = mock(Function.class);
-    when(extract.apply(Mockito.<Object>any())).thenThrow(new RuntimeException());
+    when(extract.apply(Mockito.<Object>any())).thenThrow(new RuntimeException("foo"));
 
     // Act
     Function<Object, Stream<Object>> actualFlattenTreeResult = StreamUtils.flattenTree(extract);
 
     // Assert
-    assertThrows(
-        RuntimeException.class,
-        () -> actualFlattenTreeResult.apply(BeanPropertyWriter.MARKER_FOR_EMPTY));
+    assertThrows(RuntimeException.class, () -> actualFlattenTreeResult.apply("42"));
     verify(extract).apply(isA(Object.class));
   }
 
   /**
    * Test {@link StreamUtils#visitTreeC(Object, Consumer, Function)}.
-   *
    * <ul>
-   *   <li>Given {@link ArrayList#ArrayList()} add {@link BeanPropertyWriter#MARKER_FOR_EMPTY}.
-   *   <li>Then calls {@link Function#apply(Object)}.
+   *   <li>Given {@link ArrayList#ArrayList()} add {@code 42}.</li>
+   *   <li>When {@code Initial}.</li>
+   *   <li>Then calls {@link Consumer#accept(Object)}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link StreamUtils#visitTreeC(Object, Consumer, Function)}
+   * <p>
+   * Method under test: {@link StreamUtils#visitTreeC(Object, Consumer, Function)}
    */
   @Test
-  @DisplayName(
-      "Test visitTreeC(Object, Consumer, Function); given ArrayList() add MARKER_FOR_EMPTY; then calls apply(Object)")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void StreamUtils.visitTreeC(Object, Consumer, Function)"})
-  void testVisitTreeC_givenArrayListAddMarker_for_empty_thenCallsApply() {
+  public void testVisitTreeC_givenArrayListAdd42_whenInitial_thenCallsAccept() {
     // Arrange
     Consumer<Object> visitFunc = mock(Consumer.class);
     doNothing().when(visitFunc).accept(Mockito.<Object>any());
 
     ArrayList<Object> objectList = new ArrayList<>();
-    objectList.add(BeanPropertyWriter.MARKER_FOR_EMPTY);
-
+    objectList.add("42");
     Function<Object, Collection<Object>> traverseFunc = mock(Function.class);
     when(traverseFunc.apply(Mockito.<Object>any())).thenReturn(objectList);
 
     // Act
-    StreamUtils.visitTreeC(BeanPropertyWriter.MARKER_FOR_EMPTY, visitFunc, traverseFunc);
+    StreamUtils.visitTreeC("Initial", visitFunc, traverseFunc);
 
     // Assert
-    verify(visitFunc).accept(isA(Object.class));
-    verify(traverseFunc).apply(isA(Object.class));
+    verify(visitFunc, atLeast(1)).accept(Mockito.<Object>any());
+    verify(traverseFunc, atLeast(1)).apply(Mockito.<Object>any());
   }
 
   /**
    * Test {@link StreamUtils#visitTreeC(Object, Consumer, Function)}.
-   *
    * <ul>
-   *   <li>Given {@link ArrayList#ArrayList()}.
-   *   <li>When {@link Function} {@link Function#apply(Object)} return {@link
-   *       ArrayList#ArrayList()}.
-   *   <li>Then calls {@link Function#apply(Object)}.
+   *   <li>Given {@link ArrayList#ArrayList()}.</li>
+   *   <li>When {@code Initial}.</li>
+   *   <li>Then calls {@link Consumer#accept(Object)}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link StreamUtils#visitTreeC(Object, Consumer, Function)}
+   * <p>
+   * Method under test: {@link StreamUtils#visitTreeC(Object, Consumer, Function)}
    */
   @Test
-  @DisplayName(
-      "Test visitTreeC(Object, Consumer, Function); given ArrayList(); when Function apply(Object) return ArrayList(); then calls apply(Object)")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void StreamUtils.visitTreeC(Object, Consumer, Function)"})
-  void testVisitTreeC_givenArrayList_whenFunctionApplyReturnArrayList_thenCallsApply() {
+  public void testVisitTreeC_givenArrayList_whenInitial_thenCallsAccept() {
     // Arrange
     Consumer<Object> visitFunc = mock(Consumer.class);
     doNothing().when(visitFunc).accept(Mockito.<Object>any());
-
     Function<Object, Collection<Object>> traverseFunc = mock(Function.class);
     when(traverseFunc.apply(Mockito.<Object>any())).thenReturn(new ArrayList<>());
 
     // Act
-    StreamUtils.visitTreeC(BeanPropertyWriter.MARKER_FOR_EMPTY, visitFunc, traverseFunc);
+    StreamUtils.visitTreeC("Initial", visitFunc, traverseFunc);
 
     // Assert
     verify(visitFunc).accept(isA(Object.class));
@@ -400,103 +300,87 @@ class StreamUtilsDiffblueTest {
 
   /**
    * Test {@link StreamUtils#visitTreeC(Object, Consumer, Function)}.
-   *
    * <ul>
-   *   <li>When {@link Consumer} {@link Consumer#accept(Object)} throw {@link
-   *       RuntimeException#RuntimeException()}.
-   *   <li>Then throw {@link RuntimeException}.
+   *   <li>Given {@link RuntimeException#RuntimeException(String)} with {@code foo}.</li>
+   *   <li>Then throw {@link RuntimeException}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link StreamUtils#visitTreeC(Object, Consumer, Function)}
+   * <p>
+   * Method under test: {@link StreamUtils#visitTreeC(Object, Consumer, Function)}
    */
   @Test
-  @DisplayName(
-      "Test visitTreeC(Object, Consumer, Function); when Consumer accept(Object) throw RuntimeException(); then throw RuntimeException")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void StreamUtils.visitTreeC(Object, Consumer, Function)"})
-  void testVisitTreeC_whenConsumerAcceptThrowRuntimeException_thenThrowRuntimeException() {
-    // Arrange
-    Consumer<Object> visitFunc = mock(Consumer.class);
-    doThrow(new RuntimeException()).when(visitFunc).accept(Mockito.<Object>any());
-
-    // Act and Assert
-    assertThrows(
-        RuntimeException.class,
-        () ->
-            StreamUtils.visitTreeC(
-                BeanPropertyWriter.MARKER_FOR_EMPTY, visitFunc, mock(Function.class)));
-    verify(visitFunc).accept(isA(Object.class));
-  }
-
-  /**
-   * Test {@link StreamUtils#visitTreeC(Object, Consumer, Function)}.
-   *
-   * <ul>
-   *   <li>When {@link Function} {@link Function#apply(Object)} throw {@link
-   *       RuntimeException#RuntimeException()}.
-   *   <li>Then throw {@link RuntimeException}.
-   * </ul>
-   *
-   * <p>Method under test: {@link StreamUtils#visitTreeC(Object, Consumer, Function)}
-   */
-  @Test
-  @DisplayName(
-      "Test visitTreeC(Object, Consumer, Function); when Function apply(Object) throw RuntimeException(); then throw RuntimeException")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void StreamUtils.visitTreeC(Object, Consumer, Function)"})
-  void testVisitTreeC_whenFunctionApplyThrowRuntimeException_thenThrowRuntimeException() {
+  public void testVisitTreeC_givenRuntimeExceptionWithFoo_thenThrowRuntimeException() {
     // Arrange
     Consumer<Object> visitFunc = mock(Consumer.class);
     doNothing().when(visitFunc).accept(Mockito.<Object>any());
-
     Function<Object, Collection<Object>> traverseFunc = mock(Function.class);
-    when(traverseFunc.apply(Mockito.<Object>any())).thenThrow(new RuntimeException());
+    when(traverseFunc.apply(Mockito.<Object>any())).thenThrow(new RuntimeException("foo"));
 
     // Act and Assert
-    assertThrows(
-        RuntimeException.class,
-        () -> StreamUtils.visitTreeC(BeanPropertyWriter.MARKER_FOR_EMPTY, visitFunc, traverseFunc));
+    assertThrows(RuntimeException.class, () -> StreamUtils.visitTreeC("Initial", visitFunc, traverseFunc));
     verify(visitFunc).accept(isA(Object.class));
     verify(traverseFunc).apply(isA(Object.class));
   }
 
   /**
    * Test {@link StreamUtils#visitBiTree(Object, Consumer, Function, Function)}.
-   *
    * <ul>
-   *   <li>Given {@link ArrayList#ArrayList()} add {@link BeanPropertyWriter#MARKER_FOR_EMPTY}.
-   *   <li>Then calls {@link Function#apply(Object)}.
+   *   <li>Given {@link ArrayList#ArrayList()} add {@code 42}.</li>
+   *   <li>When {@code Initial}.</li>
+   *   <li>Then calls {@link Consumer#accept(Object)}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link StreamUtils#visitBiTree(Object, Consumer, Function, Function)}
+   * <p>
+   * Method under test: {@link StreamUtils#visitBiTree(Object, Consumer, Function, Function)}
    */
   @Test
-  @DisplayName(
-      "Test visitBiTree(Object, Consumer, Function, Function); given ArrayList() add MARKER_FOR_EMPTY; then calls apply(Object)")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void StreamUtils.visitBiTree(Object, Consumer, Function, Function)"})
-  void testVisitBiTree_givenArrayListAddMarker_for_empty_thenCallsApply() {
+  public void testVisitBiTree_givenArrayListAdd42_whenInitial_thenCallsAccept() {
     // Arrange
     Consumer<Object> visitFunction = mock(Consumer.class);
     doNothing().when(visitFunction).accept(Mockito.<Object>any());
 
     ArrayList<Object> objectList = new ArrayList<>();
-    objectList.add(BeanPropertyWriter.MARKER_FOR_EMPTY);
-
+    objectList.add("42");
     Function<Object, Collection<Object>> traverseFunc1 = mock(Function.class);
     when(traverseFunc1.apply(Mockito.<Object>any())).thenReturn(objectList);
-
     Function<Object, Collection<Object>> traverseFunc2 = mock(Function.class);
     when(traverseFunc2.apply(Mockito.<Object>any())).thenReturn(new ArrayList<>());
 
     // Act
-    StreamUtils.visitBiTree(
-        BeanPropertyWriter.MARKER_FOR_EMPTY, visitFunction, traverseFunc1, traverseFunc2);
+    StreamUtils.visitBiTree("Initial", visitFunction, traverseFunc1, traverseFunc2);
 
     // Assert
+    verify(visitFunction, atLeast(1)).accept(Mockito.<Object>any());
+    verify(traverseFunc1, atLeast(1)).apply(Mockito.<Object>any());
+    verify(traverseFunc2, atLeast(1)).apply(Mockito.<Object>any());
+  }
+
+  /**
+   * Test {@link StreamUtils#visitBiTree(Object, Consumer, Function, Function)}.
+   * <ul>
+   *   <li>Given {@link RuntimeException#RuntimeException(String)} with {@code foo}.</li>
+   *   <li>Then throw {@link RuntimeException}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link StreamUtils#visitBiTree(Object, Consumer, Function, Function)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void StreamUtils.visitBiTree(Object, Consumer, Function, Function)"})
+  public void testVisitBiTree_givenRuntimeExceptionWithFoo_thenThrowRuntimeException() {
+    // Arrange
+    Consumer<Object> visitFunction = mock(Consumer.class);
+    doNothing().when(visitFunction).accept(Mockito.<Object>any());
+    Function<Object, Collection<Object>> traverseFunc1 = mock(Function.class);
+    when(traverseFunc1.apply(Mockito.<Object>any())).thenReturn(new ArrayList<>());
+    Function<Object, Collection<Object>> traverseFunc2 = mock(Function.class);
+    when(traverseFunc2.apply(Mockito.<Object>any())).thenThrow(new RuntimeException("foo"));
+
+    // Act and Assert
+    assertThrows(RuntimeException.class,
+        () -> StreamUtils.visitBiTree("Initial", visitFunction, traverseFunc1, traverseFunc2));
     verify(visitFunction).accept(isA(Object.class));
     verify(traverseFunc1).apply(isA(Object.class));
     verify(traverseFunc2).apply(isA(Object.class));
@@ -504,148 +388,29 @@ class StreamUtilsDiffblueTest {
 
   /**
    * Test {@link StreamUtils#visitBiTree(Object, Consumer, Function, Function)}.
-   *
    * <ul>
-   *   <li>Given {@link ArrayList#ArrayList()}.
-   *   <li>When {@link Function} {@link Function#apply(Object)} return {@link
-   *       ArrayList#ArrayList()}.
-   *   <li>Then calls {@link Function#apply(Object)}.
+   *   <li>When {@code Initial}.</li>
+   *   <li>Then calls {@link Consumer#accept(Object)}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link StreamUtils#visitBiTree(Object, Consumer, Function, Function)}
+   * <p>
+   * Method under test: {@link StreamUtils#visitBiTree(Object, Consumer, Function, Function)}
    */
   @Test
-  @DisplayName(
-      "Test visitBiTree(Object, Consumer, Function, Function); given ArrayList(); when Function apply(Object) return ArrayList(); then calls apply(Object)")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void StreamUtils.visitBiTree(Object, Consumer, Function, Function)"})
-  void testVisitBiTree_givenArrayList_whenFunctionApplyReturnArrayList_thenCallsApply() {
+  public void testVisitBiTree_whenInitial_thenCallsAccept() {
     // Arrange
     Consumer<Object> visitFunction = mock(Consumer.class);
     doNothing().when(visitFunction).accept(Mockito.<Object>any());
-
     Function<Object, Collection<Object>> traverseFunc1 = mock(Function.class);
     when(traverseFunc1.apply(Mockito.<Object>any())).thenReturn(new ArrayList<>());
-
     Function<Object, Collection<Object>> traverseFunc2 = mock(Function.class);
     when(traverseFunc2.apply(Mockito.<Object>any())).thenReturn(new ArrayList<>());
 
     // Act
-    StreamUtils.visitBiTree(
-        BeanPropertyWriter.MARKER_FOR_EMPTY, visitFunction, traverseFunc1, traverseFunc2);
+    StreamUtils.visitBiTree("Initial", visitFunction, traverseFunc1, traverseFunc2);
 
     // Assert
-    verify(visitFunction).accept(isA(Object.class));
-    verify(traverseFunc1).apply(isA(Object.class));
-    verify(traverseFunc2).apply(isA(Object.class));
-  }
-
-  /**
-   * Test {@link StreamUtils#visitBiTree(Object, Consumer, Function, Function)}.
-   *
-   * <ul>
-   *   <li>When {@link Consumer} {@link Consumer#accept(Object)} throw {@link
-   *       RuntimeException#RuntimeException()}.
-   * </ul>
-   *
-   * <p>Method under test: {@link StreamUtils#visitBiTree(Object, Consumer, Function, Function)}
-   */
-  @Test
-  @DisplayName(
-      "Test visitBiTree(Object, Consumer, Function, Function); when Consumer accept(Object) throw RuntimeException()")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void StreamUtils.visitBiTree(Object, Consumer, Function, Function)"})
-  void testVisitBiTree_whenConsumerAcceptThrowRuntimeException() {
-    // Arrange
-    Consumer<Object> visitFunction = mock(Consumer.class);
-    doThrow(new RuntimeException()).when(visitFunction).accept(Mockito.<Object>any());
-
-    // Act and Assert
-    assertThrows(
-        RuntimeException.class,
-        () ->
-            StreamUtils.visitBiTree(
-                BeanPropertyWriter.MARKER_FOR_EMPTY,
-                visitFunction,
-                mock(Function.class),
-                mock(Function.class)));
-    verify(visitFunction).accept(isA(Object.class));
-  }
-
-  /**
-   * Test {@link StreamUtils#visitBiTree(Object, Consumer, Function, Function)}.
-   *
-   * <ul>
-   *   <li>When {@link Function} {@link Function#apply(Object)} throw {@link
-   *       RuntimeException#RuntimeException()}.
-   *   <li>Then throw {@link RuntimeException}.
-   * </ul>
-   *
-   * <p>Method under test: {@link StreamUtils#visitBiTree(Object, Consumer, Function, Function)}
-   */
-  @Test
-  @DisplayName(
-      "Test visitBiTree(Object, Consumer, Function, Function); when Function apply(Object) throw RuntimeException(); then throw RuntimeException")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void StreamUtils.visitBiTree(Object, Consumer, Function, Function)"})
-  void testVisitBiTree_whenFunctionApplyThrowRuntimeException_thenThrowRuntimeException() {
-    // Arrange
-    Consumer<Object> visitFunction = mock(Consumer.class);
-    doNothing().when(visitFunction).accept(Mockito.<Object>any());
-
-    Function<Object, Collection<Object>> traverseFunc1 = mock(Function.class);
-    when(traverseFunc1.apply(Mockito.<Object>any())).thenThrow(new RuntimeException());
-
-    // Act and Assert
-    assertThrows(
-        RuntimeException.class,
-        () ->
-            StreamUtils.visitBiTree(
-                BeanPropertyWriter.MARKER_FOR_EMPTY,
-                visitFunction,
-                traverseFunc1,
-                mock(Function.class)));
-    verify(visitFunction).accept(isA(Object.class));
-    verify(traverseFunc1).apply(isA(Object.class));
-  }
-
-  /**
-   * Test {@link StreamUtils#visitBiTree(Object, Consumer, Function, Function)}.
-   *
-   * <ul>
-   *   <li>When {@link Function} {@link Function#apply(Object)} throw {@link
-   *       RuntimeException#RuntimeException()}.
-   *   <li>Then throw {@link RuntimeException}.
-   * </ul>
-   *
-   * <p>Method under test: {@link StreamUtils#visitBiTree(Object, Consumer, Function, Function)}
-   */
-  @Test
-  @DisplayName(
-      "Test visitBiTree(Object, Consumer, Function, Function); when Function apply(Object) throw RuntimeException(); then throw RuntimeException")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void StreamUtils.visitBiTree(Object, Consumer, Function, Function)"})
-  void testVisitBiTree_whenFunctionApplyThrowRuntimeException_thenThrowRuntimeException2() {
-    // Arrange
-    Consumer<Object> visitFunction = mock(Consumer.class);
-    doNothing().when(visitFunction).accept(Mockito.<Object>any());
-
-    Function<Object, Collection<Object>> traverseFunc1 = mock(Function.class);
-    when(traverseFunc1.apply(Mockito.<Object>any())).thenReturn(new ArrayList<>());
-
-    Function<Object, Collection<Object>> traverseFunc2 = mock(Function.class);
-    when(traverseFunc2.apply(Mockito.<Object>any())).thenThrow(new RuntimeException());
-
-    // Act and Assert
-    assertThrows(
-        RuntimeException.class,
-        () ->
-            StreamUtils.visitBiTree(
-                BeanPropertyWriter.MARKER_FOR_EMPTY, visitFunction, traverseFunc1, traverseFunc2));
     verify(visitFunction).accept(isA(Object.class));
     verify(traverseFunc1).apply(isA(Object.class));
     verify(traverseFunc2).apply(isA(Object.class));
@@ -653,34 +418,30 @@ class StreamUtilsDiffblueTest {
 
   /**
    * Test {@link StreamUtils#visitTreeS(Object, Consumer, Function)}.
-   *
    * <ul>
-   *   <li>Given {@link ArrayList#ArrayList()} add {@link BeanPropertyWriter#MARKER_FOR_EMPTY}.
-   *   <li>Then calls {@link Function#apply(Object)}.
+   *   <li>Given {@link ArrayList#ArrayList()} add {@code 42}.</li>
+   *   <li>When {@code 42}.</li>
+   *   <li>Then calls {@link Consumer#accept(Object)}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link StreamUtils#visitTreeS(Object, Consumer, Function)}
+   * <p>
+   * Method under test: {@link StreamUtils#visitTreeS(Object, Consumer, Function)}
    */
   @Test
-  @DisplayName(
-      "Test visitTreeS(Object, Consumer, Function); given ArrayList() add MARKER_FOR_EMPTY; then calls apply(Object)")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void StreamUtils.visitTreeS(Object, Consumer, Function)"})
-  void testVisitTreeS_givenArrayListAddMarker_for_empty_thenCallsApply() {
+  public void testVisitTreeS_givenArrayListAdd42_when42_thenCallsAccept() {
     // Arrange
     Consumer<Object> visitFunc = mock(Consumer.class);
     doNothing().when(visitFunc).accept(Mockito.<Object>any());
 
     ArrayList<Object> objectList = new ArrayList<>();
-    objectList.add(BeanPropertyWriter.MARKER_FOR_EMPTY);
+    objectList.add("42");
     Stream<Object> streamResult = objectList.stream();
-
     Function<Object, Stream<Object>> traversFunc = mock(Function.class);
     when(traversFunc.apply(Mockito.<Object>any())).thenReturn(streamResult);
 
     // Act
-    StreamUtils.visitTreeS(BeanPropertyWriter.MARKER_FOR_EMPTY, visitFunc, traversFunc);
+    StreamUtils.visitTreeS("42", visitFunc, traversFunc);
 
     // Assert
     verify(visitFunc).accept(isA(Object.class));
@@ -689,25 +450,21 @@ class StreamUtilsDiffblueTest {
 
   /**
    * Test {@link StreamUtils#visitTreeS(Object, Consumer, Function)}.
-   *
    * <ul>
-   *   <li>Given {@link ArrayList#ArrayList()} stream.
-   *   <li>Then calls {@link Function#apply(Object)}.
+   *   <li>Given {@link ArrayList#ArrayList()} stream.</li>
+   *   <li>When {@code Initial}.</li>
+   *   <li>Then calls {@link Consumer#accept(Object)}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link StreamUtils#visitTreeS(Object, Consumer, Function)}
+   * <p>
+   * Method under test: {@link StreamUtils#visitTreeS(Object, Consumer, Function)}
    */
   @Test
-  @DisplayName(
-      "Test visitTreeS(Object, Consumer, Function); given ArrayList() stream; then calls apply(Object)")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void StreamUtils.visitTreeS(Object, Consumer, Function)"})
-  void testVisitTreeS_givenArrayListStream_thenCallsApply() {
+  public void testVisitTreeS_givenArrayListStream_whenInitial_thenCallsAccept() {
     // Arrange
     Consumer<Object> visitFunc = mock(Consumer.class);
     doNothing().when(visitFunc).accept(Mockito.<Object>any());
-
     Function<Object, Stream<Object>> traversFunc = mock(Function.class);
 
     ArrayList<Object> objectList = new ArrayList<>();
@@ -715,7 +472,7 @@ class StreamUtilsDiffblueTest {
     when(traversFunc.apply(Mockito.<Object>any())).thenReturn(streamResult);
 
     // Act
-    StreamUtils.visitTreeS(BeanPropertyWriter.MARKER_FOR_EMPTY, visitFunc, traversFunc);
+    StreamUtils.visitTreeS("Initial", visitFunc, traversFunc);
 
     // Assert
     verify(visitFunc).accept(isA(Object.class));
@@ -724,224 +481,123 @@ class StreamUtilsDiffblueTest {
 
   /**
    * Test {@link StreamUtils#visitTreeS(Object, Consumer, Function)}.
-   *
    * <ul>
-   *   <li>When {@link Consumer} {@link Consumer#accept(Object)} throw {@link
-   *       RuntimeException#RuntimeException()}.
-   *   <li>Then throw {@link RuntimeException}.
+   *   <li>Given {@link RuntimeException#RuntimeException(String)} with {@code foo}.</li>
+   *   <li>Then throw {@link RuntimeException}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link StreamUtils#visitTreeS(Object, Consumer, Function)}
+   * <p>
+   * Method under test: {@link StreamUtils#visitTreeS(Object, Consumer, Function)}
    */
   @Test
-  @DisplayName(
-      "Test visitTreeS(Object, Consumer, Function); when Consumer accept(Object) throw RuntimeException(); then throw RuntimeException")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void StreamUtils.visitTreeS(Object, Consumer, Function)"})
-  void testVisitTreeS_whenConsumerAcceptThrowRuntimeException_thenThrowRuntimeException() {
-    // Arrange
-    Consumer<Object> visitFunc = mock(Consumer.class);
-    doThrow(new RuntimeException()).when(visitFunc).accept(Mockito.<Object>any());
-
-    // Act and Assert
-    assertThrows(
-        RuntimeException.class,
-        () ->
-            StreamUtils.visitTreeS(
-                BeanPropertyWriter.MARKER_FOR_EMPTY, visitFunc, mock(Function.class)));
-    verify(visitFunc).accept(isA(Object.class));
-  }
-
-  /**
-   * Test {@link StreamUtils#visitTreeS(Object, Consumer, Function)}.
-   *
-   * <ul>
-   *   <li>When {@link Function} {@link Function#apply(Object)} throw {@link
-   *       RuntimeException#RuntimeException()}.
-   *   <li>Then throw {@link RuntimeException}.
-   * </ul>
-   *
-   * <p>Method under test: {@link StreamUtils#visitTreeS(Object, Consumer, Function)}
-   */
-  @Test
-  @DisplayName(
-      "Test visitTreeS(Object, Consumer, Function); when Function apply(Object) throw RuntimeException(); then throw RuntimeException")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void StreamUtils.visitTreeS(Object, Consumer, Function)"})
-  void testVisitTreeS_whenFunctionApplyThrowRuntimeException_thenThrowRuntimeException() {
+  public void testVisitTreeS_givenRuntimeExceptionWithFoo_thenThrowRuntimeException() {
     // Arrange
     Consumer<Object> visitFunc = mock(Consumer.class);
     doNothing().when(visitFunc).accept(Mockito.<Object>any());
-
     Function<Object, Stream<Object>> traversFunc = mock(Function.class);
-    when(traversFunc.apply(Mockito.<Object>any())).thenThrow(new RuntimeException());
+    when(traversFunc.apply(Mockito.<Object>any())).thenThrow(new RuntimeException("foo"));
 
     // Act and Assert
-    assertThrows(
-        RuntimeException.class,
-        () -> StreamUtils.visitTreeS(BeanPropertyWriter.MARKER_FOR_EMPTY, visitFunc, traversFunc));
+    assertThrows(RuntimeException.class, () -> StreamUtils.visitTreeS("Initial", visitFunc, traversFunc));
     verify(visitFunc).accept(isA(Object.class));
     verify(traversFunc).apply(isA(Object.class));
   }
 
   /**
-   * Test {@link StreamUtils#recurse(Object, Function, Collection)} with {@code a}, {@code func},
-   * {@code visited}.
-   *
+   * Test {@link StreamUtils#recurse(Object, Function, Collection)} with {@code a}, {@code func}, {@code visited}.
    * <ul>
-   *   <li>Given {@code 42}.
-   *   <li>Then {@link ArrayList#ArrayList()} size is two.
+   *   <li>Given {@code 42}.</li>
+   *   <li>Then {@link ArrayList#ArrayList()} size is one.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link StreamUtils#recurse(Object, Function, Collection)}
+   * <p>
+   * Method under test: {@link StreamUtils#recurse(Object, Function, Collection)}
    */
   @Test
-  @DisplayName(
-      "Test recurse(Object, Function, Collection) with 'a', 'func', 'visited'; given '42'; then ArrayList() size is two")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Stream StreamUtils.recurse(Object, Function, Collection)"})
-  void testRecurseWithAFuncVisited_given42_thenArrayListSizeIsTwo() {
+  public void testRecurseWithAFuncVisited_given42_thenArrayListSizeIsOne() {
     // Arrange
     Function<Object, Object> func = mock(Function.class);
     when(func.apply(Mockito.<Object>any())).thenReturn("42");
     ArrayList<Object> visited = new ArrayList<>();
 
     // Act
-    Stream<Object> actualRecurseResult =
-        StreamUtils.recurse(BeanPropertyWriter.MARKER_FOR_EMPTY, func, visited);
+    Stream<Object> actualRecurseResult = StreamUtils.recurse("42", func, visited);
+
+    // Assert
+    verify(func).apply(isA(Object.class));
+    assertEquals(1, visited.size());
+    assertEquals("42", visited.get(0));
+    List<Object> collectResult = actualRecurseResult.limit(5).collect(Collectors.toList());
+    assertEquals(1, collectResult.size());
+    assertEquals("42", collectResult.get(0));
+  }
+
+  /**
+   * Test {@link StreamUtils#recurse(Object, Function, Collection)} with {@code a}, {@code func}, {@code visited}.
+   * <ul>
+   *   <li>Given {@code Apply}.</li>
+   *   <li>Then {@link ArrayList#ArrayList()} size is two.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link StreamUtils#recurse(Object, Function, Collection)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Stream StreamUtils.recurse(Object, Function, Collection)"})
+  public void testRecurseWithAFuncVisited_givenApply_thenArrayListSizeIsTwo() {
+    // Arrange
+    Function<Object, Object> func = mock(Function.class);
+    when(func.apply(Mockito.<Object>any())).thenReturn("Apply");
+    ArrayList<Object> visited = new ArrayList<>();
+
+    // Act
+    Stream<Object> actualRecurseResult = StreamUtils.recurse("42", func, visited);
 
     // Assert
     verify(func, atLeast(1)).apply(Mockito.<Object>any());
     assertEquals(2, visited.size());
-    assertEquals("42", visited.get(1));
+    assertEquals("Apply", visited.get(1));
     List<Object> collectResult = actualRecurseResult.limit(5).collect(Collectors.toList());
     assertEquals(2, collectResult.size());
-    assertEquals("42", collectResult.get(1));
+    assertEquals("Apply", collectResult.get(1));
   }
 
   /**
-   * Test {@link StreamUtils#recurse(Object, Function, Collection)} with {@code a}, {@code func},
-   * {@code visited}.
-   *
+   * Test {@link StreamUtils#recurse(Object, Function, Collection)} with {@code a}, {@code func}, {@code visited}.
    * <ul>
-   *   <li>Given {@link BeanPropertyWriter#MARKER_FOR_EMPTY}.
+   *   <li>Then throw {@link RuntimeException}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link StreamUtils#recurse(Object, Function, Collection)}
+   * <p>
+   * Method under test: {@link StreamUtils#recurse(Object, Function, Collection)}
    */
   @Test
-  @DisplayName(
-      "Test recurse(Object, Function, Collection) with 'a', 'func', 'visited'; given MARKER_FOR_EMPTY")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Stream StreamUtils.recurse(Object, Function, Collection)"})
-  void testRecurseWithAFuncVisited_givenMarker_for_empty() {
-    // Arrange
-    Object object = BeanPropertyWriter.MARKER_FOR_EMPTY;
-
-    Function<Object, Object> func = mock(Function.class);
-    when(func.apply(Mockito.<Object>any())).thenReturn(BeanPropertyWriter.MARKER_FOR_EMPTY);
-    ArrayList<Object> visited = new ArrayList<>();
-
-    // Act
-    Stream<Object> actualRecurseResult = StreamUtils.recurse(object, func, visited);
-
-    // Assert
-    verify(func).apply(isA(Object.class));
-    assertEquals(1, visited.size());
-    List<Object> collectResult = actualRecurseResult.limit(5).collect(Collectors.toList());
-    assertEquals(1, collectResult.size());
-    assertSame(object, visited.get(0));
-    assertSame(object, collectResult.get(0));
-  }
-
-  /**
-   * Test {@link StreamUtils#recurse(Object, Function, Collection)} with {@code a}, {@code func},
-   * {@code visited}.
-   *
-   * <ul>
-   *   <li>Given {@code null}.
-   *   <li>When {@link Function} {@link Function#apply(Object)} return {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link StreamUtils#recurse(Object, Function, Collection)}
-   */
-  @Test
-  @DisplayName(
-      "Test recurse(Object, Function, Collection) with 'a', 'func', 'visited'; given 'null'; when Function apply(Object) return 'null'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Stream StreamUtils.recurse(Object, Function, Collection)"})
-  void testRecurseWithAFuncVisited_givenNull_whenFunctionApplyReturnNull() {
-    // Arrange
-    Object object = BeanPropertyWriter.MARKER_FOR_EMPTY;
-
-    Function<Object, Object> func = mock(Function.class);
-    when(func.apply(Mockito.<Object>any())).thenReturn(null);
-    ArrayList<Object> visited = new ArrayList<>();
-
-    // Act
-    Stream<Object> actualRecurseResult = StreamUtils.recurse(object, func, visited);
-
-    // Assert
-    verify(func).apply(isA(Object.class));
-    assertEquals(1, visited.size());
-    List<Object> collectResult = actualRecurseResult.limit(5).collect(Collectors.toList());
-    assertEquals(1, collectResult.size());
-    assertSame(object, visited.get(0));
-    assertSame(object, collectResult.get(0));
-  }
-
-  /**
-   * Test {@link StreamUtils#recurse(Object, Function, Collection)} with {@code a}, {@code func},
-   * {@code visited}.
-   *
-   * <ul>
-   *   <li>Given {@link RuntimeException#RuntimeException()}.
-   *   <li>Then throw {@link RuntimeException}.
-   * </ul>
-   *
-   * <p>Method under test: {@link StreamUtils#recurse(Object, Function, Collection)}
-   */
-  @Test
-  @DisplayName(
-      "Test recurse(Object, Function, Collection) with 'a', 'func', 'visited'; given RuntimeException(); then throw RuntimeException")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Stream StreamUtils.recurse(Object, Function, Collection)"})
-  void testRecurseWithAFuncVisited_givenRuntimeException_thenThrowRuntimeException() {
+  public void testRecurseWithAFuncVisited_thenThrowRuntimeException() {
     // Arrange
     Function<Object, Object> func = mock(Function.class);
-    when(func.apply(Mockito.<Object>any())).thenThrow(new RuntimeException());
+    when(func.apply(Mockito.<Object>any())).thenThrow(new RuntimeException("foo"));
 
     // Act and Assert
-    assertThrows(
-        RuntimeException.class,
-        () -> StreamUtils.recurse(BeanPropertyWriter.MARKER_FOR_EMPTY, func, new ArrayList<>()));
+    assertThrows(RuntimeException.class, () -> StreamUtils.recurse("42", func, new ArrayList<>()));
     verify(func).apply(isA(Object.class));
   }
 
   /**
-   * Test {@link StreamUtils#recurse(Object, Function, Collection)} with {@code a}, {@code func},
-   * {@code visited}.
-   *
+   * Test {@link StreamUtils#recurse(Object, Function, Collection)} with {@code a}, {@code func}, {@code visited}.
    * <ul>
-   *   <li>When {@code null}.
-   *   <li>Then {@link ArrayList#ArrayList()} Empty.
+   *   <li>When {@code null}.</li>
+   *   <li>Then {@link ArrayList#ArrayList()} Empty.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link StreamUtils#recurse(Object, Function, Collection)}
+   * <p>
+   * Method under test: {@link StreamUtils#recurse(Object, Function, Collection)}
    */
   @Test
-  @DisplayName(
-      "Test recurse(Object, Function, Collection) with 'a', 'func', 'visited'; when 'null'; then ArrayList() Empty")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Stream StreamUtils.recurse(Object, Function, Collection)"})
-  void testRecurseWithAFuncVisited_whenNull_thenArrayListEmpty() {
+  public void testRecurseWithAFuncVisited_whenNull_thenArrayListEmpty() {
     // Arrange
     Function<Object, Object> func = mock(Function.class);
     ArrayList<Object> visited = new ArrayList<>();
@@ -956,113 +612,67 @@ class StreamUtilsDiffblueTest {
 
   /**
    * Test {@link StreamUtils#recurse(Object, Function)} with {@code a}, {@code func}.
-   *
    * <ul>
-   *   <li>Given {@link BeanPropertyWriter#MARKER_FOR_EMPTY}.
+   *   <li>Given {@code Apply}.</li>
+   *   <li>Then return limit five collect toList size is two.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link StreamUtils#recurse(Object, Function)}
+   * <p>
+   * Method under test: {@link StreamUtils#recurse(Object, Function)}
    */
   @Test
-  @DisplayName("Test recurse(Object, Function) with 'a', 'func'; given MARKER_FOR_EMPTY")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Stream StreamUtils.recurse(Object, Function)"})
-  void testRecurseWithAFunc_givenMarker_for_empty() {
+  public void testRecurseWithAFunc_givenApply_thenReturnLimitFiveCollectToListSizeIsTwo() {
     // Arrange
-    Object object = BeanPropertyWriter.MARKER_FOR_EMPTY;
-
     Function<Object, Object> func = mock(Function.class);
-    when(func.apply(Mockito.<Object>any())).thenReturn(BeanPropertyWriter.MARKER_FOR_EMPTY);
+    when(func.apply(Mockito.<Object>any())).thenReturn("Apply");
 
     // Act
-    Stream<Object> actualRecurseResult = StreamUtils.recurse(object, func);
+    Stream<Object> actualRecurseResult = StreamUtils.recurse("42", func);
 
     // Assert
-    verify(func).apply(isA(Object.class));
+    verify(func, atLeast(1)).apply(Mockito.<Object>any());
     List<Object> collectResult = actualRecurseResult.limit(5).collect(Collectors.toList());
-    assertEquals(1, collectResult.size());
-    assertSame(object, collectResult.get(0));
+    assertEquals(2, collectResult.size());
+    assertEquals("42", collectResult.get(0));
+    assertEquals("Apply", collectResult.get(1));
   }
 
   /**
    * Test {@link StreamUtils#recurse(Object, Function)} with {@code a}, {@code func}.
-   *
    * <ul>
-   *   <li>Given {@code null}.
-   *   <li>When {@link Function} {@link Function#apply(Object)} return {@code null}.
+   *   <li>Given {@link RuntimeException#RuntimeException(String)} with {@code foo}.</li>
+   *   <li>Then throw {@link RuntimeException}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link StreamUtils#recurse(Object, Function)}
+   * <p>
+   * Method under test: {@link StreamUtils#recurse(Object, Function)}
    */
   @Test
-  @DisplayName(
-      "Test recurse(Object, Function) with 'a', 'func'; given 'null'; when Function apply(Object) return 'null'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Stream StreamUtils.recurse(Object, Function)"})
-  void testRecurseWithAFunc_givenNull_whenFunctionApplyReturnNull() {
-    // Arrange
-    Object object = BeanPropertyWriter.MARKER_FOR_EMPTY;
-
-    Function<Object, Object> func = mock(Function.class);
-    when(func.apply(Mockito.<Object>any())).thenReturn(null);
-
-    // Act
-    Stream<Object> actualRecurseResult = StreamUtils.recurse(object, func);
-
-    // Assert
-    verify(func).apply(isA(Object.class));
-    List<Object> collectResult = actualRecurseResult.limit(5).collect(Collectors.toList());
-    assertEquals(1, collectResult.size());
-    assertSame(object, collectResult.get(0));
-  }
-
-  /**
-   * Test {@link StreamUtils#recurse(Object, Function)} with {@code a}, {@code func}.
-   *
-   * <ul>
-   *   <li>Given {@link RuntimeException#RuntimeException()}.
-   *   <li>Then throw {@link RuntimeException}.
-   * </ul>
-   *
-   * <p>Method under test: {@link StreamUtils#recurse(Object, Function)}
-   */
-  @Test
-  @DisplayName(
-      "Test recurse(Object, Function) with 'a', 'func'; given RuntimeException(); then throw RuntimeException")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Stream StreamUtils.recurse(Object, Function)"})
-  void testRecurseWithAFunc_givenRuntimeException_thenThrowRuntimeException() {
+  public void testRecurseWithAFunc_givenRuntimeExceptionWithFoo_thenThrowRuntimeException() {
     // Arrange
     Function<Object, Object> func = mock(Function.class);
-    when(func.apply(Mockito.<Object>any())).thenThrow(new RuntimeException());
+    when(func.apply(Mockito.<Object>any())).thenThrow(new RuntimeException("foo"));
 
     // Act and Assert
-    assertThrows(
-        RuntimeException.class,
-        () -> StreamUtils.recurse(BeanPropertyWriter.MARKER_FOR_EMPTY, func));
+    assertThrows(RuntimeException.class, () -> StreamUtils.recurse("42", func));
     verify(func).apply(isA(Object.class));
   }
 
   /**
    * Test {@link StreamUtils#recurse(Object, Function)} with {@code a}, {@code func}.
-   *
    * <ul>
-   *   <li>When {@code null}.
-   *   <li>Then return limit five collect toList Empty.
+   *   <li>When {@code null}.</li>
+   *   <li>Then return limit five collect toList Empty.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link StreamUtils#recurse(Object, Function)}
+   * <p>
+   * Method under test: {@link StreamUtils#recurse(Object, Function)}
    */
   @Test
-  @DisplayName(
-      "Test recurse(Object, Function) with 'a', 'func'; when 'null'; then return limit five collect toList Empty")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Stream StreamUtils.recurse(Object, Function)"})
-  void testRecurseWithAFunc_whenNull_thenReturnLimitFiveCollectToListEmpty() {
+  public void testRecurseWithAFunc_whenNull_thenReturnLimitFiveCollectToListEmpty() {
     // Arrange and Act
     Stream<Object> actualRecurseResult = StreamUtils.recurse(null, mock(Function.class));
 
@@ -1072,22 +682,20 @@ class StreamUtilsDiffblueTest {
 
   /**
    * Test {@link StreamUtils#optionalStream(Collection)}.
-   *
    * <ul>
-   *   <li>Then return limit five collect toList size is one.
+   *   <li>Given {@code 42}.</li>
+   *   <li>Then return limit five collect toList size is one.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link StreamUtils#optionalStream(Collection)}
+   * <p>
+   * Method under test: {@link StreamUtils#optionalStream(Collection)}
    */
   @Test
-  @DisplayName("Test optionalStream(Collection); then return limit five collect toList size is one")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Stream StreamUtils.optionalStream(Collection)"})
-  void testOptionalStream_thenReturnLimitFiveCollectToListSizeIsOne() {
+  public void testOptionalStream_given42_thenReturnLimitFiveCollectToListSizeIsOne() {
     // Arrange
     ArrayList<Object> c = new ArrayList<>();
-    c.add(BeanPropertyWriter.MARKER_FOR_EMPTY);
+    c.add("42");
 
     // Act
     Stream<Object> actualOptionalStreamResult = StreamUtils.optionalStream(c);
@@ -1095,30 +703,26 @@ class StreamUtilsDiffblueTest {
     // Assert
     List<Object> collectResult = actualOptionalStreamResult.limit(5).collect(Collectors.toList());
     assertEquals(1, collectResult.size());
-    Object getResult = collectResult.get(0);
-    assertTrue(getResult instanceof Include);
-    assertEquals(Include.NON_EMPTY, getResult);
+    assertEquals("42", collectResult.get(0));
   }
 
   /**
    * Test {@link StreamUtils#optionalStream(Collection)}.
-   *
    * <ul>
-   *   <li>Then return limit five collect toList size is two.
+   *   <li>Given {@code 42}.</li>
+   *   <li>Then return limit five collect toList size is two.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link StreamUtils#optionalStream(Collection)}
+   * <p>
+   * Method under test: {@link StreamUtils#optionalStream(Collection)}
    */
   @Test
-  @DisplayName("Test optionalStream(Collection); then return limit five collect toList size is two")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Stream StreamUtils.optionalStream(Collection)"})
-  void testOptionalStream_thenReturnLimitFiveCollectToListSizeIsTwo() {
+  public void testOptionalStream_given42_thenReturnLimitFiveCollectToListSizeIsTwo() {
     // Arrange
     ArrayList<Object> c = new ArrayList<>();
-    c.add(BeanPropertyWriter.MARKER_FOR_EMPTY);
-    c.add(BeanPropertyWriter.MARKER_FOR_EMPTY);
+    c.add("42");
+    c.add("42");
 
     // Act
     Stream<Object> actualOptionalStreamResult = StreamUtils.optionalStream(c);
@@ -1126,31 +730,23 @@ class StreamUtilsDiffblueTest {
     // Assert
     List<Object> collectResult = actualOptionalStreamResult.limit(5).collect(Collectors.toList());
     assertEquals(2, collectResult.size());
-    Object getResult = collectResult.get(0);
-    assertTrue(getResult instanceof Include);
-    Object getResult2 = collectResult.get(1);
-    assertTrue(getResult2 instanceof Include);
-    assertEquals(Include.NON_EMPTY, getResult);
-    assertEquals(Include.NON_EMPTY, getResult2);
+    assertEquals("42", collectResult.get(0));
+    assertEquals("42", collectResult.get(1));
   }
 
   /**
    * Test {@link StreamUtils#optionalStream(Collection)}.
-   *
    * <ul>
-   *   <li>When {@link ArrayList#ArrayList()}.
-   *   <li>Then return limit five collect toList Empty.
+   *   <li>When {@link ArrayList#ArrayList()}.</li>
+   *   <li>Then return limit five collect toList Empty.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link StreamUtils#optionalStream(Collection)}
+   * <p>
+   * Method under test: {@link StreamUtils#optionalStream(Collection)}
    */
   @Test
-  @DisplayName(
-      "Test optionalStream(Collection); when ArrayList(); then return limit five collect toList Empty")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Stream StreamUtils.optionalStream(Collection)"})
-  void testOptionalStream_whenArrayList_thenReturnLimitFiveCollectToListEmpty() {
+  public void testOptionalStream_whenArrayList_thenReturnLimitFiveCollectToListEmpty() {
     // Arrange and Act
     Stream<Object> actualOptionalStreamResult = StreamUtils.optionalStream(new ArrayList<>());
 
@@ -1160,21 +756,17 @@ class StreamUtilsDiffblueTest {
 
   /**
    * Test {@link StreamUtils#optionalStream(Collection)}.
-   *
    * <ul>
-   *   <li>When {@code null}.
-   *   <li>Then return limit five collect toList Empty.
+   *   <li>When {@code null}.</li>
+   *   <li>Then return limit five collect toList Empty.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link StreamUtils#optionalStream(Collection)}
+   * <p>
+   * Method under test: {@link StreamUtils#optionalStream(Collection)}
    */
   @Test
-  @DisplayName(
-      "Test optionalStream(Collection); when 'null'; then return limit five collect toList Empty")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Stream StreamUtils.optionalStream(Collection)"})
-  void testOptionalStream_whenNull_thenReturnLimitFiveCollectToListEmpty() {
+  public void testOptionalStream_whenNull_thenReturnLimitFiveCollectToListEmpty() {
     // Arrange and Act
     Stream<Object> actualOptionalStreamResult = StreamUtils.optionalStream(null);
 
@@ -1184,171 +776,144 @@ class StreamUtilsDiffblueTest {
 
   /**
    * Test {@link StreamUtils#distinctByKey(Function)}.
-   *
    * <ul>
-   *   <li>Given {@link BeanPropertyWriter#MARKER_FOR_EMPTY}.
-   *   <li>Then {@link BeanPropertyWriter#MARKER_FOR_EMPTY} {@link JsonInclude.Include}.
+   *   <li>Given {@code Apply}.</li>
+   *   <li>When {@link Function} {@link Function#apply(Object)} return {@code Apply}.</li>
+   *   <li>Then return test {@code 42}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link StreamUtils#distinctByKey(Function)}
+   * <p>
+   * Method under test: {@link StreamUtils#distinctByKey(Function)}
    */
   @Test
-  @DisplayName(
-      "Test distinctByKey(Function); given MARKER_FOR_EMPTY; then MARKER_FOR_EMPTY Include")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Predicate StreamUtils.distinctByKey(Function)"})
-  void testDistinctByKey_givenMarker_for_empty_thenMarker_for_emptyInclude() {
+  public void testDistinctByKey_givenApply_whenFunctionApplyReturnApply_thenReturnTest42() {
     // Arrange
     Function<Object, Object> ke = mock(Function.class);
-    when(ke.apply(Mockito.<Object>any())).thenReturn(BeanPropertyWriter.MARKER_FOR_EMPTY);
+    when(ke.apply(Mockito.<Object>any())).thenReturn("Apply");
 
     // Act
     Predicate<Object> actualDistinctByKeyResult = StreamUtils.distinctByKey(ke);
-    Object object = BeanPropertyWriter.MARKER_FOR_EMPTY;
-    boolean actualTestResult = actualDistinctByKeyResult.test(object);
+    boolean actualTestResult = actualDistinctByKeyResult.test("42");
 
     // Assert
     verify(ke).apply(isA(Object.class));
-    assertTrue(object instanceof Include);
-    assertEquals(Include.NON_EMPTY, object);
     assertTrue(actualTestResult);
   }
 
   /**
    * Test {@link StreamUtils#distinctByKey(Function)}.
-   *
    * <ul>
-   *   <li>Given {@link RuntimeException#RuntimeException()}.
-   *   <li>Then throw {@link RuntimeException}.
+   *   <li>Given {@link RuntimeException#RuntimeException(String)} with {@code foo}.</li>
+   *   <li>Then throw {@link RuntimeException}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link StreamUtils#distinctByKey(Function)}
+   * <p>
+   * Method under test: {@link StreamUtils#distinctByKey(Function)}
    */
   @Test
-  @DisplayName(
-      "Test distinctByKey(Function); given RuntimeException(); then throw RuntimeException")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Predicate StreamUtils.distinctByKey(Function)"})
-  void testDistinctByKey_givenRuntimeException_thenThrowRuntimeException() {
+  public void testDistinctByKey_givenRuntimeExceptionWithFoo_thenThrowRuntimeException() {
     // Arrange
     Function<Object, Object> ke = mock(Function.class);
-    when(ke.apply(Mockito.<Object>any())).thenThrow(new RuntimeException());
+    when(ke.apply(Mockito.<Object>any())).thenThrow(new RuntimeException("foo"));
 
     // Act
     Predicate<Object> actualDistinctByKeyResult = StreamUtils.distinctByKey(ke);
 
     // Assert
-    assertThrows(
-        RuntimeException.class,
-        () -> actualDistinctByKeyResult.test(BeanPropertyWriter.MARKER_FOR_EMPTY));
+    assertThrows(RuntimeException.class, () -> actualDistinctByKeyResult.test("42"));
     verify(ke).apply(isA(Object.class));
   }
 
   /**
    * Test {@link StreamUtils#peek(Consumer)}.
-   *
    * <ul>
-   *   <li>Given {@link RuntimeException#RuntimeException()}.
-   *   <li>Then throw {@link RuntimeException}.
+   *   <li>Given {@link RuntimeException#RuntimeException(String)} with {@code foo}.</li>
+   *   <li>Then throw {@link RuntimeException}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link StreamUtils#peek(Consumer)}
+   * <p>
+   * Method under test: {@link StreamUtils#peek(Consumer)}
    */
   @Test
-  @DisplayName("Test peek(Consumer); given RuntimeException(); then throw RuntimeException")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"UnaryOperator StreamUtils.peek(Consumer)"})
-  void testPeek_givenRuntimeException_thenThrowRuntimeException() {
+  public void testPeek_givenRuntimeExceptionWithFoo_thenThrowRuntimeException() {
     // Arrange
     Consumer<Object> c = mock(Consumer.class);
-    doThrow(new RuntimeException()).when(c).accept(Mockito.<Object>any());
+    doThrow(new RuntimeException("foo")).when(c).accept(Mockito.<Object>any());
 
     // Act
     UnaryOperator<Object> actualPeekResult = StreamUtils.peek(c);
 
     // Assert
-    assertThrows(
-        RuntimeException.class, () -> actualPeekResult.apply(BeanPropertyWriter.MARKER_FOR_EMPTY));
+    assertThrows(RuntimeException.class, () -> actualPeekResult.apply("42"));
     verify(c).accept(isA(Object.class));
   }
 
   /**
    * Test {@link StreamUtils#peek(Consumer)}.
-   *
    * <ul>
-   *   <li>When {@link Consumer} {@link Consumer#accept(Object)} does nothing.
-   *   <li>Then {@link BeanPropertyWriter#MARKER_FOR_EMPTY} {@link JsonInclude.Include}.
+   *   <li>When {@link Consumer} {@link Consumer#accept(Object)} does nothing.</li>
+   *   <li>Then return apply {@code 42} is {@code 42}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link StreamUtils#peek(Consumer)}
+   * <p>
+   * Method under test: {@link StreamUtils#peek(Consumer)}
    */
   @Test
-  @DisplayName(
-      "Test peek(Consumer); when Consumer accept(Object) does nothing; then MARKER_FOR_EMPTY Include")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"UnaryOperator StreamUtils.peek(Consumer)"})
-  void testPeek_whenConsumerAcceptDoesNothing_thenMarker_for_emptyInclude() {
+  public void testPeek_whenConsumerAcceptDoesNothing_thenReturnApply42Is42() {
     // Arrange
     Consumer<Object> c = mock(Consumer.class);
     doNothing().when(c).accept(Mockito.<Object>any());
 
     // Act
     UnaryOperator<Object> actualPeekResult = StreamUtils.peek(c);
-    Object object = BeanPropertyWriter.MARKER_FOR_EMPTY;
-    Object actualApplyResult = actualPeekResult.apply(object);
+    Object actualApplyResult = actualPeekResult.apply("42");
 
     // Assert
     verify(c).accept(isA(Object.class));
-    assertTrue(object instanceof Include);
-    assertEquals(Include.NON_EMPTY, object);
-    assertSame(object, actualApplyResult);
+    assertEquals("42", actualApplyResult);
   }
 
   /**
    * Test {@link StreamUtils#instancesOf(Class)} with {@code clazz}.
-   *
-   * <p>Method under test: {@link StreamUtils#instancesOf(Class)}
+   * <ul>
+   *   <li>Then return apply {@code 42} limit five collect toList size is one.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link StreamUtils#instancesOf(Class)}
    */
   @Test
-  @DisplayName("Test instancesOf(Class) with 'clazz'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Function StreamUtils.instancesOf(Class)"})
-  void testInstancesOfWithClazz() {
+  public void testInstancesOfWithClazz_thenReturnApply42LimitFiveCollectToListSizeIsOne() {
     // Arrange
     Class<Object> clazz = Object.class;
 
     // Act
     Function<Object, Stream<Object>> actualInstancesOfResult = StreamUtils.instancesOf(clazz);
-    Object object = BeanPropertyWriter.MARKER_FOR_EMPTY;
-    Stream<Object> actualApplyResult = actualInstancesOfResult.apply(object);
+    Stream<Object> actualApplyResult = actualInstancesOfResult.apply("42");
 
     // Assert
     List<Object> collectResult = actualApplyResult.limit(5).collect(Collectors.toList());
     assertEquals(1, collectResult.size());
-    assertSame(object, collectResult.get(0));
+    assertEquals("42", collectResult.get(0));
   }
 
   /**
    * Test {@link StreamUtils#instancesOf(Stream, Class)} with {@code stream}, {@code clazz}.
-   *
    * <ul>
-   *   <li>Then return limit five collect toList Empty.
+   *   <li>Then return limit five collect toList Empty.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link StreamUtils#instancesOf(Stream, Class)}
+   * <p>
+   * Method under test: {@link StreamUtils#instancesOf(Stream, Class)}
    */
   @Test
-  @DisplayName(
-      "Test instancesOf(Stream, Class) with 'stream', 'clazz'; then return limit five collect toList Empty")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Stream StreamUtils.instancesOf(Stream, Class)"})
-  void testInstancesOfWithStreamClazz_thenReturnLimitFiveCollectToListEmpty() {
+  public void testInstancesOfWithStreamClazz_thenReturnLimitFiveCollectToListEmpty() {
     // Arrange
     ArrayList<Object> objectList = new ArrayList<>();
     Stream<Object> stream = objectList.stream();

@@ -20,41 +20,33 @@ package com.regnosys.rosetta.common.projection;
  * ==============
  */
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertSame;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertSame;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.io.File;
 import java.nio.file.Path;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Tag;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
-class RegProjectionPathsDiffblueTest {
+public class RegProjectionPathsDiffblueTest {
   /**
    * Test {@link RegProjectionPaths#RegProjectionPaths(Path, Path, Path, Path, Path)}.
-   *
-   * <p>Method under test: {@link RegProjectionPaths#RegProjectionPaths(Path, Path, Path, Path,
-   * Path)}
+   * <p>
+   * Method under test: {@link RegProjectionPaths#RegProjectionPaths(Path, Path, Path, Path, Path)}
    */
   @Test
-  @DisplayName("Test new RegProjectionPaths(Path, Path, Path, Path, Path)")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void RegProjectionPaths.<init>(Path, Path, Path, Path, Path)"})
-  void testNewRegProjectionPaths() {
+  public void testNewRegProjectionPaths() {
     // Arrange and Act
-    RegProjectionPaths actualRegProjectionPaths =
-        new RegProjectionPaths(
-            RegProjectionPaths.ISO20022_PATH,
-            RegProjectionPaths.ISO20022_PATH,
-            RegProjectionPaths.ISO20022_PATH,
-            RegProjectionPaths.ISO20022_PATH,
-            RegProjectionPaths.ISO20022_PATH);
+    RegProjectionPaths actualRegProjectionPaths = new RegProjectionPaths(RegProjectionPaths.ISO20022_PATH,
+        RegProjectionPaths.ISO20022_PATH, RegProjectionPaths.ISO20022_PATH, RegProjectionPaths.ISO20022_PATH,
+        RegProjectionPaths.ISO20022_PATH);
 
     // Assert
-    Path path = RegProjectionPaths.ISO20022_PATH;
+    Path path = actualRegProjectionPaths.ISO20022_PATH;
     assertSame(path, actualRegProjectionPaths.getConfigRelativePath());
     assertSame(path, actualRegProjectionPaths.getInputRelativePath());
     assertSame(path, actualRegProjectionPaths.getLookupRelativePath());
@@ -64,15 +56,13 @@ class RegProjectionPathsDiffblueTest {
 
   /**
    * Test {@link RegProjectionPaths#getProjectionPath()}.
-   *
-   * <p>Method under test: {@link RegProjectionPaths#getProjectionPath()}
+   * <p>
+   * Method under test: {@link RegProjectionPaths#getProjectionPath()}
    */
   @Test
-  @DisplayName("Test getProjectionPath()")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"RegProjectionPaths RegProjectionPaths.getProjectionPath()"})
-  void testGetProjectionPath() {
+  public void testGetProjectionPath() {
     // Arrange and Act
     RegProjectionPaths actualProjectionPath = RegProjectionPaths.getProjectionPath();
 

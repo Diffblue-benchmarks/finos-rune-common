@@ -20,11 +20,11 @@ package com.regnosys.rosetta.common.serialisation;
  * ==============
  */
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertSame;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.databind.MappingJsonFactory;
@@ -47,40 +47,35 @@ import com.fasterxml.jackson.dataformat.xml.JacksonXmlModule;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.fasterxml.jackson.dataformat.xml.deser.XmlDeserializationContext;
 import com.fasterxml.jackson.dataformat.xml.ser.XmlSerializerProvider;
+import com.regnosys.rosetta.common.serialisation.mixin.RosettaDateModule;
 import com.regnosys.rosetta.common.serialisation.xml.RosettaBeanDeserializerModifier;
 import com.regnosys.rosetta.common.serialisation.xml.RosettaBeanSerializerModifier;
 import com.regnosys.rosetta.common.serialisation.xml.RosettaSerialiserFactory;
 import com.rosetta.util.serialisation.RosettaXMLConfiguration;
 import java.util.ArrayList;
 import java.util.HashMap;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Tag;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
-class RosettaObjectMapperCreatorDiffblueTest {
+public class RosettaObjectMapperCreatorDiffblueTest {
   /**
    * Test {@link RosettaObjectMapperCreator#forJSON()}.
-   *
-   * <p>Method under test: {@link RosettaObjectMapperCreator#forJSON()}
+   * <p>
+   * Method under test: {@link RosettaObjectMapperCreator#forJSON()}
    */
   @Test
-  @DisplayName("Test forJSON()")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"RosettaObjectMapperCreator RosettaObjectMapperCreator.forJSON()"})
-  void testForJSON() {
+  public void testForJSON() {
     // Arrange and Act
     ObjectMapper actualCreateResult = RosettaObjectMapperCreator.forJSON().create();
 
     // Assert
     JsonFactory factory = actualCreateResult.getFactory();
     assertTrue(factory instanceof MappingJsonFactory);
-    assertTrue(
-        actualCreateResult.getDeserializationContext()
-            instanceof DefaultDeserializationContext.Impl);
+    assertTrue(actualCreateResult.getDeserializationContext() instanceof DefaultDeserializationContext.Impl);
     assertTrue(actualCreateResult.getVisibilityChecker() instanceof Std);
-    assertTrue(
-        actualCreateResult.getPolymorphicTypeValidator() instanceof LaissezFaireSubTypeValidator);
+    assertTrue(actualCreateResult.getPolymorphicTypeValidator() instanceof LaissezFaireSubTypeValidator);
     assertTrue(actualCreateResult.getSubtypeResolver() instanceof StdSubtypeResolver);
     assertTrue(actualCreateResult.getSerializerFactory() instanceof BeanSerializerFactory);
     assertTrue(actualCreateResult.getSerializerProvider() instanceof Impl);
@@ -94,22 +89,19 @@ class RosettaObjectMapperCreatorDiffblueTest {
 
   /**
    * Test {@link RosettaObjectMapperCreator#forXML()}.
-   *
-   * <p>Method under test: {@link RosettaObjectMapperCreator#forXML()}
+   * <p>
+   * Method under test: {@link RosettaObjectMapperCreator#forXML()}
    */
   @Test
-  @DisplayName("Test forXML()")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"RosettaObjectMapperCreator RosettaObjectMapperCreator.forXML()"})
-  void testForXML() {
+  public void testForXML() {
     // Arrange and Act
     ObjectMapper actualCreateResult = RosettaObjectMapperCreator.forXML().create();
 
     // Assert
     assertTrue(actualCreateResult.getVisibilityChecker() instanceof Std);
-    assertTrue(
-        actualCreateResult.getPolymorphicTypeValidator() instanceof LaissezFaireSubTypeValidator);
+    assertTrue(actualCreateResult.getPolymorphicTypeValidator() instanceof LaissezFaireSubTypeValidator);
     assertTrue(actualCreateResult.getSubtypeResolver() instanceof StdSubtypeResolver);
     assertTrue(actualCreateResult.getDateFormat() instanceof StdDateFormat);
     assertTrue(actualCreateResult instanceof XmlMapper);
@@ -124,25 +116,20 @@ class RosettaObjectMapperCreatorDiffblueTest {
 
   /**
    * Test {@link RosettaObjectMapperCreator#forXML(RosettaXMLConfiguration)} with {@code config}.
-   *
-   * <p>Method under test: {@link RosettaObjectMapperCreator#forXML(RosettaXMLConfiguration)}
+   * <p>
+   * Method under test: {@link RosettaObjectMapperCreator#forXML(RosettaXMLConfiguration)}
    */
   @Test
-  @DisplayName("Test forXML(RosettaXMLConfiguration) with 'config'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "RosettaObjectMapperCreator RosettaObjectMapperCreator.forXML(RosettaXMLConfiguration)"
-  })
-  void testForXMLWithConfig() {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"RosettaObjectMapperCreator RosettaObjectMapperCreator.forXML(RosettaXMLConfiguration)"})
+  public void testForXMLWithConfig() {
     // Arrange and Act
-    ObjectMapper actualCreateResult =
-        RosettaObjectMapperCreator.forXML(new RosettaXMLConfiguration(new HashMap<>())).create();
+    ObjectMapper actualCreateResult = RosettaObjectMapperCreator.forXML(new RosettaXMLConfiguration(new HashMap<>()))
+        .create();
 
     // Assert
     assertTrue(actualCreateResult.getVisibilityChecker() instanceof Std);
-    assertTrue(
-        actualCreateResult.getPolymorphicTypeValidator() instanceof LaissezFaireSubTypeValidator);
+    assertTrue(actualCreateResult.getPolymorphicTypeValidator() instanceof LaissezFaireSubTypeValidator);
     assertTrue(actualCreateResult.getSubtypeResolver() instanceof StdSubtypeResolver);
     assertTrue(actualCreateResult.getDateFormat() instanceof StdDateFormat);
     assertTrue(actualCreateResult instanceof XmlMapper);
@@ -157,24 +144,40 @@ class RosettaObjectMapperCreatorDiffblueTest {
 
   /**
    * Test {@link RosettaObjectMapperCreator#create()}.
-   *
-   * <p>Method under test: {@link RosettaObjectMapperCreator#create()}
+   * <p>
+   * Method under test: {@link RosettaObjectMapperCreator#create()}
    */
   @Test
-  @DisplayName("Test create()")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"ObjectMapper RosettaObjectMapperCreator.create()"})
-  void testCreate() {
+  public void testCreate() {
+    // Arrange
+    RosettaDateModule rosettaModule = new RosettaDateModule();
+
+    // Act
+    ObjectMapper actualCreateResult = (new RosettaObjectMapperCreator(rosettaModule,
+        JsonMapper.builder().findAndAddModules().build())).create();
+
+    // Assert
+    assertTrue(actualCreateResult instanceof JsonMapper);
+    assertTrue(actualCreateResult.getSerializerProviderInstance() instanceof Impl);
+  }
+
+  /**
+   * Test {@link RosettaObjectMapperCreator#create()}.
+   * <p>
+   * Method under test: {@link RosettaObjectMapperCreator#create()}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"ObjectMapper RosettaObjectMapperCreator.create()"})
+  public void testCreate2() {
     // Arrange
     SimpleModule rosettaModule = new SimpleModule();
-    JsonMapper baseMapper = JsonMapper.builder().findAndAddModules().build();
-
-    RosettaObjectMapperCreator rosettaObjectMapperCreator =
-        new RosettaObjectMapperCreator(rosettaModule, baseMapper);
 
     // Act
-    ObjectMapper actualCreateResult = rosettaObjectMapperCreator.create();
+    ObjectMapper actualCreateResult = (new RosettaObjectMapperCreator(rosettaModule,
+        JsonMapper.builder().findAndAddModules().build())).create();
 
     // Assert
     assertTrue(actualCreateResult instanceof JsonMapper);
@@ -183,24 +186,19 @@ class RosettaObjectMapperCreatorDiffblueTest {
 
   /**
    * Test {@link RosettaObjectMapperCreator#create()}.
-   *
-   * <p>Method under test: {@link RosettaObjectMapperCreator#create()}
+   * <p>
+   * Method under test: {@link RosettaObjectMapperCreator#create()}
    */
   @Test
-  @DisplayName("Test create()")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"ObjectMapper RosettaObjectMapperCreator.create()"})
-  void testCreate2() {
+  public void testCreate3() {
     // Arrange
     JacksonXmlModule rosettaModule = new JacksonXmlModule();
-    JsonMapper baseMapper = JsonMapper.builder().findAndAddModules().build();
-
-    RosettaObjectMapperCreator rosettaObjectMapperCreator =
-        new RosettaObjectMapperCreator(rosettaModule, baseMapper);
 
     // Act
-    ObjectMapper actualCreateResult = rosettaObjectMapperCreator.create();
+    ObjectMapper actualCreateResult = (new RosettaObjectMapperCreator(rosettaModule,
+        JsonMapper.builder().findAndAddModules().build())).create();
 
     // Assert
     assertTrue(actualCreateResult instanceof JsonMapper);
@@ -209,27 +207,22 @@ class RosettaObjectMapperCreatorDiffblueTest {
 
   /**
    * Test {@link RosettaObjectMapperCreator#create()}.
-   *
-   * <p>Method under test: {@link RosettaObjectMapperCreator#create()}
+   * <p>
+   * Method under test: {@link RosettaObjectMapperCreator#create()}
    */
   @Test
-  @DisplayName("Test create()")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"ObjectMapper RosettaObjectMapperCreator.create()"})
-  void testCreate3() {
+  public void testCreate4() {
     // Arrange
     SimpleModule rosettaModule = new SimpleModule();
     rosettaModule.setDeserializerModifier(new RosettaBeanDeserializerModifier());
     Class<Object> beanType = Object.class;
     rosettaModule.addValueInstantiator(beanType, new JsonLocationInstantiator());
-    JsonMapper baseMapper = JsonMapper.builder().findAndAddModules().build();
-
-    RosettaObjectMapperCreator rosettaObjectMapperCreator =
-        new RosettaObjectMapperCreator(rosettaModule, baseMapper);
 
     // Act
-    ObjectMapper actualCreateResult = rosettaObjectMapperCreator.create();
+    ObjectMapper actualCreateResult = (new RosettaObjectMapperCreator(rosettaModule,
+        JsonMapper.builder().findAndAddModules().build())).create();
 
     // Assert
     assertTrue(actualCreateResult instanceof JsonMapper);
@@ -238,33 +231,27 @@ class RosettaObjectMapperCreatorDiffblueTest {
 
   /**
    * Test {@link RosettaObjectMapperCreator#create()}.
-   *
    * <ul>
-   *   <li>Given array of {@link Class} with {@link Object}.
-   *   <li>Then return {@link JsonMapper}.
+   *   <li>Given array of {@link Class} with {@link Object}.</li>
+   *   <li>Then return {@link JsonMapper}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link RosettaObjectMapperCreator#create()}
+   * <p>
+   * Method under test: {@link RosettaObjectMapperCreator#create()}
    */
   @Test
-  @DisplayName("Test create(); given array of Class with Object; then return JsonMapper")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"ObjectMapper RosettaObjectMapperCreator.create()"})
-  void testCreate_givenArrayOfClassWithObject_thenReturnJsonMapper() {
+  public void testCreate_givenArrayOfClassWithObject_thenReturnJsonMapper() {
     // Arrange
     SimpleModule rosettaModule = new SimpleModule();
     Class<Object> forNameResult = Object.class;
     rosettaModule.registerSubtypes(forNameResult);
     Class<Object> beanType = Object.class;
     rosettaModule.addValueInstantiator(beanType, new JsonLocationInstantiator());
-    JsonMapper baseMapper = JsonMapper.builder().findAndAddModules().build();
-
-    RosettaObjectMapperCreator rosettaObjectMapperCreator =
-        new RosettaObjectMapperCreator(rosettaModule, baseMapper);
 
     // Act
-    ObjectMapper actualCreateResult = rosettaObjectMapperCreator.create();
+    ObjectMapper actualCreateResult = (new RosettaObjectMapperCreator(rosettaModule,
+        JsonMapper.builder().findAndAddModules().build())).create();
 
     // Assert
     assertTrue(actualCreateResult instanceof JsonMapper);
@@ -273,20 +260,17 @@ class RosettaObjectMapperCreatorDiffblueTest {
 
   /**
    * Test {@link RosettaObjectMapperCreator#create()}.
-   *
    * <ul>
-   *   <li>Given forJSON.
-   *   <li>Then Factory return {@link MappingJsonFactory}.
+   *   <li>Given forJSON.</li>
+   *   <li>Then Factory return {@link MappingJsonFactory}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link RosettaObjectMapperCreator#create()}
+   * <p>
+   * Method under test: {@link RosettaObjectMapperCreator#create()}
    */
   @Test
-  @DisplayName("Test create(); given forJSON; then Factory return MappingJsonFactory")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"ObjectMapper RosettaObjectMapperCreator.create()"})
-  void testCreate_givenForJSON_thenFactoryReturnMappingJsonFactory() {
+  public void testCreate_givenForJSON_thenFactoryReturnMappingJsonFactory() {
     // Arrange and Act
     ObjectMapper actualCreateResult = RosettaObjectMapperCreator.forJSON().create();
 
@@ -299,31 +283,25 @@ class RosettaObjectMapperCreatorDiffblueTest {
 
   /**
    * Test {@link RosettaObjectMapperCreator#create()}.
-   *
    * <ul>
-   *   <li>Given {@code Object}.
-   *   <li>Then return {@link JsonMapper}.
+   *   <li>Given {@code Object}.</li>
+   *   <li>Then return {@link JsonMapper}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link RosettaObjectMapperCreator#create()}
+   * <p>
+   * Method under test: {@link RosettaObjectMapperCreator#create()}
    */
   @Test
-  @DisplayName("Test create(); given 'java.lang.Object'; then return JsonMapper")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"ObjectMapper RosettaObjectMapperCreator.create()"})
-  void testCreate_givenJavaLangObject_thenReturnJsonMapper() {
+  public void testCreate_givenJavaLangObject_thenReturnJsonMapper() {
     // Arrange
     SimpleModule rosettaModule = new SimpleModule();
     Class<Object> beanType = Object.class;
     rosettaModule.addValueInstantiator(beanType, new JsonLocationInstantiator());
-    JsonMapper baseMapper = JsonMapper.builder().findAndAddModules().build();
-
-    RosettaObjectMapperCreator rosettaObjectMapperCreator =
-        new RosettaObjectMapperCreator(rosettaModule, baseMapper);
 
     // Act
-    ObjectMapper actualCreateResult = rosettaObjectMapperCreator.create();
+    ObjectMapper actualCreateResult = (new RosettaObjectMapperCreator(rosettaModule,
+        JsonMapper.builder().findAndAddModules().build())).create();
 
     // Assert
     assertTrue(actualCreateResult instanceof JsonMapper);
@@ -332,32 +310,25 @@ class RosettaObjectMapperCreatorDiffblueTest {
 
   /**
    * Test {@link RosettaObjectMapperCreator#create()}.
-   *
    * <ul>
-   *   <li>Given {@link SimpleModule#SimpleModule()} KeySerializers is {@link
-   *       SimpleSerializers#SimpleSerializers()}.
+   *   <li>Given {@link SimpleModule#SimpleModule()} KeySerializers is {@link SimpleSerializers#SimpleSerializers()}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link RosettaObjectMapperCreator#create()}
+   * <p>
+   * Method under test: {@link RosettaObjectMapperCreator#create()}
    */
   @Test
-  @DisplayName("Test create(); given SimpleModule() KeySerializers is SimpleSerializers()")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"ObjectMapper RosettaObjectMapperCreator.create()"})
-  void testCreate_givenSimpleModuleKeySerializersIsSimpleSerializers() {
+  public void testCreate_givenSimpleModuleKeySerializersIsSimpleSerializers() {
     // Arrange
     SimpleModule rosettaModule = new SimpleModule();
     rosettaModule.setKeySerializers(new SimpleSerializers());
     Class<Object> beanType = Object.class;
     rosettaModule.addValueInstantiator(beanType, new JsonLocationInstantiator());
-    JsonMapper baseMapper = JsonMapper.builder().findAndAddModules().build();
-
-    RosettaObjectMapperCreator rosettaObjectMapperCreator =
-        new RosettaObjectMapperCreator(rosettaModule, baseMapper);
 
     // Act
-    ObjectMapper actualCreateResult = rosettaObjectMapperCreator.create();
+    ObjectMapper actualCreateResult = (new RosettaObjectMapperCreator(rosettaModule,
+        JsonMapper.builder().findAndAddModules().build())).create();
 
     // Assert
     assertTrue(actualCreateResult instanceof JsonMapper);
@@ -366,37 +337,28 @@ class RosettaObjectMapperCreatorDiffblueTest {
 
   /**
    * Test {@link RosettaObjectMapperCreator#create()}.
-   *
    * <ul>
-   *   <li>Given {@link SimpleModule#SimpleModule()} MixInAnnotation {@link Object} is {@link
-   *       Object}.
-   *   <li>Then return {@link JsonMapper}.
+   *   <li>Given {@link SimpleModule#SimpleModule()} MixInAnnotation {@link Object} is {@link Object}.</li>
+   *   <li>Then return {@link JsonMapper}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link RosettaObjectMapperCreator#create()}
+   * <p>
+   * Method under test: {@link RosettaObjectMapperCreator#create()}
    */
   @Test
-  @DisplayName(
-      "Test create(); given SimpleModule() MixInAnnotation Object is Object; then return JsonMapper")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"ObjectMapper RosettaObjectMapperCreator.create()"})
-  void testCreate_givenSimpleModuleMixInAnnotationObjectIsObject_thenReturnJsonMapper() {
+  public void testCreate_givenSimpleModuleMixInAnnotationObjectIsObject_thenReturnJsonMapper() {
     // Arrange
     SimpleModule rosettaModule = new SimpleModule();
     Class<Object> targetType = Object.class;
     Class<Object> mixinClass = Object.class;
-
     rosettaModule.setMixInAnnotation(targetType, mixinClass);
     Class<Object> beanType = Object.class;
     rosettaModule.addValueInstantiator(beanType, new JsonLocationInstantiator());
-    JsonMapper baseMapper = JsonMapper.builder().findAndAddModules().build();
-
-    RosettaObjectMapperCreator rosettaObjectMapperCreator =
-        new RosettaObjectMapperCreator(rosettaModule, baseMapper);
 
     // Act
-    ObjectMapper actualCreateResult = rosettaObjectMapperCreator.create();
+    ObjectMapper actualCreateResult = (new RosettaObjectMapperCreator(rosettaModule,
+        JsonMapper.builder().findAndAddModules().build())).create();
 
     // Assert
     assertTrue(actualCreateResult instanceof JsonMapper);
@@ -405,33 +367,26 @@ class RosettaObjectMapperCreatorDiffblueTest {
 
   /**
    * Test {@link RosettaObjectMapperCreator#create()}.
-   *
    * <ul>
-   *   <li>Given {@link SimpleModule#SimpleModule()} registerSubtypes {@link ArrayList#ArrayList()}.
-   *   <li>Then return {@link JsonMapper}.
+   *   <li>Given {@link SimpleModule#SimpleModule()} registerSubtypes {@link ArrayList#ArrayList()}.</li>
+   *   <li>Then return {@link JsonMapper}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link RosettaObjectMapperCreator#create()}
+   * <p>
+   * Method under test: {@link RosettaObjectMapperCreator#create()}
    */
   @Test
-  @DisplayName(
-      "Test create(); given SimpleModule() registerSubtypes ArrayList(); then return JsonMapper")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"ObjectMapper RosettaObjectMapperCreator.create()"})
-  void testCreate_givenSimpleModuleRegisterSubtypesArrayList_thenReturnJsonMapper() {
+  public void testCreate_givenSimpleModuleRegisterSubtypesArrayList_thenReturnJsonMapper() {
     // Arrange
     SimpleModule rosettaModule = new SimpleModule();
     rosettaModule.registerSubtypes(new ArrayList<>());
     Class<Object> beanType = Object.class;
     rosettaModule.addValueInstantiator(beanType, new JsonLocationInstantiator());
-    JsonMapper baseMapper = JsonMapper.builder().findAndAddModules().build();
-
-    RosettaObjectMapperCreator rosettaObjectMapperCreator =
-        new RosettaObjectMapperCreator(rosettaModule, baseMapper);
 
     // Act
-    ObjectMapper actualCreateResult = rosettaObjectMapperCreator.create();
+    ObjectMapper actualCreateResult = (new RosettaObjectMapperCreator(rosettaModule,
+        JsonMapper.builder().findAndAddModules().build())).create();
 
     // Assert
     assertTrue(actualCreateResult instanceof JsonMapper);
@@ -440,33 +395,25 @@ class RosettaObjectMapperCreatorDiffblueTest {
 
   /**
    * Test {@link RosettaObjectMapperCreator#create()}.
-   *
    * <ul>
-   *   <li>Given {@link SimpleModule#SimpleModule()} SerializerModifier is {@link
-   *       RosettaBeanSerializerModifier} (default constructor).
+   *   <li>Given {@link SimpleModule#SimpleModule()} SerializerModifier is {@link RosettaBeanSerializerModifier} (default constructor).</li>
    * </ul>
-   *
-   * <p>Method under test: {@link RosettaObjectMapperCreator#create()}
+   * <p>
+   * Method under test: {@link RosettaObjectMapperCreator#create()}
    */
   @Test
-  @DisplayName(
-      "Test create(); given SimpleModule() SerializerModifier is RosettaBeanSerializerModifier (default constructor)")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"ObjectMapper RosettaObjectMapperCreator.create()"})
-  void testCreate_givenSimpleModuleSerializerModifierIsRosettaBeanSerializerModifier() {
+  public void testCreate_givenSimpleModuleSerializerModifierIsRosettaBeanSerializerModifier() {
     // Arrange
     SimpleModule rosettaModule = new SimpleModule();
     rosettaModule.setSerializerModifier(new RosettaBeanSerializerModifier());
     Class<Object> beanType = Object.class;
     rosettaModule.addValueInstantiator(beanType, new JsonLocationInstantiator());
-    JsonMapper baseMapper = JsonMapper.builder().findAndAddModules().build();
-
-    RosettaObjectMapperCreator rosettaObjectMapperCreator =
-        new RosettaObjectMapperCreator(rosettaModule, baseMapper);
 
     // Act
-    ObjectMapper actualCreateResult = rosettaObjectMapperCreator.create();
+    ObjectMapper actualCreateResult = (new RosettaObjectMapperCreator(rosettaModule,
+        JsonMapper.builder().findAndAddModules().build())).create();
 
     // Assert
     assertTrue(actualCreateResult instanceof JsonMapper);
@@ -475,58 +422,47 @@ class RosettaObjectMapperCreatorDiffblueTest {
 
   /**
    * Test {@link RosettaObjectMapperCreator#create()}.
-   *
    * <ul>
-   *   <li>Then DeserializationContext return {@link DefaultDeserializationContext.Impl}.
+   *   <li>Then DeserializationContext return {@link DefaultDeserializationContext.Impl}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link RosettaObjectMapperCreator#create()}
+   * <p>
+   * Method under test: {@link RosettaObjectMapperCreator#create()}
    */
   @Test
-  @DisplayName("Test create(); then DeserializationContext return Impl")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"ObjectMapper RosettaObjectMapperCreator.create()"})
-  void testCreate_thenDeserializationContextReturnImpl() {
+  public void testCreate_thenDeserializationContextReturnImpl() {
     // Arrange
     SimpleModule rosettaModule = new SimpleModule();
     rosettaModule.setAbstractTypes(new SimpleAbstractTypeResolver());
     Class<Object> beanType = Object.class;
     rosettaModule.addValueInstantiator(beanType, new JsonLocationInstantiator());
-    JsonMapper baseMapper = JsonMapper.builder().findAndAddModules().build();
-
-    RosettaObjectMapperCreator rosettaObjectMapperCreator =
-        new RosettaObjectMapperCreator(rosettaModule, baseMapper);
 
     // Act
-    ObjectMapper actualCreateResult = rosettaObjectMapperCreator.create();
+    ObjectMapper actualCreateResult = (new RosettaObjectMapperCreator(rosettaModule,
+        JsonMapper.builder().findAndAddModules().build())).create();
 
     // Assert
-    assertTrue(
-        actualCreateResult.getDeserializationContext()
-            instanceof DefaultDeserializationContext.Impl);
+    assertTrue(actualCreateResult.getDeserializationContext() instanceof DefaultDeserializationContext.Impl);
     assertTrue(actualCreateResult instanceof JsonMapper);
     assertTrue(actualCreateResult.getSerializerProviderInstance() instanceof Impl);
   }
 
   /**
    * Test {@link RosettaObjectMapperCreator#create()}.
-   *
    * <ul>
-   *   <li>Then return {@link XmlMapper}.
+   *   <li>Then return {@link XmlMapper}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link RosettaObjectMapperCreator#create()}
+   * <p>
+   * Method under test: {@link RosettaObjectMapperCreator#create()}
    */
   @Test
-  @DisplayName("Test create(); then return XmlMapper")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"ObjectMapper RosettaObjectMapperCreator.create()"})
-  void testCreate_thenReturnXmlMapper() {
+  public void testCreate_thenReturnXmlMapper() {
     // Arrange and Act
-    ObjectMapper actualCreateResult =
-        RosettaObjectMapperCreator.forXML(new RosettaXMLConfiguration(new HashMap<>())).create();
+    ObjectMapper actualCreateResult = RosettaObjectMapperCreator.forXML(new RosettaXMLConfiguration(new HashMap<>()))
+        .create();
 
     // Assert
     assertTrue(actualCreateResult instanceof XmlMapper);

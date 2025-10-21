@@ -20,31 +20,28 @@ package com.regnosys.rosetta.common.hashing;
  * ==============
  */
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertSame;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import com.rosetta.model.lib.path.RosettaPath;
 import java.util.ArrayList;
 import java.util.List;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Tag;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
-class ReferenceConfigDiffblueTest {
+public class ReferenceConfigDiffblueTest {
   /**
    * Test {@link ReferenceConfig#noScopeOrExcludedPaths()}.
-   *
-   * <p>Method under test: {@link ReferenceConfig#noScopeOrExcludedPaths()}
+   * <p>
+   * Method under test: {@link ReferenceConfig#noScopeOrExcludedPaths()}
    */
   @Test
-  @DisplayName("Test noScopeOrExcludedPaths()")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"ReferenceConfig ReferenceConfig.noScopeOrExcludedPaths()"})
-  void testNoScopeOrExcludedPaths() {
+  public void testNoScopeOrExcludedPaths() {
     // Arrange and Act
     ReferenceConfig actualNoScopeOrExcludedPathsResult = ReferenceConfig.noScopeOrExcludedPaths();
 
@@ -55,9 +52,8 @@ class ReferenceConfigDiffblueTest {
 
   /**
    * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link ReferenceConfig#ReferenceConfig(Class, List)}
    *   <li>{@link ReferenceConfig#getExcludedPaths()}
@@ -65,15 +61,10 @@ class ReferenceConfigDiffblueTest {
    * </ul>
    */
   @Test
-  @DisplayName("Test getters and setters")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void ReferenceConfig.<init>(Class, List)",
-    "List ReferenceConfig.getExcludedPaths()",
-    "Class ReferenceConfig.getScopeType()"
-  })
-  void testGettersAndSetters() {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void ReferenceConfig.<init>(Class, List)", "List ReferenceConfig.getExcludedPaths()",
+      "Class ReferenceConfig.getScopeType()"})
+  public void testGettersAndSetters() {
     // Arrange
     Class<Object> scopeType = Object.class;
     ArrayList<RosettaPath> excludedPaths = new ArrayList<>();

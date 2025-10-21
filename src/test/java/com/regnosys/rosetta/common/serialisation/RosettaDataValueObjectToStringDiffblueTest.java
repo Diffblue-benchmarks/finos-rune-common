@@ -20,58 +20,46 @@ package com.regnosys.rosetta.common.serialisation;
  * ==============
  */
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import static org.junit.Assert.assertEquals;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
-import com.fasterxml.jackson.databind.ser.BeanPropertyWriter;
 import java.time.LocalDate;
 import java.time.ZoneOffset;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Tag;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
-class RosettaDataValueObjectToStringDiffblueTest {
+public class RosettaDataValueObjectToStringDiffblueTest {
   /**
    * Test {@link RosettaDataValueObjectToString#toValueString(Object)}.
-   *
    * <ul>
-   *   <li>Then return {@code 1970-01-01T00:00:00Z}.
+   *   <li>Then return {@code 1970-01-01T00:00:00Z}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link RosettaDataValueObjectToString#toValueString(Object)}
+   * <p>
+   * Method under test: {@link RosettaDataValueObjectToString#toValueString(Object)}
    */
   @Test
-  @DisplayName("Test toValueString(Object); then return '1970-01-01T00:00:00Z'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"java.lang.String RosettaDataValueObjectToString.toValueString(Object)"})
-  void testToValueString_thenReturn19700101t000000z() {
+  public void testToValueString_thenReturn19700101t000000z() {
     // Arrange, Act and Assert
-    assertEquals(
-        "1970-01-01T00:00:00Z",
-        RosettaDataValueObjectToString.toValueString(
-            LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC)));
+    assertEquals("1970-01-01T00:00:00Z",
+        RosettaDataValueObjectToString.toValueString(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC)));
   }
 
   /**
    * Test {@link RosettaDataValueObjectToString#toValueString(Object)}.
-   *
    * <ul>
-   *   <li>When {@link BeanPropertyWriter#MARKER_FOR_EMPTY}.
-   *   <li>Then return {@code NON_EMPTY}.
+   *   <li>When {@code Object}.</li>
+   *   <li>Then return {@code Object}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link RosettaDataValueObjectToString#toValueString(Object)}
+   * <p>
+   * Method under test: {@link RosettaDataValueObjectToString#toValueString(Object)}
    */
   @Test
-  @DisplayName("Test toValueString(Object); when MARKER_FOR_EMPTY; then return 'NON_EMPTY'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"java.lang.String RosettaDataValueObjectToString.toValueString(Object)"})
-  void testToValueString_whenMarker_for_empty_thenReturnNonEmpty() {
+  public void testToValueString_whenObject_thenReturnObject() {
     // Arrange, Act and Assert
-    assertEquals(
-        "NON_EMPTY",
-        RosettaDataValueObjectToString.toValueString(BeanPropertyWriter.MARKER_FOR_EMPTY));
+    assertEquals("Object", RosettaDataValueObjectToString.toValueString("Object"));
   }
 }

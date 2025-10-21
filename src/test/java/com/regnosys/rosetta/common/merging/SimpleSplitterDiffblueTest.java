@@ -20,6 +20,7 @@ package com.regnosys.rosetta.common.merging;
  * ==============
  */
 
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.atLeast;
@@ -27,13 +28,10 @@ import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
-import com.fasterxml.jackson.databind.ser.BeanPropertyWriter;
 import com.regnosys.rosetta.common.merger.BarBuilder;
 import com.regnosys.rosetta.common.merger.FooBuilder;
-import com.regnosys.rosetta.common.serialisation.json.preannotation.testpojo.Price;
-import com.regnosys.rosetta.common.serialisation.json.preannotation.testpojo.Price.PriceBuilderImpl;
 import com.regnosys.rosetta.common.serialisation.json.preannotation.testpojo.PriceQuantity;
 import com.regnosys.rosetta.common.serialisation.json.preannotation.testpojo.PriceQuantity.PriceQuantityBuilderImpl;
 import com.rosetta.model.lib.RosettaModelObjectBuilder;
@@ -45,33 +43,25 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Function;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Tag;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.mockito.Mockito;
 
-class SimpleSplitterDiffblueTest {
+public class SimpleSplitterDiffblueTest {
   /**
    * Test {@link SimpleSplitter#run(RosettaModelObjectBuilder, RosettaModelObjectBuilder)}.
-   *
    * <ul>
-   *   <li>Given {@link Consumer} {@link Consumer#accept(Object)} does nothing.
-   *   <li>When {@link BarBuilder} (default constructor).
-   *   <li>Then calls {@link Consumer#accept(Object)}.
+   *   <li>Given {@link Consumer} {@link Consumer#accept(Object)} does nothing.</li>
+   *   <li>When {@link BarBuilder} (default constructor).</li>
+   *   <li>Then calls {@link Consumer#accept(Object)}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SimpleSplitter#run(RosettaModelObjectBuilder,
-   * RosettaModelObjectBuilder)}
+   * <p>
+   * Method under test: {@link SimpleSplitter#run(RosettaModelObjectBuilder, RosettaModelObjectBuilder)}
    */
   @Test
-  @DisplayName(
-      "Test run(RosettaModelObjectBuilder, RosettaModelObjectBuilder); given Consumer accept(Object) does nothing; when BarBuilder (default constructor); then calls accept(Object)")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void SimpleSplitter.run(RosettaModelObjectBuilder, RosettaModelObjectBuilder)"
-  })
-  void testRun_givenConsumerAcceptDoesNothing_whenBarBuilder_thenCallsAccept() {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void SimpleSplitter.run(RosettaModelObjectBuilder, RosettaModelObjectBuilder)"})
+  public void testRun_givenConsumerAcceptDoesNothing_whenBarBuilder_thenCallsAccept() {
     // Arrange
     Consumer<RosettaModelObjectBuilder> postProcessor = mock(Consumer.class);
     doNothing().when(postProcessor).accept(Mockito.<RosettaModelObjectBuilder>any());
@@ -87,25 +77,18 @@ class SimpleSplitterDiffblueTest {
 
   /**
    * Test {@link SimpleSplitter#run(RosettaModelObjectBuilder, RosettaModelObjectBuilder)}.
-   *
    * <ul>
-   *   <li>Given {@link Consumer} {@link Consumer#accept(Object)} does nothing.
-   *   <li>When {@link FooBuilder} (default constructor).
-   *   <li>Then calls {@link Consumer#accept(Object)}.
+   *   <li>Given {@link Consumer} {@link Consumer#accept(Object)} does nothing.</li>
+   *   <li>When {@link FooBuilder} (default constructor).</li>
+   *   <li>Then calls {@link Consumer#accept(Object)}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SimpleSplitter#run(RosettaModelObjectBuilder,
-   * RosettaModelObjectBuilder)}
+   * <p>
+   * Method under test: {@link SimpleSplitter#run(RosettaModelObjectBuilder, RosettaModelObjectBuilder)}
    */
   @Test
-  @DisplayName(
-      "Test run(RosettaModelObjectBuilder, RosettaModelObjectBuilder); given Consumer accept(Object) does nothing; when FooBuilder (default constructor); then calls accept(Object)")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void SimpleSplitter.run(RosettaModelObjectBuilder, RosettaModelObjectBuilder)"
-  })
-  void testRun_givenConsumerAcceptDoesNothing_whenFooBuilder_thenCallsAccept() {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void SimpleSplitter.run(RosettaModelObjectBuilder, RosettaModelObjectBuilder)"})
+  public void testRun_givenConsumerAcceptDoesNothing_whenFooBuilder_thenCallsAccept() {
     // Arrange
     Consumer<RosettaModelObjectBuilder> postProcessor = mock(Consumer.class);
     doNothing().when(postProcessor).accept(Mockito.<RosettaModelObjectBuilder>any());
@@ -121,25 +104,18 @@ class SimpleSplitterDiffblueTest {
 
   /**
    * Test {@link SimpleSplitter#run(RosettaModelObjectBuilder, RosettaModelObjectBuilder)}.
-   *
    * <ul>
-   *   <li>Given {@link Consumer} {@link Consumer#accept(Object)} does nothing.
-   *   <li>When {@link KeyBuilderImpl} (default constructor).
-   *   <li>Then calls {@link Consumer#accept(Object)}.
+   *   <li>Given {@link Consumer} {@link Consumer#accept(Object)} does nothing.</li>
+   *   <li>When {@link KeyBuilderImpl} (default constructor).</li>
+   *   <li>Then calls {@link Consumer#accept(Object)}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SimpleSplitter#run(RosettaModelObjectBuilder,
-   * RosettaModelObjectBuilder)}
+   * <p>
+   * Method under test: {@link SimpleSplitter#run(RosettaModelObjectBuilder, RosettaModelObjectBuilder)}
    */
   @Test
-  @DisplayName(
-      "Test run(RosettaModelObjectBuilder, RosettaModelObjectBuilder); given Consumer accept(Object) does nothing; when KeyBuilderImpl (default constructor); then calls accept(Object)")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void SimpleSplitter.run(RosettaModelObjectBuilder, RosettaModelObjectBuilder)"
-  })
-  void testRun_givenConsumerAcceptDoesNothing_whenKeyBuilderImpl_thenCallsAccept() {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void SimpleSplitter.run(RosettaModelObjectBuilder, RosettaModelObjectBuilder)"})
+  public void testRun_givenConsumerAcceptDoesNothing_whenKeyBuilderImpl_thenCallsAccept() {
     // Arrange
     Consumer<RosettaModelObjectBuilder> postProcessor = mock(Consumer.class);
     doNothing().when(postProcessor).accept(Mockito.<RosettaModelObjectBuilder>any());
@@ -155,25 +131,18 @@ class SimpleSplitterDiffblueTest {
 
   /**
    * Test {@link SimpleSplitter#run(RosettaModelObjectBuilder, RosettaModelObjectBuilder)}.
-   *
    * <ul>
-   *   <li>Given ten.
-   *   <li>When {@link BarBuilder} (default constructor) Num is ten.
-   *   <li>Then calls {@link Consumer#accept(Object)}.
+   *   <li>Given ten.</li>
+   *   <li>When {@link BarBuilder} (default constructor) Num is ten.</li>
+   *   <li>Then calls {@link Consumer#accept(Object)}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SimpleSplitter#run(RosettaModelObjectBuilder,
-   * RosettaModelObjectBuilder)}
+   * <p>
+   * Method under test: {@link SimpleSplitter#run(RosettaModelObjectBuilder, RosettaModelObjectBuilder)}
    */
   @Test
-  @DisplayName(
-      "Test run(RosettaModelObjectBuilder, RosettaModelObjectBuilder); given ten; when BarBuilder (default constructor) Num is ten; then calls accept(Object)")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void SimpleSplitter.run(RosettaModelObjectBuilder, RosettaModelObjectBuilder)"
-  })
-  void testRun_givenTen_whenBarBuilderNumIsTen_thenCallsAccept() {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void SimpleSplitter.run(RosettaModelObjectBuilder, RosettaModelObjectBuilder)"})
+  public void testRun_givenTen_whenBarBuilderNumIsTen_thenCallsAccept() {
     // Arrange
     Consumer<RosettaModelObjectBuilder> postProcessor = mock(Consumer.class);
     doNothing().when(postProcessor).accept(Mockito.<RosettaModelObjectBuilder>any());
@@ -191,24 +160,17 @@ class SimpleSplitterDiffblueTest {
 
   /**
    * Test {@link SimpleSplitter#run(RosettaModelObjectBuilder, RosettaModelObjectBuilder)}.
-   *
    * <ul>
-   *   <li>When {@link PriceQuantity.PriceQuantityBuilderImpl} (default constructor).
-   *   <li>Then calls {@link Consumer#accept(Object)}.
+   *   <li>When {@link PriceQuantityBuilderImpl} (default constructor).</li>
+   *   <li>Then calls {@link Consumer#accept(Object)}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SimpleSplitter#run(RosettaModelObjectBuilder,
-   * RosettaModelObjectBuilder)}
+   * <p>
+   * Method under test: {@link SimpleSplitter#run(RosettaModelObjectBuilder, RosettaModelObjectBuilder)}
    */
   @Test
-  @DisplayName(
-      "Test run(RosettaModelObjectBuilder, RosettaModelObjectBuilder); when PriceQuantityBuilderImpl (default constructor); then calls accept(Object)")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void SimpleSplitter.run(RosettaModelObjectBuilder, RosettaModelObjectBuilder)"
-  })
-  void testRun_whenPriceQuantityBuilderImpl_thenCallsAccept() {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void SimpleSplitter.run(RosettaModelObjectBuilder, RosettaModelObjectBuilder)"})
+  public void testRun_whenPriceQuantityBuilderImpl_thenCallsAccept() {
     // Arrange
     Consumer<RosettaModelObjectBuilder> postProcessor = mock(Consumer.class);
     doNothing().when(postProcessor).accept(Mockito.<RosettaModelObjectBuilder>any());
@@ -223,164 +185,17 @@ class SimpleSplitterDiffblueTest {
   }
 
   /**
-   * Test {@link SimpleSplitter#mergeRosetta(List, List, Function)} with {@code o1}, {@code o2},
-   * {@code o1GetOrCreateByIndex}.
-   *
+   * Test {@link SimpleSplitter#mergeRosetta(List, List, Function)} with {@code o1}, {@code o2}, {@code o1GetOrCreateByIndex}.
    * <ul>
-   *   <li>Given {@link BarBuilder} (default constructor).
+   *   <li>Given {@link BarBuilder} (default constructor) Num is ten.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SimpleSplitter#mergeRosetta(List, List, Function)}
+   * <p>
+   * Method under test: {@link SimpleSplitter#mergeRosetta(List, List, Function)}
    */
   @Test
-  @DisplayName(
-      "Test mergeRosetta(List, List, Function) with 'o1', 'o2', 'o1GetOrCreateByIndex'; given BarBuilder (default constructor)")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void SimpleSplitter.mergeRosetta(List, List, Function)"})
-  void testMergeRosettaWithO1O2O1GetOrCreateByIndex_givenBarBuilder() {
-    // Arrange
-    SimpleSplitter simpleSplitter = new SimpleSplitter();
-    ArrayList<RosettaModelObjectBuilder> o1 = new ArrayList<>();
-
-    ArrayList<RosettaModelObjectBuilder> o2 = new ArrayList<>();
-    o2.add(new BarBuilder());
-
-    Function<Integer, RosettaModelObjectBuilder> o1GetOrCreateByIndex = mock(Function.class);
-    when(o1GetOrCreateByIndex.apply(Mockito.<Integer>any())).thenReturn(new BarBuilder());
-
-    // Act
-    simpleSplitter.mergeRosetta(o1, o2, o1GetOrCreateByIndex);
-
-    // Assert
-    verify(o1GetOrCreateByIndex).apply(0);
-  }
-
-  /**
-   * Test {@link SimpleSplitter#mergeRosetta(List, List, Function)} with {@code o1}, {@code o2},
-   * {@code o1GetOrCreateByIndex}.
-   *
-   * <ul>
-   *   <li>Given {@link BarBuilder} (default constructor).
-   * </ul>
-   *
-   * <p>Method under test: {@link SimpleSplitter#mergeRosetta(List, List, Function)}
-   */
-  @Test
-  @DisplayName(
-      "Test mergeRosetta(List, List, Function) with 'o1', 'o2', 'o1GetOrCreateByIndex'; given BarBuilder (default constructor)")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void SimpleSplitter.mergeRosetta(List, List, Function)"})
-  void testMergeRosettaWithO1O2O1GetOrCreateByIndex_givenBarBuilder2() {
-    // Arrange
-    SimpleSplitter simpleSplitter = new SimpleSplitter();
-    ArrayList<RosettaModelObjectBuilder> o1 = new ArrayList<>();
-
-    ArrayList<RosettaModelObjectBuilder> o2 = new ArrayList<>();
-    o2.add(new BarBuilder());
-    o2.add(new BarBuilder());
-
-    Function<Integer, RosettaModelObjectBuilder> o1GetOrCreateByIndex = mock(Function.class);
-    when(o1GetOrCreateByIndex.apply(Mockito.<Integer>any())).thenReturn(new BarBuilder());
-
-    // Act
-    simpleSplitter.mergeRosetta(o1, o2, o1GetOrCreateByIndex);
-
-    // Assert
-    verify(o1GetOrCreateByIndex, atLeast(1)).apply(Mockito.<Integer>any());
-  }
-
-  /**
-   * Test {@link SimpleSplitter#mergeRosetta(List, List, Function)} with {@code o1}, {@code o2},
-   * {@code o1GetOrCreateByIndex}.
-   *
-   * <ul>
-   *   <li>Given {@link BarBuilder} (default constructor).
-   * </ul>
-   *
-   * <p>Method under test: {@link SimpleSplitter#mergeRosetta(List, List, Function)}
-   */
-  @Test
-  @DisplayName(
-      "Test mergeRosetta(List, List, Function) with 'o1', 'o2', 'o1GetOrCreateByIndex'; given BarBuilder (default constructor)")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void SimpleSplitter.mergeRosetta(List, List, Function)"})
-  void testMergeRosettaWithO1O2O1GetOrCreateByIndex_givenBarBuilder3() {
-    // Arrange
-    SimpleSplitter simpleSplitter = new SimpleSplitter();
-
-    ArrayList<RosettaModelObjectBuilder> o1 = new ArrayList<>();
-    o1.add(new BarBuilder());
-
-    ArrayList<RosettaModelObjectBuilder> o2 = new ArrayList<>();
-    o2.add(new BarBuilder());
-
-    Function<Integer, RosettaModelObjectBuilder> o1GetOrCreateByIndex = mock(Function.class);
-    when(o1GetOrCreateByIndex.apply(Mockito.<Integer>any())).thenReturn(new BarBuilder());
-
-    // Act
-    simpleSplitter.mergeRosetta(o1, o2, o1GetOrCreateByIndex);
-
-    // Assert
-    verify(o1GetOrCreateByIndex).apply(0);
-  }
-
-  /**
-   * Test {@link SimpleSplitter#mergeRosetta(List, List, Function)} with {@code o1}, {@code o2},
-   * {@code o1GetOrCreateByIndex}.
-   *
-   * <ul>
-   *   <li>Given {@link BarBuilder} (default constructor).
-   * </ul>
-   *
-   * <p>Method under test: {@link SimpleSplitter#mergeRosetta(List, List, Function)}
-   */
-  @Test
-  @DisplayName(
-      "Test mergeRosetta(List, List, Function) with 'o1', 'o2', 'o1GetOrCreateByIndex'; given BarBuilder (default constructor)")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void SimpleSplitter.mergeRosetta(List, List, Function)"})
-  void testMergeRosettaWithO1O2O1GetOrCreateByIndex_givenBarBuilder4() {
-    // Arrange
-    SimpleSplitter simpleSplitter = new SimpleSplitter();
-
-    ArrayList<RosettaModelObjectBuilder> o1 = new ArrayList<>();
-    o1.add(new BarBuilder());
-    o1.add(new BarBuilder());
-
-    ArrayList<RosettaModelObjectBuilder> o2 = new ArrayList<>();
-    o2.add(new BarBuilder());
-
-    Function<Integer, RosettaModelObjectBuilder> o1GetOrCreateByIndex = mock(Function.class);
-    when(o1GetOrCreateByIndex.apply(Mockito.<Integer>any())).thenReturn(new BarBuilder());
-
-    // Act
-    simpleSplitter.mergeRosetta(o1, o2, o1GetOrCreateByIndex);
-
-    // Assert
-    verify(o1GetOrCreateByIndex).apply(0);
-  }
-
-  /**
-   * Test {@link SimpleSplitter#mergeRosetta(List, List, Function)} with {@code o1}, {@code o2},
-   * {@code o1GetOrCreateByIndex}.
-   *
-   * <ul>
-   *   <li>Given {@link BarBuilder} (default constructor) Num is ten.
-   * </ul>
-   *
-   * <p>Method under test: {@link SimpleSplitter#mergeRosetta(List, List, Function)}
-   */
-  @Test
-  @DisplayName(
-      "Test mergeRosetta(List, List, Function) with 'o1', 'o2', 'o1GetOrCreateByIndex'; given BarBuilder (default constructor) Num is ten")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void SimpleSplitter.mergeRosetta(List, List, Function)"})
-  void testMergeRosettaWithO1O2O1GetOrCreateByIndex_givenBarBuilderNumIsTen() {
+  public void testMergeRosettaWithO1O2O1GetOrCreateByIndex_givenBarBuilderNumIsTen() {
     // Arrange
     SimpleSplitter simpleSplitter = new SimpleSplitter();
     ArrayList<RosettaModelObjectBuilder> o1 = new ArrayList<>();
@@ -390,7 +205,6 @@ class SimpleSplitterDiffblueTest {
 
     BarBuilder barBuilder = new BarBuilder();
     barBuilder.setNum(10);
-
     Function<Integer, RosettaModelObjectBuilder> o1GetOrCreateByIndex = mock(Function.class);
     when(o1GetOrCreateByIndex.apply(Mockito.<Integer>any())).thenReturn(barBuilder);
 
@@ -398,26 +212,21 @@ class SimpleSplitterDiffblueTest {
     simpleSplitter.mergeRosetta(o1, o2, o1GetOrCreateByIndex);
 
     // Assert
-    verify(o1GetOrCreateByIndex).apply(0);
+    verify(o1GetOrCreateByIndex).apply(eq(0));
   }
 
   /**
-   * Test {@link SimpleSplitter#mergeRosetta(List, List, Function)} with {@code o1}, {@code o2},
-   * {@code o1GetOrCreateByIndex}.
-   *
+   * Test {@link SimpleSplitter#mergeRosetta(List, List, Function)} with {@code o1}, {@code o2}, {@code o1GetOrCreateByIndex}.
    * <ul>
-   *   <li>Given {@link BarBuilder} (default constructor) Num is ten.
+   *   <li>Given {@link BarBuilder} (default constructor) Num is ten.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SimpleSplitter#mergeRosetta(List, List, Function)}
+   * <p>
+   * Method under test: {@link SimpleSplitter#mergeRosetta(List, List, Function)}
    */
   @Test
-  @DisplayName(
-      "Test mergeRosetta(List, List, Function) with 'o1', 'o2', 'o1GetOrCreateByIndex'; given BarBuilder (default constructor) Num is ten")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void SimpleSplitter.mergeRosetta(List, List, Function)"})
-  void testMergeRosettaWithO1O2O1GetOrCreateByIndex_givenBarBuilderNumIsTen2() {
+  public void testMergeRosettaWithO1O2O1GetOrCreateByIndex_givenBarBuilderNumIsTen2() {
     // Arrange
     SimpleSplitter simpleSplitter = new SimpleSplitter();
     ArrayList<RosettaModelObjectBuilder> o1 = new ArrayList<>();
@@ -430,7 +239,6 @@ class SimpleSplitterDiffblueTest {
 
     BarBuilder barBuilder2 = new BarBuilder();
     barBuilder2.setNum(10);
-
     Function<Integer, RosettaModelObjectBuilder> o1GetOrCreateByIndex = mock(Function.class);
     when(o1GetOrCreateByIndex.apply(Mockito.<Integer>any())).thenReturn(barBuilder2);
 
@@ -438,33 +246,27 @@ class SimpleSplitterDiffblueTest {
     simpleSplitter.mergeRosetta(o1, o2, o1GetOrCreateByIndex);
 
     // Assert
-    verify(o1GetOrCreateByIndex).apply(0);
+    verify(o1GetOrCreateByIndex).apply(eq(0));
   }
 
   /**
-   * Test {@link SimpleSplitter#mergeRosetta(List, List, Function)} with {@code o1}, {@code o2},
-   * {@code o1GetOrCreateByIndex}.
-   *
+   * Test {@link SimpleSplitter#mergeRosetta(List, List, Function)} with {@code o1}, {@code o2}, {@code o1GetOrCreateByIndex}.
    * <ul>
-   *   <li>Given {@link KeyBuilderImpl} (default constructor).
+   *   <li>Given {@link KeyBuilderImpl} (default constructor).</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SimpleSplitter#mergeRosetta(List, List, Function)}
+   * <p>
+   * Method under test: {@link SimpleSplitter#mergeRosetta(List, List, Function)}
    */
   @Test
-  @DisplayName(
-      "Test mergeRosetta(List, List, Function) with 'o1', 'o2', 'o1GetOrCreateByIndex'; given KeyBuilderImpl (default constructor)")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void SimpleSplitter.mergeRosetta(List, List, Function)"})
-  void testMergeRosettaWithO1O2O1GetOrCreateByIndex_givenKeyBuilderImpl() {
+  public void testMergeRosettaWithO1O2O1GetOrCreateByIndex_givenKeyBuilderImpl() {
     // Arrange
     SimpleSplitter simpleSplitter = new SimpleSplitter();
     ArrayList<RosettaModelObjectBuilder> o1 = new ArrayList<>();
 
     ArrayList<RosettaModelObjectBuilder> o2 = new ArrayList<>();
     o2.add(new KeyBuilderImpl());
-
     Function<Integer, RosettaModelObjectBuilder> o1GetOrCreateByIndex = mock(Function.class);
     when(o1GetOrCreateByIndex.apply(Mockito.<Integer>any())).thenReturn(new KeyBuilderImpl());
 
@@ -472,77 +274,113 @@ class SimpleSplitterDiffblueTest {
     simpleSplitter.mergeRosetta(o1, o2, o1GetOrCreateByIndex);
 
     // Assert
-    verify(o1GetOrCreateByIndex).apply(0);
+    verify(o1GetOrCreateByIndex).apply(eq(0));
   }
 
   /**
-   * Test {@link SimpleSplitter#mergeRosetta(RosettaModelObjectBuilder, RosettaModelObjectBuilder,
-   * Consumer)} with {@code o1}, {@code o2}, {@code o1Setter}.
-   *
+   * Test {@link SimpleSplitter#mergeRosetta(List, List, Function)} with {@code o1}, {@code o2}, {@code o1GetOrCreateByIndex}.
    * <ul>
-   *   <li>Given {@link Price.PriceBuilderImpl} (default constructor).
-   *   <li>Then calls {@link Price.PriceBuilderImpl#merge(RosettaModelObjectBuilder,
-   *       BuilderMerger)}.
+   *   <li>Then calls {@link Function#apply(Object)}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SimpleSplitter#mergeRosetta(RosettaModelObjectBuilder,
-   * RosettaModelObjectBuilder, Consumer)}
+   * <p>
+   * Method under test: {@link SimpleSplitter#mergeRosetta(List, List, Function)}
    */
   @Test
-  @DisplayName(
-      "Test mergeRosetta(RosettaModelObjectBuilder, RosettaModelObjectBuilder, Consumer) with 'o1', 'o2', 'o1Setter'; given PriceBuilderImpl (default constructor); then calls merge(RosettaModelObjectBuilder, BuilderMerger)")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void SimpleSplitter.mergeRosetta(RosettaModelObjectBuilder, RosettaModelObjectBuilder, Consumer)"
-  })
-  void testMergeRosettaWithO1O2O1Setter_givenPriceBuilderImpl_thenCallsMerge() {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void SimpleSplitter.mergeRosetta(List, List, Function)"})
+  public void testMergeRosettaWithO1O2O1GetOrCreateByIndex_thenCallsApply() {
     // Arrange
     SimpleSplitter simpleSplitter = new SimpleSplitter();
+    ArrayList<RosettaModelObjectBuilder> o1 = new ArrayList<>();
 
-    PriceBuilderImpl priceBuilderImpl = mock(PriceBuilderImpl.class);
-    when(priceBuilderImpl.merge(
-            Mockito.<RosettaModelObjectBuilder>any(), Mockito.<BuilderMerger>any()))
-        .thenReturn(new PriceBuilderImpl());
+    ArrayList<RosettaModelObjectBuilder> o2 = new ArrayList<>();
+    o2.add(new BarBuilder());
+    Function<Integer, RosettaModelObjectBuilder> o1GetOrCreateByIndex = mock(Function.class);
+    when(o1GetOrCreateByIndex.apply(Mockito.<Integer>any())).thenReturn(new BarBuilder());
 
     // Act
-    simpleSplitter.mergeRosetta(priceBuilderImpl, new BarBuilder(), mock(Consumer.class));
+    simpleSplitter.mergeRosetta(o1, o2, o1GetOrCreateByIndex);
 
     // Assert
-    verify(priceBuilderImpl).merge(isA(RosettaModelObjectBuilder.class), isA(BuilderMerger.class));
+    verify(o1GetOrCreateByIndex).apply(eq(0));
   }
 
   /**
-   * Test {@link SimpleSplitter#mergeBasic(Object, Object, Consumer, AttributeMeta[])} with {@code
-   * o1}, {@code o2}, {@code setter}, {@code metas}.
-   *
+   * Test {@link SimpleSplitter#mergeRosetta(List, List, Function)} with {@code o1}, {@code o2}, {@code o1GetOrCreateByIndex}.
    * <ul>
-   *   <li>When {@link Consumer} {@link Consumer#accept(Object)} does nothing.
-   *   <li>Then calls {@link Consumer#accept(Object)}.
+   *   <li>Then calls {@link Function#apply(Object)}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SimpleSplitter#mergeBasic(Object, Object, Consumer,
-   * AttributeMeta[])}
+   * <p>
+   * Method under test: {@link SimpleSplitter#mergeRosetta(List, List, Function)}
    */
   @Test
-  @DisplayName(
-      "Test mergeBasic(Object, Object, Consumer, AttributeMeta[]) with 'o1', 'o2', 'setter', 'metas'; when Consumer accept(Object) does nothing; then calls accept(Object)")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void SimpleSplitter.mergeBasic(Object, Object, Consumer, AttributeMeta[])"})
-  void testMergeBasicWithO1O2SetterMetas_whenConsumerAcceptDoesNothing_thenCallsAccept() {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void SimpleSplitter.mergeRosetta(List, List, Function)"})
+  public void testMergeRosettaWithO1O2O1GetOrCreateByIndex_thenCallsApply2() {
     // Arrange
     SimpleSplitter simpleSplitter = new SimpleSplitter();
+    ArrayList<RosettaModelObjectBuilder> o1 = new ArrayList<>();
 
+    ArrayList<RosettaModelObjectBuilder> o2 = new ArrayList<>();
+    o2.add(new BarBuilder());
+    o2.add(new BarBuilder());
+    Function<Integer, RosettaModelObjectBuilder> o1GetOrCreateByIndex = mock(Function.class);
+    when(o1GetOrCreateByIndex.apply(Mockito.<Integer>any())).thenReturn(new BarBuilder());
+
+    // Act
+    simpleSplitter.mergeRosetta(o1, o2, o1GetOrCreateByIndex);
+
+    // Assert
+    verify(o1GetOrCreateByIndex, atLeast(1)).apply(Mockito.<Integer>any());
+  }
+
+  /**
+   * Test {@link SimpleSplitter#mergeRosetta(RosettaModelObjectBuilder, RosettaModelObjectBuilder, Consumer)} with {@code o1}, {@code o2}, {@code o1Setter}.
+   * <ul>
+   *   <li>Given {@link BarBuilder} (default constructor).</li>
+   *   <li>Then calls {@link RosettaModelObjectBuilder#merge(RosettaModelObjectBuilder, BuilderMerger)}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link SimpleSplitter#mergeRosetta(RosettaModelObjectBuilder, RosettaModelObjectBuilder, Consumer)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "void SimpleSplitter.mergeRosetta(RosettaModelObjectBuilder, RosettaModelObjectBuilder, Consumer)"})
+  public void testMergeRosettaWithO1O2O1Setter_givenBarBuilder_thenCallsMerge() {
+    // Arrange
+    SimpleSplitter simpleSplitter = new SimpleSplitter();
+    RosettaModelObjectBuilder rosettaModelObjectBuilder = mock(RosettaModelObjectBuilder.class);
+    when(rosettaModelObjectBuilder.merge(Mockito.<BarBuilder>any(), Mockito.<BuilderMerger>any()))
+        .thenReturn(new BarBuilder());
+
+    // Act
+    simpleSplitter.mergeRosetta(rosettaModelObjectBuilder, new BarBuilder(), mock(Consumer.class));
+
+    // Assert
+    verify(rosettaModelObjectBuilder).merge(isA(BarBuilder.class), isA(BuilderMerger.class));
+  }
+
+  /**
+   * Test {@link SimpleSplitter#mergeBasic(Object, Object, Consumer, AttributeMeta[])} with {@code o1}, {@code o2}, {@code setter}, {@code metas}.
+   * <ul>
+   *   <li>When {@code O2}.</li>
+   *   <li>Then calls {@link Consumer#accept(Object)}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link SimpleSplitter#mergeBasic(Object, Object, Consumer, AttributeMeta[])}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void SimpleSplitter.mergeBasic(Object, Object, Consumer, AttributeMeta[])"})
+  public void testMergeBasicWithO1O2SetterMetas_whenO2_thenCallsAccept() {
+    // Arrange
+    SimpleSplitter simpleSplitter = new SimpleSplitter();
     Consumer<Object> setter = mock(Consumer.class);
     doNothing().when(setter).accept(Mockito.<Object>any());
 
     // Act
-    simpleSplitter.mergeBasic(
-        BeanPropertyWriter.MARKER_FOR_EMPTY,
-        BeanPropertyWriter.MARKER_FOR_EMPTY,
-        setter,
-        AttributeMeta.META);
+    simpleSplitter.mergeBasic("O1", "O2", setter, AttributeMeta.META);
 
     // Assert
     verify(setter).accept(isNull());

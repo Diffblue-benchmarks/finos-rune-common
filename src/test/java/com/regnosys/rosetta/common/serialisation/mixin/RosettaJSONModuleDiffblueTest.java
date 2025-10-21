@@ -20,15 +20,15 @@ package com.regnosys.rosetta.common.serialisation.mixin;
  * ==============
  */
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import com.fasterxml.jackson.core.Version;
 import com.fasterxml.jackson.databind.AbstractTypeResolver;
@@ -52,23 +52,20 @@ import com.fasterxml.jackson.datatype.joda.deser.key.DateTimeKeyDeserializer;
 import com.regnosys.rosetta.common.serialisation.xml.RosettaBeanDeserializerModifier;
 import com.regnosys.rosetta.common.serialisation.xml.RosettaBeanSerializerModifier;
 import java.util.List;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Tag;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.mockito.Mockito;
 
-class RosettaJSONModuleDiffblueTest {
+public class RosettaJSONModuleDiffblueTest {
   /**
    * Test {@link RosettaJSONModule#RosettaJSONModule(boolean)}.
-   *
-   * <p>Method under test: {@link RosettaJSONModule#RosettaJSONModule(boolean)}
+   * <p>
+   * Method under test: {@link RosettaJSONModule#RosettaJSONModule(boolean)}
    */
   @Test
-  @DisplayName("Test new RosettaJSONModule(boolean)")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void RosettaJSONModule.<init>(boolean)"})
-  void testNewRosettaJSONModule() {
+  public void testNewRosettaJSONModule() {
     // Arrange and Act
     RosettaJSONModule actualRosettaJSONModule = new RosettaJSONModule(true);
 
@@ -92,18 +89,16 @@ class RosettaJSONModuleDiffblueTest {
 
   /**
    * Test {@link RosettaJSONModule#setupModule(SetupContext)}.
-   *
-   * <p>Method under test: {@link RosettaJSONModule#setupModule(SetupContext)}
+   * <p>
+   * Method under test: {@link RosettaJSONModule#setupModule(SetupContext)}
    */
   @Test
-  @DisplayName("Test setupModule(SetupContext)")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void RosettaJSONModule.setupModule(SetupContext)"})
-  void testSetupModule() {
+  public void testSetupModule() {
     // Arrange
     RosettaJSONModule rosettaJSONModule = new RosettaJSONModule(true);
-    rosettaJSONModule.registerSubtypes(new Class[] {});
+    rosettaJSONModule.registerSubtypes(new Class[]{});
     rosettaJSONModule.setSerializerModifier(new RosettaBeanSerializerModifier());
     rosettaJSONModule.setDeserializerModifier(new RosettaBeanDeserializerModifier());
     rosettaJSONModule.setAbstractTypes(new SimpleAbstractTypeResolver());
@@ -114,7 +109,6 @@ class RosettaJSONModuleDiffblueTest {
     Class<Object> type = Object.class;
     rosettaJSONModule.addKeyDeserializer(type, new DateTimeKeyDeserializer());
     rosettaJSONModule.addSerializer(new XMLGregorianCalendarSerializer());
-
     SetupContext context = mock(SetupContext.class);
     doNothing().when(context).addBeanSerializerModifier(Mockito.<BeanSerializerModifier>any());
     doNothing().when(context).addBeanDeserializerModifier(Mockito.<BeanDeserializerModifier>any());
@@ -143,21 +137,17 @@ class RosettaJSONModuleDiffblueTest {
 
   /**
    * Test {@link RosettaJSONModule#setupModule(SetupContext)}.
-   *
    * <ul>
-   *   <li>Given array of {@link Class} with {@link Object}.
-   *   <li>Then calls {@link SetupContext#registerSubtypes(NamedType[])}.
+   *   <li>Given array of {@link Class} with {@link Object}.</li>
+   *   <li>Then calls {@link SetupContext#registerSubtypes(NamedType[])}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link RosettaJSONModule#setupModule(SetupContext)}
+   * <p>
+   * Method under test: {@link RosettaJSONModule#setupModule(SetupContext)}
    */
   @Test
-  @DisplayName(
-      "Test setupModule(SetupContext); given array of Class with Object; then calls registerSubtypes(NamedType[])")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void RosettaJSONModule.setupModule(SetupContext)"})
-  void testSetupModule_givenArrayOfClassWithObject_thenCallsRegisterSubtypes() {
+  public void testSetupModule_givenArrayOfClassWithObject_thenCallsRegisterSubtypes() {
     // Arrange
     RosettaJSONModule rosettaJSONModule = new RosettaJSONModule(true);
     Class<Object> forNameResult = Object.class;
@@ -172,7 +162,6 @@ class RosettaJSONModuleDiffblueTest {
     Class<Object> type = Object.class;
     rosettaJSONModule.addKeyDeserializer(type, new DateTimeKeyDeserializer());
     rosettaJSONModule.addSerializer(new XMLGregorianCalendarSerializer());
-
     SetupContext context = mock(SetupContext.class);
     doNothing().when(context).registerSubtypes(isA(NamedType[].class));
     doNothing().when(context).addBeanSerializerModifier(Mockito.<BeanSerializerModifier>any());
@@ -203,27 +192,22 @@ class RosettaJSONModuleDiffblueTest {
 
   /**
    * Test {@link RosettaJSONModule#setupModule(SetupContext)}.
-   *
    * <ul>
-   *   <li>Given {@code Object}.
-   *   <li>Then calls {@link SetupContext#addKeyDeserializers(KeyDeserializers)}.
+   *   <li>Given {@code Object}.</li>
+   *   <li>Then calls {@link SetupContext#addKeyDeserializers(KeyDeserializers)}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link RosettaJSONModule#setupModule(SetupContext)}
+   * <p>
+   * Method under test: {@link RosettaJSONModule#setupModule(SetupContext)}
    */
   @Test
-  @DisplayName(
-      "Test setupModule(SetupContext); given 'java.lang.Object'; then calls addKeyDeserializers(KeyDeserializers)")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void RosettaJSONModule.setupModule(SetupContext)"})
-  void testSetupModule_givenJavaLangObject_thenCallsAddKeyDeserializers() {
+  public void testSetupModule_givenJavaLangObject_thenCallsAddKeyDeserializers() {
     // Arrange
     RosettaJSONModule rosettaJSONModule = new RosettaJSONModule(true);
     Class<Object> type = Object.class;
     rosettaJSONModule.addKeyDeserializer(type, new DateTimeKeyDeserializer());
     rosettaJSONModule.addSerializer(new XMLGregorianCalendarSerializer());
-
     SetupContext context = mock(SetupContext.class);
     doNothing().when(context).addKeyDeserializers(Mockito.<KeyDeserializers>any());
     doNothing().when(context).addSerializers(Mockito.<Serializers>any());
@@ -240,24 +224,18 @@ class RosettaJSONModuleDiffblueTest {
 
   /**
    * Test {@link RosettaJSONModule#setupModule(SetupContext)}.
-   *
    * <ul>
-   *   <li>Given {@link RosettaJSONModule#RosettaJSONModule(boolean)} with supportRosettaEnumValue
-   *       is {@code false}.
+   *   <li>Given {@link RosettaJSONModule#RosettaJSONModule(boolean)} with supportRosettaEnumValue is {@code false}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link RosettaJSONModule#setupModule(SetupContext)}
+   * <p>
+   * Method under test: {@link RosettaJSONModule#setupModule(SetupContext)}
    */
   @Test
-  @DisplayName(
-      "Test setupModule(SetupContext); given RosettaJSONModule(boolean) with supportRosettaEnumValue is 'false'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void RosettaJSONModule.setupModule(SetupContext)"})
-  void testSetupModule_givenRosettaJSONModuleWithSupportRosettaEnumValueIsFalse() {
+  public void testSetupModule_givenRosettaJSONModuleWithSupportRosettaEnumValueIsFalse() {
     // Arrange
     RosettaJSONModule rosettaJSONModule = new RosettaJSONModule(false);
-
     SetupContext context = mock(SetupContext.class);
     doNothing().when(context).insertAnnotationIntrospector(Mockito.<AnnotationIntrospector>any());
 
@@ -270,24 +248,18 @@ class RosettaJSONModuleDiffblueTest {
 
   /**
    * Test {@link RosettaJSONModule#setupModule(SetupContext)}.
-   *
    * <ul>
-   *   <li>Given {@link RosettaJSONModule#RosettaJSONModule(boolean)} with supportRosettaEnumValue
-   *       is {@code true}.
+   *   <li>Given {@link RosettaJSONModule#RosettaJSONModule(boolean)} with supportRosettaEnumValue is {@code true}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link RosettaJSONModule#setupModule(SetupContext)}
+   * <p>
+   * Method under test: {@link RosettaJSONModule#setupModule(SetupContext)}
    */
   @Test
-  @DisplayName(
-      "Test setupModule(SetupContext); given RosettaJSONModule(boolean) with supportRosettaEnumValue is 'true'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void RosettaJSONModule.setupModule(SetupContext)"})
-  void testSetupModule_givenRosettaJSONModuleWithSupportRosettaEnumValueIsTrue() {
+  public void testSetupModule_givenRosettaJSONModuleWithSupportRosettaEnumValueIsTrue() {
     // Arrange
     RosettaJSONModule rosettaJSONModule = new RosettaJSONModule(true);
-
     SetupContext context = mock(SetupContext.class);
     doNothing().when(context).insertAnnotationIntrospector(Mockito.<AnnotationIntrospector>any());
 
@@ -300,20 +272,16 @@ class RosettaJSONModuleDiffblueTest {
 
   /**
    * Test {@link RosettaJSONModule#setupModule(SetupContext)}.
-   *
    * <ul>
-   *   <li>Then calls {@link SetupContext#addAbstractTypeResolver(AbstractTypeResolver)}.
+   *   <li>Then calls {@link SetupContext#addAbstractTypeResolver(AbstractTypeResolver)}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link RosettaJSONModule#setupModule(SetupContext)}
+   * <p>
+   * Method under test: {@link RosettaJSONModule#setupModule(SetupContext)}
    */
   @Test
-  @DisplayName(
-      "Test setupModule(SetupContext); then calls addAbstractTypeResolver(AbstractTypeResolver)")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void RosettaJSONModule.setupModule(SetupContext)"})
-  void testSetupModule_thenCallsAddAbstractTypeResolver() {
+  public void testSetupModule_thenCallsAddAbstractTypeResolver() {
     // Arrange
     RosettaJSONModule rosettaJSONModule = new RosettaJSONModule(true);
     rosettaJSONModule.setAbstractTypes(new SimpleAbstractTypeResolver());
@@ -324,7 +292,6 @@ class RosettaJSONModuleDiffblueTest {
     Class<Object> type = Object.class;
     rosettaJSONModule.addKeyDeserializer(type, new DateTimeKeyDeserializer());
     rosettaJSONModule.addSerializer(new XMLGregorianCalendarSerializer());
-
     SetupContext context = mock(SetupContext.class);
     doNothing().when(context).addAbstractTypeResolver(Mockito.<AbstractTypeResolver>any());
     doNothing().when(context).addKeySerializers(Mockito.<Serializers>any());
@@ -349,20 +316,16 @@ class RosettaJSONModuleDiffblueTest {
 
   /**
    * Test {@link RosettaJSONModule#setupModule(SetupContext)}.
-   *
    * <ul>
-   *   <li>Then calls {@link SetupContext#addBeanDeserializerModifier(BeanDeserializerModifier)}.
+   *   <li>Then calls {@link SetupContext#addBeanDeserializerModifier(BeanDeserializerModifier)}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link RosettaJSONModule#setupModule(SetupContext)}
+   * <p>
+   * Method under test: {@link RosettaJSONModule#setupModule(SetupContext)}
    */
   @Test
-  @DisplayName(
-      "Test setupModule(SetupContext); then calls addBeanDeserializerModifier(BeanDeserializerModifier)")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void RosettaJSONModule.setupModule(SetupContext)"})
-  void testSetupModule_thenCallsAddBeanDeserializerModifier() {
+  public void testSetupModule_thenCallsAddBeanDeserializerModifier() {
     // Arrange
     RosettaJSONModule rosettaJSONModule = new RosettaJSONModule(true);
     rosettaJSONModule.setDeserializerModifier(new RosettaBeanDeserializerModifier());
@@ -374,7 +337,6 @@ class RosettaJSONModuleDiffblueTest {
     Class<Object> type = Object.class;
     rosettaJSONModule.addKeyDeserializer(type, new DateTimeKeyDeserializer());
     rosettaJSONModule.addSerializer(new XMLGregorianCalendarSerializer());
-
     SetupContext context = mock(SetupContext.class);
     doNothing().when(context).addBeanDeserializerModifier(Mockito.<BeanDeserializerModifier>any());
     doNothing().when(context).addAbstractTypeResolver(Mockito.<AbstractTypeResolver>any());
@@ -401,20 +363,16 @@ class RosettaJSONModuleDiffblueTest {
 
   /**
    * Test {@link RosettaJSONModule#setupModule(SetupContext)}.
-   *
    * <ul>
-   *   <li>Then calls {@link SetupContext#addBeanSerializerModifier(BeanSerializerModifier)}.
+   *   <li>Then calls {@link SetupContext#addBeanSerializerModifier(BeanSerializerModifier)}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link RosettaJSONModule#setupModule(SetupContext)}
+   * <p>
+   * Method under test: {@link RosettaJSONModule#setupModule(SetupContext)}
    */
   @Test
-  @DisplayName(
-      "Test setupModule(SetupContext); then calls addBeanSerializerModifier(BeanSerializerModifier)")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void RosettaJSONModule.setupModule(SetupContext)"})
-  void testSetupModule_thenCallsAddBeanSerializerModifier() {
+  public void testSetupModule_thenCallsAddBeanSerializerModifier() {
     // Arrange
     RosettaJSONModule rosettaJSONModule = new RosettaJSONModule(true);
     rosettaJSONModule.setSerializerModifier(new RosettaBeanSerializerModifier());
@@ -427,7 +385,6 @@ class RosettaJSONModuleDiffblueTest {
     Class<Object> type = Object.class;
     rosettaJSONModule.addKeyDeserializer(type, new DateTimeKeyDeserializer());
     rosettaJSONModule.addSerializer(new XMLGregorianCalendarSerializer());
-
     SetupContext context = mock(SetupContext.class);
     doNothing().when(context).addBeanSerializerModifier(Mockito.<BeanSerializerModifier>any());
     doNothing().when(context).addBeanDeserializerModifier(Mockito.<BeanDeserializerModifier>any());
@@ -456,19 +413,16 @@ class RosettaJSONModuleDiffblueTest {
 
   /**
    * Test {@link RosettaJSONModule#setupModule(SetupContext)}.
-   *
    * <ul>
-   *   <li>Then calls {@link SetupContext#addDeserializers(Deserializers)}.
+   *   <li>Then calls {@link SetupContext#addDeserializers(Deserializers)}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link RosettaJSONModule#setupModule(SetupContext)}
+   * <p>
+   * Method under test: {@link RosettaJSONModule#setupModule(SetupContext)}
    */
   @Test
-  @DisplayName("Test setupModule(SetupContext); then calls addDeserializers(Deserializers)")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void RosettaJSONModule.setupModule(SetupContext)"})
-  void testSetupModule_thenCallsAddDeserializers() {
+  public void testSetupModule_thenCallsAddDeserializers() {
     // Arrange
     RosettaJSONModule rosettaJSONModule = new RosettaJSONModule(true);
     rosettaJSONModule.setDeserializers(new SimpleDeserializers());
@@ -477,7 +431,6 @@ class RosettaJSONModuleDiffblueTest {
     Class<Object> type = Object.class;
     rosettaJSONModule.addKeyDeserializer(type, new DateTimeKeyDeserializer());
     rosettaJSONModule.addSerializer(new XMLGregorianCalendarSerializer());
-
     SetupContext context = mock(SetupContext.class);
     doNothing().when(context).addDeserializers(Mockito.<Deserializers>any());
     doNothing().when(context).addValueInstantiators(Mockito.<ValueInstantiators>any());
@@ -498,19 +451,16 @@ class RosettaJSONModuleDiffblueTest {
 
   /**
    * Test {@link RosettaJSONModule#setupModule(SetupContext)}.
-   *
    * <ul>
-   *   <li>Then calls {@link SetupContext#addKeySerializers(Serializers)}.
+   *   <li>Then calls {@link SetupContext#addKeySerializers(Serializers)}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link RosettaJSONModule#setupModule(SetupContext)}
+   * <p>
+   * Method under test: {@link RosettaJSONModule#setupModule(SetupContext)}
    */
   @Test
-  @DisplayName("Test setupModule(SetupContext); then calls addKeySerializers(Serializers)")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void RosettaJSONModule.setupModule(SetupContext)"})
-  void testSetupModule_thenCallsAddKeySerializers() {
+  public void testSetupModule_thenCallsAddKeySerializers() {
     // Arrange
     RosettaJSONModule rosettaJSONModule = new RosettaJSONModule(true);
     rosettaJSONModule.setKeySerializers(new SimpleSerializers());
@@ -520,7 +470,6 @@ class RosettaJSONModuleDiffblueTest {
     Class<Object> type = Object.class;
     rosettaJSONModule.addKeyDeserializer(type, new DateTimeKeyDeserializer());
     rosettaJSONModule.addSerializer(new XMLGregorianCalendarSerializer());
-
     SetupContext context = mock(SetupContext.class);
     doNothing().when(context).addKeySerializers(Mockito.<Serializers>any());
     doNothing().when(context).addDeserializers(Mockito.<Deserializers>any());
@@ -543,23 +492,19 @@ class RosettaJSONModuleDiffblueTest {
 
   /**
    * Test {@link RosettaJSONModule#setupModule(SetupContext)}.
-   *
    * <ul>
-   *   <li>Then calls {@link SetupContext#addSerializers(Serializers)}.
+   *   <li>Then calls {@link SetupContext#addSerializers(Serializers)}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link RosettaJSONModule#setupModule(SetupContext)}
+   * <p>
+   * Method under test: {@link RosettaJSONModule#setupModule(SetupContext)}
    */
   @Test
-  @DisplayName("Test setupModule(SetupContext); then calls addSerializers(Serializers)")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void RosettaJSONModule.setupModule(SetupContext)"})
-  void testSetupModule_thenCallsAddSerializers() {
+  public void testSetupModule_thenCallsAddSerializers() {
     // Arrange
     RosettaJSONModule rosettaJSONModule = new RosettaJSONModule(true);
     rosettaJSONModule.addSerializer(new XMLGregorianCalendarSerializer());
-
     SetupContext context = mock(SetupContext.class);
     doNothing().when(context).addSerializers(Mockito.<Serializers>any());
     doNothing().when(context).insertAnnotationIntrospector(Mockito.<AnnotationIntrospector>any());
@@ -574,20 +519,16 @@ class RosettaJSONModuleDiffblueTest {
 
   /**
    * Test {@link RosettaJSONModule#setupModule(SetupContext)}.
-   *
    * <ul>
-   *   <li>Then calls {@link SetupContext#addValueInstantiators(ValueInstantiators)}.
+   *   <li>Then calls {@link SetupContext#addValueInstantiators(ValueInstantiators)}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link RosettaJSONModule#setupModule(SetupContext)}
+   * <p>
+   * Method under test: {@link RosettaJSONModule#setupModule(SetupContext)}
    */
   @Test
-  @DisplayName(
-      "Test setupModule(SetupContext); then calls addValueInstantiators(ValueInstantiators)")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void RosettaJSONModule.setupModule(SetupContext)"})
-  void testSetupModule_thenCallsAddValueInstantiators() {
+  public void testSetupModule_thenCallsAddValueInstantiators() {
     // Arrange
     RosettaJSONModule rosettaJSONModule = new RosettaJSONModule(true);
     Class<Object> beanType = Object.class;
@@ -595,7 +536,6 @@ class RosettaJSONModuleDiffblueTest {
     Class<Object> type = Object.class;
     rosettaJSONModule.addKeyDeserializer(type, new DateTimeKeyDeserializer());
     rosettaJSONModule.addSerializer(new XMLGregorianCalendarSerializer());
-
     SetupContext context = mock(SetupContext.class);
     doNothing().when(context).addValueInstantiators(Mockito.<ValueInstantiators>any());
     doNothing().when(context).addKeyDeserializers(Mockito.<KeyDeserializers>any());
@@ -614,24 +554,20 @@ class RosettaJSONModuleDiffblueTest {
 
   /**
    * Test {@link RosettaJSONModule#setupModule(SetupContext)}.
-   *
    * <ul>
-   *   <li>Then calls {@link SetupContext#setMixInAnnotations(Class, Class)}.
+   *   <li>Then calls {@link SetupContext#setMixInAnnotations(Class, Class)}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link RosettaJSONModule#setupModule(SetupContext)}
+   * <p>
+   * Method under test: {@link RosettaJSONModule#setupModule(SetupContext)}
    */
   @Test
-  @DisplayName("Test setupModule(SetupContext); then calls setMixInAnnotations(Class, Class)")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void RosettaJSONModule.setupModule(SetupContext)"})
-  void testSetupModule_thenCallsSetMixInAnnotations() {
+  public void testSetupModule_thenCallsSetMixInAnnotations() {
     // Arrange
     RosettaJSONModule rosettaJSONModule = new RosettaJSONModule(true);
     Class<Object> targetType = Object.class;
     Class<Object> mixinClass = Object.class;
-
     rosettaJSONModule.setMixInAnnotation(targetType, mixinClass);
     Class<Object> forNameResult = Object.class;
     rosettaJSONModule.registerSubtypes(forNameResult);
@@ -645,9 +581,8 @@ class RosettaJSONModuleDiffblueTest {
     Class<Object> type = Object.class;
     rosettaJSONModule.addKeyDeserializer(type, new DateTimeKeyDeserializer());
     rosettaJSONModule.addSerializer(new XMLGregorianCalendarSerializer());
-
     SetupContext context = mock(SetupContext.class);
-    doNothing().when(context).setMixInAnnotations(Mockito.<Class<?>>any(), Mockito.<Class<?>>any());
+    doNothing().when(context).setMixInAnnotations(Mockito.<Class<Object>>any(), Mockito.<Class<Object>>any());
     doNothing().when(context).registerSubtypes(isA(NamedType[].class));
     doNothing().when(context).addBeanSerializerModifier(Mockito.<BeanSerializerModifier>any());
     doNothing().when(context).addBeanDeserializerModifier(Mockito.<BeanDeserializerModifier>any());
@@ -678,28 +613,21 @@ class RosettaJSONModuleDiffblueTest {
 
   /**
    * Test {@link RosettaJSONModule#equals(Object)}, and {@link RosettaJSONModule#hashCode()}.
-   *
    * <ul>
-   *   <li>When other is same.
-   *   <li>Then return equal.
+   *   <li>When other is same.</li>
+   *   <li>Then return equal.</li>
    * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link RosettaJSONModule#equals(Object)}
    *   <li>{@link RosettaJSONModule#hashCode()}
    * </ul>
    */
   @Test
-  @DisplayName("Test equals(Object), and hashCode(); when other is same; then return equal")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean RosettaJSONModule.equals(Object)",
-    "int RosettaJSONModule.hashCode()"
-  })
-  void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean RosettaJSONModule.equals(Object)", "int RosettaJSONModule.hashCode()"})
+  public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
     RosettaJSONModule rosettaJSONModule = new RosettaJSONModule(true);
 
@@ -711,23 +639,17 @@ class RosettaJSONModuleDiffblueTest {
 
   /**
    * Test {@link RosettaJSONModule#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link RosettaJSONModule#equals(Object)}
+   * <p>
+   * Method under test: {@link RosettaJSONModule#equals(Object)}
    */
   @Test
-  @DisplayName("Test equals(Object); when other is different; then return not equal")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean RosettaJSONModule.equals(Object)",
-    "int RosettaJSONModule.hashCode()"
-  })
-  void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean RosettaJSONModule.equals(Object)", "int RosettaJSONModule.hashCode()"})
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange
     RosettaJSONModule rosettaJSONModule = new RosettaJSONModule(true);
 
@@ -737,46 +659,34 @@ class RosettaJSONModuleDiffblueTest {
 
   /**
    * Test {@link RosettaJSONModule#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is {@code null}.
-   *   <li>Then return not equal.
+   *   <li>When other is {@code null}.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link RosettaJSONModule#equals(Object)}
+   * <p>
+   * Method under test: {@link RosettaJSONModule#equals(Object)}
    */
   @Test
-  @DisplayName("Test equals(Object); when other is 'null'; then return not equal")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean RosettaJSONModule.equals(Object)",
-    "int RosettaJSONModule.hashCode()"
-  })
-  void testEquals_whenOtherIsNull_thenReturnNotEqual() {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean RosettaJSONModule.equals(Object)", "int RosettaJSONModule.hashCode()"})
+  public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(new RosettaJSONModule(true), null);
   }
 
   /**
    * Test {@link RosettaJSONModule#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is wrong type.
-   *   <li>Then return not equal.
+   *   <li>When other is wrong type.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link RosettaJSONModule#equals(Object)}
+   * <p>
+   * Method under test: {@link RosettaJSONModule#equals(Object)}
    */
   @Test
-  @DisplayName("Test equals(Object); when other is wrong type; then return not equal")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean RosettaJSONModule.equals(Object)",
-    "int RosettaJSONModule.hashCode()"
-  })
-  void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"boolean RosettaJSONModule.equals(Object)", "int RosettaJSONModule.hashCode()"})
+  public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(new RosettaJSONModule(true), "Different type to RosettaJSONModule");
   }

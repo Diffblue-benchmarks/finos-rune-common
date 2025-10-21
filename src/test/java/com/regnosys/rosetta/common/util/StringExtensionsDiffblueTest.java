@@ -20,90 +20,77 @@ package com.regnosys.rosetta.common.util;
  * ==============
  */
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import static org.junit.Assert.assertEquals;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Tag;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
-class StringExtensionsDiffblueTest {
+public class StringExtensionsDiffblueTest {
   /**
    * Test {@link StringExtensions#toFirstLower(String)}.
-   *
    * <ul>
-   *   <li>When {@code foo}.
-   *   <li>Then return {@code foo}.
+   *   <li>When {@code foo}.</li>
+   *   <li>Then return {@code foo}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link StringExtensions#toFirstLower(String)}
+   * <p>
+   * Method under test: {@link StringExtensions#toFirstLower(String)}
    */
   @Test
-  @DisplayName("Test toFirstLower(String); when 'foo'; then return 'foo'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String StringExtensions.toFirstLower(String)"})
-  void testToFirstLower_whenFoo_thenReturnFoo() {
+  public void testToFirstLower_whenFoo_thenReturnFoo() {
     // Arrange, Act and Assert
     assertEquals("foo", StringExtensions.toFirstLower("foo"));
   }
 
   /**
    * Test {@link StringExtensions#toFirstLower(String)}.
-   *
    * <ul>
-   *   <li>When {@code null}.
-   *   <li>Then return empty string.
+   *   <li>When {@code null}.</li>
+   *   <li>Then return empty string.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link StringExtensions#toFirstLower(String)}
+   * <p>
+   * Method under test: {@link StringExtensions#toFirstLower(String)}
    */
   @Test
-  @DisplayName("Test toFirstLower(String); when 'null'; then return empty string")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String StringExtensions.toFirstLower(String)"})
-  void testToFirstLower_whenNull_thenReturnEmptyString() {
+  public void testToFirstLower_whenNull_thenReturnEmptyString() {
     // Arrange, Act and Assert
     assertEquals("", StringExtensions.toFirstLower(null));
   }
 
   /**
    * Test {@link StringExtensions#toFirstUpper(String)}.
-   *
    * <ul>
-   *   <li>When {@code foo}.
-   *   <li>Then return {@code Foo}.
+   *   <li>When {@code foo}.</li>
+   *   <li>Then return {@code Foo}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link StringExtensions#toFirstUpper(String)}
+   * <p>
+   * Method under test: {@link StringExtensions#toFirstUpper(String)}
    */
   @Test
-  @DisplayName("Test toFirstUpper(String); when 'foo'; then return 'Foo'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String StringExtensions.toFirstUpper(String)"})
-  void testToFirstUpper_whenFoo_thenReturnFoo() {
+  public void testToFirstUpper_whenFoo_thenReturnFoo() {
     // Arrange, Act and Assert
     assertEquals("Foo", StringExtensions.toFirstUpper("foo"));
   }
 
   /**
    * Test {@link StringExtensions#toFirstUpper(String)}.
-   *
    * <ul>
-   *   <li>When {@code null}.
-   *   <li>Then return empty string.
+   *   <li>When {@code null}.</li>
+   *   <li>Then return empty string.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link StringExtensions#toFirstUpper(String)}
+   * <p>
+   * Method under test: {@link StringExtensions#toFirstUpper(String)}
    */
   @Test
-  @DisplayName("Test toFirstUpper(String); when 'null'; then return empty string")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String StringExtensions.toFirstUpper(String)"})
-  void testToFirstUpper_whenNull_thenReturnEmptyString() {
+  public void testToFirstUpper_whenNull_thenReturnEmptyString() {
     // Arrange, Act and Assert
     assertEquals("", StringExtensions.toFirstUpper(null));
   }

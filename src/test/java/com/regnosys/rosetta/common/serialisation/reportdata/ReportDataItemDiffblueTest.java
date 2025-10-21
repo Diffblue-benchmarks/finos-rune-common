@@ -20,30 +20,23 @@ package com.regnosys.rosetta.common.serialisation.reportdata;
  * ==============
  */
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertSame;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonInclude.Include;
-import com.fasterxml.jackson.databind.ser.BeanPropertyWriter;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Tag;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
-class ReportDataItemDiffblueTest {
+public class ReportDataItemDiffblueTest {
   /**
    * Test getters and setters.
-   *
    * <ul>
-   *   <li>Then return Expected is {@code null}.
+   *   <li>Then return Expected is {@code null}.</li>
    * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link ReportDataItem#ReportDataItem()}
    *   <li>{@link ReportDataItem#getError()}
@@ -52,18 +45,11 @@ class ReportDataItemDiffblueTest {
    * </ul>
    */
   @Test
-  @DisplayName("Test getters and setters; then return Expected is 'null'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void ReportDataItem.<init>()",
-    "void ReportDataItem.<init>(String, Object, Object)",
-    "void ReportDataItem.<init>(String, Object, Object, Exception)",
-    "Exception ReportDataItem.getError()",
-    "Object ReportDataItem.getExpected()",
-    "String ReportDataItem.getName()"
-  })
-  void testGettersAndSetters_thenReturnExpectedIsNull() {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void ReportDataItem.<init>()", "void ReportDataItem.<init>(String, Object, Object)",
+      "void ReportDataItem.<init>(String, Object, Object, Exception)", "Exception ReportDataItem.getError()",
+      "Object ReportDataItem.getExpected()", "String ReportDataItem.getName()"})
+  public void testGettersAndSetters_thenReturnExpectedIsNull() {
     // Arrange and Act
     ReportDataItem actualReportDataItem = new ReportDataItem();
     Exception actualError = actualReportDataItem.getError();
@@ -77,14 +63,12 @@ class ReportDataItemDiffblueTest {
 
   /**
    * Test getters and setters.
-   *
    * <ul>
-   *   <li>When {@link Exception#Exception()}.
-   *   <li>Then Expected return {@link JsonInclude.Include}.
+   *   <li>When {@link Exception#Exception(String)} with {@code foo}.</li>
+   *   <li>Then return Error is {@link Exception#Exception(String)} with {@code foo}.</li>
    * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link ReportDataItem#ReportDataItem(String, Object, Object, Exception)}
    *   <li>{@link ReportDataItem#getError()}
@@ -93,46 +77,33 @@ class ReportDataItemDiffblueTest {
    * </ul>
    */
   @Test
-  @DisplayName("Test getters and setters; when Exception(); then Expected return Include")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void ReportDataItem.<init>()",
-    "void ReportDataItem.<init>(String, Object, Object)",
-    "void ReportDataItem.<init>(String, Object, Object, Exception)",
-    "Exception ReportDataItem.getError()",
-    "Object ReportDataItem.getExpected()",
-    "String ReportDataItem.getName()"
-  })
-  void testGettersAndSetters_whenException_thenExpectedReturnInclude() {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void ReportDataItem.<init>()", "void ReportDataItem.<init>(String, Object, Object)",
+      "void ReportDataItem.<init>(String, Object, Object, Exception)", "Exception ReportDataItem.getError()",
+      "Object ReportDataItem.getExpected()", "String ReportDataItem.getName()"})
+  public void testGettersAndSetters_whenExceptionWithFoo_thenReturnErrorIsExceptionWithFoo() {
     // Arrange
-    Object object = BeanPropertyWriter.MARKER_FOR_EMPTY;
-    Exception error = new Exception();
+    Exception error = new Exception("foo");
 
     // Act
-    ReportDataItem actualReportDataItem =
-        new ReportDataItem("Name", BeanPropertyWriter.MARKER_FOR_EMPTY, object, error);
+    ReportDataItem actualReportDataItem = new ReportDataItem("Name", "Input", "Expected", error);
     Exception actualError = actualReportDataItem.getError();
     Object actualExpected = actualReportDataItem.getExpected();
 
     // Assert
-    assertTrue(actualExpected instanceof Include);
+    assertEquals("Expected", actualExpected);
     assertEquals("Name", actualReportDataItem.getName());
-    assertEquals(Include.NON_EMPTY, actualExpected);
     assertSame(error, actualError);
-    assertSame(object, actualExpected);
   }
 
   /**
    * Test getters and setters.
-   *
    * <ul>
-   *   <li>When {@code Name}.
-   *   <li>Then return {@code Name}.
+   *   <li>When {@code Name}.</li>
+   *   <li>Then return {@code Expected}.</li>
    * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link ReportDataItem#ReportDataItem(String, Object, Object)}
    *   <li>{@link ReportDataItem#getError()}
@@ -141,84 +112,83 @@ class ReportDataItemDiffblueTest {
    * </ul>
    */
   @Test
-  @DisplayName("Test getters and setters; when 'Name'; then return 'Name'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void ReportDataItem.<init>()",
-    "void ReportDataItem.<init>(String, Object, Object)",
-    "void ReportDataItem.<init>(String, Object, Object, Exception)",
-    "Exception ReportDataItem.getError()",
-    "Object ReportDataItem.getExpected()",
-    "String ReportDataItem.getName()"
-  })
-  void testGettersAndSetters_whenName_thenReturnName() {
-    // Arrange
-    Object object = BeanPropertyWriter.MARKER_FOR_EMPTY;
-
-    // Act
-    ReportDataItem actualReportDataItem =
-        new ReportDataItem("Name", BeanPropertyWriter.MARKER_FOR_EMPTY, object);
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void ReportDataItem.<init>()", "void ReportDataItem.<init>(String, Object, Object)",
+      "void ReportDataItem.<init>(String, Object, Object, Exception)", "Exception ReportDataItem.getError()",
+      "Object ReportDataItem.getExpected()", "String ReportDataItem.getName()"})
+  public void testGettersAndSetters_whenName_thenReturnExpected() {
+    // Arrange and Act
+    ReportDataItem actualReportDataItem = new ReportDataItem("Name", "Input", "Expected");
     Exception actualError = actualReportDataItem.getError();
     Object actualExpected = actualReportDataItem.getExpected();
 
     // Assert
+    assertEquals("Expected", actualExpected);
     assertEquals("Name", actualReportDataItem.getName());
     assertNull(actualError);
-    assertSame(object, actualExpected);
+  }
+
+  /**
+   * Test {@link ReportDataItem#getInput()}.
+   * <ul>
+   *   <li>Given {@link ReportDataItem#ReportDataItem()}.</li>
+   *   <li>Then return {@code null}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link ReportDataItem#getInput()}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Object ReportDataItem.getInput()"})
+  public void testGetInput_givenReportDataItem_thenReturnNull() {
+    // Arrange, Act and Assert
+    assertNull((new ReportDataItem()).getInput());
   }
 
   /**
    * Test {@link ReportDataItem#equals(Object)}, and {@link ReportDataItem#hashCode()}.
-   *
    * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
+   *   <li>When other is equal.</li>
+   *   <li>Then return equal.</li>
    * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link ReportDataItem#equals(Object)}
    *   <li>{@link ReportDataItem#hashCode()}
    * </ul>
    */
   @Test
-  @DisplayName("Test equals(Object), and hashCode(); when other is equal; then return equal")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean ReportDataItem.equals(Object)", "int ReportDataItem.hashCode()"})
-  void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
+  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
     // Arrange
     ReportDataItem reportDataItem = new ReportDataItem();
     ReportDataItem reportDataItem2 = new ReportDataItem();
 
     // Act and Assert
     assertEquals(reportDataItem, reportDataItem2);
-    assertEquals(reportDataItem.hashCode(), reportDataItem2.hashCode());
+    int expectedHashCodeResult = reportDataItem.hashCode();
+    assertEquals(expectedHashCodeResult, reportDataItem2.hashCode());
   }
 
   /**
    * Test {@link ReportDataItem#equals(Object)}, and {@link ReportDataItem#hashCode()}.
-   *
    * <ul>
-   *   <li>When other is same.
-   *   <li>Then return equal.
+   *   <li>When other is same.</li>
+   *   <li>Then return equal.</li>
    * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link ReportDataItem#equals(Object)}
    *   <li>{@link ReportDataItem#hashCode()}
    * </ul>
    */
   @Test
-  @DisplayName("Test equals(Object), and hashCode(); when other is same; then return equal")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean ReportDataItem.equals(Object)", "int ReportDataItem.hashCode()"})
-  void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
+  public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
     ReportDataItem reportDataItem = new ReportDataItem();
 
@@ -230,24 +200,19 @@ class ReportDataItemDiffblueTest {
 
   /**
    * Test {@link ReportDataItem#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link ReportDataItem#equals(Object)}
+   * <p>
+   * Method under test: {@link ReportDataItem#equals(Object)}
    */
   @Test
-  @DisplayName("Test equals(Object); when other is different; then return not equal")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean ReportDataItem.equals(Object)", "int ReportDataItem.hashCode()"})
-  void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange
-    ReportDataItem reportDataItem =
-        new ReportDataItem(
-            "Name", BeanPropertyWriter.MARKER_FOR_EMPTY, BeanPropertyWriter.MARKER_FOR_EMPTY);
+    ReportDataItem reportDataItem = new ReportDataItem("Name", "Input", "Expected");
 
     // Act and Assert
     assertNotEquals(reportDataItem, new ReportDataItem());
@@ -255,24 +220,19 @@ class ReportDataItemDiffblueTest {
 
   /**
    * Test {@link ReportDataItem#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link ReportDataItem#equals(Object)}
+   * <p>
+   * Method under test: {@link ReportDataItem#equals(Object)}
    */
   @Test
-  @DisplayName("Test equals(Object); when other is different; then return not equal")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean ReportDataItem.equals(Object)", "int ReportDataItem.hashCode()"})
-  void testEquals_whenOtherIsDifferent_thenReturnNotEqual2() {
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual2() {
     // Arrange
-    ReportDataItem reportDataItem =
-        new ReportDataItem(
-            null, BeanPropertyWriter.MARKER_FOR_EMPTY, BeanPropertyWriter.MARKER_FOR_EMPTY);
+    ReportDataItem reportDataItem = new ReportDataItem(null, "Input", "Expected");
 
     // Act and Assert
     assertNotEquals(reportDataItem, new ReportDataItem());
@@ -280,23 +240,19 @@ class ReportDataItemDiffblueTest {
 
   /**
    * Test {@link ReportDataItem#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link ReportDataItem#equals(Object)}
+   * <p>
+   * Method under test: {@link ReportDataItem#equals(Object)}
    */
   @Test
-  @DisplayName("Test equals(Object); when other is different; then return not equal")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean ReportDataItem.equals(Object)", "int ReportDataItem.hashCode()"})
-  void testEquals_whenOtherIsDifferent_thenReturnNotEqual3() {
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual3() {
     // Arrange
-    ReportDataItem reportDataItem =
-        new ReportDataItem(null, new ReportDataItem(), BeanPropertyWriter.MARKER_FOR_EMPTY);
+    ReportDataItem reportDataItem = new ReportDataItem(null, new ReportDataItem(), "Expected");
 
     // Act and Assert
     assertNotEquals(reportDataItem, new ReportDataItem());
@@ -304,23 +260,19 @@ class ReportDataItemDiffblueTest {
 
   /**
    * Test {@link ReportDataItem#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link ReportDataItem#equals(Object)}
+   * <p>
+   * Method under test: {@link ReportDataItem#equals(Object)}
    */
   @Test
-  @DisplayName("Test equals(Object); when other is different; then return not equal")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean ReportDataItem.equals(Object)", "int ReportDataItem.hashCode()"})
-  void testEquals_whenOtherIsDifferent_thenReturnNotEqual4() {
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual4() {
     // Arrange
-    ReportDataItem reportDataItem =
-        new ReportDataItem(null, null, BeanPropertyWriter.MARKER_FOR_EMPTY);
+    ReportDataItem reportDataItem = new ReportDataItem(null, null, "Expected");
 
     // Act and Assert
     assertNotEquals(reportDataItem, new ReportDataItem());
@@ -328,20 +280,17 @@ class ReportDataItemDiffblueTest {
 
   /**
    * Test {@link ReportDataItem#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link ReportDataItem#equals(Object)}
+   * <p>
+   * Method under test: {@link ReportDataItem#equals(Object)}
    */
   @Test
-  @DisplayName("Test equals(Object); when other is different; then return not equal")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean ReportDataItem.equals(Object)", "int ReportDataItem.hashCode()"})
-  void testEquals_whenOtherIsDifferent_thenReturnNotEqual5() {
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual5() {
     // Arrange
     ReportDataItem reportDataItem = new ReportDataItem(null, null, new ReportDataItem());
 
@@ -351,88 +300,68 @@ class ReportDataItemDiffblueTest {
 
   /**
    * Test {@link ReportDataItem#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is {@code null}.
-   *   <li>Then return not equal.
+   *   <li>When other is {@code null}.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link ReportDataItem#equals(Object)}
+   * <p>
+   * Method under test: {@link ReportDataItem#equals(Object)}
    */
   @Test
-  @DisplayName("Test equals(Object); when other is 'null'; then return not equal")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean ReportDataItem.equals(Object)", "int ReportDataItem.hashCode()"})
-  void testEquals_whenOtherIsNull_thenReturnNotEqual() {
+  public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(new ReportDataItem(), null);
   }
 
   /**
    * Test {@link ReportDataItem#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is wrong type.
-   *   <li>Then return not equal.
+   *   <li>When other is wrong type.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link ReportDataItem#equals(Object)}
+   * <p>
+   * Method under test: {@link ReportDataItem#equals(Object)}
    */
   @Test
-  @DisplayName("Test equals(Object); when other is wrong type; then return not equal")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean ReportDataItem.equals(Object)", "int ReportDataItem.hashCode()"})
-  void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
+  public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(new ReportDataItem(), "Different type to ReportDataItem");
   }
 
   /**
    * Test {@link ReportDataItem#toString()}.
-   *
    * <ul>
-   *   <li>Then return {@code ReportDataItem[name='Name', input=NON_EMPTY, expected=NON_EMPTY]}.
+   *   <li>Then return {@code ReportDataItem[name=', ', input=Input, expected=Expected]}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link ReportDataItem#toString()}
+   * <p>
+   * Method under test: {@link ReportDataItem#toString()}
    */
   @Test
-  @DisplayName(
-      "Test toString(); then return 'ReportDataItem[name='Name', input=NON_EMPTY, expected=NON_EMPTY]'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String ReportDataItem.toString()"})
-  void testToString_thenReturnReportDataItemNameNameInputNonEmptyExpectedNonEmpty() {
-    // Arrange
-    ReportDataItem reportDataItem =
-        new ReportDataItem(
-            "Name", BeanPropertyWriter.MARKER_FOR_EMPTY, BeanPropertyWriter.MARKER_FOR_EMPTY);
-
-    // Act and Assert
-    assertEquals(
-        "ReportDataItem[name='Name', input=NON_EMPTY, expected=NON_EMPTY]",
-        reportDataItem.toString());
+  public void testToString_thenReturnReportDataItemNameInputInputExpectedExpected() {
+    // Arrange, Act and Assert
+    assertEquals("ReportDataItem[name=', ', input=Input, expected=Expected]",
+        (new ReportDataItem(", ", "Input", "Expected")).toString());
   }
 
   /**
    * Test {@link ReportDataItem#toString()}.
-   *
    * <ul>
-   *   <li>Then return {@code ReportDataItem[name='null', input=null, expected=]}.
+   *   <li>Then return {@code ReportDataItem[name='null', input=null, expected=]}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link ReportDataItem#toString()}
+   * <p>
+   * Method under test: {@link ReportDataItem#toString()}
    */
   @Test
-  @DisplayName("Test toString(); then return 'ReportDataItem[name='null', input=null, expected=]'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String ReportDataItem.toString()"})
-  void testToString_thenReturnReportDataItemNameNullInputNullExpected() {
+  public void testToString_thenReturnReportDataItemNameNullInputNullExpected() {
     // Arrange, Act and Assert
-    assertEquals(
-        "ReportDataItem[name='null', input=null, expected=]", new ReportDataItem().toString());
+    assertEquals("ReportDataItem[name='null', input=null, expected=]", (new ReportDataItem()).toString());
   }
 }

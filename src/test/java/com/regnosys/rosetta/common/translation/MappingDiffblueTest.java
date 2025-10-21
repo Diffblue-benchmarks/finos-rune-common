@@ -20,26 +20,21 @@ package com.regnosys.rosetta.common.translation;
  * ==============
  */
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.assertSame;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonInclude.Include;
-import com.fasterxml.jackson.databind.ser.BeanPropertyWriter;
 import com.regnosys.rosetta.common.hashing.ScopeReferenceHelper;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Tag;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
-class MappingDiffblueTest {
+public class MappingDiffblueTest {
   /**
    * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link Mapping#Mapping(Path, Object, Path, Object, String, boolean, boolean, boolean)}
    *   <li>{@link Mapping#setCondition(boolean)}
@@ -59,45 +54,23 @@ class MappingDiffblueTest {
    * </ul>
    */
   @Test
-  @DisplayName("Test getters and setters")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void Mapping.<init>(Path, Object, Path, Object, String, boolean, boolean, boolean)",
-    "String Mapping.getError()",
-    "Path Mapping.getRosettaPath()",
-    "Object Mapping.getRosettaValue()",
-    "Path Mapping.getXmlPath()",
-    "Object Mapping.getXmlValue()",
-    "boolean Mapping.isAllowsMultiple()",
-    "boolean Mapping.isCondition()",
-    "boolean Mapping.isDuplicate()",
-    "void Mapping.setCondition(boolean)",
-    "void Mapping.setDuplicate(boolean)",
-    "void Mapping.setError(String)",
-    "void Mapping.setRosettaPath(Path)",
-    "void Mapping.setRosettaValue(Object)",
-    "String Mapping.toString()"
-  })
-  void testGettersAndSetters() {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void Mapping.<init>(Path, Object, Path, Object, String, boolean, boolean, boolean)",
+      "String Mapping.getError()", "Path Mapping.getRosettaPath()", "Object Mapping.getRosettaValue()",
+      "Path Mapping.getXmlPath()", "Object Mapping.getXmlValue()", "boolean Mapping.isAllowsMultiple()",
+      "boolean Mapping.isCondition()", "boolean Mapping.isDuplicate()", "void Mapping.setCondition(boolean)",
+      "void Mapping.setDuplicate(boolean)", "void Mapping.setError(String)", "void Mapping.setRosettaPath(Path)",
+      "void Mapping.setRosettaValue(Object)", "String Mapping.toString()"})
+  public void testGettersAndSetters() {
     // Arrange and Act
-    Mapping actualMapping =
-        new Mapping(
-            ScopeReferenceHelper.EMPTY_SCOPE,
-            BeanPropertyWriter.MARKER_FOR_EMPTY,
-            ScopeReferenceHelper.EMPTY_SCOPE,
-            BeanPropertyWriter.MARKER_FOR_EMPTY,
-            "An error occurred",
-            true,
-            true,
-            true);
+    Mapping actualMapping = new Mapping(ScopeReferenceHelper.EMPTY_SCOPE, "Xml Value", ScopeReferenceHelper.EMPTY_SCOPE,
+        "Rosetta Value", "An error occurred", true, true, true);
     actualMapping.setCondition(true);
     actualMapping.setDuplicate(true);
     actualMapping.setError("An error occurred");
     Path rosettaPath = ScopeReferenceHelper.EMPTY_SCOPE;
     actualMapping.setRosettaPath(rosettaPath);
-    Object object = BeanPropertyWriter.MARKER_FOR_EMPTY;
-    actualMapping.setRosettaValue(object);
+    actualMapping.setRosettaValue("Rosetta Value");
     String actualToStringResult = actualMapping.toString();
     String actualError = actualMapping.getError();
     Path actualRosettaPath = actualMapping.getRosettaPath();
@@ -108,102 +81,67 @@ class MappingDiffblueTest {
     boolean actualIsConditionResult = actualMapping.isCondition();
 
     // Assert
-    assertTrue(actualRosettaValue instanceof Include);
     assertEquals("An error occurred", actualError);
-    assertEquals(
-        "Mapping{xmlPath=emptyScope, xmlValue=NON_EMPTY, rosettaPath=emptyScope, rosettaValue=NON_EMPTY, error='An"
-            + " error occurred', allowsMultiple=true, condition=true, duplicate=true}",
-        actualToStringResult);
-    assertEquals(Include.NON_EMPTY, actualRosettaValue);
+    assertEquals("Mapping{xmlPath=emptyScope, xmlValue=Xml Value, rosettaPath=emptyScope, rosettaValue=Rosetta Value,"
+        + " error='An error occurred', allowsMultiple=true, condition=true, duplicate=true}", actualToStringResult);
+    assertEquals("Rosetta Value", actualRosettaValue);
+    assertEquals("Xml Value", actualXmlValue);
     assertTrue(actualIsAllowsMultipleResult);
     assertTrue(actualIsConditionResult);
     assertTrue(actualMapping.isDuplicate());
-    assertSame(object, actualRosettaValue);
-    assertSame(object, actualXmlValue);
     assertSame(rosettaPath, actualRosettaPath);
     assertSame(rosettaPath, actualXmlPath);
   }
 
   /**
    * Test {@link Mapping#equals(Object)}, and {@link Mapping#hashCode()}.
-   *
    * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
+   *   <li>When other is equal.</li>
+   *   <li>Then return equal.</li>
    * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link Mapping#equals(Object)}
    *   <li>{@link Mapping#hashCode()}
    * </ul>
    */
   @Test
-  @DisplayName("Test equals(Object), and hashCode(); when other is equal; then return equal")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean Mapping.equals(Object)", "int Mapping.hashCode()"})
-  void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
+  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
     // Arrange
-    Mapping mapping =
-        new Mapping(
-            ScopeReferenceHelper.EMPTY_SCOPE,
-            BeanPropertyWriter.MARKER_FOR_EMPTY,
-            ScopeReferenceHelper.EMPTY_SCOPE,
-            BeanPropertyWriter.MARKER_FOR_EMPTY,
-            "An error occurred",
-            true,
-            true,
-            true);
-    Mapping mapping2 =
-        new Mapping(
-            ScopeReferenceHelper.EMPTY_SCOPE,
-            BeanPropertyWriter.MARKER_FOR_EMPTY,
-            ScopeReferenceHelper.EMPTY_SCOPE,
-            BeanPropertyWriter.MARKER_FOR_EMPTY,
-            "An error occurred",
-            true,
-            true,
-            true);
+    Mapping mapping = new Mapping(ScopeReferenceHelper.EMPTY_SCOPE, "Xml Value", ScopeReferenceHelper.EMPTY_SCOPE,
+        "Rosetta Value", "An error occurred", true, true, true);
+    Mapping mapping2 = new Mapping(ScopeReferenceHelper.EMPTY_SCOPE, "Xml Value", ScopeReferenceHelper.EMPTY_SCOPE,
+        "Rosetta Value", "An error occurred", true, true, true);
 
     // Act and Assert
     assertEquals(mapping, mapping2);
-    assertEquals(mapping.hashCode(), mapping2.hashCode());
+    int expectedHashCodeResult = mapping.hashCode();
+    assertEquals(expectedHashCodeResult, mapping2.hashCode());
   }
 
   /**
    * Test {@link Mapping#equals(Object)}, and {@link Mapping#hashCode()}.
-   *
    * <ul>
-   *   <li>When other is same.
-   *   <li>Then return equal.
+   *   <li>When other is same.</li>
+   *   <li>Then return equal.</li>
    * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link Mapping#equals(Object)}
    *   <li>{@link Mapping#hashCode()}
    * </ul>
    */
   @Test
-  @DisplayName("Test equals(Object), and hashCode(); when other is same; then return equal")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean Mapping.equals(Object)", "int Mapping.hashCode()"})
-  void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
+  public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
-    Mapping mapping =
-        new Mapping(
-            ScopeReferenceHelper.EMPTY_SCOPE,
-            BeanPropertyWriter.MARKER_FOR_EMPTY,
-            ScopeReferenceHelper.EMPTY_SCOPE,
-            BeanPropertyWriter.MARKER_FOR_EMPTY,
-            "An error occurred",
-            true,
-            true,
-            true);
+    Mapping mapping = new Mapping(ScopeReferenceHelper.EMPTY_SCOPE, "Xml Value", ScopeReferenceHelper.EMPTY_SCOPE,
+        "Rosetta Value", "An error occurred", true, true, true);
 
     // Act and Assert
     assertEquals(mapping, mapping);
@@ -213,501 +151,261 @@ class MappingDiffblueTest {
 
   /**
    * Test {@link Mapping#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link Mapping#equals(Object)}
+   * <p>
+   * Method under test: {@link Mapping#equals(Object)}
    */
   @Test
-  @DisplayName("Test equals(Object); when other is different; then return not equal")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean Mapping.equals(Object)", "int Mapping.hashCode()"})
-  void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange
-    Mapping mapping =
-        new Mapping(
-            new Path(),
-            BeanPropertyWriter.MARKER_FOR_EMPTY,
-            ScopeReferenceHelper.EMPTY_SCOPE,
-            BeanPropertyWriter.MARKER_FOR_EMPTY,
-            "An error occurred",
-            true,
-            true,
-            true);
+    Mapping mapping = new Mapping(new Path(), "Xml Value", ScopeReferenceHelper.EMPTY_SCOPE, "Rosetta Value",
+        "An error occurred", true, true, true);
 
     // Act and Assert
-    assertNotEquals(
-        mapping,
-        new Mapping(
-            ScopeReferenceHelper.EMPTY_SCOPE,
-            BeanPropertyWriter.MARKER_FOR_EMPTY,
-            ScopeReferenceHelper.EMPTY_SCOPE,
-            BeanPropertyWriter.MARKER_FOR_EMPTY,
-            "An error occurred",
-            true,
-            true,
-            true));
+    assertNotEquals(mapping, new Mapping(ScopeReferenceHelper.EMPTY_SCOPE, "Xml Value",
+        ScopeReferenceHelper.EMPTY_SCOPE, "Rosetta Value", "An error occurred", true, true, true));
   }
 
   /**
    * Test {@link Mapping#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link Mapping#equals(Object)}
+   * <p>
+   * Method under test: {@link Mapping#equals(Object)}
    */
   @Test
-  @DisplayName("Test equals(Object); when other is different; then return not equal")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean Mapping.equals(Object)", "int Mapping.hashCode()"})
-  void testEquals_whenOtherIsDifferent_thenReturnNotEqual2() {
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual2() {
     // Arrange
-    Mapping mapping =
-        new Mapping(
-            ScopeReferenceHelper.EMPTY_SCOPE,
-            42,
-            ScopeReferenceHelper.EMPTY_SCOPE,
-            BeanPropertyWriter.MARKER_FOR_EMPTY,
-            "An error occurred",
-            true,
-            true,
-            true);
+    Mapping mapping = new Mapping(ScopeReferenceHelper.EMPTY_SCOPE, 42, ScopeReferenceHelper.EMPTY_SCOPE,
+        "Rosetta Value", "An error occurred", true, true, true);
 
     // Act and Assert
-    assertNotEquals(
-        mapping,
-        new Mapping(
-            ScopeReferenceHelper.EMPTY_SCOPE,
-            BeanPropertyWriter.MARKER_FOR_EMPTY,
-            ScopeReferenceHelper.EMPTY_SCOPE,
-            BeanPropertyWriter.MARKER_FOR_EMPTY,
-            "An error occurred",
-            true,
-            true,
-            true));
+    assertNotEquals(mapping, new Mapping(ScopeReferenceHelper.EMPTY_SCOPE, "Xml Value",
+        ScopeReferenceHelper.EMPTY_SCOPE, "Rosetta Value", "An error occurred", true, true, true));
   }
 
   /**
    * Test {@link Mapping#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link Mapping#equals(Object)}
+   * <p>
+   * Method under test: {@link Mapping#equals(Object)}
    */
   @Test
-  @DisplayName("Test equals(Object); when other is different; then return not equal")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean Mapping.equals(Object)", "int Mapping.hashCode()"})
-  void testEquals_whenOtherIsDifferent_thenReturnNotEqual3() {
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual3() {
     // Arrange
-    Mapping mapping =
-        new Mapping(
-            ScopeReferenceHelper.EMPTY_SCOPE,
-            BeanPropertyWriter.MARKER_FOR_EMPTY,
-            ScopeReferenceHelper.EMPTY_SCOPE,
-            BeanPropertyWriter.MARKER_FOR_EMPTY,
-            "An error occurred",
-            true,
-            true,
-            true);
-    Mapping mapping2 =
-        new Mapping(
-            ScopeReferenceHelper.EMPTY_SCOPE,
-            mapping,
-            ScopeReferenceHelper.EMPTY_SCOPE,
-            BeanPropertyWriter.MARKER_FOR_EMPTY,
-            "An error occurred",
-            true,
-            true,
-            true);
+    Mapping mapping = new Mapping(ScopeReferenceHelper.EMPTY_SCOPE,
+        new Mapping(ScopeReferenceHelper.EMPTY_SCOPE, "Xml Value", ScopeReferenceHelper.EMPTY_SCOPE, "Rosetta Value",
+            "An error occurred", true, true, true),
+        ScopeReferenceHelper.EMPTY_SCOPE, "Rosetta Value", "An error occurred", true, true, true);
 
     // Act and Assert
-    assertNotEquals(
-        mapping2,
-        new Mapping(
-            ScopeReferenceHelper.EMPTY_SCOPE,
-            BeanPropertyWriter.MARKER_FOR_EMPTY,
-            ScopeReferenceHelper.EMPTY_SCOPE,
-            BeanPropertyWriter.MARKER_FOR_EMPTY,
-            "An error occurred",
-            true,
-            true,
-            true));
+    assertNotEquals(mapping, new Mapping(ScopeReferenceHelper.EMPTY_SCOPE, "Xml Value",
+        ScopeReferenceHelper.EMPTY_SCOPE, "Rosetta Value", "An error occurred", true, true, true));
   }
 
   /**
    * Test {@link Mapping#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link Mapping#equals(Object)}
+   * <p>
+   * Method under test: {@link Mapping#equals(Object)}
    */
   @Test
-  @DisplayName("Test equals(Object); when other is different; then return not equal")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean Mapping.equals(Object)", "int Mapping.hashCode()"})
-  void testEquals_whenOtherIsDifferent_thenReturnNotEqual4() {
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual4() {
     // Arrange
-    Mapping mapping =
-        new Mapping(
-            ScopeReferenceHelper.EMPTY_SCOPE,
-            BeanPropertyWriter.MARKER_FOR_EMPTY,
-            new Path(),
-            BeanPropertyWriter.MARKER_FOR_EMPTY,
-            "An error occurred",
-            true,
-            true,
-            true);
+    Mapping mapping = new Mapping(ScopeReferenceHelper.EMPTY_SCOPE, "Xml Value", new Path(), "Rosetta Value",
+        "An error occurred", true, true, true);
 
     // Act and Assert
-    assertNotEquals(
-        mapping,
-        new Mapping(
-            ScopeReferenceHelper.EMPTY_SCOPE,
-            BeanPropertyWriter.MARKER_FOR_EMPTY,
-            ScopeReferenceHelper.EMPTY_SCOPE,
-            BeanPropertyWriter.MARKER_FOR_EMPTY,
-            "An error occurred",
-            true,
-            true,
-            true));
+    assertNotEquals(mapping, new Mapping(ScopeReferenceHelper.EMPTY_SCOPE, "Xml Value",
+        ScopeReferenceHelper.EMPTY_SCOPE, "Rosetta Value", "An error occurred", true, true, true));
   }
 
   /**
    * Test {@link Mapping#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link Mapping#equals(Object)}
+   * <p>
+   * Method under test: {@link Mapping#equals(Object)}
    */
   @Test
-  @DisplayName("Test equals(Object); when other is different; then return not equal")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean Mapping.equals(Object)", "int Mapping.hashCode()"})
-  void testEquals_whenOtherIsDifferent_thenReturnNotEqual5() {
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual5() {
     // Arrange
-    Mapping mapping =
-        new Mapping(
-            ScopeReferenceHelper.EMPTY_SCOPE,
-            BeanPropertyWriter.MARKER_FOR_EMPTY,
-            ScopeReferenceHelper.EMPTY_SCOPE,
-            42,
-            "An error occurred",
-            true,
-            true,
-            true);
+    Mapping mapping = new Mapping(ScopeReferenceHelper.EMPTY_SCOPE, "Xml Value", ScopeReferenceHelper.EMPTY_SCOPE, 42,
+        "An error occurred", true, true, true);
 
     // Act and Assert
-    assertNotEquals(
-        mapping,
-        new Mapping(
-            ScopeReferenceHelper.EMPTY_SCOPE,
-            BeanPropertyWriter.MARKER_FOR_EMPTY,
-            ScopeReferenceHelper.EMPTY_SCOPE,
-            BeanPropertyWriter.MARKER_FOR_EMPTY,
-            "An error occurred",
-            true,
-            true,
-            true));
+    assertNotEquals(mapping, new Mapping(ScopeReferenceHelper.EMPTY_SCOPE, "Xml Value",
+        ScopeReferenceHelper.EMPTY_SCOPE, "Rosetta Value", "An error occurred", true, true, true));
   }
 
   /**
    * Test {@link Mapping#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link Mapping#equals(Object)}
+   * <p>
+   * Method under test: {@link Mapping#equals(Object)}
    */
   @Test
-  @DisplayName("Test equals(Object); when other is different; then return not equal")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean Mapping.equals(Object)", "int Mapping.hashCode()"})
-  void testEquals_whenOtherIsDifferent_thenReturnNotEqual6() {
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual6() {
     // Arrange
-    Mapping mapping =
-        new Mapping(
-            ScopeReferenceHelper.EMPTY_SCOPE,
-            BeanPropertyWriter.MARKER_FOR_EMPTY,
-            ScopeReferenceHelper.EMPTY_SCOPE,
-            BeanPropertyWriter.MARKER_FOR_EMPTY,
-            "An error occurred",
-            true,
-            true,
-            true);
-    Mapping mapping2 =
-        new Mapping(
-            ScopeReferenceHelper.EMPTY_SCOPE,
-            BeanPropertyWriter.MARKER_FOR_EMPTY,
-            ScopeReferenceHelper.EMPTY_SCOPE,
-            mapping,
-            "An error occurred",
-            true,
-            true,
-            true);
+    Mapping mapping = new Mapping(ScopeReferenceHelper.EMPTY_SCOPE, "Xml Value", ScopeReferenceHelper.EMPTY_SCOPE,
+        new Mapping(ScopeReferenceHelper.EMPTY_SCOPE, "Xml Value", ScopeReferenceHelper.EMPTY_SCOPE, "Rosetta Value",
+            "An error occurred", true, true, true),
+        "An error occurred", true, true, true);
 
     // Act and Assert
-    assertNotEquals(
-        mapping2,
-        new Mapping(
-            ScopeReferenceHelper.EMPTY_SCOPE,
-            BeanPropertyWriter.MARKER_FOR_EMPTY,
-            ScopeReferenceHelper.EMPTY_SCOPE,
-            BeanPropertyWriter.MARKER_FOR_EMPTY,
-            "An error occurred",
-            true,
-            true,
-            true));
+    assertNotEquals(mapping, new Mapping(ScopeReferenceHelper.EMPTY_SCOPE, "Xml Value",
+        ScopeReferenceHelper.EMPTY_SCOPE, "Rosetta Value", "An error occurred", true, true, true));
   }
 
   /**
    * Test {@link Mapping#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link Mapping#equals(Object)}
+   * <p>
+   * Method under test: {@link Mapping#equals(Object)}
    */
   @Test
-  @DisplayName("Test equals(Object); when other is different; then return not equal")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean Mapping.equals(Object)", "int Mapping.hashCode()"})
-  void testEquals_whenOtherIsDifferent_thenReturnNotEqual7() {
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual7() {
     // Arrange
-    Mapping mapping =
-        new Mapping(
-            ScopeReferenceHelper.EMPTY_SCOPE,
-            BeanPropertyWriter.MARKER_FOR_EMPTY,
-            ScopeReferenceHelper.EMPTY_SCOPE,
-            BeanPropertyWriter.MARKER_FOR_EMPTY,
-            "Error",
-            true,
-            true,
-            true);
+    Mapping mapping = new Mapping(ScopeReferenceHelper.EMPTY_SCOPE, "Xml Value", ScopeReferenceHelper.EMPTY_SCOPE,
+        "Rosetta Value", "Error", true, true, true);
 
     // Act and Assert
-    assertNotEquals(
-        mapping,
-        new Mapping(
-            ScopeReferenceHelper.EMPTY_SCOPE,
-            BeanPropertyWriter.MARKER_FOR_EMPTY,
-            ScopeReferenceHelper.EMPTY_SCOPE,
-            BeanPropertyWriter.MARKER_FOR_EMPTY,
-            "An error occurred",
-            true,
-            true,
-            true));
+    assertNotEquals(mapping, new Mapping(ScopeReferenceHelper.EMPTY_SCOPE, "Xml Value",
+        ScopeReferenceHelper.EMPTY_SCOPE, "Rosetta Value", "An error occurred", true, true, true));
   }
 
   /**
    * Test {@link Mapping#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link Mapping#equals(Object)}
+   * <p>
+   * Method under test: {@link Mapping#equals(Object)}
    */
   @Test
-  @DisplayName("Test equals(Object); when other is different; then return not equal")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean Mapping.equals(Object)", "int Mapping.hashCode()"})
-  void testEquals_whenOtherIsDifferent_thenReturnNotEqual8() {
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual8() {
     // Arrange
-    Mapping mapping =
-        new Mapping(
-            ScopeReferenceHelper.EMPTY_SCOPE,
-            BeanPropertyWriter.MARKER_FOR_EMPTY,
-            ScopeReferenceHelper.EMPTY_SCOPE,
-            BeanPropertyWriter.MARKER_FOR_EMPTY,
-            "An error occurred",
-            false,
-            true,
-            true);
+    Mapping mapping = new Mapping(ScopeReferenceHelper.EMPTY_SCOPE, "Xml Value", ScopeReferenceHelper.EMPTY_SCOPE,
+        "Rosetta Value", "An error occurred", false, true, true);
 
     // Act and Assert
-    assertNotEquals(
-        mapping,
-        new Mapping(
-            ScopeReferenceHelper.EMPTY_SCOPE,
-            BeanPropertyWriter.MARKER_FOR_EMPTY,
-            ScopeReferenceHelper.EMPTY_SCOPE,
-            BeanPropertyWriter.MARKER_FOR_EMPTY,
-            "An error occurred",
-            true,
-            true,
-            true));
+    assertNotEquals(mapping, new Mapping(ScopeReferenceHelper.EMPTY_SCOPE, "Xml Value",
+        ScopeReferenceHelper.EMPTY_SCOPE, "Rosetta Value", "An error occurred", true, true, true));
   }
 
   /**
    * Test {@link Mapping#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link Mapping#equals(Object)}
+   * <p>
+   * Method under test: {@link Mapping#equals(Object)}
    */
   @Test
-  @DisplayName("Test equals(Object); when other is different; then return not equal")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean Mapping.equals(Object)", "int Mapping.hashCode()"})
-  void testEquals_whenOtherIsDifferent_thenReturnNotEqual9() {
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual9() {
     // Arrange
-    Mapping mapping =
-        new Mapping(
-            ScopeReferenceHelper.EMPTY_SCOPE,
-            BeanPropertyWriter.MARKER_FOR_EMPTY,
-            ScopeReferenceHelper.EMPTY_SCOPE,
-            BeanPropertyWriter.MARKER_FOR_EMPTY,
-            "An error occurred",
-            true,
-            false,
-            true);
+    Mapping mapping = new Mapping(ScopeReferenceHelper.EMPTY_SCOPE, "Xml Value", ScopeReferenceHelper.EMPTY_SCOPE,
+        "Rosetta Value", "An error occurred", true, false, true);
 
     // Act and Assert
-    assertNotEquals(
-        mapping,
-        new Mapping(
-            ScopeReferenceHelper.EMPTY_SCOPE,
-            BeanPropertyWriter.MARKER_FOR_EMPTY,
-            ScopeReferenceHelper.EMPTY_SCOPE,
-            BeanPropertyWriter.MARKER_FOR_EMPTY,
-            "An error occurred",
-            true,
-            true,
-            true));
+    assertNotEquals(mapping, new Mapping(ScopeReferenceHelper.EMPTY_SCOPE, "Xml Value",
+        ScopeReferenceHelper.EMPTY_SCOPE, "Rosetta Value", "An error occurred", true, true, true));
   }
 
   /**
    * Test {@link Mapping#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link Mapping#equals(Object)}
+   * <p>
+   * Method under test: {@link Mapping#equals(Object)}
    */
   @Test
-  @DisplayName("Test equals(Object); when other is different; then return not equal")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean Mapping.equals(Object)", "int Mapping.hashCode()"})
-  void testEquals_whenOtherIsDifferent_thenReturnNotEqual10() {
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual10() {
     // Arrange
-    Mapping mapping =
-        new Mapping(
-            ScopeReferenceHelper.EMPTY_SCOPE,
-            BeanPropertyWriter.MARKER_FOR_EMPTY,
-            ScopeReferenceHelper.EMPTY_SCOPE,
-            BeanPropertyWriter.MARKER_FOR_EMPTY,
-            "An error occurred",
-            true,
-            true,
-            false);
+    Mapping mapping = new Mapping(ScopeReferenceHelper.EMPTY_SCOPE, "Xml Value", ScopeReferenceHelper.EMPTY_SCOPE,
+        "Rosetta Value", "An error occurred", true, true, false);
 
     // Act and Assert
-    assertNotEquals(
-        mapping,
-        new Mapping(
-            ScopeReferenceHelper.EMPTY_SCOPE,
-            BeanPropertyWriter.MARKER_FOR_EMPTY,
-            ScopeReferenceHelper.EMPTY_SCOPE,
-            BeanPropertyWriter.MARKER_FOR_EMPTY,
-            "An error occurred",
-            true,
-            true,
-            true));
+    assertNotEquals(mapping, new Mapping(ScopeReferenceHelper.EMPTY_SCOPE, "Xml Value",
+        ScopeReferenceHelper.EMPTY_SCOPE, "Rosetta Value", "An error occurred", true, true, true));
   }
 
   /**
    * Test {@link Mapping#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is {@code null}.
-   *   <li>Then return not equal.
+   *   <li>When other is {@code null}.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link Mapping#equals(Object)}
+   * <p>
+   * Method under test: {@link Mapping#equals(Object)}
    */
   @Test
-  @DisplayName("Test equals(Object); when other is 'null'; then return not equal")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean Mapping.equals(Object)", "int Mapping.hashCode()"})
-  void testEquals_whenOtherIsNull_thenReturnNotEqual() {
+  public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange, Act and Assert
-    assertNotEquals(
-        new Mapping(
-            ScopeReferenceHelper.EMPTY_SCOPE,
-            BeanPropertyWriter.MARKER_FOR_EMPTY,
-            ScopeReferenceHelper.EMPTY_SCOPE,
-            BeanPropertyWriter.MARKER_FOR_EMPTY,
-            "An error occurred",
-            true,
-            true,
-            true),
-        null);
+    assertNotEquals(new Mapping(ScopeReferenceHelper.EMPTY_SCOPE, "Xml Value", ScopeReferenceHelper.EMPTY_SCOPE,
+        "Rosetta Value", "An error occurred", true, true, true), null);
   }
 
   /**
    * Test {@link Mapping#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is wrong type.
-   *   <li>Then return not equal.
+   *   <li>When other is wrong type.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link Mapping#equals(Object)}
+   * <p>
+   * Method under test: {@link Mapping#equals(Object)}
    */
   @Test
-  @DisplayName("Test equals(Object); when other is wrong type; then return not equal")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean Mapping.equals(Object)", "int Mapping.hashCode()"})
-  void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
+  public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange, Act and Assert
-    assertNotEquals(
-        new Mapping(
-            ScopeReferenceHelper.EMPTY_SCOPE,
-            BeanPropertyWriter.MARKER_FOR_EMPTY,
-            ScopeReferenceHelper.EMPTY_SCOPE,
-            BeanPropertyWriter.MARKER_FOR_EMPTY,
-            "An error occurred",
-            true,
-            true,
-            true),
-        "Different type to Mapping");
+    assertNotEquals(new Mapping(ScopeReferenceHelper.EMPTY_SCOPE, "Xml Value", ScopeReferenceHelper.EMPTY_SCOPE,
+        "Rosetta Value", "An error occurred", true, true, true), "Different type to Mapping");
   }
 }

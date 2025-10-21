@@ -20,11 +20,11 @@ package com.regnosys.rosetta.common.serialisation.xml;
  * ==============
  */
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertSame;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import com.fasterxml.jackson.core.Base64Variant;
 import com.fasterxml.jackson.core.Base64Variants;
@@ -35,7 +35,6 @@ import com.fasterxml.jackson.databind.ObjectMapper.DefaultTypeResolverBuilder;
 import com.fasterxml.jackson.databind.ObjectMapper.DefaultTyping;
 import com.fasterxml.jackson.databind.PropertyName;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
-import com.fasterxml.jackson.databind.SerializationConfig;
 import com.fasterxml.jackson.databind.cfg.BaseSettings;
 import com.fasterxml.jackson.databind.cfg.CoercionConfigs;
 import com.fasterxml.jackson.databind.cfg.ConfigOverrides;
@@ -49,249 +48,164 @@ import com.fasterxml.jackson.databind.deser.DefaultDeserializationContext.Impl;
 import com.fasterxml.jackson.databind.deser.SettableBeanProperty;
 import com.fasterxml.jackson.databind.introspect.AnnotationIntrospectorPair;
 import com.fasterxml.jackson.databind.introspect.BasicClassIntrospector;
-import com.fasterxml.jackson.databind.introspect.JacksonAnnotationIntrospector;
+import com.fasterxml.jackson.databind.introspect.ClassIntrospector;
+import com.fasterxml.jackson.databind.introspect.ClassIntrospector.MixInResolver;
 import com.fasterxml.jackson.databind.introspect.SimpleMixInResolver;
-import com.fasterxml.jackson.databind.jsontype.BasicPolymorphicTypeValidator;
-import com.fasterxml.jackson.databind.jsontype.BasicPolymorphicTypeValidator.Builder;
+import com.fasterxml.jackson.databind.jsontype.DefaultBaseTypeLimitingValidator;
 import com.fasterxml.jackson.databind.jsontype.impl.StdSubtypeResolver;
 import com.fasterxml.jackson.databind.type.TypeFactory;
 import com.fasterxml.jackson.databind.util.RootNameLookup;
+import com.regnosys.rosetta.common.serialisation.mixin.RosettaJSONAnnotationIntrospector;
 import java.lang.reflect.Method;
 import java.text.SimpleDateFormat;
 import java.util.Iterator;
 import java.util.Locale;
 import java.util.TimeZone;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Tag;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
-class RosettaBeanDeserializerModifierDiffblueTest {
+public class RosettaBeanDeserializerModifierDiffblueTest {
   /**
-   * Test {@link RosettaBeanDeserializerModifier#updateBuilder(DeserializationConfig,
-   * BeanDescription, BeanDeserializerBuilder)}.
-   *
-   * <p>Method under test: {@link
-   * RosettaBeanDeserializerModifier#updateBuilder(DeserializationConfig, BeanDescription,
-   * BeanDeserializerBuilder)}
+   * Test {@link RosettaBeanDeserializerModifier#updateBuilder(DeserializationConfig, BeanDescription, BeanDeserializerBuilder)}.
+   * <p>
+   * Method under test: {@link RosettaBeanDeserializerModifier#updateBuilder(DeserializationConfig, BeanDescription, BeanDeserializerBuilder)}
    */
   @Test
-  @DisplayName(
-      "Test updateBuilder(DeserializationConfig, BeanDescription, BeanDeserializerBuilder)")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "BeanDeserializerBuilder RosettaBeanDeserializerModifier.updateBuilder(DeserializationConfig, BeanDescription, BeanDeserializerBuilder)"
-  })
-  void testUpdateBuilder() {
+      "BeanDeserializerBuilder RosettaBeanDeserializerModifier.updateBuilder(DeserializationConfig, BeanDescription, BeanDeserializerBuilder)"})
+  public void testUpdateBuilder() {
     // Arrange
-    RosettaBeanDeserializerModifier rosettaBeanDeserializerModifier =
-        new RosettaBeanDeserializerModifier();
+    RosettaBeanDeserializerModifier rosettaBeanDeserializerModifier = new RosettaBeanDeserializerModifier();
     BasicClassIntrospector ci = new BasicClassIntrospector();
-    JacksonAnnotationIntrospector ai = new JacksonAnnotationIntrospector();
+    RosettaJSONAnnotationIntrospector ai = new RosettaJSONAnnotationIntrospector(true);
     PropertyNamingStrategy pns = new PropertyNamingStrategy();
     TypeFactory tf = TypeFactory.defaultInstance();
-    DefaultTypeResolverBuilder typer =
-        new DefaultTypeResolverBuilder(DefaultTyping.JAVA_LANG_OBJECT);
+    DefaultTypeResolverBuilder typer = new DefaultTypeResolverBuilder(DefaultTyping.JAVA_LANG_OBJECT);
     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/mm/dd");
     HandlerInstantiator hi = mock(HandlerInstantiator.class);
     Locale locale = Locale.getDefault();
     TimeZone tz = TimeZone.getTimeZone("America/Los_Angeles");
     Base64Variant defaultBase64 = Base64Variants.getDefaultVariant();
+    BaseSettings base = new BaseSettings(ci, ai, pns, tf, typer, dateFormat, hi, locale, tz, defaultBase64,
+        new DefaultBaseTypeLimitingValidator());
 
-    Builder builderResult = BasicPolymorphicTypeValidator.builder();
-    Class<Object> baseTypeToDeny = Object.class;
-    BasicPolymorphicTypeValidator ptv = builderResult.denyForExactBaseType(baseTypeToDeny).build();
-
-    BaseSettings base =
-        new BaseSettings(ci, ai, pns, tf, typer, dateFormat, hi, locale, tz, defaultBase64, ptv);
     StdSubtypeResolver str = new StdSubtypeResolver();
-    BaseSettings base2 = mock(BaseSettings.class);
-    StdSubtypeResolver str2 = new StdSubtypeResolver();
-    SimpleMixInResolver mixins = mock(SimpleMixInResolver.class);
+    SimpleMixInResolver mixins = new SimpleMixInResolver(mock(MixInResolver.class));
     RootNameLookup rootNames = new RootNameLookup();
-
-    SerializationConfig overrides =
-        new SerializationConfig(base2, str2, mixins, rootNames, new ConfigOverrides());
-    SimpleMixInResolver mixins2 = new SimpleMixInResolver(overrides);
-    RootNameLookup rootNames2 = new RootNameLookup();
     ConfigOverrides configOverrides = new ConfigOverrides();
+    DeserializationConfig config = new DeserializationConfig(base, str, mixins, rootNames, configOverrides,
+        new CoercionConfigs(), mock(DatatypeFeatures.class));
 
-    DeserializationConfig config =
-        new DeserializationConfig(
-            base,
-            str,
-            mixins2,
-            rootNames2,
-            configOverrides,
-            new CoercionConfigs(),
-            mock(DatatypeFeatures.class));
-    Impl ctxt = new Impl(new BeanDeserializerFactory(new DeserializerFactoryConfig()));
-    BeanDeserializerBuilder builder = new BeanDeserializerBuilder(null, ctxt);
+    BeanDeserializerBuilder builder = new BeanDeserializerBuilder(null,
+        new Impl(new BeanDeserializerFactory(new DeserializerFactoryConfig())));
 
-    // Act
-    BeanDeserializerBuilder actualUpdateBuilderResult =
-        rosettaBeanDeserializerModifier.updateBuilder(config, null, builder);
-
-    // Assert
-    assertSame(builder, actualUpdateBuilderResult);
+    // Act and Assert
+    assertSame(builder, rosettaBeanDeserializerModifier.updateBuilder(config, null, builder));
   }
 
   /**
-   * Test {@link RosettaBeanDeserializerModifier#updateBuilder(DeserializationConfig,
-   * BeanDescription, BeanDeserializerBuilder)}.
-   *
-   * <p>Method under test: {@link
-   * RosettaBeanDeserializerModifier#updateBuilder(DeserializationConfig, BeanDescription,
-   * BeanDeserializerBuilder)}
+   * Test {@link RosettaBeanDeserializerModifier#updateBuilder(DeserializationConfig, BeanDescription, BeanDeserializerBuilder)}.
+   * <p>
+   * Method under test: {@link RosettaBeanDeserializerModifier#updateBuilder(DeserializationConfig, BeanDescription, BeanDeserializerBuilder)}
    */
   @Test
-  @DisplayName(
-      "Test updateBuilder(DeserializationConfig, BeanDescription, BeanDeserializerBuilder)")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "BeanDeserializerBuilder RosettaBeanDeserializerModifier.updateBuilder(DeserializationConfig, BeanDescription, BeanDeserializerBuilder)"
-  })
-  void testUpdateBuilder2() {
+      "BeanDeserializerBuilder RosettaBeanDeserializerModifier.updateBuilder(DeserializationConfig, BeanDescription, BeanDeserializerBuilder)"})
+  public void testUpdateBuilder2() {
     // Arrange
-    RosettaBeanDeserializerModifier rosettaBeanDeserializerModifier =
-        new RosettaBeanDeserializerModifier();
+    RosettaBeanDeserializerModifier rosettaBeanDeserializerModifier = new RosettaBeanDeserializerModifier();
     BasicClassIntrospector ci = new BasicClassIntrospector();
-    JacksonAnnotationIntrospector p = new JacksonAnnotationIntrospector();
-    AnnotationIntrospectorPair ai =
-        new AnnotationIntrospectorPair(p, new JacksonAnnotationIntrospector());
+    RosettaJSONAnnotationIntrospector p = new RosettaJSONAnnotationIntrospector(true);
+    AnnotationIntrospectorPair ai = new AnnotationIntrospectorPair(p, new RosettaJSONAnnotationIntrospector(true));
+
     PropertyNamingStrategy pns = new PropertyNamingStrategy();
     TypeFactory tf = TypeFactory.defaultInstance();
-    DefaultTypeResolverBuilder typer =
-        new DefaultTypeResolverBuilder(DefaultTyping.JAVA_LANG_OBJECT);
+    DefaultTypeResolverBuilder typer = new DefaultTypeResolverBuilder(DefaultTyping.JAVA_LANG_OBJECT);
     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/mm/dd");
     HandlerInstantiator hi = mock(HandlerInstantiator.class);
     Locale locale = Locale.getDefault();
     TimeZone tz = TimeZone.getTimeZone("America/Los_Angeles");
     Base64Variant defaultBase64 = Base64Variants.getDefaultVariant();
-    Class<Object> baseTypeToDeny = Object.class;
-    BasicPolymorphicTypeValidator ptv =
-        BasicPolymorphicTypeValidator.builder().denyForExactBaseType(baseTypeToDeny).build();
+    BaseSettings base = new BaseSettings(ci, ai, pns, tf, typer, dateFormat, hi, locale, tz, defaultBase64,
+        new DefaultBaseTypeLimitingValidator());
 
-    BaseSettings base =
-        new BaseSettings(ci, ai, pns, tf, typer, dateFormat, hi, locale, tz, defaultBase64, ptv);
     StdSubtypeResolver str = new StdSubtypeResolver();
-    BaseSettings base2 = mock(BaseSettings.class);
-    StdSubtypeResolver str2 = new StdSubtypeResolver();
-    SimpleMixInResolver mixins = mock(SimpleMixInResolver.class);
+    SimpleMixInResolver mixins = new SimpleMixInResolver(mock(MixInResolver.class));
     RootNameLookup rootNames = new RootNameLookup();
-
-    SerializationConfig overrides =
-        new SerializationConfig(base2, str2, mixins, rootNames, new ConfigOverrides());
-    SimpleMixInResolver mixins2 = new SimpleMixInResolver(overrides);
-    RootNameLookup rootNames2 = new RootNameLookup();
     ConfigOverrides configOverrides = new ConfigOverrides();
+    DeserializationConfig config = new DeserializationConfig(base, str, mixins, rootNames, configOverrides,
+        new CoercionConfigs(), mock(DatatypeFeatures.class));
 
-    DeserializationConfig config =
-        new DeserializationConfig(
-            base,
-            str,
-            mixins2,
-            rootNames2,
-            configOverrides,
-            new CoercionConfigs(),
-            mock(DatatypeFeatures.class));
-    Impl ctxt = new Impl(new BeanDeserializerFactory(new DeserializerFactoryConfig()));
+    BeanDeserializerBuilder builder = new BeanDeserializerBuilder(null,
+        new Impl(new BeanDeserializerFactory(new DeserializerFactoryConfig())));
+    SubstitutedMethodProperty src = new SubstitutedMethodProperty(mock(SubstitutedMethodProperty.class), (Method) null);
 
-    BeanDeserializerBuilder builder = new BeanDeserializerBuilder(null, ctxt);
-    SubstitutedMethodProperty src =
-        new SubstitutedMethodProperty(mock(SubstitutedMethodProperty.class), (Method) null);
-    SubstitutedMethodProperty prop =
-        new SubstitutedMethodProperty(src, PropertyName.construct("Simple Name"));
+    SubstitutedMethodProperty prop = new SubstitutedMethodProperty(src, PropertyName.construct("Simple Name"));
+
     builder.addOrReplaceProperty(prop, true);
 
     // Act and Assert
-    Iterator<SettableBeanProperty> properties =
-        rosettaBeanDeserializerModifier.updateBuilder(config, null, builder).getProperties();
+    Iterator<SettableBeanProperty> properties = rosettaBeanDeserializerModifier.updateBuilder(config, null, builder)
+        .getProperties();
     SettableBeanProperty actualNextResult = properties.next();
     assertFalse(properties.hasNext());
     assertSame(prop, actualNextResult);
   }
 
   /**
-   * Test {@link RosettaBeanDeserializerModifier#updateBuilder(DeserializationConfig,
-   * BeanDescription, BeanDeserializerBuilder)}.
-   *
+   * Test {@link RosettaBeanDeserializerModifier#updateBuilder(DeserializationConfig, BeanDescription, BeanDeserializerBuilder)}.
    * <ul>
-   *   <li>Then Properties next return {@link SubstitutedMethodProperty}.
+   *   <li>Then Properties next return {@link SubstitutedMethodProperty}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * RosettaBeanDeserializerModifier#updateBuilder(DeserializationConfig, BeanDescription,
-   * BeanDeserializerBuilder)}
+   * <p>
+   * Method under test: {@link RosettaBeanDeserializerModifier#updateBuilder(DeserializationConfig, BeanDescription, BeanDeserializerBuilder)}
    */
   @Test
-  @DisplayName(
-      "Test updateBuilder(DeserializationConfig, BeanDescription, BeanDeserializerBuilder); then Properties next return SubstitutedMethodProperty")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "BeanDeserializerBuilder RosettaBeanDeserializerModifier.updateBuilder(DeserializationConfig, BeanDescription, BeanDeserializerBuilder)"
-  })
-  void testUpdateBuilder_thenPropertiesNextReturnSubstitutedMethodProperty() {
+      "BeanDeserializerBuilder RosettaBeanDeserializerModifier.updateBuilder(DeserializationConfig, BeanDescription, BeanDeserializerBuilder)"})
+  public void testUpdateBuilder_thenPropertiesNextReturnSubstitutedMethodProperty() {
     // Arrange
-    RosettaBeanDeserializerModifier rosettaBeanDeserializerModifier =
-        new RosettaBeanDeserializerModifier();
+    RosettaBeanDeserializerModifier rosettaBeanDeserializerModifier = new RosettaBeanDeserializerModifier();
     BasicClassIntrospector ci = new BasicClassIntrospector();
-    JacksonAnnotationIntrospector ai = new JacksonAnnotationIntrospector();
+    RosettaJSONAnnotationIntrospector ai = new RosettaJSONAnnotationIntrospector(true);
     PropertyNamingStrategy pns = new PropertyNamingStrategy();
     TypeFactory tf = TypeFactory.defaultInstance();
-    DefaultTypeResolverBuilder typer =
-        new DefaultTypeResolverBuilder(DefaultTyping.JAVA_LANG_OBJECT);
+    DefaultTypeResolverBuilder typer = new DefaultTypeResolverBuilder(DefaultTyping.JAVA_LANG_OBJECT);
     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/mm/dd");
     HandlerInstantiator hi = mock(HandlerInstantiator.class);
     Locale locale = Locale.getDefault();
     TimeZone tz = TimeZone.getTimeZone("America/Los_Angeles");
     Base64Variant defaultBase64 = Base64Variants.getDefaultVariant();
-    Class<Object> baseTypeToDeny = Object.class;
-    BasicPolymorphicTypeValidator ptv =
-        BasicPolymorphicTypeValidator.builder().denyForExactBaseType(baseTypeToDeny).build();
+    BaseSettings base = new BaseSettings(ci, ai, pns, tf, typer, dateFormat, hi, locale, tz, defaultBase64,
+        new DefaultBaseTypeLimitingValidator());
 
-    BaseSettings base =
-        new BaseSettings(ci, ai, pns, tf, typer, dateFormat, hi, locale, tz, defaultBase64, ptv);
     StdSubtypeResolver str = new StdSubtypeResolver();
-    BaseSettings base2 = mock(BaseSettings.class);
-    StdSubtypeResolver str2 = new StdSubtypeResolver();
-    SimpleMixInResolver mixins = mock(SimpleMixInResolver.class);
+    SimpleMixInResolver mixins = new SimpleMixInResolver(mock(MixInResolver.class));
     RootNameLookup rootNames = new RootNameLookup();
-
-    SerializationConfig overrides =
-        new SerializationConfig(base2, str2, mixins, rootNames, new ConfigOverrides());
-    SimpleMixInResolver mixins2 = new SimpleMixInResolver(overrides);
-    RootNameLookup rootNames2 = new RootNameLookup();
     ConfigOverrides configOverrides = new ConfigOverrides();
+    DeserializationConfig config = new DeserializationConfig(base, str, mixins, rootNames, configOverrides,
+        new CoercionConfigs(), mock(DatatypeFeatures.class));
 
-    DeserializationConfig config =
-        new DeserializationConfig(
-            base,
-            str,
-            mixins2,
-            rootNames2,
-            configOverrides,
-            new CoercionConfigs(),
-            mock(DatatypeFeatures.class));
-    Impl ctxt = new Impl(new BeanDeserializerFactory(new DeserializerFactoryConfig()));
+    BeanDeserializerBuilder builder = new BeanDeserializerBuilder(null,
+        new Impl(new BeanDeserializerFactory(new DeserializerFactoryConfig())));
+    SubstitutedMethodProperty src = new SubstitutedMethodProperty(mock(SubstitutedMethodProperty.class), (Method) null);
 
-    BeanDeserializerBuilder builder = new BeanDeserializerBuilder(null, ctxt);
-    SubstitutedMethodProperty src =
-        new SubstitutedMethodProperty(mock(SubstitutedMethodProperty.class), (Method) null);
-    SubstitutedMethodProperty prop =
-        new SubstitutedMethodProperty(src, PropertyName.construct("42"));
+    SubstitutedMethodProperty prop = new SubstitutedMethodProperty(src, PropertyName.construct("42"));
+
     builder.addOrReplaceProperty(prop, false);
-    SubstitutedMethodProperty src2 =
-        new SubstitutedMethodProperty(mock(SubstitutedMethodProperty.class), (Method) null);
-    SubstitutedMethodProperty prop2 =
-        new SubstitutedMethodProperty(src2, PropertyName.construct("Simple Name"));
+    SubstitutedMethodProperty src2 = new SubstitutedMethodProperty(mock(SubstitutedMethodProperty.class),
+        (Method) null);
+
+    SubstitutedMethodProperty prop2 = new SubstitutedMethodProperty(src2, PropertyName.construct("Simple Name"));
+
     builder.addOrReplaceProperty(prop2, true);
 
     // Act and Assert
-    Iterator<SettableBeanProperty> properties =
-        rosettaBeanDeserializerModifier.updateBuilder(config, null, builder).getProperties();
+    Iterator<SettableBeanProperty> properties = rosettaBeanDeserializerModifier.updateBuilder(config, null, builder)
+        .getProperties();
     SettableBeanProperty actualNextResult = properties.next();
     SettableBeanProperty nextResult = properties.next();
     assertTrue(nextResult instanceof SubstitutedMethodProperty);
@@ -301,79 +215,51 @@ class RosettaBeanDeserializerModifierDiffblueTest {
   }
 
   /**
-   * Test {@link RosettaBeanDeserializerModifier#updateBuilder(DeserializationConfig,
-   * BeanDescription, BeanDeserializerBuilder)}.
-   *
+   * Test {@link RosettaBeanDeserializerModifier#updateBuilder(DeserializationConfig, BeanDescription, BeanDeserializerBuilder)}.
    * <ul>
-   *   <li>Then return not Properties hasNext.
+   *   <li>Then return not Properties hasNext.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link
-   * RosettaBeanDeserializerModifier#updateBuilder(DeserializationConfig, BeanDescription,
-   * BeanDeserializerBuilder)}
+   * <p>
+   * Method under test: {@link RosettaBeanDeserializerModifier#updateBuilder(DeserializationConfig, BeanDescription, BeanDeserializerBuilder)}
    */
   @Test
-  @DisplayName(
-      "Test updateBuilder(DeserializationConfig, BeanDescription, BeanDeserializerBuilder); then return not Properties hasNext")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "BeanDeserializerBuilder RosettaBeanDeserializerModifier.updateBuilder(DeserializationConfig, BeanDescription, BeanDeserializerBuilder)"
-  })
-  void testUpdateBuilder_thenReturnNotPropertiesHasNext() {
+      "BeanDeserializerBuilder RosettaBeanDeserializerModifier.updateBuilder(DeserializationConfig, BeanDescription, BeanDeserializerBuilder)"})
+  public void testUpdateBuilder_thenReturnNotPropertiesHasNext() {
     // Arrange
-    RosettaBeanDeserializerModifier rosettaBeanDeserializerModifier =
-        new RosettaBeanDeserializerModifier();
+    RosettaBeanDeserializerModifier rosettaBeanDeserializerModifier = new RosettaBeanDeserializerModifier();
     BasicClassIntrospector ci = new BasicClassIntrospector();
-    JacksonAnnotationIntrospector ai = new JacksonAnnotationIntrospector();
+    RosettaJSONAnnotationIntrospector ai = new RosettaJSONAnnotationIntrospector(true);
     PropertyNamingStrategy pns = new PropertyNamingStrategy();
     TypeFactory tf = TypeFactory.defaultInstance();
-    DefaultTypeResolverBuilder typer =
-        new DefaultTypeResolverBuilder(DefaultTyping.JAVA_LANG_OBJECT);
+    DefaultTypeResolverBuilder typer = new DefaultTypeResolverBuilder(DefaultTyping.JAVA_LANG_OBJECT);
     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/mm/dd");
     HandlerInstantiator hi = mock(HandlerInstantiator.class);
     Locale locale = Locale.getDefault();
     TimeZone tz = TimeZone.getTimeZone("America/Los_Angeles");
     Base64Variant defaultBase64 = Base64Variants.getDefaultVariant();
-    Class<Object> baseTypeToDeny = Object.class;
-    BasicPolymorphicTypeValidator ptv =
-        BasicPolymorphicTypeValidator.builder().denyForExactBaseType(baseTypeToDeny).build();
+    BaseSettings base = new BaseSettings(ci, ai, pns, tf, typer, dateFormat, hi, locale, tz, defaultBase64,
+        new DefaultBaseTypeLimitingValidator());
 
-    BaseSettings base =
-        new BaseSettings(ci, ai, pns, tf, typer, dateFormat, hi, locale, tz, defaultBase64, ptv);
     StdSubtypeResolver str = new StdSubtypeResolver();
-    BaseSettings base2 = mock(BaseSettings.class);
-    StdSubtypeResolver str2 = new StdSubtypeResolver();
-    SimpleMixInResolver mixins = mock(SimpleMixInResolver.class);
+    SimpleMixInResolver mixins = new SimpleMixInResolver(mock(MixInResolver.class));
     RootNameLookup rootNames = new RootNameLookup();
-
-    SerializationConfig overrides =
-        new SerializationConfig(base2, str2, mixins, rootNames, new ConfigOverrides());
-    SimpleMixInResolver mixins2 = new SimpleMixInResolver(overrides);
-    RootNameLookup rootNames2 = new RootNameLookup();
     ConfigOverrides configOverrides = new ConfigOverrides();
+    DeserializationConfig config = new DeserializationConfig(base, str, mixins, rootNames, configOverrides,
+        new CoercionConfigs(), mock(DatatypeFeatures.class));
 
-    DeserializationConfig config =
-        new DeserializationConfig(
-            base,
-            str,
-            mixins2,
-            rootNames2,
-            configOverrides,
-            new CoercionConfigs(),
-            mock(DatatypeFeatures.class));
-    Impl ctxt = new Impl(new BeanDeserializerFactory(new DeserializerFactoryConfig()));
+    BeanDeserializerBuilder builder = new BeanDeserializerBuilder(null,
+        new Impl(new BeanDeserializerFactory(new DeserializerFactoryConfig())));
+    SubstitutedMethodProperty src = new SubstitutedMethodProperty(mock(SubstitutedMethodProperty.class), (Method) null);
 
-    BeanDeserializerBuilder builder = new BeanDeserializerBuilder(null, ctxt);
-    SubstitutedMethodProperty src =
-        new SubstitutedMethodProperty(mock(SubstitutedMethodProperty.class), (Method) null);
-    SubstitutedMethodProperty prop =
-        new SubstitutedMethodProperty(src, PropertyName.construct("Simple Name"));
+    SubstitutedMethodProperty prop = new SubstitutedMethodProperty(src, PropertyName.construct("Simple Name"));
+
     builder.addOrReplaceProperty(prop, true);
 
     // Act and Assert
-    Iterator<SettableBeanProperty> properties =
-        rosettaBeanDeserializerModifier.updateBuilder(config, null, builder).getProperties();
+    Iterator<SettableBeanProperty> properties = rosettaBeanDeserializerModifier.updateBuilder(config, null, builder)
+        .getProperties();
     SettableBeanProperty actualNextResult = properties.next();
     assertFalse(properties.hasNext());
     assertSame(prop, actualNextResult);

@@ -20,25 +20,22 @@ package com.regnosys.rosetta.common.compile;
  * ==============
  */
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import static org.junit.Assert.assertEquals;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Tag;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
-class JavaCompileReleaseFlagDiffblueTest {
+public class JavaCompileReleaseFlagDiffblueTest {
   /**
    * Test {@link JavaCompileReleaseFlag#getVersion()}.
-   *
-   * <p>Method under test: {@link JavaCompileReleaseFlag#getVersion()}
+   * <p>
+   * Method under test: {@link JavaCompileReleaseFlag#getVersion()}
    */
   @Test
-  @DisplayName("Test getVersion()")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"java.lang.String JavaCompileReleaseFlag.getVersion()"})
-  void testGetVersion() {
+  public void testGetVersion() {
     // Arrange, Act and Assert
     assertEquals("8", JavaCompileReleaseFlag.valueOf("JAVA_8").getVersion());
   }

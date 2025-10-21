@@ -20,36 +20,32 @@ package com.regnosys.rosetta.common.serialisation.xml;
  * ==============
  */
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertSame;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.type.PlaceholderForType;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Tag;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
-class VirtualXMLAttributeDiffblueTest {
+public class VirtualXMLAttributeDiffblueTest {
   /**
    * Test {@link VirtualXMLAttribute#VirtualXMLAttribute(Class, String, JavaType)}.
-   *
-   * <p>Method under test: {@link VirtualXMLAttribute#VirtualXMLAttribute(Class, String, JavaType)}
+   * <p>
+   * Method under test: {@link VirtualXMLAttribute#VirtualXMLAttribute(Class, String, JavaType)}
    */
   @Test
-  @DisplayName("Test new VirtualXMLAttribute(Class, String, JavaType)")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void VirtualXMLAttribute.<init>(Class, String, JavaType)"})
-  void testNewVirtualXMLAttribute() {
+  public void testNewVirtualXMLAttribute() {
     // Arrange
     Class<Object> declaringClass = Object.class;
     PlaceholderForType type = new PlaceholderForType(1);
 
     // Act
-    VirtualXMLAttribute actualVirtualXMLAttribute =
-        new VirtualXMLAttribute(declaringClass, "Name", type);
+    VirtualXMLAttribute actualVirtualXMLAttribute = new VirtualXMLAttribute(declaringClass, "Name", type);
 
     // Assert
     assertEquals("Name", actualVirtualXMLAttribute.getName());

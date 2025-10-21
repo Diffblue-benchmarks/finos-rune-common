@@ -20,40 +20,34 @@ package com.regnosys.rosetta.common.translation;
  * ==============
  */
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import static org.junit.Assert.assertEquals;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Tag;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
-class MappingProcessorStepDiffblueTest {
+public class MappingProcessorStepDiffblueTest {
   /**
    * Test {@link MappingProcessorStep#MappingProcessorStep(Collection, MappingContext)}.
-   *
    * <ul>
-   *   <li>Then return Name is {@code Mapping Processor}.
+   *   <li>Then return Name is {@code Mapping Processor}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link MappingProcessorStep#MappingProcessorStep(Collection,
-   * MappingContext)}
+   * <p>
+   * Method under test: {@link MappingProcessorStep#MappingProcessorStep(Collection, MappingContext)}
    */
   @Test
-  @DisplayName(
-      "Test new MappingProcessorStep(Collection, MappingContext); then return Name is 'Mapping Processor'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void MappingProcessorStep.<init>(Collection, MappingContext)"})
-  void testNewMappingProcessorStep_thenReturnNameIsMappingProcessor() {
+  public void testNewMappingProcessorStep_thenReturnNameIsMappingProcessor() {
     // Arrange
     ArrayList<MappingProcessor> mappingProcessors = new ArrayList<>();
 
     // Act
-    MappingProcessorStep actualMappingProcessorStep =
-        new MappingProcessorStep(mappingProcessors, new MappingContext(new HashMap<>()));
+    MappingProcessorStep actualMappingProcessorStep = new MappingProcessorStep(mappingProcessors,
+        new MappingContext(new HashMap<>()));
 
     // Assert
     assertEquals("Mapping Processor", actualMappingProcessorStep.getName());
@@ -62,27 +56,22 @@ class MappingProcessorStepDiffblueTest {
 
   /**
    * Test {@link MappingProcessorStep#MappingProcessorStep(Collection, MappingContext, int)}.
-   *
    * <ul>
-   *   <li>Then return Name is {@code Mapping Processor}.
+   *   <li>Then return Name is {@code Mapping Processor}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link MappingProcessorStep#MappingProcessorStep(Collection,
-   * MappingContext, int)}
+   * <p>
+   * Method under test: {@link MappingProcessorStep#MappingProcessorStep(Collection, MappingContext, int)}
    */
   @Test
-  @DisplayName(
-      "Test new MappingProcessorStep(Collection, MappingContext, int); then return Name is 'Mapping Processor'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void MappingProcessorStep.<init>(Collection, MappingContext, int)"})
-  void testNewMappingProcessorStep_thenReturnNameIsMappingProcessor2() {
+  public void testNewMappingProcessorStep_thenReturnNameIsMappingProcessor2() {
     // Arrange
     ArrayList<MappingProcessor> mappingProcessors = new ArrayList<>();
 
     // Act
-    MappingProcessorStep actualMappingProcessorStep =
-        new MappingProcessorStep(mappingProcessors, new MappingContext(new HashMap<>()), 10);
+    MappingProcessorStep actualMappingProcessorStep = new MappingProcessorStep(mappingProcessors,
+        new MappingContext(new HashMap<>()), 10);
 
     // Assert
     assertEquals("Mapping Processor", actualMappingProcessorStep.getName());
@@ -91,41 +80,35 @@ class MappingProcessorStepDiffblueTest {
 
   /**
    * Test {@link MappingProcessorStep#getPriority()}.
-   *
-   * <p>Method under test: {@link MappingProcessorStep#getPriority()}
+   * <p>
+   * Method under test: {@link MappingProcessorStep#getPriority()}
    */
   @Test
-  @DisplayName("Test getPriority()")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"java.lang.Integer MappingProcessorStep.getPriority()"})
-  void testGetPriority() {
+  public void testGetPriority() {
     // Arrange
     ArrayList<MappingProcessor> mappingProcessors = new ArrayList<>();
-    MappingProcessorStep mappingProcessorStep =
-        new MappingProcessorStep(mappingProcessors, new MappingContext(new HashMap<>()));
 
     // Act and Assert
-    assertEquals(1, mappingProcessorStep.getPriority().intValue());
+    assertEquals(1,
+        (new MappingProcessorStep(mappingProcessors, new MappingContext(new HashMap<>()))).getPriority().intValue());
   }
 
   /**
    * Test {@link MappingProcessorStep#getName()}.
-   *
-   * <p>Method under test: {@link MappingProcessorStep#getName()}
+   * <p>
+   * Method under test: {@link MappingProcessorStep#getName()}
    */
   @Test
-  @DisplayName("Test getName()")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"java.lang.String MappingProcessorStep.getName()"})
-  void testGetName() {
+  public void testGetName() {
     // Arrange
     ArrayList<MappingProcessor> mappingProcessors = new ArrayList<>();
-    MappingProcessorStep mappingProcessorStep =
-        new MappingProcessorStep(mappingProcessors, new MappingContext(new HashMap<>()));
 
     // Act and Assert
-    assertEquals("Mapping Processor", mappingProcessorStep.getName());
+    assertEquals("Mapping Processor",
+        (new MappingProcessorStep(mappingProcessors, new MappingContext(new HashMap<>()))).getName());
   }
 }

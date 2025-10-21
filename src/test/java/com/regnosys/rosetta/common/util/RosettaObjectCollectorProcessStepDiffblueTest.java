@@ -20,12 +20,12 @@ package com.regnosys.rosetta.common.util;
  * ==============
  */
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertSame;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import com.regnosys.rosetta.common.merger.BarBuilder;
 import com.regnosys.rosetta.common.serialisation.json.preannotation.testpojo.Price;
@@ -46,57 +46,48 @@ import com.rosetta.model.lib.meta.Key.KeyBuilder;
 import com.rosetta.model.lib.meta.Key.KeyBuilderImpl;
 import java.util.ArrayList;
 import java.util.List;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Tag;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
-class RosettaObjectCollectorProcessStepDiffblueTest {
+public class RosettaObjectCollectorProcessStepDiffblueTest {
   /**
    * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link RosettaObjectCollectorProcessStep#RosettaObjectCollectorProcessStep(Class)}
    *   <li>{@link RosettaObjectCollectorProcessStep#getName()}
    * </ul>
    */
   @Test
-  @DisplayName("Test getters and setters")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void RosettaObjectCollectorProcessStep.<init>(Class)",
-    "java.lang.String RosettaObjectCollectorProcessStep.getName()"
-  })
-  void testGettersAndSetters() {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void RosettaObjectCollectorProcessStep.<init>(Class)",
+      "java.lang.String RosettaObjectCollectorProcessStep.getName()"})
+  public void testGettersAndSetters() {
     // Arrange
     Class<RosettaModelObject> collectRosettaType = RosettaModelObject.class;
 
     // Act
-    RosettaObjectCollectorProcessStep<RosettaModelObject> actualRosettaObjectCollectorProcessStep =
-        new RosettaObjectCollectorProcessStep<>(collectRosettaType);
+    RosettaObjectCollectorProcessStep<RosettaModelObject> actualRosettaObjectCollectorProcessStep = new RosettaObjectCollectorProcessStep<>(
+        collectRosettaType);
 
     // Assert
-    assertEquals(
-        "RosettaObjectCollector postProcessor", actualRosettaObjectCollectorProcessStep.getName());
+    assertEquals("RosettaObjectCollector postProcessor", actualRosettaObjectCollectorProcessStep.getName());
   }
 
   /**
    * Test {@link RosettaObjectCollectorProcessStep#getPriority()}.
-   *
-   * <p>Method under test: {@link RosettaObjectCollectorProcessStep#getPriority()}
+   * <p>
+   * Method under test: {@link RosettaObjectCollectorProcessStep#getPriority()}
    */
   @Test
-  @DisplayName("Test getPriority()")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"java.lang.Integer RosettaObjectCollectorProcessStep.getPriority()"})
-  void testGetPriority() {
+  public void testGetPriority() {
     // Arrange
     Class<RosettaModelObject> collectRosettaType = RosettaModelObject.class;
-    RosettaObjectCollectorProcessStep<RosettaModelObject> rosettaObjectCollectorProcessStep =
-        new RosettaObjectCollectorProcessStep<>(collectRosettaType);
+    RosettaObjectCollectorProcessStep<RosettaModelObject> rosettaObjectCollectorProcessStep = new RosettaObjectCollectorProcessStep<>(
+        collectRosettaType);
 
     // Act and Assert
     assertEquals(3, rosettaObjectCollectorProcessStep.getPriority().intValue());
@@ -104,39 +95,29 @@ class RosettaObjectCollectorProcessStepDiffblueTest {
 
   /**
    * Test RosettaObjectCollectorProcessReport getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
-   *   <li>{@link
-   *       RosettaObjectCollectorProcessReport#RosettaObjectCollectorProcessReport(RosettaModelObject,
-   *       List)}
+   *   <li>{@link RosettaObjectCollectorProcessReport#RosettaObjectCollectorProcessReport(RosettaModelObject, List)}
    *   <li>{@link RosettaObjectCollectorProcessReport#getCollectedObjects()}
    *   <li>{@link RosettaObjectCollectorProcessReport#getResultObject()}
    * </ul>
    */
   @Test
-  @DisplayName("Test RosettaObjectCollectorProcessReport getters and setters")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void RosettaObjectCollectorProcessReport.<init>(RosettaModelObject, List)",
-    "List RosettaObjectCollectorProcessReport.getCollectedObjects()",
-    "RosettaModelObject RosettaObjectCollectorProcessReport.getResultObject()"
-  })
-  void testRosettaObjectCollectorProcessReportGettersAndSetters() {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void RosettaObjectCollectorProcessReport.<init>(RosettaModelObject, List)",
+      "List RosettaObjectCollectorProcessReport.getCollectedObjects()",
+      "RosettaModelObject RosettaObjectCollectorProcessReport.getResultObject()"})
+  public void testRosettaObjectCollectorProcessReportGettersAndSetters() {
     // Arrange
     BarBuilder topClass = new BarBuilder();
     ArrayList<RosettaModelObject> collectedObjects = new ArrayList<>();
 
     // Act
-    RosettaObjectCollectorProcessReport<RosettaModelObject>
-        actualRosettaObjectCollectorProcessReport =
-            new RosettaObjectCollectorProcessReport<>(topClass, collectedObjects);
-    List<RosettaModelObject> actualCollectedObjects =
-        actualRosettaObjectCollectorProcessReport.getCollectedObjects();
-    RosettaModelObject actualResultObject =
-        actualRosettaObjectCollectorProcessReport.getResultObject();
+    RosettaObjectCollectorProcessReport<RosettaModelObject> actualRosettaObjectCollectorProcessReport = new RosettaObjectCollectorProcessReport<>(
+        topClass, collectedObjects);
+    List<RosettaModelObject> actualCollectedObjects = actualRosettaObjectCollectorProcessReport.getCollectedObjects();
+    RosettaModelObject actualResultObject = actualRosettaObjectCollectorProcessReport.getResultObject();
 
     // Assert
     assertTrue(actualCollectedObjects.isEmpty());
@@ -146,31 +127,25 @@ class RosettaObjectCollectorProcessStepDiffblueTest {
 
   /**
    * Test {@link RosettaObjectCollectorProcessStep#runProcessStep(Class, RosettaModelObject)}.
-   *
-   * <p>Method under test: {@link RosettaObjectCollectorProcessStep#runProcessStep(Class,
-   * RosettaModelObject)}
+   * <p>
+   * Method under test: {@link RosettaObjectCollectorProcessStep#runProcessStep(Class, RosettaModelObject)}
    */
   @Test
-  @DisplayName("Test runProcessStep(Class, RosettaModelObject)")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "RosettaObjectCollectorProcessReport RosettaObjectCollectorProcessStep.runProcessStep(Class, RosettaModelObject)"
-  })
-  void testRunProcessStep() {
+      "RosettaObjectCollectorProcessReport RosettaObjectCollectorProcessStep.runProcessStep(Class, RosettaModelObject)"})
+  public void testRunProcessStep() {
     // Arrange
     Class<RosettaModelObject> collectRosettaType = RosettaModelObject.class;
-    RosettaObjectCollectorProcessStep<RosettaModelObject> rosettaObjectCollectorProcessStep =
-        new RosettaObjectCollectorProcessStep<>(collectRosettaType);
+    RosettaObjectCollectorProcessStep<RosettaModelObject> rosettaObjectCollectorProcessStep = new RosettaObjectCollectorProcessStep<>(
+        collectRosettaType);
     Class<RosettaModelObject> topClass = RosettaModelObject.class;
 
     // Act and Assert
-    RosettaModelObject resultObject =
-        rosettaObjectCollectorProcessStep
-            .runProcessStep(topClass, new PriceQuantityBuilderImpl())
-            .getResultObject();
-    FieldWithMetaPriceBuilder orCreatePrice =
-        ((PriceQuantityBuilderImpl) resultObject).getOrCreatePrice();
+    RosettaModelObject resultObject = rosettaObjectCollectorProcessStep
+        .runProcessStep(topClass, new PriceQuantityBuilderImpl())
+        .getResultObject();
+    FieldWithMetaPriceBuilder orCreatePrice = ((PriceQuantityBuilderImpl) resultObject).getOrCreatePrice();
     PriceBuilder orCreateValue = orCreatePrice.getOrCreateValue();
     assertTrue(orCreateValue instanceof PriceBuilderImpl);
     assertTrue(resultObject instanceof PriceQuantityBuilderImpl);
@@ -189,22 +164,18 @@ class RosettaObjectCollectorProcessStepDiffblueTest {
 
   /**
    * Test {@link RosettaObjectCollectorProcessStep#runProcessStep(Class, RosettaModelObject)}.
-   *
-   * <p>Method under test: {@link RosettaObjectCollectorProcessStep#runProcessStep(Class,
-   * RosettaModelObject)}
+   * <p>
+   * Method under test: {@link RosettaObjectCollectorProcessStep#runProcessStep(Class, RosettaModelObject)}
    */
   @Test
-  @DisplayName("Test runProcessStep(Class, RosettaModelObject)")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "RosettaObjectCollectorProcessReport RosettaObjectCollectorProcessStep.runProcessStep(Class, RosettaModelObject)"
-  })
-  void testRunProcessStep2() {
+      "RosettaObjectCollectorProcessReport RosettaObjectCollectorProcessStep.runProcessStep(Class, RosettaModelObject)"})
+  public void testRunProcessStep2() {
     // Arrange
     Class<RosettaModelObject> collectRosettaType = RosettaModelObject.class;
-    RosettaObjectCollectorProcessStep<RosettaModelObject> rosettaObjectCollectorProcessStep =
-        new RosettaObjectCollectorProcessStep<>(collectRosettaType);
+    RosettaObjectCollectorProcessStep<RosettaModelObject> rosettaObjectCollectorProcessStep = new RosettaObjectCollectorProcessStep<>(
+        collectRosettaType);
     Class<RosettaModelObject> topClass = RosettaModelObject.class;
 
     PriceQuantityBuilderImpl priceQuantityBuilderImpl = new PriceQuantityBuilderImpl();
@@ -212,8 +183,8 @@ class RosettaObjectCollectorProcessStepDiffblueTest {
     priceQuantityBuilderImpl.setPrice(price);
 
     // Act
-    RosettaObjectCollectorProcessReport<RosettaModelObject> actualRunProcessStepResult =
-        rosettaObjectCollectorProcessStep.runProcessStep(topClass, priceQuantityBuilderImpl);
+    RosettaObjectCollectorProcessReport<RosettaModelObject> actualRunProcessStepResult = rosettaObjectCollectorProcessStep
+        .runProcessStep(topClass, priceQuantityBuilderImpl);
 
     // Assert
     RosettaModelObject resultObject = actualRunProcessStepResult.getResultObject();
@@ -227,27 +198,21 @@ class RosettaObjectCollectorProcessStepDiffblueTest {
 
   /**
    * Test {@link RosettaObjectCollectorProcessStep#runProcessStep(Class, RosettaModelObject)}.
-   *
    * <ul>
-   *   <li>Then return CollectedObjects second Key size is four.
+   *   <li>Then return CollectedObjects second Key size is four.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link RosettaObjectCollectorProcessStep#runProcessStep(Class,
-   * RosettaModelObject)}
+   * <p>
+   * Method under test: {@link RosettaObjectCollectorProcessStep#runProcessStep(Class, RosettaModelObject)}
    */
   @Test
-  @DisplayName(
-      "Test runProcessStep(Class, RosettaModelObject); then return CollectedObjects second Key size is four")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "RosettaObjectCollectorProcessReport RosettaObjectCollectorProcessStep.runProcessStep(Class, RosettaModelObject)"
-  })
-  void testRunProcessStep_thenReturnCollectedObjectsSecondKeySizeIsFour() {
+      "RosettaObjectCollectorProcessReport RosettaObjectCollectorProcessStep.runProcessStep(Class, RosettaModelObject)"})
+  public void testRunProcessStep_thenReturnCollectedObjectsSecondKeySizeIsFour() {
     // Arrange
     Class<RosettaModelObject> collectRosettaType = RosettaModelObject.class;
-    RosettaObjectCollectorProcessStep<RosettaModelObject> rosettaObjectCollectorProcessStep =
-        new RosettaObjectCollectorProcessStep<>(collectRosettaType);
+    RosettaObjectCollectorProcessStep<RosettaModelObject> rosettaObjectCollectorProcessStep = new RosettaObjectCollectorProcessStep<>(
+        collectRosettaType);
     Class<RosettaModelObject> topClass = RosettaModelObject.class;
 
     MetaFieldsBuilderImpl meta = new MetaFieldsBuilderImpl();
@@ -256,15 +221,13 @@ class RosettaObjectCollectorProcessStepDiffblueTest {
     KeyBuilderImpl key2 = new KeyBuilderImpl();
     meta.addKey(key2);
 
-    FieldWithMetaPriceBuilderImpl fieldWithMetaPriceBuilderImpl =
-        new FieldWithMetaPriceBuilderImpl();
+    FieldWithMetaPriceBuilderImpl fieldWithMetaPriceBuilderImpl = new FieldWithMetaPriceBuilderImpl();
     fieldWithMetaPriceBuilderImpl.setMeta(meta);
 
     // Act and Assert
-    List<RosettaModelObject> collectedObjects =
-        rosettaObjectCollectorProcessStep
-            .runProcessStep(topClass, fieldWithMetaPriceBuilderImpl)
-            .getCollectedObjects();
+    List<RosettaModelObject> collectedObjects = rosettaObjectCollectorProcessStep
+        .runProcessStep(topClass, fieldWithMetaPriceBuilderImpl)
+        .getCollectedObjects();
     assertEquals(4, collectedObjects.size());
     RosettaModelObject getResult = collectedObjects.get(1);
     assertTrue(getResult instanceof MetaFieldsBuilderImpl);
@@ -278,27 +241,21 @@ class RosettaObjectCollectorProcessStepDiffblueTest {
 
   /**
    * Test {@link RosettaObjectCollectorProcessStep#runProcessStep(Class, RosettaModelObject)}.
-   *
    * <ul>
-   *   <li>Then return CollectedObjects second Key size is two.
+   *   <li>Then return CollectedObjects second Key size is two.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link RosettaObjectCollectorProcessStep#runProcessStep(Class,
-   * RosettaModelObject)}
+   * <p>
+   * Method under test: {@link RosettaObjectCollectorProcessStep#runProcessStep(Class, RosettaModelObject)}
    */
   @Test
-  @DisplayName(
-      "Test runProcessStep(Class, RosettaModelObject); then return CollectedObjects second Key size is two")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "RosettaObjectCollectorProcessReport RosettaObjectCollectorProcessStep.runProcessStep(Class, RosettaModelObject)"
-  })
-  void testRunProcessStep_thenReturnCollectedObjectsSecondKeySizeIsTwo() {
+      "RosettaObjectCollectorProcessReport RosettaObjectCollectorProcessStep.runProcessStep(Class, RosettaModelObject)"})
+  public void testRunProcessStep_thenReturnCollectedObjectsSecondKeySizeIsTwo() {
     // Arrange
     Class<RosettaModelObject> collectRosettaType = RosettaModelObject.class;
-    RosettaObjectCollectorProcessStep<RosettaModelObject> rosettaObjectCollectorProcessStep =
-        new RosettaObjectCollectorProcessStep<>(collectRosettaType);
+    RosettaObjectCollectorProcessStep<RosettaModelObject> rosettaObjectCollectorProcessStep = new RosettaObjectCollectorProcessStep<>(
+        collectRosettaType);
     Class<RosettaModelObject> topClass = RosettaModelObject.class;
 
     MetaFieldsBuilderImpl meta = new MetaFieldsBuilderImpl();
@@ -306,15 +263,13 @@ class RosettaObjectCollectorProcessStepDiffblueTest {
     KeyBuilderImpl key = new KeyBuilderImpl();
     meta.addKey(key);
 
-    FieldWithMetaPriceBuilderImpl fieldWithMetaPriceBuilderImpl =
-        new FieldWithMetaPriceBuilderImpl();
+    FieldWithMetaPriceBuilderImpl fieldWithMetaPriceBuilderImpl = new FieldWithMetaPriceBuilderImpl();
     fieldWithMetaPriceBuilderImpl.setMeta(meta);
 
     // Act and Assert
-    List<RosettaModelObject> collectedObjects =
-        rosettaObjectCollectorProcessStep
-            .runProcessStep(topClass, fieldWithMetaPriceBuilderImpl)
-            .getCollectedObjects();
+    List<RosettaModelObject> collectedObjects = rosettaObjectCollectorProcessStep
+        .runProcessStep(topClass, fieldWithMetaPriceBuilderImpl)
+        .getCollectedObjects();
     assertEquals(4, collectedObjects.size());
     RosettaModelObject getResult = collectedObjects.get(1);
     assertTrue(getResult instanceof MetaFieldsBuilderImpl);
@@ -326,42 +281,34 @@ class RosettaObjectCollectorProcessStepDiffblueTest {
 
   /**
    * Test {@link RosettaObjectCollectorProcessStep#runProcessStep(Class, RosettaModelObject)}.
-   *
    * <ul>
-   *   <li>Then return CollectedObjects size is three.
+   *   <li>Then return CollectedObjects size is three.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link RosettaObjectCollectorProcessStep#runProcessStep(Class,
-   * RosettaModelObject)}
+   * <p>
+   * Method under test: {@link RosettaObjectCollectorProcessStep#runProcessStep(Class, RosettaModelObject)}
    */
   @Test
-  @DisplayName(
-      "Test runProcessStep(Class, RosettaModelObject); then return CollectedObjects size is three")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "RosettaObjectCollectorProcessReport RosettaObjectCollectorProcessStep.runProcessStep(Class, RosettaModelObject)"
-  })
-  void testRunProcessStep_thenReturnCollectedObjectsSizeIsThree() {
+      "RosettaObjectCollectorProcessReport RosettaObjectCollectorProcessStep.runProcessStep(Class, RosettaModelObject)"})
+  public void testRunProcessStep_thenReturnCollectedObjectsSizeIsThree() {
     // Arrange
     Class<RosettaModelObject> collectRosettaType = RosettaModelObject.class;
-    RosettaObjectCollectorProcessStep<RosettaModelObject> rosettaObjectCollectorProcessStep =
-        new RosettaObjectCollectorProcessStep<>(collectRosettaType);
+    RosettaObjectCollectorProcessStep<RosettaModelObject> rosettaObjectCollectorProcessStep = new RosettaObjectCollectorProcessStep<>(
+        collectRosettaType);
     Class<RosettaModelObject> topClass = RosettaModelObject.class;
 
     MetaFieldsBuilderImpl meta = new MetaFieldsBuilderImpl();
     KeyBuilderImpl key = new KeyBuilderImpl();
     meta.addKey(key);
 
-    FieldWithMetaPriceBuilderImpl fieldWithMetaPriceBuilderImpl =
-        new FieldWithMetaPriceBuilderImpl();
+    FieldWithMetaPriceBuilderImpl fieldWithMetaPriceBuilderImpl = new FieldWithMetaPriceBuilderImpl();
     fieldWithMetaPriceBuilderImpl.setMeta(meta);
 
     // Act and Assert
-    List<RosettaModelObject> collectedObjects =
-        rosettaObjectCollectorProcessStep
-            .runProcessStep(topClass, fieldWithMetaPriceBuilderImpl)
-            .getCollectedObjects();
+    List<RosettaModelObject> collectedObjects = rosettaObjectCollectorProcessStep
+        .runProcessStep(topClass, fieldWithMetaPriceBuilderImpl)
+        .getCollectedObjects();
     assertEquals(3, collectedObjects.size());
     RosettaModelObject getResult = collectedObjects.get(1);
     assertTrue(getResult instanceof MetaFieldsBuilderImpl);
@@ -372,37 +319,30 @@ class RosettaObjectCollectorProcessStepDiffblueTest {
 
   /**
    * Test {@link RosettaObjectCollectorProcessStep#runProcessStep(Class, RosettaModelObject)}.
-   *
    * <ul>
-   *   <li>Then return ResultObject Meta is {@link MetaFieldsBuilderImpl} (default constructor).
+   *   <li>Then return ResultObject Meta is {@link MetaFieldsBuilderImpl} (default constructor).</li>
    * </ul>
-   *
-   * <p>Method under test: {@link RosettaObjectCollectorProcessStep#runProcessStep(Class,
-   * RosettaModelObject)}
+   * <p>
+   * Method under test: {@link RosettaObjectCollectorProcessStep#runProcessStep(Class, RosettaModelObject)}
    */
   @Test
-  @DisplayName(
-      "Test runProcessStep(Class, RosettaModelObject); then return ResultObject Meta is MetaFieldsBuilderImpl (default constructor)")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "RosettaObjectCollectorProcessReport RosettaObjectCollectorProcessStep.runProcessStep(Class, RosettaModelObject)"
-  })
-  void testRunProcessStep_thenReturnResultObjectMetaIsMetaFieldsBuilderImpl() {
+      "RosettaObjectCollectorProcessReport RosettaObjectCollectorProcessStep.runProcessStep(Class, RosettaModelObject)"})
+  public void testRunProcessStep_thenReturnResultObjectMetaIsMetaFieldsBuilderImpl() {
     // Arrange
     Class<RosettaModelObject> collectRosettaType = RosettaModelObject.class;
-    RosettaObjectCollectorProcessStep<RosettaModelObject> rosettaObjectCollectorProcessStep =
-        new RosettaObjectCollectorProcessStep<>(collectRosettaType);
+    RosettaObjectCollectorProcessStep<RosettaModelObject> rosettaObjectCollectorProcessStep = new RosettaObjectCollectorProcessStep<>(
+        collectRosettaType);
     Class<RosettaModelObject> topClass = RosettaModelObject.class;
 
-    FieldWithMetaPriceBuilderImpl fieldWithMetaPriceBuilderImpl =
-        new FieldWithMetaPriceBuilderImpl();
+    FieldWithMetaPriceBuilderImpl fieldWithMetaPriceBuilderImpl = new FieldWithMetaPriceBuilderImpl();
     MetaFieldsBuilderImpl meta = new MetaFieldsBuilderImpl();
     fieldWithMetaPriceBuilderImpl.setMeta(meta);
 
     // Act
-    RosettaObjectCollectorProcessReport<RosettaModelObject> actualRunProcessStepResult =
-        rosettaObjectCollectorProcessStep.runProcessStep(topClass, fieldWithMetaPriceBuilderImpl);
+    RosettaObjectCollectorProcessReport<RosettaModelObject> actualRunProcessStepResult = rosettaObjectCollectorProcessStep
+        .runProcessStep(topClass, fieldWithMetaPriceBuilderImpl);
 
     // Assert
     RosettaModelObject resultObject = actualRunProcessStepResult.getResultObject();
@@ -416,34 +356,28 @@ class RosettaObjectCollectorProcessStepDiffblueTest {
 
   /**
    * Test {@link RosettaObjectCollectorProcessStep#runProcessStep(Class, RosettaModelObject)}.
-   *
    * <ul>
-   *   <li>When {@link KeyBuilderImpl} (default constructor).
-   *   <li>Then return ResultObject is {@link KeyBuilderImpl} (default constructor).
+   *   <li>When {@link KeyBuilderImpl} (default constructor).</li>
+   *   <li>Then return ResultObject is {@link KeyBuilderImpl} (default constructor).</li>
    * </ul>
-   *
-   * <p>Method under test: {@link RosettaObjectCollectorProcessStep#runProcessStep(Class,
-   * RosettaModelObject)}
+   * <p>
+   * Method under test: {@link RosettaObjectCollectorProcessStep#runProcessStep(Class, RosettaModelObject)}
    */
   @Test
-  @DisplayName(
-      "Test runProcessStep(Class, RosettaModelObject); when KeyBuilderImpl (default constructor); then return ResultObject is KeyBuilderImpl (default constructor)")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "RosettaObjectCollectorProcessReport RosettaObjectCollectorProcessStep.runProcessStep(Class, RosettaModelObject)"
-  })
-  void testRunProcessStep_whenKeyBuilderImpl_thenReturnResultObjectIsKeyBuilderImpl() {
+      "RosettaObjectCollectorProcessReport RosettaObjectCollectorProcessStep.runProcessStep(Class, RosettaModelObject)"})
+  public void testRunProcessStep_whenKeyBuilderImpl_thenReturnResultObjectIsKeyBuilderImpl() {
     // Arrange
     Class<RosettaModelObject> collectRosettaType = RosettaModelObject.class;
-    RosettaObjectCollectorProcessStep<RosettaModelObject> rosettaObjectCollectorProcessStep =
-        new RosettaObjectCollectorProcessStep<>(collectRosettaType);
+    RosettaObjectCollectorProcessStep<RosettaModelObject> rosettaObjectCollectorProcessStep = new RosettaObjectCollectorProcessStep<>(
+        collectRosettaType);
     Class<RosettaModelObject> topClass = RosettaModelObject.class;
     KeyBuilderImpl keyBuilderImpl = new KeyBuilderImpl();
 
     // Act
-    RosettaObjectCollectorProcessReport<RosettaModelObject> actualRunProcessStepResult =
-        rosettaObjectCollectorProcessStep.runProcessStep(topClass, keyBuilderImpl);
+    RosettaObjectCollectorProcessReport<RosettaModelObject> actualRunProcessStepResult = rosettaObjectCollectorProcessStep
+        .runProcessStep(topClass, keyBuilderImpl);
 
     // Assert
     List<RosettaModelObject> collectedObjects = actualRunProcessStepResult.getCollectedObjects();
@@ -454,34 +388,28 @@ class RosettaObjectCollectorProcessStepDiffblueTest {
 
   /**
    * Test {@link RosettaObjectCollectorProcessStep#runProcessStep(Class, RosettaModelObject)}.
-   *
    * <ul>
-   *   <li>When {@link Price.PriceBuilderImpl} (default constructor).
-   *   <li>Then return ResultObject is {@link Price.PriceBuilderImpl} (default constructor).
+   *   <li>When {@link Price.PriceBuilderImpl} (default constructor).</li>
+   *   <li>Then return ResultObject is {@link Price.PriceBuilderImpl} (default constructor).</li>
    * </ul>
-   *
-   * <p>Method under test: {@link RosettaObjectCollectorProcessStep#runProcessStep(Class,
-   * RosettaModelObject)}
+   * <p>
+   * Method under test: {@link RosettaObjectCollectorProcessStep#runProcessStep(Class, RosettaModelObject)}
    */
   @Test
-  @DisplayName(
-      "Test runProcessStep(Class, RosettaModelObject); when PriceBuilderImpl (default constructor); then return ResultObject is PriceBuilderImpl (default constructor)")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "RosettaObjectCollectorProcessReport RosettaObjectCollectorProcessStep.runProcessStep(Class, RosettaModelObject)"
-  })
-  void testRunProcessStep_whenPriceBuilderImpl_thenReturnResultObjectIsPriceBuilderImpl() {
+      "RosettaObjectCollectorProcessReport RosettaObjectCollectorProcessStep.runProcessStep(Class, RosettaModelObject)"})
+  public void testRunProcessStep_whenPriceBuilderImpl_thenReturnResultObjectIsPriceBuilderImpl() {
     // Arrange
     Class<RosettaModelObject> collectRosettaType = RosettaModelObject.class;
-    RosettaObjectCollectorProcessStep<RosettaModelObject> rosettaObjectCollectorProcessStep =
-        new RosettaObjectCollectorProcessStep<>(collectRosettaType);
+    RosettaObjectCollectorProcessStep<RosettaModelObject> rosettaObjectCollectorProcessStep = new RosettaObjectCollectorProcessStep<>(
+        collectRosettaType);
     Class<RosettaModelObject> topClass = RosettaModelObject.class;
     PriceBuilderImpl priceBuilderImpl = new PriceBuilderImpl();
 
     // Act
-    RosettaObjectCollectorProcessReport<RosettaModelObject> actualRunProcessStepResult =
-        rosettaObjectCollectorProcessStep.runProcessStep(topClass, priceBuilderImpl);
+    RosettaObjectCollectorProcessReport<RosettaModelObject> actualRunProcessStepResult = rosettaObjectCollectorProcessStep
+        .runProcessStep(topClass, priceBuilderImpl);
 
     // Assert
     List<RosettaModelObject> collectedObjects = actualRunProcessStepResult.getCollectedObjects();

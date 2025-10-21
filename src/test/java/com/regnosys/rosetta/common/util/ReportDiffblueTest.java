@@ -20,35 +20,28 @@ package com.regnosys.rosetta.common.util;
  * ==============
  */
 
-import static org.junit.jupiter.api.Assertions.assertSame;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import static org.junit.Assert.assertSame;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import com.regnosys.rosetta.common.merger.BarBuilder;
 import com.rosetta.model.lib.RosettaModelObject;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Tag;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
-class ReportDiffblueTest {
+public class ReportDiffblueTest {
   /**
    * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link Report#Report(RosettaModelObject)}
    *   <li>{@link Report#getRosettaModelInstance()}
    * </ul>
    */
   @Test
-  @DisplayName("Test getters and setters")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void Report.<init>(RosettaModelObject)",
-    "RosettaModelObject Report.getRosettaModelInstance()"
-  })
-  void testGettersAndSetters() {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void Report.<init>(RosettaModelObject)", "RosettaModelObject Report.getRosettaModelInstance()"})
+  public void testGettersAndSetters() {
     // Arrange
     BarBuilder barBuilder = new BarBuilder();
 

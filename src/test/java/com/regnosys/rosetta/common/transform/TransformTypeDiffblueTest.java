@@ -20,25 +20,22 @@ package com.regnosys.rosetta.common.transform;
  * ==============
  */
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import static org.junit.Assert.assertEquals;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Tag;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
-class TransformTypeDiffblueTest {
+public class TransformTypeDiffblueTest {
   /**
    * Test {@link TransformType#getResourcePath()}.
-   *
-   * <p>Method under test: {@link TransformType#getResourcePath()}
+   * <p>
+   * Method under test: {@link TransformType#getResourcePath()}
    */
   @Test
-  @DisplayName("Test getResourcePath()")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"java.lang.String TransformType.getResourcePath()"})
-  void testGetResourcePath() {
+  public void testGetResourcePath() {
     // Arrange, Act and Assert
     assertEquals("ingest/pre", TransformType.valueOf("PRE_TRANSLATE").getResourcePath());
   }

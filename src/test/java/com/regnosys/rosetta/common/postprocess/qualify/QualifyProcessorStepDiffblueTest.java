@@ -20,49 +20,40 @@ package com.regnosys.rosetta.common.postprocess.qualify;
  * ==============
  */
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import static org.junit.Assert.assertEquals;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Tag;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
-class QualifyProcessorStepDiffblueTest {
+public class QualifyProcessorStepDiffblueTest {
   /**
    * Test {@link QualifyProcessorStep#getPriority()}.
-   *
-   * <p>Method under test: {@link QualifyProcessorStep#getPriority()}
+   * <p>
+   * Method under test: {@link QualifyProcessorStep#getPriority()}
    */
   @Test
-  @DisplayName("Test getPriority()")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"java.lang.Integer QualifyProcessorStep.getPriority()"})
-  void testGetPriority() {
+  public void testGetPriority() {
     // Arrange, Act and Assert
-    assertEquals(2, new QualifyProcessorStep().getPriority().intValue());
+    assertEquals(2, (new QualifyProcessorStep()).getPriority().intValue());
   }
 
   /**
    * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>default or parameterless constructor of {@link QualifyProcessorStep}
    *   <li>{@link QualifyProcessorStep#getName()}
    * </ul>
    */
   @Test
-  @DisplayName("Test getters and setters")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void QualifyProcessorStep.<init>()",
-    "java.lang.String QualifyProcessorStep.getName()"
-  })
-  void testGettersAndSetters() {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void QualifyProcessorStep.<init>()", "java.lang.String QualifyProcessorStep.getName()"})
+  public void testGettersAndSetters() {
     // Arrange, Act and Assert
-    assertEquals("Qualification PostProcessor", new QualifyProcessorStep().getName());
+    assertEquals("Qualification PostProcessor", (new QualifyProcessorStep()).getName());
   }
 }

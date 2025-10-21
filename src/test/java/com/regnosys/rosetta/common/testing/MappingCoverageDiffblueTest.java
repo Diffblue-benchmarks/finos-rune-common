@@ -20,24 +20,22 @@ package com.regnosys.rosetta.common.testing;
  * ==============
  */
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.assertSame;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.HashMap;
 import java.util.Map;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Tag;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
-class MappingCoverageDiffblueTest {
+public class MappingCoverageDiffblueTest {
   /**
    * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link MappingCoverage#MappingCoverage(String, Map, double)}
    *   <li>{@link MappingCoverage#toString()}
@@ -47,23 +45,16 @@ class MappingCoverageDiffblueTest {
    * </ul>
    */
   @Test
-  @DisplayName("Test getters and setters")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void MappingCoverage.<init>(String, Map, double)",
-    "String MappingCoverage.getIngestionEnvironment()",
-    "double MappingCoverage.getMappingCoverage()",
-    "Map MappingCoverage.getSchema()",
-    "String MappingCoverage.toString()"
-  })
-  void testGettersAndSetters() {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void MappingCoverage.<init>(String, Map, double)",
+      "String MappingCoverage.getIngestionEnvironment()", "double MappingCoverage.getMappingCoverage()",
+      "Map MappingCoverage.getSchema()", "String MappingCoverage.toString()"})
+  public void testGettersAndSetters() {
     // Arrange
     HashMap<String, String> schema = new HashMap<>();
 
     // Act
-    MappingCoverage actualMappingCoverage =
-        new MappingCoverage("Ingestion Environment", schema, 10.0d);
+    MappingCoverage actualMappingCoverage = new MappingCoverage("Ingestion Environment", schema, 10.0d);
     String actualToStringResult = actualMappingCoverage.toString();
     String actualIngestionEnvironment = actualMappingCoverage.getIngestionEnvironment();
     double actualMappingCoverage2 = actualMappingCoverage.getMappingCoverage();
@@ -71,70 +62,59 @@ class MappingCoverageDiffblueTest {
 
     // Assert
     assertEquals("Ingestion Environment", actualIngestionEnvironment);
-    assertEquals(
-        "MappingCoverage{ingestionEnvironment='Ingestion Environment', schema={}, mappingCoverage=10.0}",
+    assertEquals("MappingCoverage{ingestionEnvironment='Ingestion Environment', schema={}, mappingCoverage=10.0}",
         actualToStringResult);
-    assertEquals(10.0d, actualMappingCoverage2);
+    assertEquals(10.0d, actualMappingCoverage2, 0.0);
     assertTrue(actualSchema.isEmpty());
     assertSame(schema, actualSchema);
   }
 
   /**
    * Test {@link MappingCoverage#equals(Object)}, and {@link MappingCoverage#hashCode()}.
-   *
    * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
+   *   <li>When other is equal.</li>
+   *   <li>Then return equal.</li>
    * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link MappingCoverage#equals(Object)}
    *   <li>{@link MappingCoverage#hashCode()}
    * </ul>
    */
   @Test
-  @DisplayName("Test equals(Object), and hashCode(); when other is equal; then return equal")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean MappingCoverage.equals(Object)", "int MappingCoverage.hashCode()"})
-  void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
+  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
     // Arrange
-    MappingCoverage mappingCoverage =
-        new MappingCoverage("Ingestion Environment", new HashMap<>(), 10.0d);
-    MappingCoverage mappingCoverage2 =
-        new MappingCoverage("Ingestion Environment", new HashMap<>(), 10.0d);
+    MappingCoverage mappingCoverage = new MappingCoverage("Ingestion Environment", new HashMap<>(), 10.0d);
+    MappingCoverage mappingCoverage2 = new MappingCoverage("Ingestion Environment", new HashMap<>(), 10.0d);
 
     // Act and Assert
     assertEquals(mappingCoverage, mappingCoverage2);
-    assertEquals(mappingCoverage.hashCode(), mappingCoverage2.hashCode());
+    int expectedHashCodeResult = mappingCoverage.hashCode();
+    assertEquals(expectedHashCodeResult, mappingCoverage2.hashCode());
   }
 
   /**
    * Test {@link MappingCoverage#equals(Object)}, and {@link MappingCoverage#hashCode()}.
-   *
    * <ul>
-   *   <li>When other is same.
-   *   <li>Then return equal.
+   *   <li>When other is same.</li>
+   *   <li>Then return equal.</li>
    * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link MappingCoverage#equals(Object)}
    *   <li>{@link MappingCoverage#hashCode()}
    * </ul>
    */
   @Test
-  @DisplayName("Test equals(Object), and hashCode(); when other is same; then return equal")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean MappingCoverage.equals(Object)", "int MappingCoverage.hashCode()"})
-  void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
+  public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
-    MappingCoverage mappingCoverage =
-        new MappingCoverage("Ingestion Environment", new HashMap<>(), 10.0d);
+    MappingCoverage mappingCoverage = new MappingCoverage("Ingestion Environment", new HashMap<>(), 10.0d);
 
     // Act and Assert
     assertEquals(mappingCoverage, mappingCoverage);
@@ -144,145 +124,117 @@ class MappingCoverageDiffblueTest {
 
   /**
    * Test {@link MappingCoverage#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link MappingCoverage#equals(Object)}
+   * <p>
+   * Method under test: {@link MappingCoverage#equals(Object)}
    */
   @Test
-  @DisplayName("Test equals(Object); when other is different; then return not equal")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean MappingCoverage.equals(Object)", "int MappingCoverage.hashCode()"})
-  void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange
     MappingCoverage mappingCoverage = new MappingCoverage(null, new HashMap<>(), 10.0d);
 
     // Act and Assert
-    assertNotEquals(
-        mappingCoverage, new MappingCoverage("Ingestion Environment", new HashMap<>(), 10.0d));
+    assertNotEquals(mappingCoverage, new MappingCoverage("Ingestion Environment", new HashMap<>(), 10.0d));
   }
 
   /**
    * Test {@link MappingCoverage#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link MappingCoverage#equals(Object)}
+   * <p>
+   * Method under test: {@link MappingCoverage#equals(Object)}
    */
   @Test
-  @DisplayName("Test equals(Object); when other is different; then return not equal")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean MappingCoverage.equals(Object)", "int MappingCoverage.hashCode()"})
-  void testEquals_whenOtherIsDifferent_thenReturnNotEqual2() {
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual2() {
     // Arrange
     HashMap<String, String> schema = new HashMap<>();
     schema.put("foo", "foo");
     MappingCoverage mappingCoverage = new MappingCoverage("Ingestion Environment", schema, 10.0d);
 
     // Act and Assert
-    assertNotEquals(
-        mappingCoverage, new MappingCoverage("Ingestion Environment", new HashMap<>(), 10.0d));
+    assertNotEquals(mappingCoverage, new MappingCoverage("Ingestion Environment", new HashMap<>(), 10.0d));
   }
 
   /**
    * Test {@link MappingCoverage#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link MappingCoverage#equals(Object)}
+   * <p>
+   * Method under test: {@link MappingCoverage#equals(Object)}
    */
   @Test
-  @DisplayName("Test equals(Object); when other is different; then return not equal")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean MappingCoverage.equals(Object)", "int MappingCoverage.hashCode()"})
-  void testEquals_whenOtherIsDifferent_thenReturnNotEqual3() {
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual3() {
     // Arrange
-    MappingCoverage mappingCoverage =
-        new MappingCoverage("Ingestion Environment", new HashMap<>(), 0.5d);
+    MappingCoverage mappingCoverage = new MappingCoverage("Ingestion Environment", new HashMap<>(), 0.5d);
 
     // Act and Assert
-    assertNotEquals(
-        mappingCoverage, new MappingCoverage("Ingestion Environment", new HashMap<>(), 10.0d));
+    assertNotEquals(mappingCoverage, new MappingCoverage("Ingestion Environment", new HashMap<>(), 10.0d));
   }
 
   /**
    * Test {@link MappingCoverage#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is {@code null}.
-   *   <li>Then return not equal.
+   *   <li>When other is {@code null}.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link MappingCoverage#equals(Object)}
+   * <p>
+   * Method under test: {@link MappingCoverage#equals(Object)}
    */
   @Test
-  @DisplayName("Test equals(Object); when other is 'null'; then return not equal")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean MappingCoverage.equals(Object)", "int MappingCoverage.hashCode()"})
-  void testEquals_whenOtherIsNull_thenReturnNotEqual() {
+  public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(new MappingCoverage("Ingestion Environment", new HashMap<>(), 10.0d), null);
   }
 
   /**
    * Test {@link MappingCoverage#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is wrong type.
-   *   <li>Then return not equal.
+   *   <li>When other is wrong type.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link MappingCoverage#equals(Object)}
+   * <p>
+   * Method under test: {@link MappingCoverage#equals(Object)}
    */
   @Test
-  @DisplayName("Test equals(Object); when other is wrong type; then return not equal")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean MappingCoverage.equals(Object)", "int MappingCoverage.hashCode()"})
-  void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
+  public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange, Act and Assert
-    assertNotEquals(
-        new MappingCoverage("Ingestion Environment", new HashMap<>(), 10.0d),
+    assertNotEquals(new MappingCoverage("Ingestion Environment", new HashMap<>(), 10.0d),
         "Different type to MappingCoverage");
   }
 
   /**
    * Test {@link MappingCoverage#compareTo(MappingCoverage)} with {@code MappingCoverage}.
-   *
    * <ul>
-   *   <li>Then return twenty-eight.
+   *   <li>Then return twenty-eight.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link MappingCoverage#compareTo(MappingCoverage)}
+   * <p>
+   * Method under test: {@link MappingCoverage#compareTo(MappingCoverage)}
    */
   @Test
-  @DisplayName("Test compareTo(MappingCoverage) with 'MappingCoverage'; then return twenty-eight")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"int MappingCoverage.compareTo(MappingCoverage)"})
-  void testCompareToWithMappingCoverage_thenReturnTwentyEight() {
+  public void testCompareToWithMappingCoverage_thenReturnTwentyEight() {
     // Arrange
-    MappingCoverage mappingCoverage =
-        new MappingCoverage(MappingCoverage.ENV, new HashMap<>(), 10.0d);
-    MappingCoverage other = new MappingCoverage("Ingestion Environment", new HashMap<>(), 10.0d);
+    MappingCoverage mappingCoverage = new MappingCoverage(MappingCoverage.ENV, new HashMap<>(), 10.0d);
 
-    // Act
-    int actualCompareToResult = mappingCoverage.compareTo(other);
-
-    // Assert
-    assertEquals(28, actualCompareToResult);
+    // Act and Assert
+    assertEquals(28, mappingCoverage.compareTo(new MappingCoverage("Ingestion Environment", new HashMap<>(), 10.0d)));
   }
 }

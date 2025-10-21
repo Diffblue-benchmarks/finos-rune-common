@@ -20,12 +20,12 @@ package com.regnosys.rosetta.common.transform;
  * ==============
  */
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertSame;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertThrows;
+import static org.junit.Assert.assertTrue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
@@ -44,167 +44,106 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import javax.management.loading.MLet;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Tag;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
-class TestPackUtilsDiffblueTest {
+public class TestPackUtilsDiffblueTest {
   /**
    * Test {@link TestPackUtils#createTestPack(String, TransformType, String, List)}.
-   *
    * <ul>
-   *   <li>Then return Samples is {@link ArrayList#ArrayList()}.
+   *   <li>Then return Samples is {@link ArrayList#ArrayList()}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link TestPackUtils#createTestPack(String, TransformType, String, List)}
+   * <p>
+   * Method under test: {@link TestPackUtils#createTestPack(String, TransformType, String, List)}
    */
   @Test
-  @DisplayName(
-      "Test createTestPack(String, TransformType, String, List); then return Samples is ArrayList()")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "TestPackModel TestPackUtils.createTestPack(String, TransformType, String, List)"
-  })
-  void testCreateTestPack_thenReturnSamplesIsArrayList() {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"TestPackModel TestPackUtils.createTestPack(String, TransformType, String, List)"})
+  public void testCreateTestPack_thenReturnSamplesIsArrayList() {
     // Arrange
     ArrayList<SampleModel> sampleModels = new ArrayList<>();
-    SampleModel sampleModel =
-        new SampleModel(
-            "42",
-            "test-pack-%s-%s-%s",
-            "test-pack-%s-%s-%s",
-            "test-pack-%s-%s-%s",
-            new Assertions(1, true, true));
-    sampleModels.add(sampleModel);
+    sampleModels.add(new SampleModel("42", "test-pack-%s-%s-%s", "test-pack-%s-%s-%s", "test-pack-%s-%s-%s",
+        new Assertions(1, true, true)));
 
-    // Act
-    TestPackModel actualCreateTestPackResult =
-        TestPackUtils.createTestPack(
-            "Test Pack Name", TransformType.PRE_TRANSLATE, "Formatted Function Name", sampleModels);
-
-    // Assert
-    assertSame(sampleModels, actualCreateTestPackResult.getSamples());
+    // Act and Assert
+    assertSame(sampleModels,
+        TestPackUtils
+            .createTestPack("Test Pack Name", TransformType.PRE_TRANSLATE, "Formatted Function Name", sampleModels)
+            .getSamples());
   }
 
   /**
    * Test {@link TestPackUtils#createTestPack(String, TransformType, String, List)}.
-   *
    * <ul>
-   *   <li>Then return Samples size is two.
+   *   <li>Then return Samples size is two.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link TestPackUtils#createTestPack(String, TransformType, String, List)}
+   * <p>
+   * Method under test: {@link TestPackUtils#createTestPack(String, TransformType, String, List)}
    */
   @Test
-  @DisplayName(
-      "Test createTestPack(String, TransformType, String, List); then return Samples size is two")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "TestPackModel TestPackUtils.createTestPack(String, TransformType, String, List)"
-  })
-  void testCreateTestPack_thenReturnSamplesSizeIsTwo() {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"TestPackModel TestPackUtils.createTestPack(String, TransformType, String, List)"})
+  public void testCreateTestPack_thenReturnSamplesSizeIsTwo() {
     // Arrange
     ArrayList<SampleModel> sampleModels = new ArrayList<>();
-    SampleModel sampleModel =
-        new SampleModel(
-            "42",
-            "test-pack-%s-%s-%s",
-            "test-pack-%s-%s-%s",
-            "test-pack-%s-%s-%s",
-            new Assertions(1, true, true));
+    sampleModels.add(new SampleModel("42", "test-pack-%s-%s-%s", "test-pack-%s-%s-%s", "test-pack-%s-%s-%s",
+        new Assertions(1, true, true)));
+    SampleModel sampleModel = new SampleModel("42", "test-pack-%s-%s-%s", "test-pack-%s-%s-%s", "test-pack-%s-%s-%s",
+        new Assertions(1, true, true));
+
     sampleModels.add(sampleModel);
-    SampleModel sampleModel2 =
-        new SampleModel(
-            "42",
-            "test-pack-%s-%s-%s",
-            "test-pack-%s-%s-%s",
-            "test-pack-%s-%s-%s",
-            new Assertions(1, true, true));
-    sampleModels.add(sampleModel2);
 
-    // Act
-    TestPackModel actualCreateTestPackResult =
-        TestPackUtils.createTestPack(
-            "Test Pack Name", TransformType.PRE_TRANSLATE, "Formatted Function Name", sampleModels);
-
-    // Assert
-    List<SampleModel> samples = actualCreateTestPackResult.getSamples();
+    // Act and Assert
+    List<SampleModel> samples = TestPackUtils
+        .createTestPack("Test Pack Name", TransformType.PRE_TRANSLATE, "Formatted Function Name", sampleModels)
+        .getSamples();
     assertEquals(2, samples.size());
-    assertSame(sampleModel2, samples.get(1));
+    assertSame(sampleModel, samples.get(1));
   }
 
   /**
    * Test {@link TestPackUtils#createTestPack(String, TransformType, String, List)}.
-   *
    * <ul>
-   *   <li>When {@link ArrayList#ArrayList()}.
-   *   <li>Then return Name is {@code Test Pack Name}.
+   *   <li>When {@link ArrayList#ArrayList()}.</li>
+   *   <li>Then return Name is {@code Test Pack Name}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link TestPackUtils#createTestPack(String, TransformType, String, List)}
+   * <p>
+   * Method under test: {@link TestPackUtils#createTestPack(String, TransformType, String, List)}
    */
   @Test
-  @DisplayName(
-      "Test createTestPack(String, TransformType, String, List); when ArrayList(); then return Name is 'Test Pack Name'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "TestPackModel TestPackUtils.createTestPack(String, TransformType, String, List)"
-  })
-  void testCreateTestPack_whenArrayList_thenReturnNameIsTestPackName() {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"TestPackModel TestPackUtils.createTestPack(String, TransformType, String, List)"})
+  public void testCreateTestPack_whenArrayList_thenReturnNameIsTestPackName() {
     // Arrange and Act
-    TestPackModel actualCreateTestPackResult =
-        TestPackUtils.createTestPack(
-            "Test Pack Name",
-            TransformType.PRE_TRANSLATE,
-            "Formatted Function Name",
-            new ArrayList<>());
+    TestPackModel actualCreateTestPackResult = TestPackUtils.createTestPack("Test Pack Name",
+        TransformType.PRE_TRANSLATE, "Formatted Function Name", new ArrayList<>());
 
     // Assert
     assertEquals("Test Pack Name", actualCreateTestPackResult.getName());
-    assertEquals(
-        "pipeline-pre_translate-Formatted Function Name",
-        actualCreateTestPackResult.getPipelineId());
-    assertEquals(
-        "test-pack-pre_translate-Formatted Function Name-test-pack-name",
-        actualCreateTestPackResult.getId());
+    assertEquals("pipeline-pre_translate-Formatted Function Name", actualCreateTestPackResult.getPipelineId());
+    assertEquals("test-pack-pre_translate-Formatted Function Name-test-pack-name", actualCreateTestPackResult.getId());
     assertTrue(actualCreateTestPackResult.getSamples().isEmpty());
   }
 
   /**
-   * Test {@link TestPackUtils#createPipeline(TransformType, String, String, String, String, String,
-   * String, Serialisation, Serialisation)}.
-   *
-   * <p>Method under test: {@link TestPackUtils#createPipeline(TransformType, String, String,
-   * String, String, String, String, Serialisation, Serialisation)}
+   * Test {@link TestPackUtils#createPipeline(TransformType, String, String, String, String, String, String, Serialisation, Serialisation)}.
+   * <p>
+   * Method under test: {@link TestPackUtils#createPipeline(TransformType, String, String, String, String, String, String, Serialisation, Serialisation)}
    */
   @Test
-  @DisplayName(
-      "Test createPipeline(TransformType, String, String, String, String, String, String, Serialisation, Serialisation)")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "PipelineModel TestPackUtils.createPipeline(TransformType, String, String, String, String, String, String, Serialisation, Serialisation)"
-  })
-  void testCreatePipeline() {
+      "PipelineModel TestPackUtils.createPipeline(TransformType, String, String, String, String, String, String, Serialisation, Serialisation)"})
+  public void testCreatePipeline() {
     // Arrange
     Serialisation inputSerialisation = new Serialisation(Format.JSON, "Config Path");
+
     Serialisation outputSerialisation = new Serialisation(Format.JSON, "Config Path");
 
     // Act
-    PipelineModel actualCreatePipelineResult =
-        TestPackUtils.createPipeline(
-            TransformType.PRE_TRANSLATE,
-            "Function Qualified Name",
-            "Display Name",
-            "Formatted Function Name",
-            "Input Type",
-            "Output Type",
-            "42",
-            inputSerialisation,
-            outputSerialisation);
+    PipelineModel actualCreatePipelineResult = TestPackUtils.createPipeline(TransformType.PRE_TRANSLATE,
+        "Function Qualified Name", "Display Name", "Formatted Function Name", "Input Type", "Output Type", "42",
+        inputSerialisation, outputSerialisation);
 
     // Assert
     assertEquals("42", actualCreatePipelineResult.getUpstreamPipelineId());
@@ -213,8 +152,7 @@ class TestPackUtilsDiffblueTest {
     assertEquals("Function Qualified Name", transform.getFunction());
     assertEquals("Input Type", transform.getInputType());
     assertEquals("Output Type", transform.getOutputType());
-    assertEquals(
-        "pipeline-pre_translate-Formatted Function Name", actualCreatePipelineResult.getId());
+    assertEquals("pipeline-pre_translate-Formatted Function Name", actualCreatePipelineResult.getId());
     assertEquals(TransformType.PRE_TRANSLATE, transform.getType());
     assertSame(inputSerialisation, actualCreatePipelineResult.getInputSerialisation());
     assertSame(outputSerialisation, actualCreatePipelineResult.getOutputSerialisation());
@@ -222,29 +160,23 @@ class TestPackUtilsDiffblueTest {
 
   /**
    * Test {@link TestPackUtils#getPipelineModels(Path, ClassLoader, ObjectMapper)}.
-   *
    * <ul>
-   *   <li>When {@link TestPackUtils#INGEST_CONFIG_PATH}.
-   *   <li>Then return Empty.
+   *   <li>When {@link TestPackUtils#INGEST_CONFIG_PATH}.</li>
+   *   <li>Then return Empty.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link TestPackUtils#getPipelineModels(Path, ClassLoader, ObjectMapper)}
+   * <p>
+   * Method under test: {@link TestPackUtils#getPipelineModels(Path, ClassLoader, ObjectMapper)}
    */
   @Test
-  @DisplayName(
-      "Test getPipelineModels(Path, ClassLoader, ObjectMapper); when INGEST_CONFIG_PATH; then return Empty")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"List TestPackUtils.getPipelineModels(Path, ClassLoader, ObjectMapper)"})
-  void testGetPipelineModels_whenIngest_config_path_thenReturnEmpty() {
+  public void testGetPipelineModels_whenIngest_config_path_thenReturnEmpty() {
     // Arrange
     MLet classLoader = new MLet();
-    JsonMapper jsonObjectMapper = JsonMapper.builder().findAndAddModules().build();
 
     // Act
-    List<PipelineModel> actualPipelineModels =
-        TestPackUtils.getPipelineModels(
-            TestPackUtils.INGEST_CONFIG_PATH, classLoader, jsonObjectMapper);
+    List<PipelineModel> actualPipelineModels = TestPackUtils.getPipelineModels(TestPackUtils.INGEST_CONFIG_PATH,
+        classLoader, JsonMapper.builder().findAndAddModules().build());
 
     // Assert
     assertTrue(actualPipelineModels.isEmpty());
@@ -252,124 +184,82 @@ class TestPackUtilsDiffblueTest {
 
   /**
    * Test {@link TestPackUtils#getPipelineModel(List, String)}.
-   *
-   * <p>Method under test: {@link TestPackUtils#getPipelineModel(List, String)}
+   * <p>
+   * Method under test: {@link TestPackUtils#getPipelineModel(List, String)}
    */
   @Test
-  @DisplayName("Test getPipelineModel(List, String)")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"PipelineModel TestPackUtils.getPipelineModel(List, String)"})
-  void testGetPipelineModel() {
+  public void testGetPipelineModel() {
     // Arrange
     ArrayList<PipelineModel> pipelineModels = new ArrayList<>();
-    Serialisation inputSerialisation =
-        new Serialisation(Format.JSON, "No PipelineModel found with function name %s");
-    PipelineModel createPipelineResult =
-        TestPackUtils.createPipeline(
-            TransformType.PRE_TRANSLATE,
-            "No PipelineModel found with function name %s",
-            "No PipelineModel found with function name %s",
-            "No PipelineModel found with function name %s",
-            "No PipelineModel found with function name %s",
-            "No PipelineModel found with function name %s",
-            "42",
-            inputSerialisation,
-            new Serialisation(Format.JSON, "No PipelineModel found with function name %s"));
-    pipelineModels.add(createPipelineResult);
+    Serialisation inputSerialisation = new Serialisation(Format.JSON, "No PipelineModel found with function name %s");
+
+    pipelineModels
+        .add(TestPackUtils.createPipeline(TransformType.PRE_TRANSLATE, "No PipelineModel found with function name %s",
+            "No PipelineModel found with function name %s", "No PipelineModel found with function name %s",
+            "No PipelineModel found with function name %s", "No PipelineModel found with function name %s", "42",
+            inputSerialisation, new Serialisation(Format.JSON, "No PipelineModel found with function name %s")));
 
     // Act and Assert
-    assertThrows(
-        IllegalArgumentException.class,
-        () -> TestPackUtils.getPipelineModel(pipelineModels, "Function Name"));
+    assertThrows(IllegalArgumentException.class, () -> TestPackUtils.getPipelineModel(pipelineModels, "Function Name"));
   }
 
   /**
    * Test {@link TestPackUtils#getPipelineModel(List, String)}.
-   *
-   * <p>Method under test: {@link TestPackUtils#getPipelineModel(List, String)}
+   * <p>
+   * Method under test: {@link TestPackUtils#getPipelineModel(List, String)}
    */
   @Test
-  @DisplayName("Test getPipelineModel(List, String)")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"PipelineModel TestPackUtils.getPipelineModel(List, String)"})
-  void testGetPipelineModel2() {
+  public void testGetPipelineModel2() {
     // Arrange
     ArrayList<PipelineModel> pipelineModels = new ArrayList<>();
-    Serialisation inputSerialisation =
-        new Serialisation(Format.JSON, "No PipelineModel found with function name %s");
-    PipelineModel createPipelineResult =
-        TestPackUtils.createPipeline(
-            TransformType.PRE_TRANSLATE,
-            "No PipelineModel found with function name %s",
-            "No PipelineModel found with function name %s",
-            "No PipelineModel found with function name %s",
-            "No PipelineModel found with function name %s",
-            "No PipelineModel found with function name %s",
-            "42",
-            inputSerialisation,
-            new Serialisation(Format.JSON, "No PipelineModel found with function name %s"));
-    pipelineModels.add(createPipelineResult);
-    Serialisation inputSerialisation2 =
-        new Serialisation(Format.JSON, "No PipelineModel found with function name %s");
-    PipelineModel createPipelineResult2 =
-        TestPackUtils.createPipeline(
-            TransformType.PRE_TRANSLATE,
-            "No PipelineModel found with function name %s",
-            "No PipelineModel found with function name %s",
-            "No PipelineModel found with function name %s",
-            "No PipelineModel found with function name %s",
-            "No PipelineModel found with function name %s",
-            "42",
-            inputSerialisation2,
-            new Serialisation(Format.JSON, "No PipelineModel found with function name %s"));
-    pipelineModels.add(createPipelineResult2);
+    Serialisation inputSerialisation = new Serialisation(Format.JSON, "No PipelineModel found with function name %s");
+
+    pipelineModels
+        .add(TestPackUtils.createPipeline(TransformType.PRE_TRANSLATE, "No PipelineModel found with function name %s",
+            "No PipelineModel found with function name %s", "No PipelineModel found with function name %s",
+            "No PipelineModel found with function name %s", "No PipelineModel found with function name %s", "42",
+            inputSerialisation, new Serialisation(Format.JSON, "No PipelineModel found with function name %s")));
+    Serialisation inputSerialisation2 = new Serialisation(Format.JSON, "No PipelineModel found with function name %s");
+
+    pipelineModels
+        .add(TestPackUtils.createPipeline(TransformType.PRE_TRANSLATE, "No PipelineModel found with function name %s",
+            "No PipelineModel found with function name %s", "No PipelineModel found with function name %s",
+            "No PipelineModel found with function name %s", "No PipelineModel found with function name %s", "42",
+            inputSerialisation2, new Serialisation(Format.JSON, "No PipelineModel found with function name %s")));
 
     // Act and Assert
-    assertThrows(
-        IllegalArgumentException.class,
-        () -> TestPackUtils.getPipelineModel(pipelineModels, "Function Name"));
+    assertThrows(IllegalArgumentException.class, () -> TestPackUtils.getPipelineModel(pipelineModels, "Function Name"));
   }
 
   /**
    * Test {@link TestPackUtils#getPipelineModel(List, String)}.
-   *
    * <ul>
-   *   <li>Then return UpstreamPipelineId is {@code 42}.
+   *   <li>Then return UpstreamPipelineId is {@code 42}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link TestPackUtils#getPipelineModel(List, String)}
+   * <p>
+   * Method under test: {@link TestPackUtils#getPipelineModel(List, String)}
    */
   @Test
-  @DisplayName("Test getPipelineModel(List, String); then return UpstreamPipelineId is '42'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"PipelineModel TestPackUtils.getPipelineModel(List, String)"})
-  void testGetPipelineModel_thenReturnUpstreamPipelineIdIs42() {
+  public void testGetPipelineModel_thenReturnUpstreamPipelineIdIs42() {
     // Arrange
     ArrayList<PipelineModel> pipelineModels = new ArrayList<>();
-    Serialisation inputSerialisation =
-        new Serialisation(Format.JSON, "No PipelineModel found with function name %s");
-    Serialisation outputSerialisation =
-        new Serialisation(Format.JSON, "No PipelineModel found with function name %s");
+    Serialisation inputSerialisation = new Serialisation(Format.JSON, "No PipelineModel found with function name %s");
 
-    PipelineModel createPipelineResult =
-        TestPackUtils.createPipeline(
-            TransformType.PRE_TRANSLATE,
-            "Function Name",
-            "No PipelineModel found with function name %s",
-            "No PipelineModel found with function name %s",
-            "No PipelineModel found with function name %s",
-            "No PipelineModel found with function name %s",
-            "42",
-            inputSerialisation,
-            outputSerialisation);
-    pipelineModels.add(createPipelineResult);
+    Serialisation outputSerialisation = new Serialisation(Format.JSON, "No PipelineModel found with function name %s");
+
+    pipelineModels.add(TestPackUtils.createPipeline(TransformType.PRE_TRANSLATE, "Function Name",
+        "No PipelineModel found with function name %s", "No PipelineModel found with function name %s",
+        "No PipelineModel found with function name %s", "No PipelineModel found with function name %s", "42",
+        inputSerialisation, outputSerialisation));
 
     // Act
-    PipelineModel actualPipelineModel =
-        TestPackUtils.getPipelineModel(pipelineModels, "Function Name");
+    PipelineModel actualPipelineModel = TestPackUtils.getPipelineModel(pipelineModels, "Function Name");
 
     // Assert
     assertEquals("42", actualPipelineModel.getUpstreamPipelineId());
@@ -378,9 +268,7 @@ class TestPackUtilsDiffblueTest {
     assertEquals("No PipelineModel found with function name %s", actualPipelineModel.getName());
     assertEquals("No PipelineModel found with function name %s", transform.getInputType());
     assertEquals("No PipelineModel found with function name %s", transform.getOutputType());
-    assertEquals(
-        "pipeline-pre_translate-No PipelineModel found with function name %s",
-        actualPipelineModel.getId());
+    assertEquals("pipeline-pre_translate-No PipelineModel found with function name %s", actualPipelineModel.getId());
     assertEquals(TransformType.PRE_TRANSLATE, transform.getType());
     assertSame(inputSerialisation, actualPipelineModel.getInputSerialisation());
     assertSame(outputSerialisation, actualPipelineModel.getOutputSerialisation());
@@ -388,200 +276,149 @@ class TestPackUtilsDiffblueTest {
 
   /**
    * Test {@link TestPackUtils#getPipelineModel(List, String)}.
-   *
    * <ul>
-   *   <li>When {@link ArrayList#ArrayList()}.
-   *   <li>Then throw {@link IllegalArgumentException}.
+   *   <li>When {@link ArrayList#ArrayList()}.</li>
+   *   <li>Then throw {@link IllegalArgumentException}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link TestPackUtils#getPipelineModel(List, String)}
+   * <p>
+   * Method under test: {@link TestPackUtils#getPipelineModel(List, String)}
    */
   @Test
-  @DisplayName(
-      "Test getPipelineModel(List, String); when ArrayList(); then throw IllegalArgumentException")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"PipelineModel TestPackUtils.getPipelineModel(List, String)"})
-  void testGetPipelineModel_whenArrayList_thenThrowIllegalArgumentException() {
+  public void testGetPipelineModel_whenArrayList_thenThrowIllegalArgumentException() {
     // Arrange, Act and Assert
-    assertThrows(
-        IllegalArgumentException.class,
+    assertThrows(IllegalArgumentException.class,
         () -> TestPackUtils.getPipelineModel(new ArrayList<>(), "Function Name"));
   }
 
   /**
-   * Test {@link TestPackUtils#getTestPackModels(Path, ClassLoader, ObjectMapper)} with {@code
-   * resourcePath}, {@code classLoader}, {@code jsonObjectMapper}.
-   *
+   * Test {@link TestPackUtils#getTestPackModels(Path, ClassLoader, ObjectMapper)} with {@code resourcePath}, {@code classLoader}, {@code jsonObjectMapper}.
    * <ul>
-   *   <li>Then return Empty.
+   *   <li>Then return Empty.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link TestPackUtils#getTestPackModels(Path, ClassLoader, ObjectMapper)}
+   * <p>
+   * Method under test: {@link TestPackUtils#getTestPackModels(Path, ClassLoader, ObjectMapper)}
    */
   @Test
-  @DisplayName(
-      "Test getTestPackModels(Path, ClassLoader, ObjectMapper) with 'resourcePath', 'classLoader', 'jsonObjectMapper'; then return Empty")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"List TestPackUtils.getTestPackModels(Path, ClassLoader, ObjectMapper)"})
-  void testGetTestPackModelsWithResourcePathClassLoaderJsonObjectMapper_thenReturnEmpty() {
+  public void testGetTestPackModelsWithResourcePathClassLoaderJsonObjectMapper_thenReturnEmpty() {
     // Arrange
     MLet classLoader = new MLet();
-    JsonMapper jsonObjectMapper = JsonMapper.builder().findAndAddModules().build();
 
     // Act
-    List<TestPackModel> actualTestPackModels =
-        TestPackUtils.getTestPackModels(
-            TestPackUtils.INGEST_CONFIG_PATH, classLoader, jsonObjectMapper);
+    List<TestPackModel> actualTestPackModels = TestPackUtils.getTestPackModels(TestPackUtils.INGEST_CONFIG_PATH,
+        classLoader, JsonMapper.builder().findAndAddModules().build());
 
     // Assert
     assertTrue(actualTestPackModels.isEmpty());
   }
 
   /**
-   * Test {@link TestPackUtils#getTestPackModels(List, String)} with {@code testPackModels}, {@code
-   * pipelineId}.
-   *
-   * <p>Method under test: {@link TestPackUtils#getTestPackModels(List, String)}
+   * Test {@link TestPackUtils#getTestPackModels(List, String)} with {@code testPackModels}, {@code pipelineId}.
+   * <p>
+   * Method under test: {@link TestPackUtils#getTestPackModels(List, String)}
    */
   @Test
-  @DisplayName("Test getTestPackModels(List, String) with 'testPackModels', 'pipelineId'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"List TestPackUtils.getTestPackModels(List, String)"})
-  void testGetTestPackModelsWithTestPackModelsPipelineId() {
+  public void testGetTestPackModelsWithTestPackModelsPipelineId() {
     // Arrange
     ArrayList<TestPackModel> testPackModels = new ArrayList<>();
-    TestPackModel testPackModel = new TestPackModel("42", null, "Name", new ArrayList<>());
-    testPackModels.add(testPackModel);
+    testPackModels.add(TestPackUtils.createTestPack("Test Pack Name", TransformType.PRE_TRANSLATE,
+        "Formatted Function Name", new ArrayList<>()));
 
     // Act
-    List<TestPackModel> actualTestPackModels =
-        TestPackUtils.getTestPackModels(testPackModels, "42");
+    List<TestPackModel> actualTestPackModels = TestPackUtils.getTestPackModels(testPackModels, "42");
 
     // Assert
     assertTrue(actualTestPackModels.isEmpty());
   }
 
   /**
-   * Test {@link TestPackUtils#getTestPackModels(List, String)} with {@code testPackModels}, {@code
-   * pipelineId}.
-   *
-   * <p>Method under test: {@link TestPackUtils#getTestPackModels(List, String)}
+   * Test {@link TestPackUtils#getTestPackModels(List, String)} with {@code testPackModels}, {@code pipelineId}.
+   * <p>
+   * Method under test: {@link TestPackUtils#getTestPackModels(List, String)}
    */
   @Test
-  @DisplayName("Test getTestPackModels(List, String) with 'testPackModels', 'pipelineId'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"List TestPackUtils.getTestPackModels(List, String)"})
-  void testGetTestPackModelsWithTestPackModelsPipelineId2() {
+  public void testGetTestPackModelsWithTestPackModelsPipelineId2() {
     // Arrange
     ArrayList<TestPackModel> testPackModels = new ArrayList<>();
-    TestPackModel createTestPackResult =
-        TestPackUtils.createTestPack(
-            "Test Pack Name",
-            TransformType.PRE_TRANSLATE,
-            "Formatted Function Name",
-            new ArrayList<>());
-    testPackModels.add(createTestPackResult);
+    testPackModels.add(TestPackUtils.createTestPack("pipeline-pre_translate-Formatted Function Name",
+        TransformType.PRE_TRANSLATE, "pipeline-pre_translate-Formatted Function Name", new ArrayList<>()));
+    testPackModels.add(TestPackUtils.createTestPack("Test Pack Name", TransformType.PRE_TRANSLATE,
+        "Formatted Function Name", new ArrayList<>()));
 
     // Act
-    List<TestPackModel> actualTestPackModels =
-        TestPackUtils.getTestPackModels(testPackModels, "42");
+    List<TestPackModel> actualTestPackModels = TestPackUtils.getTestPackModels(testPackModels, "42");
 
     // Assert
     assertTrue(actualTestPackModels.isEmpty());
   }
 
   /**
-   * Test {@link TestPackUtils#getTestPackModels(List, String)} with {@code testPackModels}, {@code
-   * pipelineId}.
-   *
-   * <p>Method under test: {@link TestPackUtils#getTestPackModels(List, String)}
+   * Test {@link TestPackUtils#getTestPackModels(List, String)} with {@code testPackModels}, {@code pipelineId}.
+   * <p>
+   * Method under test: {@link TestPackUtils#getTestPackModels(List, String)}
    */
   @Test
-  @DisplayName("Test getTestPackModels(List, String) with 'testPackModels', 'pipelineId'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"List TestPackUtils.getTestPackModels(List, String)"})
-  void testGetTestPackModelsWithTestPackModelsPipelineId3() {
+  public void testGetTestPackModelsWithTestPackModelsPipelineId3() {
     // Arrange
     ArrayList<TestPackModel> testPackModels = new ArrayList<>();
-    TestPackModel createTestPackResult =
-        TestPackUtils.createTestPack(
-            "pipeline-pre_translate-Formatted Function Name",
-            TransformType.PRE_TRANSLATE,
-            "pipeline-pre_translate-Formatted Function Name",
-            new ArrayList<>());
-    testPackModels.add(createTestPackResult);
-    TestPackModel createTestPackResult2 =
-        TestPackUtils.createTestPack(
-            "Test Pack Name",
-            TransformType.PRE_TRANSLATE,
-            "Formatted Function Name",
-            new ArrayList<>());
-    testPackModels.add(createTestPackResult2);
+    testPackModels
+        .add(new TestPackModel("42", null, "pipeline-pre_translate-Formatted Function Name", new ArrayList<>()));
 
     // Act
-    List<TestPackModel> actualTestPackModels =
-        TestPackUtils.getTestPackModels(testPackModels, "42");
+    List<TestPackModel> actualTestPackModels = TestPackUtils.getTestPackModels(testPackModels, "42");
 
     // Assert
     assertTrue(actualTestPackModels.isEmpty());
   }
 
   /**
-   * Test {@link TestPackUtils#getTestPackModels(List, String)} with {@code testPackModels}, {@code
-   * pipelineId}.
-   *
+   * Test {@link TestPackUtils#getTestPackModels(List, String)} with {@code testPackModels}, {@code pipelineId}.
    * <ul>
-   *   <li>Then return {@link ArrayList#ArrayList()}.
+   *   <li>Then return {@link ArrayList#ArrayList()}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link TestPackUtils#getTestPackModels(List, String)}
+   * <p>
+   * Method under test: {@link TestPackUtils#getTestPackModels(List, String)}
    */
   @Test
-  @DisplayName(
-      "Test getTestPackModels(List, String) with 'testPackModels', 'pipelineId'; then return ArrayList()")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"List TestPackUtils.getTestPackModels(List, String)"})
-  void testGetTestPackModelsWithTestPackModelsPipelineId_thenReturnArrayList() {
+  public void testGetTestPackModelsWithTestPackModelsPipelineId_thenReturnArrayList() {
     // Arrange
     ArrayList<TestPackModel> testPackModels = new ArrayList<>();
-    TestPackModel testPackModel = new TestPackModel("42", "42", "Name", new ArrayList<>());
-    testPackModels.add(testPackModel);
+    testPackModels
+        .add(new TestPackModel("42", "42", "pipeline-pre_translate-Formatted Function Name", new ArrayList<>()));
 
     // Act
-    List<TestPackModel> actualTestPackModels =
-        TestPackUtils.getTestPackModels(testPackModels, "42");
+    List<TestPackModel> actualTestPackModels = TestPackUtils.getTestPackModels(testPackModels, "42");
 
     // Assert
     assertEquals(testPackModels, actualTestPackModels);
   }
 
   /**
-   * Test {@link TestPackUtils#getTestPackModels(List, String)} with {@code testPackModels}, {@code
-   * pipelineId}.
-   *
+   * Test {@link TestPackUtils#getTestPackModels(List, String)} with {@code testPackModels}, {@code pipelineId}.
    * <ul>
-   *   <li>When {@link ArrayList#ArrayList()}.
-   *   <li>Then return Empty.
+   *   <li>When {@link ArrayList#ArrayList()}.</li>
+   *   <li>Then return Empty.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link TestPackUtils#getTestPackModels(List, String)}
+   * <p>
+   * Method under test: {@link TestPackUtils#getTestPackModels(List, String)}
    */
   @Test
-  @DisplayName(
-      "Test getTestPackModels(List, String) with 'testPackModels', 'pipelineId'; when ArrayList(); then return Empty")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"List TestPackUtils.getTestPackModels(List, String)"})
-  void testGetTestPackModelsWithTestPackModelsPipelineId_whenArrayList_thenReturnEmpty() {
+  public void testGetTestPackModelsWithTestPackModelsPipelineId_whenArrayList_thenReturnEmpty() {
     // Arrange and Act
-    List<TestPackModel> actualTestPackModels =
-        TestPackUtils.getTestPackModels(new ArrayList<>(), "42");
+    List<TestPackModel> actualTestPackModels = TestPackUtils.getTestPackModels(new ArrayList<>(), "42");
 
     // Assert
     assertTrue(actualTestPackModels.isEmpty());
@@ -589,20 +426,33 @@ class TestPackUtilsDiffblueTest {
 
   /**
    * Test {@link TestPackUtils#getObjectMapper(Serialisation)}.
-   *
    * <ul>
-   *   <li>When {@code null}.
-   *   <li>Then return not Present.
+   *   <li>Then throw {@link UncheckedIOException}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link TestPackUtils#getObjectMapper(Serialisation)}
+   * <p>
+   * Method under test: {@link TestPackUtils#getObjectMapper(Serialisation)}
    */
   @Test
-  @DisplayName("Test getObjectMapper(Serialisation); when 'null'; then return not Present")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Optional TestPackUtils.getObjectMapper(Serialisation)"})
-  void testGetObjectMapper_whenNull_thenReturnNotPresent() {
+  public void testGetObjectMapper_thenThrowUncheckedIOException() {
+    // Arrange, Act and Assert
+    assertThrows(UncheckedIOException.class, () -> TestPackUtils.getObjectMapper(new Serialisation(Format.XML, "")));
+  }
+
+  /**
+   * Test {@link TestPackUtils#getObjectMapper(Serialisation)}.
+   * <ul>
+   *   <li>When {@code null}.</li>
+   *   <li>Then return not Present.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link TestPackUtils#getObjectMapper(Serialisation)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Optional TestPackUtils.getObjectMapper(Serialisation)"})
+  public void testGetObjectMapper_whenNull_thenReturnNotPresent() {
     // Arrange and Act
     Optional<ObjectMapper> actualObjectMapper = TestPackUtils.getObjectMapper(null);
 
@@ -612,112 +462,53 @@ class TestPackUtilsDiffblueTest {
 
   /**
    * Test {@link TestPackUtils#getObjectMapper(Serialisation)}.
-   *
    * <ul>
-   *   <li>When {@link Serialisation#Serialisation(Format, String)} with format is {@code JSON} and
-   *       {@code Config Path}.
+   *   <li>When {@link Serialisation#Serialisation(Format, String)} with format is {@code JSON} and {@code Config Path}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link TestPackUtils#getObjectMapper(Serialisation)}
+   * <p>
+   * Method under test: {@link TestPackUtils#getObjectMapper(Serialisation)}
    */
   @Test
-  @DisplayName(
-      "Test getObjectMapper(Serialisation); when Serialisation(Format, String) with format is 'JSON' and 'Config Path'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Optional TestPackUtils.getObjectMapper(Serialisation)"})
-  void testGetObjectMapper_whenSerialisationWithFormatIsJsonAndConfigPath() {
+  public void testGetObjectMapper_whenSerialisationWithFormatIsJsonAndConfigPath() {
     // Arrange and Act
-    Optional<ObjectMapper> actualObjectMapper =
-        TestPackUtils.getObjectMapper(new Serialisation(Format.JSON, "Config Path"));
+    Optional<ObjectMapper> actualObjectMapper = TestPackUtils
+        .getObjectMapper(new Serialisation(Format.JSON, "Config Path"));
 
     // Assert
     assertFalse(actualObjectMapper.isPresent());
   }
 
   /**
-   * Test {@link TestPackUtils#getObjectMapper(Serialisation)}.
-   *
+   * Test {@link TestPackUtils#getObjectWriter(Serialisation)}.
    * <ul>
-   *   <li>When {@link Serialisation#Serialisation(Format, String)} with format is {@link
-   *       Format#XML} and configPath is empty string.
+   *   <li>Then throw {@link UncheckedIOException}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link TestPackUtils#getObjectMapper(Serialisation)}
+   * <p>
+   * Method under test: {@link TestPackUtils#getObjectWriter(Serialisation)}
    */
   @Test
-  @DisplayName(
-      "Test getObjectMapper(Serialisation); when Serialisation(Format, String) with format is XML and configPath is empty string")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Optional TestPackUtils.getObjectMapper(Serialisation)"})
-  void testGetObjectMapper_whenSerialisationWithFormatIsXmlAndConfigPathIsEmptyString() {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Optional TestPackUtils.getObjectWriter(Serialisation)"})
+  public void testGetObjectWriter_thenThrowUncheckedIOException() {
     // Arrange, Act and Assert
-    assertThrows(
-        UncheckedIOException.class,
-        () -> TestPackUtils.getObjectMapper(new Serialisation(Format.XML, "")));
-  }
-
-  /**
-   * Test {@link TestPackUtils#getObjectMapper(Serialisation)}.
-   *
-   * <ul>
-   *   <li>When {@link Serialisation#Serialisation(Format, String)} with format is {@code XML} and
-   *       configPath is empty string.
-   * </ul>
-   *
-   * <p>Method under test: {@link TestPackUtils#getObjectMapper(Serialisation)}
-   */
-  @Test
-  @DisplayName(
-      "Test getObjectMapper(Serialisation); when Serialisation(Format, String) with format is 'XML' and configPath is empty string")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Optional TestPackUtils.getObjectMapper(Serialisation)"})
-  void testGetObjectMapper_whenSerialisationWithFormatIsXmlAndConfigPathIsEmptyString2() {
-    // Arrange, Act and Assert
-    assertThrows(
-        UncheckedIOException.class,
-        () -> TestPackUtils.getObjectMapper(new Serialisation(Format.XML, "")));
+    assertThrows(UncheckedIOException.class, () -> TestPackUtils.getObjectWriter(new Serialisation(Format.XML, "")));
   }
 
   /**
    * Test {@link TestPackUtils#getObjectWriter(Serialisation)}.
-   *
    * <ul>
-   *   <li>Then throw {@link UncheckedIOException}.
+   *   <li>When {@code null}.</li>
+   *   <li>Then return not Present.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link TestPackUtils#getObjectWriter(Serialisation)}
+   * <p>
+   * Method under test: {@link TestPackUtils#getObjectWriter(Serialisation)}
    */
   @Test
-  @DisplayName("Test getObjectWriter(Serialisation); then throw UncheckedIOException")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Optional TestPackUtils.getObjectWriter(Serialisation)"})
-  void testGetObjectWriter_thenThrowUncheckedIOException() {
-    // Arrange, Act and Assert
-    assertThrows(
-        UncheckedIOException.class,
-        () -> TestPackUtils.getObjectWriter(new Serialisation(Format.XML, "")));
-  }
-
-  /**
-   * Test {@link TestPackUtils#getObjectWriter(Serialisation)}.
-   *
-   * <ul>
-   *   <li>When {@code null}.
-   *   <li>Then return not Present.
-   * </ul>
-   *
-   * <p>Method under test: {@link TestPackUtils#getObjectWriter(Serialisation)}
-   */
-  @Test
-  @DisplayName("Test getObjectWriter(Serialisation); when 'null'; then return not Present")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Optional TestPackUtils.getObjectWriter(Serialisation)"})
-  void testGetObjectWriter_whenNull_thenReturnNotPresent() {
+  public void testGetObjectWriter_whenNull_thenReturnNotPresent() {
     // Arrange and Act
     Optional<ObjectWriter> actualObjectWriter = TestPackUtils.getObjectWriter(null);
 
@@ -727,24 +518,19 @@ class TestPackUtilsDiffblueTest {
 
   /**
    * Test {@link TestPackUtils#getObjectWriter(Serialisation)}.
-   *
    * <ul>
-   *   <li>When {@link Serialisation#Serialisation(Format, String)} with format is {@code JSON} and
-   *       {@code Config Path}.
+   *   <li>When {@link Serialisation#Serialisation(Format, String)} with format is {@code JSON} and {@code Config Path}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link TestPackUtils#getObjectWriter(Serialisation)}
+   * <p>
+   * Method under test: {@link TestPackUtils#getObjectWriter(Serialisation)}
    */
   @Test
-  @DisplayName(
-      "Test getObjectWriter(Serialisation); when Serialisation(Format, String) with format is 'JSON' and 'Config Path'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Optional TestPackUtils.getObjectWriter(Serialisation)"})
-  void testGetObjectWriter_whenSerialisationWithFormatIsJsonAndConfigPath() {
+  public void testGetObjectWriter_whenSerialisationWithFormatIsJsonAndConfigPath() {
     // Arrange and Act
-    Optional<ObjectWriter> actualObjectWriter =
-        TestPackUtils.getObjectWriter(new Serialisation(Format.JSON, "Config Path"));
+    Optional<ObjectWriter> actualObjectWriter = TestPackUtils
+        .getObjectWriter(new Serialisation(Format.JSON, "Config Path"));
 
     // Assert
     assertFalse(actualObjectWriter.isPresent());
@@ -752,56 +538,45 @@ class TestPackUtilsDiffblueTest {
 
   /**
    * Test {@link TestPackUtils#getProjectionTestPackName(String)}.
-   *
-   * <p>Method under test: {@link TestPackUtils#getProjectionTestPackName(String)}
+   * <p>
+   * Method under test: {@link TestPackUtils#getProjectionTestPackName(String)}
    */
   @Test
-  @DisplayName("Test getProjectionTestPackName(String)")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String TestPackUtils.getProjectionTestPackName(String)"})
-  void testGetProjectionTestPackName() {
+  public void testGetProjectionTestPackName() {
     // Arrange, Act and Assert
-    assertEquals(
-        "test-pack-projection-42-report-to-iso20022.*\\.json",
-        TestPackUtils.getProjectionTestPackName("42"));
+    assertEquals("test-pack-projection-42-report-to-iso20022.*\\.json", TestPackUtils.getProjectionTestPackName("42"));
   }
 
   /**
    * Test {@link TestPackUtils#getReportTestPackName(String)}.
-   *
-   * <p>Method under test: {@link TestPackUtils#getReportTestPackName(String)}
+   * <p>
+   * Method under test: {@link TestPackUtils#getReportTestPackName(String)}
    */
   @Test
-  @DisplayName("Test getReportTestPackName(String)")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String TestPackUtils.getReportTestPackName(String)"})
-  void testGetReportTestPackName() {
+  public void testGetReportTestPackName() {
     // Arrange, Act and Assert
     assertEquals("test-pack-report-42.*\\.json", TestPackUtils.getReportTestPackName("42"));
   }
 
   /**
    * Test {@link TestPackUtils#findPaths(Path, ClassLoader, String)}.
-   *
    * <ul>
-   *   <li>When {@link TestPackUtils#INGEST_CONFIG_PATH}.
-   *   <li>Then return Empty.
+   *   <li>When {@link TestPackUtils#INGEST_CONFIG_PATH}.</li>
+   *   <li>Then return Empty.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link TestPackUtils#findPaths(Path, ClassLoader, String)}
+   * <p>
+   * Method under test: {@link TestPackUtils#findPaths(Path, ClassLoader, String)}
    */
   @Test
-  @DisplayName(
-      "Test findPaths(Path, ClassLoader, String); when INGEST_CONFIG_PATH; then return Empty")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"List TestPackUtils.findPaths(Path, ClassLoader, String)"})
-  void testFindPaths_whenIngest_config_path_thenReturnEmpty() {
+  public void testFindPaths_whenIngest_config_path_thenReturnEmpty() {
     // Arrange and Act
-    List<URL> actualFindPathsResult =
-        TestPackUtils.findPaths(TestPackUtils.INGEST_CONFIG_PATH, new MLet(), "foo.txt");
+    List<URL> actualFindPathsResult = TestPackUtils.findPaths(TestPackUtils.INGEST_CONFIG_PATH, new MLet(), "foo.txt");
 
     // Assert
     assertTrue(actualFindPathsResult.isEmpty());
@@ -809,25 +584,20 @@ class TestPackUtilsDiffblueTest {
 
   /**
    * Test {@link TestPackUtils#findPaths(Path, ClassLoader, String)}.
-   *
    * <ul>
-   *   <li>When {@link TestPackUtils#PROJECTION_CONFIG_PATH_WITHOUT_ISO20022}.
-   *   <li>Then return Empty.
+   *   <li>When {@link TestPackUtils#PROJECTION_CONFIG_PATH_WITHOUT_ISO20022}.</li>
+   *   <li>Then return Empty.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link TestPackUtils#findPaths(Path, ClassLoader, String)}
+   * <p>
+   * Method under test: {@link TestPackUtils#findPaths(Path, ClassLoader, String)}
    */
   @Test
-  @DisplayName(
-      "Test findPaths(Path, ClassLoader, String); when PROJECTION_CONFIG_PATH_WITHOUT_ISO20022; then return Empty")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"List TestPackUtils.findPaths(Path, ClassLoader, String)"})
-  void testFindPaths_whenProjection_config_path_without_iso20022_thenReturnEmpty() {
+  public void testFindPaths_whenProjection_config_path_without_iso20022_thenReturnEmpty() {
     // Arrange and Act
-    List<URL> actualFindPathsResult =
-        TestPackUtils.findPaths(
-            TestPackUtils.PROJECTION_CONFIG_PATH_WITHOUT_ISO20022, new MLet(), "foo.txt");
+    List<URL> actualFindPathsResult = TestPackUtils.findPaths(TestPackUtils.PROJECTION_CONFIG_PATH_WITHOUT_ISO20022,
+        new MLet(), "foo.txt");
 
     // Assert
     assertTrue(actualFindPathsResult.isEmpty());
@@ -835,21 +605,16 @@ class TestPackUtilsDiffblueTest {
 
   /**
    * Test {@link TestPackUtils#readFile(URL, ObjectMapper, Class)}.
-   *
    * <ul>
-   *   <li>When Property is {@code java.io.tmpdir} is empty string toUri toURL.
+   *   <li>Then throw {@link UncheckedIOException}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link TestPackUtils#readFile(URL, ObjectMapper, Class)}
+   * <p>
+   * Method under test: {@link TestPackUtils#readFile(URL, ObjectMapper, Class)}
    */
   @Test
-  @DisplayName(
-      "Test readFile(URL, ObjectMapper, Class); when Property is 'java.io.tmpdir' is empty string toUri toURL")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Object TestPackUtils.readFile(URL, ObjectMapper, Class)"})
-  void testReadFile_whenPropertyIsJavaIoTmpdirIsEmptyStringToUriToURL()
-      throws MalformedURLException {
+  public void testReadFile_thenThrowUncheckedIOException() throws MalformedURLException {
     // Arrange
     URL u = Paths.get(System.getProperty("java.io.tmpdir"), "").toUri().toURL();
     JsonMapper mapper = JsonMapper.builder().findAndAddModules().build();
@@ -861,73 +626,18 @@ class TestPackUtilsDiffblueTest {
 
   /**
    * Test {@link TestPackUtils#readFile(URL, ObjectMapper, Class)}.
-   *
    * <ul>
-   *   <li>When Property is {@code java.io.tmpdir} is empty string toUri toURL.
+   *   <li>When Property is {@code java.io.tmpdir} is {@code test.txt} toUri toURL.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link TestPackUtils#readFile(URL, ObjectMapper, Class)}
+   * <p>
+   * Method under test: {@link TestPackUtils#readFile(URL, ObjectMapper, Class)}
    */
   @Test
-  @DisplayName(
-      "Test readFile(URL, ObjectMapper, Class); when Property is 'java.io.tmpdir' is empty string toUri toURL")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Object TestPackUtils.readFile(URL, ObjectMapper, Class)"})
-  void testReadFile_whenPropertyIsJavaIoTmpdirIsEmptyStringToUriToURL2()
-      throws MalformedURLException {
-    // Arrange
-    URL u = Paths.get(System.getProperty("java.io.tmpdir"), "").toUri().toURL();
-    JsonMapper mapper = JsonMapper.builder().findAndAddModules().build();
-    Class<Object> clazz = Object.class;
-
-    // Act and Assert
-    assertThrows(UncheckedIOException.class, () -> TestPackUtils.readFile(u, mapper, clazz));
-  }
-
-  /**
-   * Test {@link TestPackUtils#readFile(URL, ObjectMapper, Class)}.
-   *
-   * <ul>
-   *   <li>When Property is {@code java.io.tmpdir} is {@code test.txt} toUri toURL.
-   * </ul>
-   *
-   * <p>Method under test: {@link TestPackUtils#readFile(URL, ObjectMapper, Class)}
-   */
-  @Test
-  @DisplayName(
-      "Test readFile(URL, ObjectMapper, Class); when Property is 'java.io.tmpdir' is 'test.txt' toUri toURL")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Object TestPackUtils.readFile(URL, ObjectMapper, Class)"})
-  void testReadFile_whenPropertyIsJavaIoTmpdirIsTestTxtToUriToURL() throws MalformedURLException {
+  public void testReadFile_whenPropertyIsJavaIoTmpdirIsTestTxtToUriToURL() throws MalformedURLException {
     // Arrange
     URL u = Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toUri().toURL();
-    JsonMapper mapper = JsonMapper.builder().findAndAddModules().build();
-    Class<Object> clazz = Object.class;
-
-    // Act and Assert
-    assertThrows(UncheckedIOException.class, () -> TestPackUtils.readFile(u, mapper, clazz));
-  }
-
-  /**
-   * Test {@link TestPackUtils#readFile(URL, ObjectMapper, Class)}.
-   *
-   * <ul>
-   *   <li>When Property is {@code java.io.tmpdir} is toUri toURL.
-   * </ul>
-   *
-   * <p>Method under test: {@link TestPackUtils#readFile(URL, ObjectMapper, Class)}
-   */
-  @Test
-  @DisplayName(
-      "Test readFile(URL, ObjectMapper, Class); when Property is 'java.io.tmpdir' is toUri toURL")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Object TestPackUtils.readFile(URL, ObjectMapper, Class)"})
-  void testReadFile_whenPropertyIsJavaIoTmpdirIsToUriToURL() throws MalformedURLException {
-    // Arrange
-    URL u = Paths.get(System.getProperty("java.io.tmpdir")).toUri().toURL();
     JsonMapper mapper = JsonMapper.builder().findAndAddModules().build();
     Class<Object> clazz = Object.class;
 

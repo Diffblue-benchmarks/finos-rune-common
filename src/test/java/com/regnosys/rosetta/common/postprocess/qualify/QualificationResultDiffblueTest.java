@@ -20,13 +20,13 @@ package com.regnosys.rosetta.common.postprocess.qualify;
  * ==============
  */
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertSame;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import com.rosetta.model.lib.expression.ComparisonResult;
 import com.rosetta.model.lib.path.RosettaPath;
@@ -41,16 +41,14 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Tag;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
-class QualificationResultDiffblueTest {
+public class QualificationResultDiffblueTest {
   /**
    * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link QualificationResult#QualificationResult(Class, List)}
    *   <li>{@link QualificationResult#getAllQualifyResults()}
@@ -58,25 +56,19 @@ class QualificationResultDiffblueTest {
    * </ul>
    */
   @Test
-  @DisplayName("Test getters and setters")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void QualificationResult.<init>(Class, List)",
-    "List QualificationResult.getAllQualifyResults()",
-    "Class QualificationResult.getQualifiedRosettaObjectType()"
-  })
-  void testGettersAndSetters() {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void QualificationResult.<init>(Class, List)", "List QualificationResult.getAllQualifyResults()",
+      "Class QualificationResult.getQualifiedRosettaObjectType()"})
+  public void testGettersAndSetters() {
     // Arrange
     Class<Object> qualifiedRosettaObjectType = Object.class;
     ArrayList<QualifyResult> allQualifyResults = new ArrayList<>();
 
     // Act
-    QualificationResult actualQualificationResult =
-        new QualificationResult(qualifiedRosettaObjectType, allQualifyResults);
+    QualificationResult actualQualificationResult = new QualificationResult(qualifiedRosettaObjectType,
+        allQualifyResults);
     List<QualifyResult> actualAllQualifyResults = actualQualificationResult.getAllQualifyResults();
-    Class<?> actualQualifiedRosettaObjectType =
-        actualQualificationResult.getQualifiedRosettaObjectType();
+    Class<?> actualQualifiedRosettaObjectType = actualQualificationResult.getQualifiedRosettaObjectType();
 
     // Assert
     assertTrue(actualAllQualifyResults.isEmpty());
@@ -88,41 +80,32 @@ class QualificationResultDiffblueTest {
 
   /**
    * Test {@link QualificationResult#getUniqueSuccessQualifyResult()}.
-   *
-   * <p>Method under test: {@link QualificationResult#getUniqueSuccessQualifyResult()}
+   * <p>
+   * Method under test: {@link QualificationResult#getUniqueSuccessQualifyResult()}
    */
   @Test
-  @DisplayName("Test getUniqueSuccessQualifyResult()")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Optional QualificationResult.getUniqueSuccessQualifyResult()"})
-  void testGetUniqueSuccessQualifyResult() {
+  public void testGetUniqueSuccessQualifyResult() {
     // Arrange
     ArrayList<QualifyResult> allQualifyResults = new ArrayList<>();
-
     QualifyResultBuilder setDefinitionResult = QualifyResult.builder().setDefinition("Definition");
-    allQualifyResults.add(
-        setDefinitionResult
-            .setExpressionResult("Definition", ComparisonResult.success())
-            .setName("Name")
-            .build());
+    QualifyResult buildResult = setDefinitionResult.setExpressionResult("Definition", ComparisonResult.success())
+        .setName("Name")
+        .build();
+    allQualifyResults.add(buildResult);
     Class<Object> qualifiedRosettaObjectType = Object.class;
 
-    QualificationResult qualificationResult =
-        new QualificationResult(qualifiedRosettaObjectType, allQualifyResults);
-
     // Act
-    Optional<QualifyResult> actualUniqueSuccessQualifyResult =
-        qualificationResult.getUniqueSuccessQualifyResult();
+    Optional<QualifyResult> actualUniqueSuccessQualifyResult = (new QualificationResult(qualifiedRosettaObjectType,
+        allQualifyResults)).getUniqueSuccessQualifyResult();
 
     // Assert
     QualifyResult getResult = actualUniqueSuccessQualifyResult.get();
-    Collection<ExpressionDataRuleResult> expressionDataRuleResults =
-        getResult.getExpressionDataRuleResults();
+    Collection<ExpressionDataRuleResult> expressionDataRuleResults = getResult.getExpressionDataRuleResults();
     assertEquals(1, expressionDataRuleResults.size());
     assertTrue(expressionDataRuleResults instanceof List);
-    ExpressionDataRuleResult getResult2 =
-        ((List<ExpressionDataRuleResult>) expressionDataRuleResults).get(0);
+    ExpressionDataRuleResult getResult2 = ((List<ExpressionDataRuleResult>) expressionDataRuleResults).get(0);
     assertEquals("", getResult2.getOperator());
     assertEquals("Definition", getResult.getDefinition());
     assertEquals("Definition", getResult2.getDefinition());
@@ -137,233 +120,175 @@ class QualificationResultDiffblueTest {
 
   /**
    * Test {@link QualificationResult#getUniqueSuccessQualifyResult()}.
-   *
    * <ul>
-   *   <li>Then return not Present.
+   *   <li>Then return not Present.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link QualificationResult#getUniqueSuccessQualifyResult()}
+   * <p>
+   * Method under test: {@link QualificationResult#getUniqueSuccessQualifyResult()}
    */
   @Test
-  @DisplayName("Test getUniqueSuccessQualifyResult(); then return not Present")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Optional QualificationResult.getUniqueSuccessQualifyResult()"})
-  void testGetUniqueSuccessQualifyResult_thenReturnNotPresent() {
+  public void testGetUniqueSuccessQualifyResult_thenReturnNotPresent() {
     // Arrange
     Class<Object> qualifiedRosettaObjectType = Object.class;
-    QualificationResult qualificationResult =
-        new QualificationResult(qualifiedRosettaObjectType, new ArrayList<>());
 
     // Act and Assert
-    assertFalse(qualificationResult.getUniqueSuccessQualifyResult().isPresent());
+    assertFalse((new QualificationResult(qualifiedRosettaObjectType, new ArrayList<>())).getUniqueSuccessQualifyResult()
+        .isPresent());
   }
 
   /**
    * Test {@link QualificationResult#isSuccess()}.
-   *
    * <ul>
-   *   <li>Then return {@code false}.
+   *   <li>Then return {@code false}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link QualificationResult#isSuccess()}
+   * <p>
+   * Method under test: {@link QualificationResult#isSuccess()}
    */
   @Test
-  @DisplayName("Test isSuccess(); then return 'false'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean QualificationResult.isSuccess()"})
-  void testIsSuccess_thenReturnFalse() {
+  public void testIsSuccess_thenReturnFalse() {
     // Arrange
     Class<Object> qualifiedRosettaObjectType = Object.class;
-    QualificationResult qualificationResult =
-        new QualificationResult(qualifiedRosettaObjectType, new ArrayList<>());
 
     // Act and Assert
-    assertFalse(qualificationResult.isSuccess());
+    assertFalse((new QualificationResult(qualifiedRosettaObjectType, new ArrayList<>())).isSuccess());
   }
 
   /**
    * Test {@link QualificationResult#isSuccess()}.
-   *
    * <ul>
-   *   <li>Then return {@code true}.
+   *   <li>Then return {@code true}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link QualificationResult#isSuccess()}
+   * <p>
+   * Method under test: {@link QualificationResult#isSuccess()}
    */
   @Test
-  @DisplayName("Test isSuccess(); then return 'true'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean QualificationResult.isSuccess()"})
-  void testIsSuccess_thenReturnTrue() {
+  public void testIsSuccess_thenReturnTrue() {
     // Arrange
     ArrayList<QualifyResult> allQualifyResults = new ArrayList<>();
-
     QualifyResultBuilder setDefinitionResult = QualifyResult.builder().setDefinition("Definition");
-    allQualifyResults.add(
-        setDefinitionResult
-            .setExpressionResult("Definition", ComparisonResult.success())
-            .setName("Name")
-            .build());
+    QualifyResult buildResult = setDefinitionResult.setExpressionResult("Definition", ComparisonResult.success())
+        .setName("Name")
+        .build();
+    allQualifyResults.add(buildResult);
     Class<Object> qualifiedRosettaObjectType = Object.class;
 
-    QualificationResult qualificationResult =
-        new QualificationResult(qualifiedRosettaObjectType, allQualifyResults);
-
     // Act and Assert
-    assertTrue(qualificationResult.isSuccess());
+    assertTrue((new QualificationResult(qualifiedRosettaObjectType, allQualifyResults)).isSuccess());
   }
 
   /**
    * Test {@link QualificationResult#toString()}.
-   *
-   * <p>Method under test: {@link QualificationResult#toString()}
+   * <p>
+   * Method under test: {@link QualificationResult#toString()}
    */
   @Test
-  @DisplayName("Test toString()")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String QualificationResult.toString()"})
-  void testToString() {
+  public void testToString() {
     // Arrange
     ArrayList<QualifyResult> allQualifyResults = new ArrayList<>();
-
     QualifyResultBuilder setDefinitionResult = QualifyResult.builder().setDefinition("Definition");
-    allQualifyResults.add(
-        setDefinitionResult
-            .setExpressionResult("Definition", ComparisonResult.success())
-            .setName("Name")
-            .build());
-
+    QualifyResult buildResult = setDefinitionResult.setExpressionResult("Definition", ComparisonResult.success())
+        .setName("Name")
+        .build();
+    allQualifyResults.add(buildResult);
     QualifyResultBuilder setDefinitionResult2 = QualifyResult.builder().setDefinition("Definition");
-    allQualifyResults.add(
-        setDefinitionResult2
-            .setExpressionResult("Definition", ComparisonResult.success())
-            .setName("Name")
-            .build());
+    QualifyResult buildResult2 = setDefinitionResult2.setExpressionResult("Definition", ComparisonResult.success())
+        .setName("Name")
+        .build();
+    allQualifyResults.add(buildResult2);
     Class<Object> qualifiedRosettaObjectType = Object.class;
 
-    QualificationResult qualificationResult =
-        new QualificationResult(qualifiedRosettaObjectType, allQualifyResults);
-
     // Act and Assert
-    assertEquals(
-        "QualificationResult { FAILURE on [Object] because [MULTIPLE_MATCHES: Name,Name] }",
-        qualificationResult.toString());
+    assertEquals("QualificationResult { FAILURE on [Object] because [MULTIPLE_MATCHES: Name,Name] }",
+        (new QualificationResult(qualifiedRosettaObjectType, allQualifyResults)).toString());
   }
 
   /**
    * Test {@link QualificationResult#toString()}.
-   *
    * <ul>
-   *   <li>Then return a string.
+   *   <li>Given {@link Optional} with {@code QualificationResult { SUCCESS on [%s:%s] }}.</li>
+   *   <li>Then return a string.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link QualificationResult#toString()}
+   * <p>
+   * Method under test: {@link QualificationResult#toString()}
    */
   @Test
-  @DisplayName("Test toString(); then return a string")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String QualificationResult.toString()"})
-  void testToString_thenReturnAString() {
+  public void testToString_givenOptionalWithQualificationResultSuccessOnSS_thenReturnAString() {
     // Arrange
     QualifyResultBuilder builderResult = QualifyResult.builder();
     RosettaPath path = mock(RosettaPath.class);
     Optional<String> failureReason = Optional.of("QualificationResult { SUCCESS on [%s:%s] }");
-
-    ModelValidationResult<?> result =
-        new ModelValidationResult<>(
-            "QualificationResult { SUCCESS on [%s:%s] }",
-            ValidationType.DATA_RULE,
-            "QualificationResult { SUCCESS on [%s:%s] }",
-            path,
-            "QualificationResult { SUCCESS on [%s:%s] }",
-            failureReason);
-    builderResult.addAndDataRuleResult(result);
-
+    builderResult.addAndDataRuleResult(new ModelValidationResult<>("QualificationResult { SUCCESS on [%s:%s] }",
+        ValidationType.DATA_RULE, "QualificationResult { SUCCESS on [%s:%s] }", path,
+        "QualificationResult { SUCCESS on [%s:%s] }", failureReason));
     QualifyResultBuilder setDefinitionResult = builderResult.setDefinition("Definition");
-    QualifyResult qualifyResult =
-        setDefinitionResult
-            .setExpressionResult("Definition", ComparisonResult.success())
-            .setName("Name")
-            .build();
+    QualifyResult buildResult = setDefinitionResult.setExpressionResult("Definition", ComparisonResult.success())
+        .setName("Name")
+        .build();
 
     ArrayList<QualifyResult> allQualifyResults = new ArrayList<>();
-    allQualifyResults.add(qualifyResult);
+    allQualifyResults.add(buildResult);
     Class<Object> qualifiedRosettaObjectType = Object.class;
-
-    QualificationResult qualificationResult =
-        new QualificationResult(qualifiedRosettaObjectType, allQualifyResults);
 
     // Act and Assert
     assertEquals(
         "QualificationResult { FAILURE on [Object] because [UNMATCHED], errors: [[Name[QualificationResult {"
             + " SUCCESS on [%s:%s] }]]] }",
-        qualificationResult.toString());
+        (new QualificationResult(qualifiedRosettaObjectType, allQualifyResults)).toString());
   }
 
   /**
    * Test {@link QualificationResult#toString()}.
-   *
    * <ul>
-   *   <li>Then return {@code QualificationResult { FAILURE on [Object] because [UNMATCHED], errors:
-   *       [[]] }}.
+   *   <li>Then return {@code QualificationResult { FAILURE on [Object] because [UNMATCHED], errors: [[]] }}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link QualificationResult#toString()}
+   * <p>
+   * Method under test: {@link QualificationResult#toString()}
    */
   @Test
-  @DisplayName(
-      "Test toString(); then return 'QualificationResult { FAILURE on [Object] because [UNMATCHED], errors: [[]] }'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String QualificationResult.toString()"})
-  void testToString_thenReturnQualificationResultFailureOnObjectBecauseUnmatchedErrors() {
+  public void testToString_thenReturnQualificationResultFailureOnObjectBecauseUnmatchedErrors() {
     // Arrange
     Class<Object> qualifiedRosettaObjectType = Object.class;
-    QualificationResult qualificationResult =
-        new QualificationResult(qualifiedRosettaObjectType, new ArrayList<>());
 
     // Act and Assert
-    assertEquals(
-        "QualificationResult { FAILURE on [Object] because [UNMATCHED], errors: [[]] }",
-        qualificationResult.toString());
+    assertEquals("QualificationResult { FAILURE on [Object] because [UNMATCHED], errors: [[]] }",
+        (new QualificationResult(qualifiedRosettaObjectType, new ArrayList<>())).toString());
   }
 
   /**
    * Test {@link QualificationResult#toString()}.
-   *
    * <ul>
-   *   <li>Then return {@code QualificationResult { SUCCESS on [Object:Name] }}.
+   *   <li>Then return {@code QualificationResult { SUCCESS on [Object:Name] }}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link QualificationResult#toString()}
+   * <p>
+   * Method under test: {@link QualificationResult#toString()}
    */
   @Test
-  @DisplayName("Test toString(); then return 'QualificationResult { SUCCESS on [Object:Name] }'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"String QualificationResult.toString()"})
-  void testToString_thenReturnQualificationResultSuccessOnObjectName() {
+  public void testToString_thenReturnQualificationResultSuccessOnObjectName() {
     // Arrange
     ArrayList<QualifyResult> allQualifyResults = new ArrayList<>();
-
     QualifyResultBuilder setDefinitionResult = QualifyResult.builder().setDefinition("Definition");
-    allQualifyResults.add(
-        setDefinitionResult
-            .setExpressionResult("Definition", ComparisonResult.success())
-            .setName("Name")
-            .build());
+    QualifyResult buildResult = setDefinitionResult.setExpressionResult("Definition", ComparisonResult.success())
+        .setName("Name")
+        .build();
+    allQualifyResults.add(buildResult);
     Class<Object> qualifiedRosettaObjectType = Object.class;
 
-    QualificationResult qualificationResult =
-        new QualificationResult(qualifiedRosettaObjectType, allQualifyResults);
-
     // Act and Assert
-    assertEquals(
-        "QualificationResult { SUCCESS on [Object:Name] }", qualificationResult.toString());
+    assertEquals("QualificationResult { SUCCESS on [Object:Name] }",
+        (new QualificationResult(qualifiedRosettaObjectType, allQualifyResults)).toString());
   }
 }

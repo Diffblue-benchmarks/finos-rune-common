@@ -20,49 +20,72 @@ package com.regnosys.rosetta.common.serialisation.xml;
  * ==============
  */
 
-import static org.junit.jupiter.api.Assertions.assertSame;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import com.fasterxml.jackson.databind.cfg.SerializerFactoryConfig;
 import com.fasterxml.jackson.databind.ser.SerializerFactory;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Tag;
-import org.junit.jupiter.api.Test;
+import com.fasterxml.jackson.databind.ser.Serializers;
+import com.fasterxml.jackson.databind.util.ArrayIterator;
+import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
-class RosettaSerialiserFactoryDiffblueTest {
+public class RosettaSerialiserFactoryDiffblueTest {
   /**
    * Test {@link RosettaSerialiserFactory#RosettaSerialiserFactory(SerializerFactoryConfig)}.
-   *
-   * <p>Method under test: {@link
-   * RosettaSerialiserFactory#RosettaSerialiserFactory(SerializerFactoryConfig)}
+   * <ul>
+   *   <li>Then FactoryConfig serializers return {@link ArrayIterator}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link RosettaSerialiserFactory#RosettaSerialiserFactory(SerializerFactoryConfig)}
    */
   @Test
-  @DisplayName("Test new RosettaSerialiserFactory(SerializerFactoryConfig)")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void RosettaSerialiserFactory.<init>(SerializerFactoryConfig)"})
-  void testNewRosettaSerialiserFactory() {
+  public void testNewRosettaSerialiserFactory_thenFactoryConfigSerializersReturnArrayIterator() {
+    // Arrange, Act and Assert
+    SerializerFactoryConfig factoryConfig = (new RosettaSerialiserFactory(null)).getFactoryConfig();
+    Iterable<Serializers> serializersResult = factoryConfig.serializers();
+    assertTrue(serializersResult instanceof ArrayIterator);
+    assertFalse(factoryConfig.hasKeySerializers());
+    assertFalse(factoryConfig.hasSerializerModifiers());
+    assertFalse(factoryConfig.hasSerializers());
+    assertFalse(((ArrayIterator<Serializers>) serializersResult).hasNext());
+  }
+
+  /**
+   * Test {@link RosettaSerialiserFactory#RosettaSerialiserFactory(SerializerFactoryConfig)}.
+   * <ul>
+   *   <li>Then return FactoryConfig is {@link SerializerFactoryConfig#SerializerFactoryConfig()}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link RosettaSerialiserFactory#RosettaSerialiserFactory(SerializerFactoryConfig)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void RosettaSerialiserFactory.<init>(SerializerFactoryConfig)"})
+  public void testNewRosettaSerialiserFactory_thenReturnFactoryConfigIsSerializerFactoryConfig() {
     // Arrange
     SerializerFactoryConfig config = new SerializerFactoryConfig();
 
     // Act and Assert
-    assertSame(config, new RosettaSerialiserFactory(config).getFactoryConfig());
+    assertSame(config, (new RosettaSerialiserFactory(config)).getFactoryConfig());
   }
 
   /**
    * Test {@link RosettaSerialiserFactory#withConfig(SerializerFactoryConfig)}.
-   *
-   * <p>Method under test: {@link RosettaSerialiserFactory#withConfig(SerializerFactoryConfig)}
+   * <ul>
+   *   <li>Then return FactoryConfig is {@link SerializerFactoryConfig#SerializerFactoryConfig()}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link RosettaSerialiserFactory#withConfig(SerializerFactoryConfig)}
    */
   @Test
-  @DisplayName("Test withConfig(SerializerFactoryConfig)")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "SerializerFactory RosettaSerialiserFactory.withConfig(SerializerFactoryConfig)"
-  })
-  void testWithConfig() {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"SerializerFactory RosettaSerialiserFactory.withConfig(SerializerFactoryConfig)"})
+  public void testWithConfig_thenReturnFactoryConfigIsSerializerFactoryConfig() {
     // Arrange
     SerializerFactoryConfig config = new SerializerFactoryConfig();
 
@@ -72,5 +95,32 @@ class RosettaSerialiserFactoryDiffblueTest {
     // Assert
     assertTrue(actualWithConfigResult instanceof RosettaSerialiserFactory);
     assertSame(config, ((RosettaSerialiserFactory) actualWithConfigResult).getFactoryConfig());
+  }
+
+  /**
+   * Test {@link RosettaSerialiserFactory#withConfig(SerializerFactoryConfig)}.
+   * <ul>
+   *   <li>When {@code null}.</li>
+   *   <li>Then FactoryConfig serializers return {@link ArrayIterator}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link RosettaSerialiserFactory#withConfig(SerializerFactoryConfig)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"SerializerFactory RosettaSerialiserFactory.withConfig(SerializerFactoryConfig)"})
+  public void testWithConfig_whenNull_thenFactoryConfigSerializersReturnArrayIterator() {
+    // Arrange and Act
+    SerializerFactory actualWithConfigResult = RosettaSerialiserFactory.INSTANCE.withConfig(null);
+
+    // Assert
+    SerializerFactoryConfig factoryConfig = ((RosettaSerialiserFactory) actualWithConfigResult).getFactoryConfig();
+    Iterable<Serializers> serializersResult = factoryConfig.serializers();
+    assertTrue(serializersResult instanceof ArrayIterator);
+    assertTrue(actualWithConfigResult instanceof RosettaSerialiserFactory);
+    assertFalse(factoryConfig.hasKeySerializers());
+    assertFalse(factoryConfig.hasSerializerModifiers());
+    assertFalse(factoryConfig.hasSerializers());
+    assertFalse(((ArrayIterator<Serializers>) serializersResult).hasNext());
   }
 }

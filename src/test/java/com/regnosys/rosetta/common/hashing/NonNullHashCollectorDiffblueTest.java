@@ -20,20 +20,17 @@ package com.regnosys.rosetta.common.hashing;
  * ==============
  */
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertSame;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
-import com.fasterxml.jackson.databind.ser.BeanPropertyWriter;
 import com.regnosys.rosetta.common.merger.BarBuilder;
-import com.regnosys.rosetta.common.serialisation.json.preannotation.testpojo.metafields.MetaFields;
-import com.regnosys.rosetta.common.serialisation.json.preannotation.testpojo.metafields.MetaFields.MetaFieldsBuilderImpl;
 import com.regnosys.rosetta.common.serialisation.json.preannotation.testpojo.metafields.ReferenceWithMetaPrice;
 import com.regnosys.rosetta.common.serialisation.json.preannotation.testpojo.metafields.ReferenceWithMetaPrice.ReferenceWithMetaPriceBuilderImpl;
 import com.rosetta.model.lib.RosettaModelObject;
@@ -41,23 +38,20 @@ import com.rosetta.model.lib.meta.Reference;
 import com.rosetta.model.lib.meta.Reference.ReferenceImpl;
 import com.rosetta.model.lib.path.RosettaPath;
 import com.rosetta.model.lib.process.AttributeMeta;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Tag;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.mockito.Mockito;
 
-class NonNullHashCollectorDiffblueTest {
+public class NonNullHashCollectorDiffblueTest {
   /**
    * Test new {@link NonNullHashCollector} (default constructor).
-   *
-   * <p>Method under test: default or parameterless constructor of {@link NonNullHashCollector}
+   * <p>
+   * Method under test: default or parameterless constructor of {@link NonNullHashCollector}
    */
   @Test
-  @DisplayName("Test new NonNullHashCollector (default constructor)")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void NonNullHashCollector.<init>()"})
-  void testNewNonNullHashCollector() {
+  public void testNewNonNullHashCollector() {
     // Arrange and Act
     NonNullHashCollector actualNonNullHashCollector = new NonNullHashCollector();
 
@@ -69,217 +63,124 @@ class NonNullHashCollectorDiffblueTest {
   }
 
   /**
-   * Test {@link NonNullHashCollector#processRosetta(RosettaPath, Class, RosettaModelObject,
-   * RosettaModelObject, AttributeMeta[])} with {@code path}, {@code rosettaType}, {@code instance},
-   * {@code parent}, {@code metas}.
-   *
-   * <p>Method under test: {@link NonNullHashCollector#processRosetta(RosettaPath, Class,
-   * RosettaModelObject, RosettaModelObject, AttributeMeta[])}
+   * Test {@link NonNullHashCollector#processRosetta(RosettaPath, Class, RosettaModelObject, RosettaModelObject, AttributeMeta[])} with {@code path}, {@code rosettaType}, {@code instance}, {@code parent}, {@code metas}.
+   * <p>
+   * Method under test: {@link NonNullHashCollector#processRosetta(RosettaPath, Class, RosettaModelObject, RosettaModelObject, AttributeMeta[])}
    */
   @Test
-  @DisplayName(
-      "Test processRosetta(RosettaPath, Class, RosettaModelObject, RosettaModelObject, AttributeMeta[]) with 'path', 'rosettaType', 'instance', 'parent', 'metas'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "boolean NonNullHashCollector.processRosetta(RosettaPath, Class, RosettaModelObject, RosettaModelObject, AttributeMeta[])"
-  })
-  void testProcessRosettaWithPathRosettaTypeInstanceParentMetas() {
+      "boolean NonNullHashCollector.processRosetta(RosettaPath, Class, RosettaModelObject, RosettaModelObject, AttributeMeta[])"})
+  public void testProcessRosettaWithPathRosettaTypeInstanceParentMetas() {
+    // Arrange
+    NonNullHashCollector nonNullHashCollector = new NonNullHashCollector();
+    RosettaPath path = mock(RosettaPath.class);
+    Class<RosettaModelObject> rosettaType = RosettaModelObject.class;
+    ReferenceImpl referenceImpl = new ReferenceImpl("method toBuilder in BarBuilder has not been implemented",
+        "alice.liddell@example.org", "method toBuilder in BarBuilder has not been implemented");
+
+    // Act and Assert
+    assertTrue(nonNullHashCollector.processRosetta(path, rosettaType, referenceImpl,
+        new ReferenceWithMetaPriceBuilderImpl(), AttributeMeta.META));
+  }
+
+  /**
+   * Test {@link NonNullHashCollector#processRosetta(RosettaPath, Class, RosettaModelObject, RosettaModelObject, AttributeMeta[])} with {@code path}, {@code rosettaType}, {@code instance}, {@code parent}, {@code metas}.
+   * <p>
+   * Method under test: {@link NonNullHashCollector#processRosetta(RosettaPath, Class, RosettaModelObject, RosettaModelObject, AttributeMeta[])}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({
+      "boolean NonNullHashCollector.processRosetta(RosettaPath, Class, RosettaModelObject, RosettaModelObject, AttributeMeta[])"})
+  public void testProcessRosettaWithPathRosettaTypeInstanceParentMetas2() {
     // Arrange
     NonNullHashCollector nonNullHashCollector = new NonNullHashCollector();
     RosettaPath path = mock(RosettaPath.class);
     Class<RosettaModelObject> rosettaType = RosettaModelObject.class;
 
-    ReferenceWithMetaPriceBuilderImpl referenceWithMetaPriceBuilderImpl =
-        new ReferenceWithMetaPriceBuilderImpl();
-    ReferenceImpl reference = new ReferenceImpl("Scope", "alice.liddell@example.org", "Reference");
-    referenceWithMetaPriceBuilderImpl.setReference(reference);
+    ReferenceWithMetaPriceBuilderImpl referenceWithMetaPriceBuilderImpl = new ReferenceWithMetaPriceBuilderImpl();
+    referenceWithMetaPriceBuilderImpl
+        .setReference(new ReferenceImpl("Scope", "alice.liddell@example.org", "Reference"));
 
     ReferenceWithMetaPriceBuilderImpl parent = new ReferenceWithMetaPriceBuilderImpl();
     parent.setReference(null);
 
     // Act and Assert
-    assertTrue(
-        nonNullHashCollector.processRosetta(
-            path, rosettaType, referenceWithMetaPriceBuilderImpl, parent, AttributeMeta.META));
+    assertTrue(nonNullHashCollector.processRosetta(path, rosettaType, referenceWithMetaPriceBuilderImpl, parent,
+        AttributeMeta.META));
   }
 
   /**
-   * Test {@link NonNullHashCollector#processRosetta(RosettaPath, Class, RosettaModelObject,
-   * RosettaModelObject, AttributeMeta[])} with {@code path}, {@code rosettaType}, {@code instance},
-   * {@code parent}, {@code metas}.
-   *
-   * <p>Method under test: {@link NonNullHashCollector#processRosetta(RosettaPath, Class,
-   * RosettaModelObject, RosettaModelObject, AttributeMeta[])}
-   */
-  @Test
-  @DisplayName(
-      "Test processRosetta(RosettaPath, Class, RosettaModelObject, RosettaModelObject, AttributeMeta[]) with 'path', 'rosettaType', 'instance', 'parent', 'metas'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean NonNullHashCollector.processRosetta(RosettaPath, Class, RosettaModelObject, RosettaModelObject, AttributeMeta[])"
-  })
-  void testProcessRosettaWithPathRosettaTypeInstanceParentMetas2() {
-    // Arrange
-    NonNullHashCollector nonNullHashCollector = new NonNullHashCollector();
-    RosettaPath path = mock(RosettaPath.class);
-    Class<RosettaModelObject> rosettaType = RosettaModelObject.class;
-    ReferenceImpl referenceImpl =
-        new ReferenceImpl(
-            "method toBuilder in BarBuilder has not been implemented",
-            "alice.liddell@example.org",
-            "method toBuilder in BarBuilder has not been implemented");
-
-    // Act and Assert
-    assertTrue(
-        nonNullHashCollector.processRosetta(
-            path,
-            rosettaType,
-            referenceImpl,
-            new ReferenceWithMetaPriceBuilderImpl(),
-            AttributeMeta.META));
-  }
-
-  /**
-   * Test {@link NonNullHashCollector#processRosetta(RosettaPath, Class, RosettaModelObject,
-   * RosettaModelObject, AttributeMeta[])} with {@code path}, {@code rosettaType}, {@code instance},
-   * {@code parent}, {@code metas}.
-   *
+   * Test {@link NonNullHashCollector#processRosetta(RosettaPath, Class, RosettaModelObject, RosettaModelObject, AttributeMeta[])} with {@code path}, {@code rosettaType}, {@code instance}, {@code parent}, {@code metas}.
    * <ul>
-   *   <li>Given builder.
+   *   <li>Given builder.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link NonNullHashCollector#processRosetta(RosettaPath, Class,
-   * RosettaModelObject, RosettaModelObject, AttributeMeta[])}
+   * <p>
+   * Method under test: {@link NonNullHashCollector#processRosetta(RosettaPath, Class, RosettaModelObject, RosettaModelObject, AttributeMeta[])}
    */
   @Test
-  @DisplayName(
-      "Test processRosetta(RosettaPath, Class, RosettaModelObject, RosettaModelObject, AttributeMeta[]) with 'path', 'rosettaType', 'instance', 'parent', 'metas'; given builder")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "boolean NonNullHashCollector.processRosetta(RosettaPath, Class, RosettaModelObject, RosettaModelObject, AttributeMeta[])"
-  })
-  void testProcessRosettaWithPathRosettaTypeInstanceParentMetas_givenBuilder() {
+      "boolean NonNullHashCollector.processRosetta(RosettaPath, Class, RosettaModelObject, RosettaModelObject, AttributeMeta[])"})
+  public void testProcessRosettaWithPathRosettaTypeInstanceParentMetas_givenBuilder() {
     // Arrange
     NonNullHashCollector nonNullHashCollector = new NonNullHashCollector();
     RosettaPath path = mock(RosettaPath.class);
     Class<RosettaModelObject> rosettaType = RosettaModelObject.class;
-    ReferenceImpl referenceImpl =
-        new ReferenceImpl(
-            "method toBuilder in BarBuilder has not been implemented",
-            "alice.liddell@example.org",
-            "method toBuilder in BarBuilder has not been implemented");
+    ReferenceImpl referenceImpl = new ReferenceImpl("method toBuilder in BarBuilder has not been implemented",
+        "alice.liddell@example.org", "method toBuilder in BarBuilder has not been implemented");
 
     ReferenceWithMetaPriceBuilderImpl parent = new ReferenceWithMetaPriceBuilderImpl();
     parent.setReference(Reference.builder());
 
     // Act and Assert
-    assertFalse(
-        nonNullHashCollector.processRosetta(
-            path, rosettaType, referenceImpl, parent, AttributeMeta.META));
+    assertFalse(nonNullHashCollector.processRosetta(path, rosettaType, referenceImpl, parent, AttributeMeta.META));
   }
 
   /**
-   * Test {@link NonNullHashCollector#processRosetta(RosettaPath, Class, RosettaModelObject,
-   * RosettaModelObject, AttributeMeta[])} with {@code path}, {@code rosettaType}, {@code instance},
-   * {@code parent}, {@code metas}.
-   *
+   * Test {@link NonNullHashCollector#processRosetta(RosettaPath, Class, RosettaModelObject, RosettaModelObject, AttributeMeta[])} with {@code path}, {@code rosettaType}, {@code instance}, {@code parent}, {@code metas}.
    * <ul>
-   *   <li>Given {@code External Key}.
+   *   <li>Given {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link NonNullHashCollector#processRosetta(RosettaPath, Class,
-   * RosettaModelObject, RosettaModelObject, AttributeMeta[])}
+   * <p>
+   * Method under test: {@link NonNullHashCollector#processRosetta(RosettaPath, Class, RosettaModelObject, RosettaModelObject, AttributeMeta[])}
    */
   @Test
-  @DisplayName(
-      "Test processRosetta(RosettaPath, Class, RosettaModelObject, RosettaModelObject, AttributeMeta[]) with 'path', 'rosettaType', 'instance', 'parent', 'metas'; given 'External Key'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "boolean NonNullHashCollector.processRosetta(RosettaPath, Class, RosettaModelObject, RosettaModelObject, AttributeMeta[])"
-  })
-  void testProcessRosettaWithPathRosettaTypeInstanceParentMetas_givenExternalKey() {
+      "boolean NonNullHashCollector.processRosetta(RosettaPath, Class, RosettaModelObject, RosettaModelObject, AttributeMeta[])"})
+  public void testProcessRosettaWithPathRosettaTypeInstanceParentMetas_givenNull() {
     // Arrange
     NonNullHashCollector nonNullHashCollector = new NonNullHashCollector();
     RosettaPath path = mock(RosettaPath.class);
     Class<RosettaModelObject> rosettaType = RosettaModelObject.class;
 
-    MetaFieldsBuilderImpl metaFieldsBuilderImpl = new MetaFieldsBuilderImpl();
-    metaFieldsBuilderImpl.setExternalKey("External Key");
-
-    ReferenceWithMetaPriceBuilderImpl parent = new ReferenceWithMetaPriceBuilderImpl();
-    parent.setReference(null);
-
-    // Act and Assert
-    assertTrue(
-        nonNullHashCollector.processRosetta(
-            path, rosettaType, metaFieldsBuilderImpl, parent, AttributeMeta.META));
-  }
-
-  /**
-   * Test {@link NonNullHashCollector#processRosetta(RosettaPath, Class, RosettaModelObject,
-   * RosettaModelObject, AttributeMeta[])} with {@code path}, {@code rosettaType}, {@code instance},
-   * {@code parent}, {@code metas}.
-   *
-   * <ul>
-   *   <li>Given {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link NonNullHashCollector#processRosetta(RosettaPath, Class,
-   * RosettaModelObject, RosettaModelObject, AttributeMeta[])}
-   */
-  @Test
-  @DisplayName(
-      "Test processRosetta(RosettaPath, Class, RosettaModelObject, RosettaModelObject, AttributeMeta[]) with 'path', 'rosettaType', 'instance', 'parent', 'metas'; given 'null'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "boolean NonNullHashCollector.processRosetta(RosettaPath, Class, RosettaModelObject, RosettaModelObject, AttributeMeta[])"
-  })
-  void testProcessRosettaWithPathRosettaTypeInstanceParentMetas_givenNull() {
-    // Arrange
-    NonNullHashCollector nonNullHashCollector = new NonNullHashCollector();
-    RosettaPath path = mock(RosettaPath.class);
-    Class<RosettaModelObject> rosettaType = RosettaModelObject.class;
-
-    ReferenceWithMetaPriceBuilderImpl referenceWithMetaPriceBuilderImpl =
-        new ReferenceWithMetaPriceBuilderImpl();
+    ReferenceWithMetaPriceBuilderImpl referenceWithMetaPriceBuilderImpl = new ReferenceWithMetaPriceBuilderImpl();
     referenceWithMetaPriceBuilderImpl.setReference(null);
 
     ReferenceWithMetaPriceBuilderImpl parent = new ReferenceWithMetaPriceBuilderImpl();
     parent.setReference(null);
 
     // Act and Assert
-    assertFalse(
-        nonNullHashCollector.processRosetta(
-            path, rosettaType, referenceWithMetaPriceBuilderImpl, parent, AttributeMeta.META));
+    assertFalse(nonNullHashCollector.processRosetta(path, rosettaType, referenceWithMetaPriceBuilderImpl, parent,
+        AttributeMeta.META));
   }
 
   /**
-   * Test {@link NonNullHashCollector#processRosetta(RosettaPath, Class, RosettaModelObject,
-   * RosettaModelObject, AttributeMeta[])} with {@code path}, {@code rosettaType}, {@code instance},
-   * {@code parent}, {@code metas}.
-   *
+   * Test {@link NonNullHashCollector#processRosetta(RosettaPath, Class, RosettaModelObject, RosettaModelObject, AttributeMeta[])} with {@code path}, {@code rosettaType}, {@code instance}, {@code parent}, {@code metas}.
    * <ul>
-   *   <li>Given {@code null}.
-   *   <li>When {@code null}.
+   *   <li>Given {@code null}.</li>
+   *   <li>When {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link NonNullHashCollector#processRosetta(RosettaPath, Class,
-   * RosettaModelObject, RosettaModelObject, AttributeMeta[])}
+   * <p>
+   * Method under test: {@link NonNullHashCollector#processRosetta(RosettaPath, Class, RosettaModelObject, RosettaModelObject, AttributeMeta[])}
    */
   @Test
-  @DisplayName(
-      "Test processRosetta(RosettaPath, Class, RosettaModelObject, RosettaModelObject, AttributeMeta[]) with 'path', 'rosettaType', 'instance', 'parent', 'metas'; given 'null'; when 'null'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "boolean NonNullHashCollector.processRosetta(RosettaPath, Class, RosettaModelObject, RosettaModelObject, AttributeMeta[])"
-  })
-  void testProcessRosettaWithPathRosettaTypeInstanceParentMetas_givenNull_whenNull() {
+      "boolean NonNullHashCollector.processRosetta(RosettaPath, Class, RosettaModelObject, RosettaModelObject, AttributeMeta[])"})
+  public void testProcessRosettaWithPathRosettaTypeInstanceParentMetas_givenNull_whenNull() {
     // Arrange
     NonNullHashCollector nonNullHashCollector = new NonNullHashCollector();
     RosettaPath path = mock(RosettaPath.class);
@@ -290,223 +191,150 @@ class NonNullHashCollectorDiffblueTest {
 
     // Act and Assert
     assertFalse(
-        nonNullHashCollector.processRosetta(
-            path, rosettaType, (RosettaModelObject) null, parent, AttributeMeta.META));
+        nonNullHashCollector.processRosetta(path, rosettaType, (RosettaModelObject) null, parent, AttributeMeta.META));
   }
 
   /**
-   * Test {@link NonNullHashCollector#processRosetta(RosettaPath, Class, RosettaModelObject,
-   * RosettaModelObject, AttributeMeta[])} with {@code path}, {@code rosettaType}, {@code instance},
-   * {@code parent}, {@code metas}.
-   *
+   * Test {@link NonNullHashCollector#processRosetta(RosettaPath, Class, RosettaModelObject, RosettaModelObject, AttributeMeta[])} with {@code path}, {@code rosettaType}, {@code instance}, {@code parent}, {@code metas}.
    * <ul>
-   *   <li>Then return {@code true}.
+   *   <li>Then return {@code true}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link NonNullHashCollector#processRosetta(RosettaPath, Class,
-   * RosettaModelObject, RosettaModelObject, AttributeMeta[])}
+   * <p>
+   * Method under test: {@link NonNullHashCollector#processRosetta(RosettaPath, Class, RosettaModelObject, RosettaModelObject, AttributeMeta[])}
    */
   @Test
-  @DisplayName(
-      "Test processRosetta(RosettaPath, Class, RosettaModelObject, RosettaModelObject, AttributeMeta[]) with 'path', 'rosettaType', 'instance', 'parent', 'metas'; then return 'true'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "boolean NonNullHashCollector.processRosetta(RosettaPath, Class, RosettaModelObject, RosettaModelObject, AttributeMeta[])"
-  })
-  void testProcessRosettaWithPathRosettaTypeInstanceParentMetas_thenReturnTrue() {
+      "boolean NonNullHashCollector.processRosetta(RosettaPath, Class, RosettaModelObject, RosettaModelObject, AttributeMeta[])"})
+  public void testProcessRosettaWithPathRosettaTypeInstanceParentMetas_thenReturnTrue() {
     // Arrange
     NonNullHashCollector nonNullHashCollector = new NonNullHashCollector();
     RosettaPath path = mock(RosettaPath.class);
     Class<RosettaModelObject> rosettaType = RosettaModelObject.class;
-    ReferenceImpl referenceImpl =
-        new ReferenceImpl(
-            "method toBuilder in BarBuilder has not been implemented",
-            "alice.liddell@example.org",
-            "method toBuilder in BarBuilder has not been implemented");
+    ReferenceImpl referenceImpl = new ReferenceImpl("method toBuilder in BarBuilder has not been implemented",
+        "alice.liddell@example.org", "method toBuilder in BarBuilder has not been implemented");
 
     // Act and Assert
     assertTrue(
-        nonNullHashCollector.processRosetta(
-            path, rosettaType, referenceImpl, new BarBuilder(), AttributeMeta.META));
+        nonNullHashCollector.processRosetta(path, rosettaType, referenceImpl, new BarBuilder(), AttributeMeta.META));
   }
 
   /**
-   * Test {@link NonNullHashCollector#processRosetta(RosettaPath, Class, RosettaModelObject,
-   * RosettaModelObject, AttributeMeta[])} with {@code path}, {@code rosettaType}, {@code instance},
-   * {@code parent}, {@code metas}.
-   *
+   * Test {@link NonNullHashCollector#processRosetta(RosettaPath, Class, RosettaModelObject, RosettaModelObject, AttributeMeta[])} with {@code path}, {@code rosettaType}, {@code instance}, {@code parent}, {@code metas}.
    * <ul>
-   *   <li>Then return {@code true}.
+   *   <li>Then return {@code true}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link NonNullHashCollector#processRosetta(RosettaPath, Class,
-   * RosettaModelObject, RosettaModelObject, AttributeMeta[])}
+   * <p>
+   * Method under test: {@link NonNullHashCollector#processRosetta(RosettaPath, Class, RosettaModelObject, RosettaModelObject, AttributeMeta[])}
    */
   @Test
-  @DisplayName(
-      "Test processRosetta(RosettaPath, Class, RosettaModelObject, RosettaModelObject, AttributeMeta[]) with 'path', 'rosettaType', 'instance', 'parent', 'metas'; then return 'true'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "boolean NonNullHashCollector.processRosetta(RosettaPath, Class, RosettaModelObject, RosettaModelObject, AttributeMeta[])"
-  })
-  void testProcessRosettaWithPathRosettaTypeInstanceParentMetas_thenReturnTrue2() {
+      "boolean NonNullHashCollector.processRosetta(RosettaPath, Class, RosettaModelObject, RosettaModelObject, AttributeMeta[])"})
+  public void testProcessRosettaWithPathRosettaTypeInstanceParentMetas_thenReturnTrue2() {
     // Arrange
     NonNullHashCollector nonNullHashCollector = new NonNullHashCollector();
     RosettaPath path = mock(RosettaPath.class);
     Class<RosettaModelObject> rosettaType = RosettaModelObject.class;
-    ReferenceImpl referenceImpl =
-        new ReferenceImpl(
-            "method toBuilder in BarBuilder has not been implemented",
-            "alice.liddell@example.org",
-            "method toBuilder in BarBuilder has not been implemented");
+    ReferenceImpl referenceImpl = new ReferenceImpl("method toBuilder in BarBuilder has not been implemented",
+        "alice.liddell@example.org", "method toBuilder in BarBuilder has not been implemented");
 
     // Act and Assert
-    assertTrue(
-        nonNullHashCollector.processRosetta(path, rosettaType, referenceImpl, new BarBuilder()));
+    assertTrue(nonNullHashCollector.processRosetta(path, rosettaType, referenceImpl, new BarBuilder()));
   }
 
   /**
-   * Test {@link NonNullHashCollector#processRosetta(RosettaPath, Class, RosettaModelObject,
-   * RosettaModelObject, AttributeMeta[])} with {@code path}, {@code rosettaType}, {@code instance},
-   * {@code parent}, {@code metas}.
-   *
+   * Test {@link NonNullHashCollector#processRosetta(RosettaPath, Class, RosettaModelObject, RosettaModelObject, AttributeMeta[])} with {@code path}, {@code rosettaType}, {@code instance}, {@code parent}, {@code metas}.
    * <ul>
-   *   <li>When {@code GLOBAL_KEY}.
+   *   <li>When {@code GLOBAL_KEY}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link NonNullHashCollector#processRosetta(RosettaPath, Class,
-   * RosettaModelObject, RosettaModelObject, AttributeMeta[])}
+   * <p>
+   * Method under test: {@link NonNullHashCollector#processRosetta(RosettaPath, Class, RosettaModelObject, RosettaModelObject, AttributeMeta[])}
    */
   @Test
-  @DisplayName(
-      "Test processRosetta(RosettaPath, Class, RosettaModelObject, RosettaModelObject, AttributeMeta[]) with 'path', 'rosettaType', 'instance', 'parent', 'metas'; when 'GLOBAL_KEY'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "boolean NonNullHashCollector.processRosetta(RosettaPath, Class, RosettaModelObject, RosettaModelObject, AttributeMeta[])"
-  })
-  void testProcessRosettaWithPathRosettaTypeInstanceParentMetas_whenGlobalKey() {
+      "boolean NonNullHashCollector.processRosetta(RosettaPath, Class, RosettaModelObject, RosettaModelObject, AttributeMeta[])"})
+  public void testProcessRosettaWithPathRosettaTypeInstanceParentMetas_whenGlobalKey() {
     // Arrange
     NonNullHashCollector nonNullHashCollector = new NonNullHashCollector();
     RosettaPath path = mock(RosettaPath.class);
     Class<RosettaModelObject> rosettaType = RosettaModelObject.class;
-    ReferenceImpl referenceImpl =
-        new ReferenceImpl(
-            "method toBuilder in BarBuilder has not been implemented",
-            "alice.liddell@example.org",
-            "method toBuilder in BarBuilder has not been implemented");
+    ReferenceImpl referenceImpl = new ReferenceImpl("method toBuilder in BarBuilder has not been implemented",
+        "alice.liddell@example.org", "method toBuilder in BarBuilder has not been implemented");
 
     // Act and Assert
-    assertFalse(
-        nonNullHashCollector.processRosetta(
-            path, rosettaType, referenceImpl, new BarBuilder(), AttributeMeta.GLOBAL_KEY));
+    assertFalse(nonNullHashCollector.processRosetta(path, rosettaType, referenceImpl, new BarBuilder(),
+        AttributeMeta.GLOBAL_KEY));
   }
 
   /**
-   * Test {@link NonNullHashCollector#processRosetta(RosettaPath, Class, RosettaModelObject,
-   * RosettaModelObject, AttributeMeta[])} with {@code path}, {@code rosettaType}, {@code instance},
-   * {@code parent}, {@code metas}.
-   *
+   * Test {@link NonNullHashCollector#processRosetta(RosettaPath, Class, RosettaModelObject, RosettaModelObject, AttributeMeta[])} with {@code path}, {@code rosettaType}, {@code instance}, {@code parent}, {@code metas}.
    * <ul>
-   *   <li>When {@code GLOBAL_KEY_FIELD}.
+   *   <li>When {@code GLOBAL_KEY_FIELD}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link NonNullHashCollector#processRosetta(RosettaPath, Class,
-   * RosettaModelObject, RosettaModelObject, AttributeMeta[])}
+   * <p>
+   * Method under test: {@link NonNullHashCollector#processRosetta(RosettaPath, Class, RosettaModelObject, RosettaModelObject, AttributeMeta[])}
    */
   @Test
-  @DisplayName(
-      "Test processRosetta(RosettaPath, Class, RosettaModelObject, RosettaModelObject, AttributeMeta[]) with 'path', 'rosettaType', 'instance', 'parent', 'metas'; when 'GLOBAL_KEY_FIELD'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "boolean NonNullHashCollector.processRosetta(RosettaPath, Class, RosettaModelObject, RosettaModelObject, AttributeMeta[])"
-  })
-  void testProcessRosettaWithPathRosettaTypeInstanceParentMetas_whenGlobalKeyField() {
+      "boolean NonNullHashCollector.processRosetta(RosettaPath, Class, RosettaModelObject, RosettaModelObject, AttributeMeta[])"})
+  public void testProcessRosettaWithPathRosettaTypeInstanceParentMetas_whenGlobalKeyField() {
     // Arrange
     NonNullHashCollector nonNullHashCollector = new NonNullHashCollector();
     RosettaPath path = mock(RosettaPath.class);
     Class<RosettaModelObject> rosettaType = RosettaModelObject.class;
-    ReferenceImpl referenceImpl =
-        new ReferenceImpl(
-            "method toBuilder in BarBuilder has not been implemented",
-            "alice.liddell@example.org",
-            "method toBuilder in BarBuilder has not been implemented");
+    ReferenceImpl referenceImpl = new ReferenceImpl("method toBuilder in BarBuilder has not been implemented",
+        "alice.liddell@example.org", "method toBuilder in BarBuilder has not been implemented");
 
     // Act and Assert
-    assertFalse(
-        nonNullHashCollector.processRosetta(
-            path, rosettaType, referenceImpl, new BarBuilder(), AttributeMeta.GLOBAL_KEY_FIELD));
+    assertFalse(nonNullHashCollector.processRosetta(path, rosettaType, referenceImpl, new BarBuilder(),
+        AttributeMeta.GLOBAL_KEY_FIELD));
   }
 
   /**
-   * Test {@link NonNullHashCollector#processRosetta(RosettaPath, Class, RosettaModelObject,
-   * RosettaModelObject, AttributeMeta[])} with {@code path}, {@code rosettaType}, {@code instance},
-   * {@code parent}, {@code metas}.
-   *
+   * Test {@link NonNullHashCollector#processRosetta(RosettaPath, Class, RosettaModelObject, RosettaModelObject, AttributeMeta[])} with {@code path}, {@code rosettaType}, {@code instance}, {@code parent}, {@code metas}.
    * <ul>
-   *   <li>When {@code META} and {@code null}.
+   *   <li>When {@code META} and {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link NonNullHashCollector#processRosetta(RosettaPath, Class,
-   * RosettaModelObject, RosettaModelObject, AttributeMeta[])}
+   * <p>
+   * Method under test: {@link NonNullHashCollector#processRosetta(RosettaPath, Class, RosettaModelObject, RosettaModelObject, AttributeMeta[])}
    */
   @Test
-  @DisplayName(
-      "Test processRosetta(RosettaPath, Class, RosettaModelObject, RosettaModelObject, AttributeMeta[]) with 'path', 'rosettaType', 'instance', 'parent', 'metas'; when 'META' and 'null'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "boolean NonNullHashCollector.processRosetta(RosettaPath, Class, RosettaModelObject, RosettaModelObject, AttributeMeta[])"
-  })
-  void testProcessRosettaWithPathRosettaTypeInstanceParentMetas_whenMetaAndNull() {
+      "boolean NonNullHashCollector.processRosetta(RosettaPath, Class, RosettaModelObject, RosettaModelObject, AttributeMeta[])"})
+  public void testProcessRosettaWithPathRosettaTypeInstanceParentMetas_whenMetaAndNull() {
     // Arrange
     NonNullHashCollector nonNullHashCollector = new NonNullHashCollector();
     RosettaPath path = mock(RosettaPath.class);
     Class<RosettaModelObject> rosettaType = RosettaModelObject.class;
-    ReferenceImpl referenceImpl =
-        new ReferenceImpl(
-            "method toBuilder in BarBuilder has not been implemented",
-            "alice.liddell@example.org",
-            "method toBuilder in BarBuilder has not been implemented");
+    ReferenceImpl referenceImpl = new ReferenceImpl("method toBuilder in BarBuilder has not been implemented",
+        "alice.liddell@example.org", "method toBuilder in BarBuilder has not been implemented");
 
     // Act and Assert
-    assertTrue(
-        nonNullHashCollector.processRosetta(
-            path, rosettaType, referenceImpl, new BarBuilder(), AttributeMeta.META, null));
+    assertTrue(nonNullHashCollector.processRosetta(path, rosettaType, referenceImpl, new BarBuilder(),
+        AttributeMeta.META, null));
   }
 
   /**
-   * Test {@link NonNullHashCollector#processBasic(RosettaPath, Class, Object, RosettaModelObject,
-   * AttributeMeta[])} with {@code path}, {@code rosettaType}, {@code instance}, {@code parent},
-   * {@code metas}.
-   *
-   * <p>Method under test: {@link NonNullHashCollector#processBasic(RosettaPath, Class, Object,
-   * RosettaModelObject, AttributeMeta[])}
+   * Test {@link NonNullHashCollector#processBasic(RosettaPath, Class, Object, RosettaModelObject, AttributeMeta[])} with {@code path}, {@code rosettaType}, {@code instance}, {@code parent}, {@code metas}.
+   * <p>
+   * Method under test: {@link NonNullHashCollector#processBasic(RosettaPath, Class, Object, RosettaModelObject, AttributeMeta[])}
    */
   @Test
-  @DisplayName(
-      "Test processBasic(RosettaPath, Class, Object, RosettaModelObject, AttributeMeta[]) with 'path', 'rosettaType', 'instance', 'parent', 'metas'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "void NonNullHashCollector.processBasic(RosettaPath, Class, Object, RosettaModelObject, AttributeMeta[])"
-  })
-  void testProcessBasicWithPathRosettaTypeInstanceParentMetas() {
+      "void NonNullHashCollector.processBasic(RosettaPath, Class, Object, RosettaModelObject, AttributeMeta[])"})
+  public void testProcessBasicWithPathRosettaTypeInstanceParentMetas() {
     // Arrange
     NonNullHashCollector nonNullHashCollector = new NonNullHashCollector();
     RosettaPath path = mock(RosettaPath.class);
     Class<Object> rosettaType = Object.class;
 
     // Act
-    nonNullHashCollector.processBasic(
-        path,
-        rosettaType,
-        BeanPropertyWriter.MARKER_FOR_EMPTY,
-        new BarBuilder(),
-        AttributeMeta.META);
+    nonNullHashCollector.processBasic(path, rosettaType, "Instance", new BarBuilder(), AttributeMeta.META);
 
     // Assert that nothing has changed
     assertEquals(0, nonNullHashCollector.report().getResult());
@@ -514,70 +342,49 @@ class NonNullHashCollectorDiffblueTest {
   }
 
   /**
-   * Test {@link NonNullHashCollector#processBasic(RosettaPath, Class, Object, RosettaModelObject,
-   * AttributeMeta[])} with {@code path}, {@code rosettaType}, {@code instance}, {@code parent},
-   * {@code metas}.
-   *
-   * <p>Method under test: {@link NonNullHashCollector#processBasic(RosettaPath, Class, Object,
-   * RosettaModelObject, AttributeMeta[])}
+   * Test {@link NonNullHashCollector#processBasic(RosettaPath, Class, Object, RosettaModelObject, AttributeMeta[])} with {@code path}, {@code rosettaType}, {@code instance}, {@code parent}, {@code metas}.
+   * <p>
+   * Method under test: {@link NonNullHashCollector#processBasic(RosettaPath, Class, Object, RosettaModelObject, AttributeMeta[])}
    */
   @Test
-  @DisplayName(
-      "Test processBasic(RosettaPath, Class, Object, RosettaModelObject, AttributeMeta[]) with 'path', 'rosettaType', 'instance', 'parent', 'metas'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "void NonNullHashCollector.processBasic(RosettaPath, Class, Object, RosettaModelObject, AttributeMeta[])"
-  })
-  void testProcessBasicWithPathRosettaTypeInstanceParentMetas2() {
+      "void NonNullHashCollector.processBasic(RosettaPath, Class, Object, RosettaModelObject, AttributeMeta[])"})
+  public void testProcessBasicWithPathRosettaTypeInstanceParentMetas2() {
     // Arrange
     NonNullHashCollector nonNullHashCollector = new NonNullHashCollector();
     RosettaPath path = mock(RosettaPath.class);
     Class<Object> rosettaType = Object.class;
 
     // Act
-    nonNullHashCollector.processBasic(
-        path, rosettaType, BeanPropertyWriter.MARKER_FOR_EMPTY, new BarBuilder());
+    nonNullHashCollector.processBasic(path, rosettaType, "Instance", new BarBuilder());
 
     // Assert
-    assertEquals(-7755493, nonNullHashCollector.report().getResult());
-    assertEquals(-7755493, nonNullHashCollector.report.getResult());
+    assertEquals(619772085, nonNullHashCollector.report().getResult());
+    assertEquals(619772085, nonNullHashCollector.report.getResult());
   }
 
   /**
-   * Test {@link NonNullHashCollector#processBasic(RosettaPath, Class, Object, RosettaModelObject,
-   * AttributeMeta[])} with {@code path}, {@code rosettaType}, {@code instance}, {@code parent},
-   * {@code metas}.
-   *
+   * Test {@link NonNullHashCollector#processBasic(RosettaPath, Class, Object, RosettaModelObject, AttributeMeta[])} with {@code path}, {@code rosettaType}, {@code instance}, {@code parent}, {@code metas}.
    * <ul>
-   *   <li>Given {@code false}.
+   *   <li>Given {@code false}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link NonNullHashCollector#processBasic(RosettaPath, Class, Object,
-   * RosettaModelObject, AttributeMeta[])}
+   * <p>
+   * Method under test: {@link NonNullHashCollector#processBasic(RosettaPath, Class, Object, RosettaModelObject, AttributeMeta[])}
    */
   @Test
-  @DisplayName(
-      "Test processBasic(RosettaPath, Class, Object, RosettaModelObject, AttributeMeta[]) with 'path', 'rosettaType', 'instance', 'parent', 'metas'; given 'false'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "void NonNullHashCollector.processBasic(RosettaPath, Class, Object, RosettaModelObject, AttributeMeta[])"
-  })
-  void testProcessBasicWithPathRosettaTypeInstanceParentMetas_givenFalse() {
+      "void NonNullHashCollector.processBasic(RosettaPath, Class, Object, RosettaModelObject, AttributeMeta[])"})
+  public void testProcessBasicWithPathRosettaTypeInstanceParentMetas_givenFalse() {
     // Arrange
     NonNullHashCollector nonNullHashCollector = new NonNullHashCollector();
-
     RosettaPath path = mock(RosettaPath.class);
     when(path.endsWith(Mockito.<RosettaPath>any())).thenReturn(false);
     Class<Object> rosettaType = Object.class;
 
     // Act
-    nonNullHashCollector.processBasic(
-        path,
-        rosettaType,
-        BeanPropertyWriter.MARKER_FOR_EMPTY,
-        new ReferenceWithMetaPriceBuilderImpl(),
+    nonNullHashCollector.processBasic(path, rosettaType, "Instance", new ReferenceWithMetaPriceBuilderImpl(),
         AttributeMeta.META);
 
     // Assert that nothing has changed
@@ -587,121 +394,81 @@ class NonNullHashCollectorDiffblueTest {
   }
 
   /**
-   * Test {@link NonNullHashCollector#processBasic(RosettaPath, Class, Object, RosettaModelObject,
-   * AttributeMeta[])} with {@code path}, {@code rosettaType}, {@code instance}, {@code parent},
-   * {@code metas}.
-   *
+   * Test {@link NonNullHashCollector#processBasic(RosettaPath, Class, Object, RosettaModelObject, AttributeMeta[])} with {@code path}, {@code rosettaType}, {@code instance}, {@code parent}, {@code metas}.
    * <ul>
-   *   <li>Given {@code true}.
+   *   <li>Given {@code true}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link NonNullHashCollector#processBasic(RosettaPath, Class, Object,
-   * RosettaModelObject, AttributeMeta[])}
+   * <p>
+   * Method under test: {@link NonNullHashCollector#processBasic(RosettaPath, Class, Object, RosettaModelObject, AttributeMeta[])}
    */
   @Test
-  @DisplayName(
-      "Test processBasic(RosettaPath, Class, Object, RosettaModelObject, AttributeMeta[]) with 'path', 'rosettaType', 'instance', 'parent', 'metas'; given 'true'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "void NonNullHashCollector.processBasic(RosettaPath, Class, Object, RosettaModelObject, AttributeMeta[])"
-  })
-  void testProcessBasicWithPathRosettaTypeInstanceParentMetas_givenTrue() {
+      "void NonNullHashCollector.processBasic(RosettaPath, Class, Object, RosettaModelObject, AttributeMeta[])"})
+  public void testProcessBasicWithPathRosettaTypeInstanceParentMetas_givenTrue() {
     // Arrange
     NonNullHashCollector nonNullHashCollector = new NonNullHashCollector();
-
     RosettaPath path = mock(RosettaPath.class);
     when(path.endsWith(Mockito.<RosettaPath>any())).thenReturn(true);
     Class<Object> rosettaType = Object.class;
 
     // Act
-    nonNullHashCollector.processBasic(
-        path,
-        rosettaType,
-        BeanPropertyWriter.MARKER_FOR_EMPTY,
-        new ReferenceWithMetaPriceBuilderImpl(),
+    nonNullHashCollector.processBasic(path, rosettaType, "Instance", new ReferenceWithMetaPriceBuilderImpl(),
         AttributeMeta.META);
 
     // Assert
     verify(path).endsWith(isA(RosettaPath.class));
-    assertEquals(-7755493, nonNullHashCollector.report().getResult());
-    assertEquals(-7755493, nonNullHashCollector.report.getResult());
+    assertEquals(619772085, nonNullHashCollector.report().getResult());
+    assertEquals(619772085, nonNullHashCollector.report.getResult());
   }
 
   /**
-   * Test {@link NonNullHashCollector#processBasic(RosettaPath, Class, Object, RosettaModelObject,
-   * AttributeMeta[])} with {@code path}, {@code rosettaType}, {@code instance}, {@code parent},
-   * {@code metas}.
-   *
+   * Test {@link NonNullHashCollector#processBasic(RosettaPath, Class, Object, RosettaModelObject, AttributeMeta[])} with {@code path}, {@code rosettaType}, {@code instance}, {@code parent}, {@code metas}.
    * <ul>
-   *   <li>When {@code META} and {@code EXTERNAL_KEY}.
+   *   <li>When {@code META} and {@code EXTERNAL_KEY}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link NonNullHashCollector#processBasic(RosettaPath, Class, Object,
-   * RosettaModelObject, AttributeMeta[])}
+   * <p>
+   * Method under test: {@link NonNullHashCollector#processBasic(RosettaPath, Class, Object, RosettaModelObject, AttributeMeta[])}
    */
   @Test
-  @DisplayName(
-      "Test processBasic(RosettaPath, Class, Object, RosettaModelObject, AttributeMeta[]) with 'path', 'rosettaType', 'instance', 'parent', 'metas'; when 'META' and 'EXTERNAL_KEY'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "void NonNullHashCollector.processBasic(RosettaPath, Class, Object, RosettaModelObject, AttributeMeta[])"
-  })
-  void testProcessBasicWithPathRosettaTypeInstanceParentMetas_whenMetaAndExternalKey() {
+      "void NonNullHashCollector.processBasic(RosettaPath, Class, Object, RosettaModelObject, AttributeMeta[])"})
+  public void testProcessBasicWithPathRosettaTypeInstanceParentMetas_whenMetaAndExternalKey() {
     // Arrange
     NonNullHashCollector nonNullHashCollector = new NonNullHashCollector();
     RosettaPath path = mock(RosettaPath.class);
     Class<Object> rosettaType = Object.class;
 
     // Act
-    nonNullHashCollector.processBasic(
-        path,
-        rosettaType,
-        BeanPropertyWriter.MARKER_FOR_EMPTY,
-        new BarBuilder(),
-        AttributeMeta.META,
+    nonNullHashCollector.processBasic(path, rosettaType, "Instance", new BarBuilder(), AttributeMeta.META,
         AttributeMeta.EXTERNAL_KEY);
 
     // Assert
-    assertEquals(-7755493, nonNullHashCollector.report().getResult());
-    assertEquals(-7755493, nonNullHashCollector.report.getResult());
+    assertEquals(619772085, nonNullHashCollector.report().getResult());
+    assertEquals(619772085, nonNullHashCollector.report.getResult());
   }
 
   /**
-   * Test {@link NonNullHashCollector#processBasic(RosettaPath, Class, Object, RosettaModelObject,
-   * AttributeMeta[])} with {@code path}, {@code rosettaType}, {@code instance}, {@code parent},
-   * {@code metas}.
-   *
+   * Test {@link NonNullHashCollector#processBasic(RosettaPath, Class, Object, RosettaModelObject, AttributeMeta[])} with {@code path}, {@code rosettaType}, {@code instance}, {@code parent}, {@code metas}.
    * <ul>
-   *   <li>When {@code META} and {@code null}.
+   *   <li>When {@code META} and {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link NonNullHashCollector#processBasic(RosettaPath, Class, Object,
-   * RosettaModelObject, AttributeMeta[])}
+   * <p>
+   * Method under test: {@link NonNullHashCollector#processBasic(RosettaPath, Class, Object, RosettaModelObject, AttributeMeta[])}
    */
   @Test
-  @DisplayName(
-      "Test processBasic(RosettaPath, Class, Object, RosettaModelObject, AttributeMeta[]) with 'path', 'rosettaType', 'instance', 'parent', 'metas'; when 'META' and 'null'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "void NonNullHashCollector.processBasic(RosettaPath, Class, Object, RosettaModelObject, AttributeMeta[])"
-  })
-  void testProcessBasicWithPathRosettaTypeInstanceParentMetas_whenMetaAndNull() {
+      "void NonNullHashCollector.processBasic(RosettaPath, Class, Object, RosettaModelObject, AttributeMeta[])"})
+  public void testProcessBasicWithPathRosettaTypeInstanceParentMetas_whenMetaAndNull() {
     // Arrange
     NonNullHashCollector nonNullHashCollector = new NonNullHashCollector();
     RosettaPath path = mock(RosettaPath.class);
     Class<Object> rosettaType = Object.class;
 
     // Act
-    nonNullHashCollector.processBasic(
-        path,
-        rosettaType,
-        BeanPropertyWriter.MARKER_FOR_EMPTY,
-        new BarBuilder(),
-        AttributeMeta.META,
-        null);
+    nonNullHashCollector.processBasic(path, rosettaType, "Instance", new BarBuilder(), AttributeMeta.META, null);
 
     // Assert that nothing has changed
     assertEquals(0, nonNullHashCollector.report().getResult());
@@ -709,34 +476,25 @@ class NonNullHashCollectorDiffblueTest {
   }
 
   /**
-   * Test {@link NonNullHashCollector#processBasic(RosettaPath, Class, Object, RosettaModelObject,
-   * AttributeMeta[])} with {@code path}, {@code rosettaType}, {@code instance}, {@code parent},
-   * {@code metas}.
-   *
+   * Test {@link NonNullHashCollector#processBasic(RosettaPath, Class, Object, RosettaModelObject, AttributeMeta[])} with {@code path}, {@code rosettaType}, {@code instance}, {@code parent}, {@code metas}.
    * <ul>
-   *   <li>When {@code null}.
+   *   <li>When {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link NonNullHashCollector#processBasic(RosettaPath, Class, Object,
-   * RosettaModelObject, AttributeMeta[])}
+   * <p>
+   * Method under test: {@link NonNullHashCollector#processBasic(RosettaPath, Class, Object, RosettaModelObject, AttributeMeta[])}
    */
   @Test
-  @DisplayName(
-      "Test processBasic(RosettaPath, Class, Object, RosettaModelObject, AttributeMeta[]) with 'path', 'rosettaType', 'instance', 'parent', 'metas'; when 'null'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({
-    "void NonNullHashCollector.processBasic(RosettaPath, Class, Object, RosettaModelObject, AttributeMeta[])"
-  })
-  void testProcessBasicWithPathRosettaTypeInstanceParentMetas_whenNull() {
+      "void NonNullHashCollector.processBasic(RosettaPath, Class, Object, RosettaModelObject, AttributeMeta[])"})
+  public void testProcessBasicWithPathRosettaTypeInstanceParentMetas_whenNull() {
     // Arrange
     NonNullHashCollector nonNullHashCollector = new NonNullHashCollector();
     RosettaPath path = mock(RosettaPath.class);
     Class<Object> rosettaType = Object.class;
 
     // Act
-    nonNullHashCollector.processBasic(
-        path, rosettaType, (Object) null, new BarBuilder(), AttributeMeta.META);
+    nonNullHashCollector.processBasic(path, rosettaType, (Object) null, new BarBuilder(), AttributeMeta.META);
 
     // Assert that nothing has changed
     assertEquals(0, nonNullHashCollector.report().getResult());
@@ -745,15 +503,13 @@ class NonNullHashCollectorDiffblueTest {
 
   /**
    * Test {@link NonNullHashCollector#report()}.
-   *
-   * <p>Method under test: {@link NonNullHashCollector#report()}
+   * <p>
+   * Method under test: {@link NonNullHashCollector#report()}
    */
   @Test
-  @DisplayName("Test report()")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"IntegerReport NonNullHashCollector.report()"})
-  void testReport() {
+  public void testReport() {
     // Arrange
     NonNullHashCollector nonNullHashCollector = new NonNullHashCollector();
 

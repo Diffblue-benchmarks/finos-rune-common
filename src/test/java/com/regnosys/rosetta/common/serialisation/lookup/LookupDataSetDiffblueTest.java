@@ -20,25 +20,23 @@ package com.regnosys.rosetta.common.serialisation.lookup;
  * ==============
  */
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertSame;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import java.util.List;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Tag;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
-class LookupDataSetDiffblueTest {
+public class LookupDataSetDiffblueTest {
   /**
    * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link LookupDataSet#LookupDataSet()}
    *   <li>{@link LookupDataSet#toString()}
@@ -49,19 +47,11 @@ class LookupDataSetDiffblueTest {
    * </ul>
    */
   @Test
-  @DisplayName("Test getters and setters")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void LookupDataSet.<init>()",
-    "void LookupDataSet.<init>(String, String, String, List)",
-    "List LookupDataSet.getData()",
-    "String LookupDataSet.getKeyType()",
-    "String LookupDataSet.getName()",
-    "String LookupDataSet.getValueType()",
-    "String LookupDataSet.toString()"
-  })
-  void testGettersAndSetters() {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void LookupDataSet.<init>()", "void LookupDataSet.<init>(String, String, String, List)",
+      "List LookupDataSet.getData()", "String LookupDataSet.getKeyType()", "String LookupDataSet.getName()",
+      "String LookupDataSet.getValueType()", "String LookupDataSet.toString()"})
+  public void testGettersAndSetters() {
     // Arrange and Act
     LookupDataSet actualLookupDataSet = new LookupDataSet();
     String actualToStringResult = actualLookupDataSet.toString();
@@ -70,9 +60,7 @@ class LookupDataSetDiffblueTest {
     String actualName = actualLookupDataSet.getName();
 
     // Assert
-    assertEquals(
-        "LookupDataSet[name='null', keyType='null', valueType='null', data=null]",
-        actualToStringResult);
+    assertEquals("LookupDataSet[name='null', keyType='null', valueType='null', data=null]", actualToStringResult);
     assertNull(actualKeyType);
     assertNull(actualName);
     assertNull(actualLookupDataSet.getValueType());
@@ -81,14 +69,12 @@ class LookupDataSetDiffblueTest {
 
   /**
    * Test getters and setters.
-   *
    * <ul>
-   *   <li>When {@code Name}.
-   *   <li>Then return ValueType is {@code 42}.
+   *   <li>When {@code Name}.</li>
+   *   <li>Then return ValueType is {@code 42}.</li>
    * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link LookupDataSet#LookupDataSet(String, String, String, List)}
    *   <li>{@link LookupDataSet#toString()}
@@ -99,19 +85,11 @@ class LookupDataSetDiffblueTest {
    * </ul>
    */
   @Test
-  @DisplayName("Test getters and setters; when 'Name'; then return ValueType is '42'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void LookupDataSet.<init>()",
-    "void LookupDataSet.<init>(String, String, String, List)",
-    "List LookupDataSet.getData()",
-    "String LookupDataSet.getKeyType()",
-    "String LookupDataSet.getName()",
-    "String LookupDataSet.getValueType()",
-    "String LookupDataSet.toString()"
-  })
-  void testGettersAndSetters_whenName_thenReturnValueTypeIs42() {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void LookupDataSet.<init>()", "void LookupDataSet.<init>(String, String, String, List)",
+      "List LookupDataSet.getData()", "String LookupDataSet.getKeyType()", "String LookupDataSet.getName()",
+      "String LookupDataSet.getValueType()", "String LookupDataSet.toString()"})
+  public void testGettersAndSetters_whenName_thenReturnValueTypeIs42() {
     // Arrange
     ArrayList<LookupDataItem> data = new ArrayList<>();
 
@@ -125,9 +103,7 @@ class LookupDataSetDiffblueTest {
     // Assert
     assertEquals("42", actualLookupDataSet.getValueType());
     assertEquals("Key Type", actualKeyType);
-    assertEquals(
-        "LookupDataSet[name='Name', keyType='Key Type', valueType='42', data=[]]",
-        actualToStringResult);
+    assertEquals("LookupDataSet[name='Name', keyType='Key Type', valueType='42', data=[]]", actualToStringResult);
     assertEquals("Name", actualName);
     assertTrue(actualData.isEmpty());
     assertSame(data, actualData);
@@ -135,55 +111,48 @@ class LookupDataSetDiffblueTest {
 
   /**
    * Test {@link LookupDataSet#equals(Object)}, and {@link LookupDataSet#hashCode()}.
-   *
    * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
+   *   <li>When other is equal.</li>
+   *   <li>Then return equal.</li>
    * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link LookupDataSet#equals(Object)}
    *   <li>{@link LookupDataSet#hashCode()}
    * </ul>
    */
   @Test
-  @DisplayName("Test equals(Object), and hashCode(); when other is equal; then return equal")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean LookupDataSet.equals(Object)", "int LookupDataSet.hashCode()"})
-  void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
+  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
     // Arrange
     LookupDataSet lookupDataSet = new LookupDataSet();
     LookupDataSet lookupDataSet2 = new LookupDataSet();
 
     // Act and Assert
     assertEquals(lookupDataSet, lookupDataSet2);
-    assertEquals(lookupDataSet.hashCode(), lookupDataSet2.hashCode());
+    int expectedHashCodeResult = lookupDataSet.hashCode();
+    assertEquals(expectedHashCodeResult, lookupDataSet2.hashCode());
   }
 
   /**
    * Test {@link LookupDataSet#equals(Object)}, and {@link LookupDataSet#hashCode()}.
-   *
    * <ul>
-   *   <li>When other is same.
-   *   <li>Then return equal.
+   *   <li>When other is same.</li>
+   *   <li>Then return equal.</li>
    * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link LookupDataSet#equals(Object)}
    *   <li>{@link LookupDataSet#hashCode()}
    * </ul>
    */
   @Test
-  @DisplayName("Test equals(Object), and hashCode(); when other is same; then return equal")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean LookupDataSet.equals(Object)", "int LookupDataSet.hashCode()"})
-  void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
+  public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
     LookupDataSet lookupDataSet = new LookupDataSet();
 
@@ -195,20 +164,17 @@ class LookupDataSetDiffblueTest {
 
   /**
    * Test {@link LookupDataSet#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link LookupDataSet#equals(Object)}
+   * <p>
+   * Method under test: {@link LookupDataSet#equals(Object)}
    */
   @Test
-  @DisplayName("Test equals(Object); when other is different; then return not equal")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean LookupDataSet.equals(Object)", "int LookupDataSet.hashCode()"})
-  void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange
     LookupDataSet lookupDataSet = new LookupDataSet("Name", "Key Type", "42", new ArrayList<>());
 
@@ -218,20 +184,17 @@ class LookupDataSetDiffblueTest {
 
   /**
    * Test {@link LookupDataSet#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link LookupDataSet#equals(Object)}
+   * <p>
+   * Method under test: {@link LookupDataSet#equals(Object)}
    */
   @Test
-  @DisplayName("Test equals(Object); when other is different; then return not equal")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean LookupDataSet.equals(Object)", "int LookupDataSet.hashCode()"})
-  void testEquals_whenOtherIsDifferent_thenReturnNotEqual2() {
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual2() {
     // Arrange
     LookupDataSet lookupDataSet = new LookupDataSet(null, "Key Type", "42", new ArrayList<>());
 
@@ -241,20 +204,17 @@ class LookupDataSetDiffblueTest {
 
   /**
    * Test {@link LookupDataSet#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link LookupDataSet#equals(Object)}
+   * <p>
+   * Method under test: {@link LookupDataSet#equals(Object)}
    */
   @Test
-  @DisplayName("Test equals(Object); when other is different; then return not equal")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean LookupDataSet.equals(Object)", "int LookupDataSet.hashCode()"})
-  void testEquals_whenOtherIsDifferent_thenReturnNotEqual3() {
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual3() {
     // Arrange
     LookupDataSet lookupDataSet = new LookupDataSet(null, null, "42", new ArrayList<>());
 
@@ -264,20 +224,17 @@ class LookupDataSetDiffblueTest {
 
   /**
    * Test {@link LookupDataSet#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link LookupDataSet#equals(Object)}
+   * <p>
+   * Method under test: {@link LookupDataSet#equals(Object)}
    */
   @Test
-  @DisplayName("Test equals(Object); when other is different; then return not equal")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean LookupDataSet.equals(Object)", "int LookupDataSet.hashCode()"})
-  void testEquals_whenOtherIsDifferent_thenReturnNotEqual4() {
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual4() {
     // Arrange
     LookupDataSet lookupDataSet = new LookupDataSet(null, null, null, new ArrayList<>());
 
@@ -287,40 +244,34 @@ class LookupDataSetDiffblueTest {
 
   /**
    * Test {@link LookupDataSet#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is {@code null}.
-   *   <li>Then return not equal.
+   *   <li>When other is {@code null}.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link LookupDataSet#equals(Object)}
+   * <p>
+   * Method under test: {@link LookupDataSet#equals(Object)}
    */
   @Test
-  @DisplayName("Test equals(Object); when other is 'null'; then return not equal")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean LookupDataSet.equals(Object)", "int LookupDataSet.hashCode()"})
-  void testEquals_whenOtherIsNull_thenReturnNotEqual() {
+  public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(new LookupDataSet(), null);
   }
 
   /**
    * Test {@link LookupDataSet#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is wrong type.
-   *   <li>Then return not equal.
+   *   <li>When other is wrong type.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link LookupDataSet#equals(Object)}
+   * <p>
+   * Method under test: {@link LookupDataSet#equals(Object)}
    */
   @Test
-  @DisplayName("Test equals(Object); when other is wrong type; then return not equal")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean LookupDataSet.equals(Object)", "int LookupDataSet.hashCode()"})
-  void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
+  public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(new LookupDataSet(), "Different type to LookupDataSet");
   }

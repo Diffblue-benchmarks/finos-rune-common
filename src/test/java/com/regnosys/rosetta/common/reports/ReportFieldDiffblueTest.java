@@ -20,19 +20,17 @@ package com.regnosys.rosetta.common.reports;
  * ==============
  */
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import static org.junit.Assert.assertEquals;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Tag;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
-class ReportFieldDiffblueTest {
+public class ReportFieldDiffblueTest {
   /**
    * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link ReportField#ReportField(String, String, Integer, String, String)}
    *   <li>{@link ReportField#toString()}
@@ -44,19 +42,11 @@ class ReportFieldDiffblueTest {
    * </ul>
    */
   @Test
-  @DisplayName("Test getters and setters")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void ReportField.<init>(String, String, Integer, String, String)",
-    "String ReportField.getIssue()",
-    "String ReportField.getName()",
-    "Integer ReportField.getRepeatableIndex()",
-    "String ReportField.getRule()",
-    "String ReportField.getValue()",
-    "String ReportField.toString()"
-  })
-  void testGettersAndSetters() {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void ReportField.<init>(String, String, Integer, String, String)",
+      "String ReportField.getIssue()", "String ReportField.getName()", "Integer ReportField.getRepeatableIndex()",
+      "String ReportField.getRule()", "String ReportField.getValue()", "String ReportField.toString()"})
+  public void testGettersAndSetters() {
     // Arrange and Act
     ReportField actualReportField = new ReportField("Name", "Rule", 1, "42", "Issue");
     String actualToStringResult = actualReportField.toString();
@@ -69,8 +59,7 @@ class ReportFieldDiffblueTest {
     assertEquals("42", actualReportField.getValue());
     assertEquals("Issue", actualIssue);
     assertEquals("Name", actualName);
-    assertEquals(
-        "ReportField[name='Name', rule='Rule', repeatableIndex=1, value='42', issue='Issue']",
+    assertEquals("ReportField[name='Name', rule='Rule', repeatableIndex=1, value='42', issue='Issue']",
         actualToStringResult);
     assertEquals("Rule", actualRule);
     assertEquals(1, actualRepeatableIndex.intValue());
@@ -78,27 +67,20 @@ class ReportFieldDiffblueTest {
 
   /**
    * Test {@link ReportField#compareTo(ReportField)} with {@code ReportField}.
-   *
    * <ul>
-   *   <li>Then return zero.
+   *   <li>Then return zero.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link ReportField#compareTo(ReportField)}
+   * <p>
+   * Method under test: {@link ReportField#compareTo(ReportField)}
    */
   @Test
-  @DisplayName("Test compareTo(ReportField) with 'ReportField'; then return zero")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"int ReportField.compareTo(ReportField)"})
-  void testCompareToWithReportField_thenReturnZero() {
+  public void testCompareToWithReportField_thenReturnZero() {
     // Arrange
     ReportField reportField = new ReportField("Name", "Rule", 1, "42", "Issue");
-    ReportField o = new ReportField("Name", "Rule", 1, "42", "Issue");
 
-    // Act
-    int actualCompareToResult = reportField.compareTo(o);
-
-    // Assert
-    assertEquals(0, actualCompareToResult);
+    // Act and Assert
+    assertEquals(0, reportField.compareTo(new ReportField("Name", "Rule", 1, "42", "Issue")));
   }
 }

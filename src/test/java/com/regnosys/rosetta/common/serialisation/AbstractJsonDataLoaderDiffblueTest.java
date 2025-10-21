@@ -20,813 +20,337 @@ package com.regnosys.rosetta.common.serialisation;
  * ==============
  */
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.atLeast;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
+import com.fasterxml.jackson.databind.cfg.MapperBuilder;
 import com.fasterxml.jackson.databind.json.JsonMapper;
-import com.fasterxml.jackson.databind.ser.BeanPropertyWriter;
-import com.regnosys.rosetta.common.merger.BarBuilder;
-import com.regnosys.rosetta.common.postprocess.qualify.QualificationReport;
-import com.regnosys.rosetta.common.projection.ProjectionDataItemExpectation;
+import com.fasterxml.jackson.databind.json.JsonMapper.Builder;
 import com.regnosys.rosetta.common.serialisation.lookup.JsonLookupDataLoader;
 import com.regnosys.rosetta.common.serialisation.projectiondata.ProjectionDataSet;
-import com.regnosys.rosetta.common.serialisation.reportdata.ExpectedResult;
 import com.regnosys.rosetta.common.serialisation.reportdata.ReportDataItem;
-import com.regnosys.rosetta.common.validation.ValidationReport;
-import com.regnosys.rosetta.generator.java.RosettaJavaPackages;
-import com.regnosys.rosetta.generator.java.RosettaJavaPackages.RootPackage;
 import com.rosetta.model.lib.ModelReportId;
-import com.rosetta.model.lib.ModelSymbolId;
-import com.rosetta.model.lib.validation.ValidationResult;
-import com.rosetta.model.lib.validation.ValidationResult.ModelValidationResult;
-import com.rosetta.model.lib.validation.ValidationResult.ValidationType;
-import com.rosetta.util.serialisation.AttributeXMLConfiguration;
-import com.rosetta.util.serialisation.AttributeXMLRepresentation;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
 import javax.management.loading.MLet;
 import net.bytebuddy.dynamic.loading.ByteArrayClassLoader;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Tag;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.mockito.Mockito;
 
-class AbstractJsonDataLoaderDiffblueTest {
+public class AbstractJsonDataLoaderDiffblueTest {
   /**
    * Test {@link AbstractJsonDataLoader#load()}.
-   *
-   * <p>Method under test: {@link AbstractJsonDataLoader#load()}
+   * <p>
+   * Method under test: {@link AbstractJsonDataLoader#load()}
    */
   @Test
-  @DisplayName("Test load()")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({"List AbstractJsonDataLoader.load()"})
-  void testLoad() throws MalformedURLException {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"java.util.List AbstractJsonDataLoader.load()"})
+  public void testLoad() throws MalformedURLException {
     // Arrange
     MLet classLoader = new MLet();
     JsonMapper rosettaObjectMapper = JsonMapper.builder().findAndAddModules().build();
-    URL descriptorPath =
-        Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toUri().toURL();
-
-    JsonLookupDataLoader jsonLookupDataLoader =
-        new JsonLookupDataLoader(
-            classLoader, rosettaObjectMapper, descriptorPath, new ArrayList<>());
+    URL descriptorPath = Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toUri().toURL();
 
     // Act and Assert
-    assertTrue(jsonLookupDataLoader.load().isEmpty());
+    assertTrue((new JsonLookupDataLoader(classLoader, rosettaObjectMapper, descriptorPath, new ArrayList<>())).load()
+        .isEmpty());
   }
 
   /**
    * Test {@link AbstractJsonDataLoader#load()}.
-   *
    * <ul>
-   *   <li>Given {@link ArrayList#ArrayList()} add {@code foo}.
+   *   <li>Given {@link ArrayList#ArrayList()} add {@code foo}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link AbstractJsonDataLoader#load()}
+   * <p>
+   * Method under test: {@link AbstractJsonDataLoader#load()}
    */
   @Test
-  @DisplayName("Test load(); given ArrayList() add 'foo'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({"List AbstractJsonDataLoader.load()"})
-  void testLoad_givenArrayListAddFoo() throws MalformedURLException {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"java.util.List AbstractJsonDataLoader.load()"})
+  public void testLoad_givenArrayListAddFoo() throws MalformedURLException {
     // Arrange
     ArrayList<String> descriptorFileNames = new ArrayList<>();
     descriptorFileNames.add("foo");
     MLet classLoader = new MLet();
-    JsonMapper rosettaObjectMapper = JsonMapper.builder().findAndAddModules().build();
-    URL descriptorPath =
-        Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toUri().toURL();
-
-    JsonLookupDataLoader jsonLookupDataLoader =
-        new JsonLookupDataLoader(
-            classLoader, rosettaObjectMapper, descriptorPath, descriptorFileNames);
 
     // Act and Assert
-    assertTrue(jsonLookupDataLoader.load().isEmpty());
+    assertTrue((new JsonLookupDataLoader(classLoader, JsonMapper.builder().findAndAddModules().build(),
+        Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toUri().toURL(), descriptorFileNames)).load()
+        .isEmpty());
   }
 
   /**
    * Test {@link AbstractJsonDataLoader#load()}.
-   *
    * <ul>
-   *   <li>Given {@link ArrayList#ArrayList()} add {@code Resolved URL {}}.
+   *   <li>Given {@link ArrayList#ArrayList()} add {@code Resolved URL {}}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link AbstractJsonDataLoader#load()}
+   * <p>
+   * Method under test: {@link AbstractJsonDataLoader#load()}
    */
   @Test
-  @DisplayName("Test load(); given ArrayList() add 'Resolved URL {}'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({"List AbstractJsonDataLoader.load()"})
-  void testLoad_givenArrayListAddResolvedUrl() throws MalformedURLException {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"java.util.List AbstractJsonDataLoader.load()"})
+  public void testLoad_givenArrayListAddResolvedUrl() throws MalformedURLException {
     // Arrange
     ArrayList<String> descriptorFileNames = new ArrayList<>();
     descriptorFileNames.add("Resolved URL {}");
     descriptorFileNames.add("foo");
     MLet classLoader = new MLet();
-    JsonMapper rosettaObjectMapper = JsonMapper.builder().findAndAddModules().build();
-    URL descriptorPath =
-        Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toUri().toURL();
-
-    JsonLookupDataLoader jsonLookupDataLoader =
-        new JsonLookupDataLoader(
-            classLoader, rosettaObjectMapper, descriptorPath, descriptorFileNames);
 
     // Act and Assert
-    assertTrue(jsonLookupDataLoader.load().isEmpty());
+    assertTrue((new JsonLookupDataLoader(classLoader, JsonMapper.builder().findAndAddModules().build(),
+        Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toUri().toURL(), descriptorFileNames)).load()
+        .isEmpty());
   }
 
   /**
    * Test {@link AbstractJsonDataLoader#resolve(URL, String)}.
-   *
-   * <p>Method under test: {@link AbstractJsonDataLoader#resolve(URL, String)}
+   * <p>
+   * Method under test: {@link AbstractJsonDataLoader#resolve(URL, String)}
    */
   @Test
-  @DisplayName("Test resolve(URL, String)")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"URL AbstractJsonDataLoader.resolve(URL, String)"})
-  void testResolve() throws MalformedURLException {
+  public void testResolve() throws MalformedURLException {
     // Arrange
     MLet classLoader = new MLet();
     JsonMapper rosettaObjectMapper = JsonMapper.builder().findAndAddModules().build();
-    URL descriptorPath =
-        Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toUri().toURL();
-
-    JsonLookupDataLoader jsonLookupDataLoader =
-        new JsonLookupDataLoader(
-            classLoader, rosettaObjectMapper, descriptorPath, new ArrayList<>());
+    URL descriptorPath = Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toUri().toURL();
 
     // Act
-    URL actualResolveResult =
-        jsonLookupDataLoader.resolve(
-            Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toUri().toURL(), "Child");
+    URL actualResolveResult = (new JsonLookupDataLoader(classLoader, rosettaObjectMapper, descriptorPath,
+        new ArrayList<>()))
+        .resolve(Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toUri().toURL(), "Child");
 
     // Assert
-    Path getResult = Paths.get(System.getProperty("java.io.tmpdir"), "test.txt", "Child");
-    String expectedToStringResult = String.join("", "file:", getResult.toString());
+    String expectedToStringResult = String.join("", "file:",
+        Paths.get(System.getProperty("java.io.tmpdir"), "test.txt", "Child").toString());
     assertEquals(expectedToStringResult, actualResolveResult.toString());
   }
 
   /**
    * Test {@link AbstractJsonDataLoader#getInput(String, ReportDataItem, URL)}.
-   *
    * <ul>
-   *   <li>Given {@link ExpectedResult#ExpectedResult()}.
-   *   <li>Then return size is one.
+   *   <li>Given {@code AbstractJsonDataLoader}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link AbstractJsonDataLoader#getInput(String, ReportDataItem, URL)}
+   * <p>
+   * Method under test: {@link AbstractJsonDataLoader#getInput(String, ReportDataItem, URL)}
    */
   @Test
-  @DisplayName(
-      "Test getInput(String, ReportDataItem, URL); given ExpectedResult(); then return size is one")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Object AbstractJsonDataLoader.getInput(String, ReportDataItem, URL)"})
-  void testGetInput_givenExpectedResult_thenReturnSizeIsOne()
+  public void testGetInput_givenComRegnosysRosettaCommonSerialisationAbstractJsonDataLoader()
       throws ClassNotFoundException, MalformedURLException {
     // Arrange
     ByteArrayClassLoader classLoader = mock(ByteArrayClassLoader.class);
-    Class<Object> forNameResult = Object.class;
+    Class<AbstractJsonDataLoader> forNameResult = AbstractJsonDataLoader.class;
     Mockito.<Class<?>>when(classLoader.loadClass(Mockito.<String>any())).thenReturn(forNameResult);
     JsonMapper rosettaObjectMapper = JsonMapper.builder().findAndAddModules().build();
-    URL descriptorPath =
-        Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toUri().toURL();
-
-    JsonLookupDataLoader jsonLookupDataLoader =
-        new JsonLookupDataLoader(
-            classLoader, rosettaObjectMapper, descriptorPath, new ArrayList<>());
-
-    ReportDataItem data = mock(ReportDataItem.class);
-    when(data.getInput()).thenReturn(new ExpectedResult());
+    URL descriptorPath = Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toUri().toURL();
+    JsonLookupDataLoader jsonLookupDataLoader = new JsonLookupDataLoader(classLoader, rosettaObjectMapper,
+        descriptorPath, new ArrayList<>());
 
     // Act
-    Object actualInput =
-        jsonLookupDataLoader.getInput(
-            "Input Type",
-            data,
-            Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toUri().toURL());
+    Object actualInput = jsonLookupDataLoader.getInput("Input Type", new ReportDataItem(),
+        Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toUri().toURL());
 
     // Assert
-    verify(data, atLeast(1)).getInput();
-    verify(classLoader).loadClass("Input Type");
-    assertTrue(actualInput instanceof Map);
-    assertEquals(1, ((Map<String, Object>) actualInput).size());
-    assertNull(((Map<String, Object>) actualInput).get("expectationsPerReport"));
-  }
-
-  /**
-   * Test {@link AbstractJsonDataLoader#getInput(String, ReportDataItem, URL)}.
-   *
-   * <ul>
-   *   <li>Given fromQualifiedName {@code Str}.
-   *   <li>Then return {@code Str}.
-   * </ul>
-   *
-   * <p>Method under test: {@link AbstractJsonDataLoader#getInput(String, ReportDataItem, URL)}
-   */
-  @Test
-  @DisplayName(
-      "Test getInput(String, ReportDataItem, URL); given fromQualifiedName 'Str'; then return 'Str'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Object AbstractJsonDataLoader.getInput(String, ReportDataItem, URL)"})
-  void testGetInput_givenFromQualifiedNameStr_thenReturnStr()
-      throws ClassNotFoundException, MalformedURLException {
-    // Arrange
-    ByteArrayClassLoader classLoader = mock(ByteArrayClassLoader.class);
-    Class<Object> forNameResult = Object.class;
-    Mockito.<Class<?>>when(classLoader.loadClass(Mockito.<String>any())).thenReturn(forNameResult);
-    JsonMapper rosettaObjectMapper = JsonMapper.builder().findAndAddModules().build();
-    URL descriptorPath =
-        Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toUri().toURL();
-
-    JsonLookupDataLoader jsonLookupDataLoader =
-        new JsonLookupDataLoader(
-            classLoader, rosettaObjectMapper, descriptorPath, new ArrayList<>());
-
-    ReportDataItem data = mock(ReportDataItem.class);
-    when(data.getInput()).thenReturn(ModelSymbolId.fromQualifiedName("Str"));
-
-    // Act
-    Object actualInput =
-        jsonLookupDataLoader.getInput(
-            "Input Type",
-            data,
-            Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toUri().toURL());
-
-    // Assert
-    verify(data, atLeast(1)).getInput();
-    verify(classLoader).loadClass("Input Type");
-    assertEquals("Str", actualInput);
-  }
-
-  /**
-   * Test {@link AbstractJsonDataLoader#getInput(String, ReportDataItem, URL)}.
-   *
-   * <ul>
-   *   <li>Given {@code Object}.
-   *   <li>When {@link ReportDataItem#ReportDataItem()}.
-   *   <li>Then return {@code null}.
-   * </ul>
-   *
-   * <p>Method under test: {@link AbstractJsonDataLoader#getInput(String, ReportDataItem, URL)}
-   */
-  @Test
-  @DisplayName(
-      "Test getInput(String, ReportDataItem, URL); given 'java.lang.Object'; when ReportDataItem(); then return 'null'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Object AbstractJsonDataLoader.getInput(String, ReportDataItem, URL)"})
-  void testGetInput_givenJavaLangObject_whenReportDataItem_thenReturnNull()
-      throws ClassNotFoundException, MalformedURLException {
-    // Arrange
-    ByteArrayClassLoader classLoader = mock(ByteArrayClassLoader.class);
-    Class<Object> forNameResult = Object.class;
-    Mockito.<Class<?>>when(classLoader.loadClass(Mockito.<String>any())).thenReturn(forNameResult);
-    JsonMapper rosettaObjectMapper = JsonMapper.builder().findAndAddModules().build();
-    URL descriptorPath =
-        Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toUri().toURL();
-
-    JsonLookupDataLoader jsonLookupDataLoader =
-        new JsonLookupDataLoader(
-            classLoader, rosettaObjectMapper, descriptorPath, new ArrayList<>());
-
-    // Act
-    Object actualInput =
-        jsonLookupDataLoader.getInput(
-            "Input Type",
-            new ReportDataItem(),
-            Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toUri().toURL());
-
-    // Assert
-    verify(classLoader).loadClass("Input Type");
+    verify(classLoader).loadClass(eq("Input Type"));
     assertNull(actualInput);
   }
 
   /**
    * Test {@link AbstractJsonDataLoader#getInput(String, ReportDataItem, URL)}.
-   *
    * <ul>
-   *   <li>Given {@link RosettaJavaPackages.RootPackage#RootPackage(String)} with {@code Namespace}.
-   *   <li>Then return {@code Namespace}.
+   *   <li>Given {@code ReportDataItem}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link AbstractJsonDataLoader#getInput(String, ReportDataItem, URL)}
+   * <p>
+   * Method under test: {@link AbstractJsonDataLoader#getInput(String, ReportDataItem, URL)}
    */
   @Test
-  @DisplayName(
-      "Test getInput(String, ReportDataItem, URL); given RootPackage(String) with 'Namespace'; then return 'Namespace'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Object AbstractJsonDataLoader.getInput(String, ReportDataItem, URL)"})
-  void testGetInput_givenRootPackageWithNamespace_thenReturnNamespace()
+  public void testGetInput_givenComRegnosysRosettaCommonSerialisationReportdataReportDataItem()
       throws ClassNotFoundException, MalformedURLException {
     // Arrange
     ByteArrayClassLoader classLoader = mock(ByteArrayClassLoader.class);
-    Class<Object> forNameResult = Object.class;
+    Class<ReportDataItem> forNameResult = ReportDataItem.class;
     Mockito.<Class<?>>when(classLoader.loadClass(Mockito.<String>any())).thenReturn(forNameResult);
     JsonMapper rosettaObjectMapper = JsonMapper.builder().findAndAddModules().build();
-    URL descriptorPath =
-        Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toUri().toURL();
-
-    JsonLookupDataLoader jsonLookupDataLoader =
-        new JsonLookupDataLoader(
-            classLoader, rosettaObjectMapper, descriptorPath, new ArrayList<>());
-
-    ReportDataItem data = mock(ReportDataItem.class);
-    when(data.getInput()).thenReturn(new RootPackage("Namespace"));
+    URL descriptorPath = Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toUri().toURL();
+    JsonLookupDataLoader jsonLookupDataLoader = new JsonLookupDataLoader(classLoader, rosettaObjectMapper,
+        descriptorPath, new ArrayList<>());
 
     // Act
-    Object actualInput =
-        jsonLookupDataLoader.getInput(
-            "Input Type",
-            data,
-            Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toUri().toURL());
+    Object actualInput = jsonLookupDataLoader.getInput("Input Type", new ReportDataItem(),
+        Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toUri().toURL());
 
     // Assert
-    verify(data, atLeast(1)).getInput();
-    verify(classLoader).loadClass("Input Type");
-    assertEquals("Namespace", actualInput);
+    verify(classLoader).loadClass(eq("Input Type"));
+    assertNull(actualInput);
   }
 
   /**
    * Test {@link AbstractJsonDataLoader#getInput(String, ReportDataItem, URL)}.
-   *
    * <ul>
-   *   <li>Given {@link QualificationReport#SUCCESS}.
-   *   <li>Then return size is four.
+   *   <li>Then calls {@link MapperBuilder#findAndAddModules()}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link AbstractJsonDataLoader#getInput(String, ReportDataItem, URL)}
+   * <p>
+   * Method under test: {@link AbstractJsonDataLoader#getInput(String, ReportDataItem, URL)}
    */
   @Test
-  @DisplayName(
-      "Test getInput(String, ReportDataItem, URL); given SUCCESS; then return size is four")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"Object AbstractJsonDataLoader.getInput(String, ReportDataItem, URL)"})
-  void testGetInput_givenSuccess_thenReturnSizeIsFour()
-      throws ClassNotFoundException, MalformedURLException {
+  public void testGetInput_thenCallsFindAndAddModules() throws ClassNotFoundException, MalformedURLException {
+    // Arrange
+    ByteArrayClassLoader classLoader = mock(ByteArrayClassLoader.class);
+    Class<Object> forNameResult = Object.class;
+    Mockito.<Class<?>>when(classLoader.loadClass(Mockito.<String>any())).thenReturn(forNameResult);
+    Builder builder = mock(Builder.class);
+    when(builder.findAndAddModules()).thenReturn(JsonMapper.builder());
+    JsonMapper rosettaObjectMapper = builder.findAndAddModules().build();
+    URL descriptorPath = Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toUri().toURL();
+    JsonLookupDataLoader jsonLookupDataLoader = new JsonLookupDataLoader(classLoader, rosettaObjectMapper,
+        descriptorPath, new ArrayList<>());
+
+    // Act
+    Object actualInput = jsonLookupDataLoader.getInput("Input Type", new ReportDataItem(),
+        Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toUri().toURL());
+
+    // Assert
+    verify(builder).findAndAddModules();
+    verify(classLoader).loadClass(eq("Input Type"));
+    assertNull(actualInput);
+  }
+
+  /**
+   * Test {@link AbstractJsonDataLoader#getInput(String, ReportDataItem, URL)}.
+   * <ul>
+   *   <li>Then return {@code null}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link AbstractJsonDataLoader#getInput(String, ReportDataItem, URL)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"Object AbstractJsonDataLoader.getInput(String, ReportDataItem, URL)"})
+  public void testGetInput_thenReturnNull() throws ClassNotFoundException, MalformedURLException {
     // Arrange
     ByteArrayClassLoader classLoader = mock(ByteArrayClassLoader.class);
     Class<Object> forNameResult = Object.class;
     Mockito.<Class<?>>when(classLoader.loadClass(Mockito.<String>any())).thenReturn(forNameResult);
     JsonMapper rosettaObjectMapper = JsonMapper.builder().findAndAddModules().build();
-    URL descriptorPath =
-        Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toUri().toURL();
-
-    JsonLookupDataLoader jsonLookupDataLoader =
-        new JsonLookupDataLoader(
-            classLoader, rosettaObjectMapper, descriptorPath, new ArrayList<>());
-
-    ReportDataItem data = mock(ReportDataItem.class);
-    when(data.getInput()).thenReturn(QualificationReport.SUCCESS);
+    URL descriptorPath = Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toUri().toURL();
+    JsonLookupDataLoader jsonLookupDataLoader = new JsonLookupDataLoader(classLoader, rosettaObjectMapper,
+        descriptorPath, new ArrayList<>());
 
     // Act
-    Object actualInput =
-        jsonLookupDataLoader.getInput(
-            "Input Type",
-            data,
-            Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toUri().toURL());
+    Object actualInput = jsonLookupDataLoader.getInput("Input Type", new ReportDataItem(),
+        Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toUri().toURL());
 
     // Assert
-    verify(data, atLeast(1)).getInput();
-    verify(classLoader).loadClass("Input Type");
-    assertEquals(4, ((Map<String, Object>) actualInput).size());
-    Object getResult = ((Map<String, Object>) actualInput).get("results");
-    assertTrue(getResult instanceof List);
-    assertTrue(actualInput instanceof Map);
-    assertNull(((Map<String, Object>) actualInput).get("ingestedObject"));
-    assertEquals(
-        0,
-        ((Integer) ((Map<String, Object>) actualInput).get("qualifiableObjectsCount")).intValue());
-    assertEquals(
-        0,
-        ((Integer) ((Map<String, Object>) actualInput).get("uniquelyQualifiedObjectsCount"))
-            .intValue());
-    assertTrue(((List<Object>) getResult).isEmpty());
-  }
-
-  /**
-   * Test {@link AbstractJsonDataLoader#getInput(String, ReportDataItem, URL)}.
-   *
-   * <ul>
-   *   <li>Then return {@code NON_EMPTY}.
-   * </ul>
-   *
-   * <p>Method under test: {@link AbstractJsonDataLoader#getInput(String, ReportDataItem, URL)}
-   */
-  @Test
-  @DisplayName("Test getInput(String, ReportDataItem, URL); then return 'NON_EMPTY'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Object AbstractJsonDataLoader.getInput(String, ReportDataItem, URL)"})
-  void testGetInput_thenReturnNonEmpty() throws ClassNotFoundException, MalformedURLException {
-    // Arrange
-    ByteArrayClassLoader classLoader = mock(ByteArrayClassLoader.class);
-    Class<Object> forNameResult = Object.class;
-    Mockito.<Class<?>>when(classLoader.loadClass(Mockito.<String>any())).thenReturn(forNameResult);
-    JsonMapper rosettaObjectMapper = JsonMapper.builder().findAndAddModules().build();
-    URL descriptorPath =
-        Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toUri().toURL();
-
-    JsonLookupDataLoader jsonLookupDataLoader =
-        new JsonLookupDataLoader(
-            classLoader, rosettaObjectMapper, descriptorPath, new ArrayList<>());
-    ReportDataItem data =
-        new ReportDataItem(
-            "Name", BeanPropertyWriter.MARKER_FOR_EMPTY, BeanPropertyWriter.MARKER_FOR_EMPTY);
-
-    // Act
-    Object actualInput =
-        jsonLookupDataLoader.getInput(
-            "Input Type",
-            data,
-            Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toUri().toURL());
-
-    // Assert
-    verify(classLoader).loadClass("Input Type");
-    assertEquals("NON_EMPTY", actualInput);
-  }
-
-  /**
-   * Test {@link AbstractJsonDataLoader#getInput(String, ReportDataItem, URL)}.
-   *
-   * <ul>
-   *   <li>Then return size is six.
-   * </ul>
-   *
-   * <p>Method under test: {@link AbstractJsonDataLoader#getInput(String, ReportDataItem, URL)}
-   */
-  @Test
-  @DisplayName("Test getInput(String, ReportDataItem, URL); then return size is six")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Object AbstractJsonDataLoader.getInput(String, ReportDataItem, URL)"})
-  void testGetInput_thenReturnSizeIsSix() throws ClassNotFoundException, MalformedURLException {
-    // Arrange
-    ByteArrayClassLoader classLoader = mock(ByteArrayClassLoader.class);
-    Class<Object> forNameResult = Object.class;
-    Mockito.<Class<?>>when(classLoader.loadClass(Mockito.<String>any())).thenReturn(forNameResult);
-    JsonMapper rosettaObjectMapper = JsonMapper.builder().findAndAddModules().build();
-    URL descriptorPath =
-        Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toUri().toURL();
-
-    JsonLookupDataLoader jsonLookupDataLoader =
-        new JsonLookupDataLoader(
-            classLoader, rosettaObjectMapper, descriptorPath, new ArrayList<>());
-
-    ReportDataItem data = mock(ReportDataItem.class);
-    ProjectionDataItemExpectation projectionDataItemExpectation =
-        new ProjectionDataItemExpectation("Input File", "42", "Output File", 1, true, true);
-    when(data.getInput()).thenReturn(projectionDataItemExpectation);
-
-    // Act
-    Object actualInput =
-        jsonLookupDataLoader.getInput(
-            "Input Type",
-            data,
-            Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toUri().toURL());
-
-    // Assert
-    verify(data, atLeast(1)).getInput();
-    verify(classLoader).loadClass("Input Type");
-    assertTrue(actualInput instanceof Map);
-    assertEquals(6, ((Map<String, Object>) actualInput).size());
-    assertEquals("42", ((Map<String, Object>) actualInput).get("keyValueFile"));
-    assertEquals("Input File", ((Map<String, Object>) actualInput).get("inputFile"));
-    assertEquals("Output File", ((Map<String, Object>) actualInput).get("outputFile"));
-    assertEquals(
-        1, ((Integer) ((Map<String, Object>) actualInput).get("validationFailures")).intValue());
-    assertTrue((Boolean) ((Map<String, Object>) actualInput).get("error"));
-    assertTrue((Boolean) ((Map<String, Object>) actualInput).get("validXml"));
-  }
-
-  /**
-   * Test {@link AbstractJsonDataLoader#getInput(String, ReportDataItem, URL)}.
-   *
-   * <ul>
-   *   <li>Then return size is three.
-   * </ul>
-   *
-   * <p>Method under test: {@link AbstractJsonDataLoader#getInput(String, ReportDataItem, URL)}
-   */
-  @Test
-  @DisplayName("Test getInput(String, ReportDataItem, URL); then return size is three")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Object AbstractJsonDataLoader.getInput(String, ReportDataItem, URL)"})
-  void testGetInput_thenReturnSizeIsThree() throws ClassNotFoundException, MalformedURLException {
-    // Arrange
-    ByteArrayClassLoader classLoader = mock(ByteArrayClassLoader.class);
-    Class<Object> forNameResult = Object.class;
-    Mockito.<Class<?>>when(classLoader.loadClass(Mockito.<String>any())).thenReturn(forNameResult);
-    JsonMapper rosettaObjectMapper = JsonMapper.builder().findAndAddModules().build();
-    URL descriptorPath =
-        Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toUri().toURL();
-
-    JsonLookupDataLoader jsonLookupDataLoader =
-        new JsonLookupDataLoader(
-            classLoader, rosettaObjectMapper, descriptorPath, new ArrayList<>());
-
-    ReportDataItem data = mock(ReportDataItem.class);
-    Optional<String> xmlName = Optional.of("foo");
-    Optional<Map<String, String>> xmlAttributes = Optional.of(new HashMap<>());
-    Optional<AttributeXMLRepresentation> xmlRepresentation =
-        Optional.of(AttributeXMLRepresentation.ELEMENT);
-
-    AttributeXMLConfiguration attributeXMLConfiguration =
-        new AttributeXMLConfiguration(xmlName, xmlAttributes, xmlRepresentation);
-    when(data.getInput()).thenReturn(attributeXMLConfiguration);
-
-    // Act
-    Object actualInput =
-        jsonLookupDataLoader.getInput(
-            "Input Type",
-            data,
-            Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toUri().toURL());
-
-    // Assert
-    verify(data, atLeast(1)).getInput();
-    verify(classLoader).loadClass("Input Type");
-    assertTrue(actualInput instanceof Map);
-    assertEquals(3, ((Map<String, Object>) actualInput).size());
-    Object getResult = ((Map<String, Object>) actualInput).get("xmlAttributes");
-    assertTrue(getResult instanceof Map);
-    assertEquals("ELEMENT", ((Map<String, Object>) actualInput).get("xmlRepresentation"));
-    assertEquals("foo", ((Map<String, Object>) actualInput).get("xmlName"));
-    assertTrue(((Map<Object, Object>) getResult).isEmpty());
-  }
-
-  /**
-   * Test {@link AbstractJsonDataLoader#getInput(String, ReportDataItem, URL)}.
-   *
-   * <ul>
-   *   <li>Then return {@code validationResults} Empty.
-   * </ul>
-   *
-   * <p>Method under test: {@link AbstractJsonDataLoader#getInput(String, ReportDataItem, URL)}
-   */
-  @Test
-  @DisplayName("Test getInput(String, ReportDataItem, URL); then return 'validationResults' Empty")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Object AbstractJsonDataLoader.getInput(String, ReportDataItem, URL)"})
-  void testGetInput_thenReturnValidationResultsEmpty()
-      throws ClassNotFoundException, MalformedURLException {
-    // Arrange
-    ByteArrayClassLoader classLoader = mock(ByteArrayClassLoader.class);
-    Class<Object> forNameResult = Object.class;
-    Mockito.<Class<?>>when(classLoader.loadClass(Mockito.<String>any())).thenReturn(forNameResult);
-    JsonMapper rosettaObjectMapper = JsonMapper.builder().findAndAddModules().build();
-    URL descriptorPath =
-        Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toUri().toURL();
-
-    JsonLookupDataLoader jsonLookupDataLoader =
-        new JsonLookupDataLoader(
-            classLoader, rosettaObjectMapper, descriptorPath, new ArrayList<>());
-
-    ReportDataItem data = mock(ReportDataItem.class);
-    BarBuilder resultObject = new BarBuilder();
-    ValidationReport validationReport = new ValidationReport(resultObject, new ArrayList<>());
-    when(data.getInput()).thenReturn(validationReport);
-
-    // Act
-    Object actualInput =
-        jsonLookupDataLoader.getInput(
-            "Input Type",
-            data,
-            Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toUri().toURL());
-
-    // Assert
-    verify(data, atLeast(1)).getInput();
-    verify(classLoader).loadClass("Input Type");
-    assertEquals(2, ((Map<String, Object>) actualInput).size());
-    Object getResult = ((Map<String, Object>) actualInput).get("validationResults");
-    assertTrue(getResult instanceof List);
-    assertTrue(actualInput instanceof Map);
-    assertTrue(((List<Object>) getResult).isEmpty());
-    assertTrue((Boolean) ((Map<String, Object>) actualInput).get("success"));
-  }
-
-  /**
-   * Test {@link AbstractJsonDataLoader#getInput(String, ReportDataItem, URL)}.
-   *
-   * <ul>
-   *   <li>Then return {@code validationResults} size is one.
-   * </ul>
-   *
-   * <p>Method under test: {@link AbstractJsonDataLoader#getInput(String, ReportDataItem, URL)}
-   */
-  @Test
-  @DisplayName(
-      "Test getInput(String, ReportDataItem, URL); then return 'validationResults' size is one")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Object AbstractJsonDataLoader.getInput(String, ReportDataItem, URL)"})
-  void testGetInput_thenReturnValidationResultsSizeIsOne()
-      throws ClassNotFoundException, MalformedURLException {
-    // Arrange
-    ByteArrayClassLoader classLoader = mock(ByteArrayClassLoader.class);
-    Class<Object> forNameResult = Object.class;
-    Mockito.<Class<?>>when(classLoader.loadClass(Mockito.<String>any())).thenReturn(forNameResult);
-    JsonMapper rosettaObjectMapper = JsonMapper.builder().findAndAddModules().build();
-    URL descriptorPath =
-        Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toUri().toURL();
-
-    JsonLookupDataLoader jsonLookupDataLoader =
-        new JsonLookupDataLoader(
-            classLoader, rosettaObjectMapper, descriptorPath, new ArrayList<>());
-
-    ArrayList<ValidationResult<?>> validationResults = new ArrayList<>();
-    Optional<String> failureReason = Optional.of("foo");
-    ModelValidationResult<?> modelValidationResult =
-        new ModelValidationResult<>(
-            "Name",
-            ValidationType.DATA_RULE,
-            "Model Object Name",
-            null,
-            "Definition",
-            failureReason);
-    validationResults.add(modelValidationResult);
-    ValidationReport validationReport = new ValidationReport(new BarBuilder(), validationResults);
-
-    ReportDataItem data = mock(ReportDataItem.class);
-    when(data.getInput()).thenReturn(validationReport);
-
-    // Act
-    Object actualInput =
-        jsonLookupDataLoader.getInput(
-            "Input Type",
-            data,
-            Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toUri().toURL());
-
-    // Assert
-    verify(data, atLeast(1)).getInput();
-    verify(classLoader).loadClass("Input Type");
-    assertEquals(2, ((Map<String, Object>) actualInput).size());
-    Object getResult = ((Map<String, Object>) actualInput).get("validationResults");
-    assertTrue(getResult instanceof List);
-    assertTrue(actualInput instanceof Map);
-    assertEquals(1, ((List<LinkedHashMap>) getResult).size());
-    LinkedHashMap getResult2 = ((List<LinkedHashMap>) getResult).get(0);
-    assertEquals(7, getResult2.size());
-    assertEquals("Definition", getResult2.get("definition"));
-    assertEquals("Model Object Name", getResult2.get("modelObjectName"));
-    assertEquals("Name", getResult2.get("name"));
-    assertEquals("foo", getResult2.get("failureReason"));
-    assertFalse((Boolean) ((Map<String, Object>) actualInput).get("success"));
+    verify(classLoader).loadClass(eq("Input Type"));
+    assertNull(actualInput);
   }
 
   /**
    * Test {@link AbstractJsonDataLoader#getDataItem(DataSet, URL)}.
-   *
-   * <p>Method under test: {@link AbstractJsonDataLoader#getDataItem(DataSet, URL)}
+   * <p>
+   * Method under test: {@link AbstractJsonDataLoader#getDataItem(DataSet, URL)}
    */
   @Test
-  @DisplayName("Test getDataItem(DataSet, URL)")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({"List AbstractJsonDataLoader.getDataItem(DataSet, URL)"})
-  void testGetDataItem() throws MalformedURLException {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"java.util.List AbstractJsonDataLoader.getDataItem(DataSet, URL)"})
+  public void testGetDataItem() throws MalformedURLException {
     // Arrange
     JsonMapper rosettaObjectMapper = JsonMapper.builder().findAndAddModules().build();
-    URL descriptorPath =
-        Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toUri().toURL();
-
-    JsonLookupDataLoader jsonLookupDataLoader =
-        new JsonLookupDataLoader(null, rosettaObjectMapper, descriptorPath, new ArrayList<>());
+    URL descriptorPath = Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toUri().toURL();
+    JsonLookupDataLoader jsonLookupDataLoader = new JsonLookupDataLoader(null, rosettaObjectMapper, descriptorPath,
+        new ArrayList<>());
 
     ArrayList<ReportDataItem> data = new ArrayList<>();
     data.add(new ReportDataItem());
     ArrayList<String> applicableProjections = new ArrayList<>();
 
-    ProjectionDataSet descriptor =
-        new ProjectionDataSet(
-            "Data Set Name",
-            "Data Set Short Name",
-            "Input Type",
-            applicableProjections,
-            new ArrayList<>(),
-            data);
-
     // Act and Assert
-    assertEquals(
-        data,
-        jsonLookupDataLoader.getDataItem(
-            descriptor,
-            Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toUri().toURL()));
+    assertEquals(data,
+        jsonLookupDataLoader
+            .getDataItem(
+                new ProjectionDataSet("Data Set Name", "Data Set Short Name", "Input Type", applicableProjections,
+                    new ArrayList<>(), data),
+                Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toUri().toURL()));
   }
 
   /**
    * Test {@link AbstractJsonDataLoader#getDataItem(DataSet, URL)}.
-   *
    * <ul>
-   *   <li>Given {@link ReportDataItem#ReportDataItem()}.
-   *   <li>Then return {@link ArrayList#ArrayList()}.
+   *   <li>Given {@link ReportDataItem#ReportDataItem()}.</li>
+   *   <li>Then return {@link ArrayList#ArrayList()}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link AbstractJsonDataLoader#getDataItem(DataSet, URL)}
+   * <p>
+   * Method under test: {@link AbstractJsonDataLoader#getDataItem(DataSet, URL)}
    */
   @Test
-  @DisplayName("Test getDataItem(DataSet, URL); given ReportDataItem(); then return ArrayList()")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({"List AbstractJsonDataLoader.getDataItem(DataSet, URL)"})
-  void testGetDataItem_givenReportDataItem_thenReturnArrayList() throws MalformedURLException {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"java.util.List AbstractJsonDataLoader.getDataItem(DataSet, URL)"})
+  public void testGetDataItem_givenReportDataItem_thenReturnArrayList() throws MalformedURLException {
     // Arrange
     MLet classLoader = new MLet();
     JsonMapper rosettaObjectMapper = JsonMapper.builder().findAndAddModules().build();
-    URL descriptorPath =
-        Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toUri().toURL();
-
-    JsonLookupDataLoader jsonLookupDataLoader =
-        new JsonLookupDataLoader(
-            classLoader, rosettaObjectMapper, descriptorPath, new ArrayList<>());
+    URL descriptorPath = Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toUri().toURL();
+    JsonLookupDataLoader jsonLookupDataLoader = new JsonLookupDataLoader(classLoader, rosettaObjectMapper,
+        descriptorPath, new ArrayList<>());
 
     ArrayList<ReportDataItem> data = new ArrayList<>();
     data.add(new ReportDataItem());
     ArrayList<String> applicableProjections = new ArrayList<>();
 
-    ProjectionDataSet descriptor =
-        new ProjectionDataSet(
-            "Data Set Name",
-            "Data Set Short Name",
-            "Input Type",
-            applicableProjections,
-            new ArrayList<>(),
-            data);
-
     // Act and Assert
-    assertEquals(
-        data,
-        jsonLookupDataLoader.getDataItem(
-            descriptor,
-            Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toUri().toURL()));
+    assertEquals(data,
+        jsonLookupDataLoader
+            .getDataItem(
+                new ProjectionDataSet("Data Set Name", "Data Set Short Name", "Input Type", applicableProjections,
+                    new ArrayList<>(), data),
+                Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toUri().toURL()));
   }
 
   /**
    * Test {@link AbstractJsonDataLoader#getDataItem(DataSet, URL)}.
-   *
    * <ul>
-   *   <li>Then return Empty.
+   *   <li>Then return Empty.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link AbstractJsonDataLoader#getDataItem(DataSet, URL)}
+   * <p>
+   * Method under test: {@link AbstractJsonDataLoader#getDataItem(DataSet, URL)}
    */
   @Test
-  @DisplayName("Test getDataItem(DataSet, URL); then return Empty")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({"List AbstractJsonDataLoader.getDataItem(DataSet, URL)"})
-  void testGetDataItem_thenReturnEmpty() throws MalformedURLException {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"java.util.List AbstractJsonDataLoader.getDataItem(DataSet, URL)"})
+  public void testGetDataItem_thenReturnEmpty() throws MalformedURLException {
     // Arrange
     MLet classLoader = new MLet();
     JsonMapper rosettaObjectMapper = JsonMapper.builder().findAndAddModules().build();
-    URL descriptorPath =
-        Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toUri().toURL();
-
-    JsonLookupDataLoader jsonLookupDataLoader =
-        new JsonLookupDataLoader(
-            classLoader, rosettaObjectMapper, descriptorPath, new ArrayList<>());
+    URL descriptorPath = Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toUri().toURL();
+    JsonLookupDataLoader jsonLookupDataLoader = new JsonLookupDataLoader(classLoader, rosettaObjectMapper,
+        descriptorPath, new ArrayList<>());
     ArrayList<String> applicableProjections = new ArrayList<>();
     ArrayList<ModelReportId> applicableReports = new ArrayList<>();
-
-    ProjectionDataSet descriptor =
-        new ProjectionDataSet(
-            "Data Set Name",
-            "Data Set Short Name",
-            "Input Type",
-            applicableProjections,
-            applicableReports,
-            new ArrayList<>());
 
     // Act and Assert
     assertTrue(
         jsonLookupDataLoader
             .getDataItem(
-                descriptor,
+                new ProjectionDataSet("Data Set Name", "Data Set Short Name", "Input Type", applicableProjections,
+                    applicableReports, new ArrayList<>()),
                 Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toUri().toURL())
             .isEmpty());
   }

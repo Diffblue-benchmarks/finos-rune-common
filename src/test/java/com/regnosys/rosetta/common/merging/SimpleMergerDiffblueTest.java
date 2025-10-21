@@ -20,7 +20,8 @@ package com.regnosys.rosetta.common.merging;
  * ==============
  */
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.Assert.assertThrows;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.doNothing;
@@ -28,9 +29,8 @@ import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
-import com.fasterxml.jackson.databind.ser.BeanPropertyWriter;
 import com.regnosys.rosetta.common.merger.BarBuilder;
 import com.regnosys.rosetta.common.merger.FooBuilder;
 import com.regnosys.rosetta.common.serialisation.json.preannotation.testpojo.PriceQuantity;
@@ -44,31 +44,25 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Function;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Tag;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.mockito.Mockito;
 
-class SimpleMergerDiffblueTest {
+public class SimpleMergerDiffblueTest {
   /**
    * Test {@link SimpleMerger#run(RosettaModelObjectBuilder, RosettaModelObjectBuilder)}.
-   *
    * <ul>
-   *   <li>Given {@link Consumer} {@link Consumer#accept(Object)} does nothing.
-   *   <li>When {@link BarBuilder} (default constructor).
-   *   <li>Then calls {@link Consumer#accept(Object)}.
+   *   <li>Given {@link Consumer} {@link Consumer#accept(Object)} does nothing.</li>
+   *   <li>When {@link BarBuilder} (default constructor).</li>
+   *   <li>Then calls {@link Consumer#accept(Object)}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SimpleMerger#run(RosettaModelObjectBuilder,
-   * RosettaModelObjectBuilder)}
+   * <p>
+   * Method under test: {@link SimpleMerger#run(RosettaModelObjectBuilder, RosettaModelObjectBuilder)}
    */
   @Test
-  @DisplayName(
-      "Test run(RosettaModelObjectBuilder, RosettaModelObjectBuilder); given Consumer accept(Object) does nothing; when BarBuilder (default constructor); then calls accept(Object)")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void SimpleMerger.run(RosettaModelObjectBuilder, RosettaModelObjectBuilder)"})
-  void testRun_givenConsumerAcceptDoesNothing_whenBarBuilder_thenCallsAccept() {
+  public void testRun_givenConsumerAcceptDoesNothing_whenBarBuilder_thenCallsAccept() {
     // Arrange
     Consumer<RosettaModelObjectBuilder> postProcessor = mock(Consumer.class);
     doNothing().when(postProcessor).accept(Mockito.<RosettaModelObjectBuilder>any());
@@ -84,23 +78,18 @@ class SimpleMergerDiffblueTest {
 
   /**
    * Test {@link SimpleMerger#run(RosettaModelObjectBuilder, RosettaModelObjectBuilder)}.
-   *
    * <ul>
-   *   <li>Given {@link Consumer} {@link Consumer#accept(Object)} does nothing.
-   *   <li>When {@link FooBuilder} (default constructor).
-   *   <li>Then calls {@link Consumer#accept(Object)}.
+   *   <li>Given {@link Consumer} {@link Consumer#accept(Object)} does nothing.</li>
+   *   <li>When {@link FooBuilder} (default constructor).</li>
+   *   <li>Then calls {@link Consumer#accept(Object)}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SimpleMerger#run(RosettaModelObjectBuilder,
-   * RosettaModelObjectBuilder)}
+   * <p>
+   * Method under test: {@link SimpleMerger#run(RosettaModelObjectBuilder, RosettaModelObjectBuilder)}
    */
   @Test
-  @DisplayName(
-      "Test run(RosettaModelObjectBuilder, RosettaModelObjectBuilder); given Consumer accept(Object) does nothing; when FooBuilder (default constructor); then calls accept(Object)")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void SimpleMerger.run(RosettaModelObjectBuilder, RosettaModelObjectBuilder)"})
-  void testRun_givenConsumerAcceptDoesNothing_whenFooBuilder_thenCallsAccept() {
+  public void testRun_givenConsumerAcceptDoesNothing_whenFooBuilder_thenCallsAccept() {
     // Arrange
     Consumer<RosettaModelObjectBuilder> postProcessor = mock(Consumer.class);
     doNothing().when(postProcessor).accept(Mockito.<RosettaModelObjectBuilder>any());
@@ -116,23 +105,18 @@ class SimpleMergerDiffblueTest {
 
   /**
    * Test {@link SimpleMerger#run(RosettaModelObjectBuilder, RosettaModelObjectBuilder)}.
-   *
    * <ul>
-   *   <li>Given {@link Consumer} {@link Consumer#accept(Object)} does nothing.
-   *   <li>When {@link KeyBuilderImpl} (default constructor).
-   *   <li>Then calls {@link Consumer#accept(Object)}.
+   *   <li>Given {@link Consumer} {@link Consumer#accept(Object)} does nothing.</li>
+   *   <li>When {@link KeyBuilderImpl} (default constructor).</li>
+   *   <li>Then calls {@link Consumer#accept(Object)}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SimpleMerger#run(RosettaModelObjectBuilder,
-   * RosettaModelObjectBuilder)}
+   * <p>
+   * Method under test: {@link SimpleMerger#run(RosettaModelObjectBuilder, RosettaModelObjectBuilder)}
    */
   @Test
-  @DisplayName(
-      "Test run(RosettaModelObjectBuilder, RosettaModelObjectBuilder); given Consumer accept(Object) does nothing; when KeyBuilderImpl (default constructor); then calls accept(Object)")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void SimpleMerger.run(RosettaModelObjectBuilder, RosettaModelObjectBuilder)"})
-  void testRun_givenConsumerAcceptDoesNothing_whenKeyBuilderImpl_thenCallsAccept() {
+  public void testRun_givenConsumerAcceptDoesNothing_whenKeyBuilderImpl_thenCallsAccept() {
     // Arrange
     Consumer<RosettaModelObjectBuilder> postProcessor = mock(Consumer.class);
     doNothing().when(postProcessor).accept(Mockito.<RosettaModelObjectBuilder>any());
@@ -148,23 +132,18 @@ class SimpleMergerDiffblueTest {
 
   /**
    * Test {@link SimpleMerger#run(RosettaModelObjectBuilder, RosettaModelObjectBuilder)}.
-   *
    * <ul>
-   *   <li>Given ten.
-   *   <li>When {@link BarBuilder} (default constructor) Num is ten.
-   *   <li>Then calls {@link Consumer#accept(Object)}.
+   *   <li>Given ten.</li>
+   *   <li>When {@link BarBuilder} (default constructor) Num is ten.</li>
+   *   <li>Then calls {@link Consumer#accept(Object)}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SimpleMerger#run(RosettaModelObjectBuilder,
-   * RosettaModelObjectBuilder)}
+   * <p>
+   * Method under test: {@link SimpleMerger#run(RosettaModelObjectBuilder, RosettaModelObjectBuilder)}
    */
   @Test
-  @DisplayName(
-      "Test run(RosettaModelObjectBuilder, RosettaModelObjectBuilder); given ten; when BarBuilder (default constructor) Num is ten; then calls accept(Object)")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void SimpleMerger.run(RosettaModelObjectBuilder, RosettaModelObjectBuilder)"})
-  void testRun_givenTen_whenBarBuilderNumIsTen_thenCallsAccept() {
+  public void testRun_givenTen_whenBarBuilderNumIsTen_thenCallsAccept() {
     // Arrange
     Consumer<RosettaModelObjectBuilder> postProcessor = mock(Consumer.class);
     doNothing().when(postProcessor).accept(Mockito.<RosettaModelObjectBuilder>any());
@@ -182,53 +161,40 @@ class SimpleMergerDiffblueTest {
 
   /**
    * Test {@link SimpleMerger#run(RosettaModelObjectBuilder, RosettaModelObjectBuilder)}.
-   *
    * <ul>
-   *   <li>Then throw {@link IllegalArgumentException}.
+   *   <li>Then throw {@link IllegalArgumentException}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SimpleMerger#run(RosettaModelObjectBuilder,
-   * RosettaModelObjectBuilder)}
+   * <p>
+   * Method under test: {@link SimpleMerger#run(RosettaModelObjectBuilder, RosettaModelObjectBuilder)}
    */
   @Test
-  @DisplayName(
-      "Test run(RosettaModelObjectBuilder, RosettaModelObjectBuilder); then throw IllegalArgumentException")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void SimpleMerger.run(RosettaModelObjectBuilder, RosettaModelObjectBuilder)"})
-  void testRun_thenThrowIllegalArgumentException() {
+  public void testRun_thenThrowIllegalArgumentException() {
     // Arrange
     Consumer<RosettaModelObjectBuilder> postProcessor = mock(Consumer.class);
-    doThrow(new IllegalArgumentException())
-        .when(postProcessor)
-        .accept(Mockito.<RosettaModelObjectBuilder>any());
+    doThrow(new IllegalArgumentException("foo")).when(postProcessor).accept(Mockito.<RosettaModelObjectBuilder>any());
     SimpleMerger simpleMerger = new SimpleMerger(postProcessor);
     BarBuilder barBuilder = new BarBuilder();
 
     // Act and Assert
-    assertThrows(
-        IllegalArgumentException.class, () -> simpleMerger.run(barBuilder, new BarBuilder()));
+    assertThrows(IllegalArgumentException.class, () -> simpleMerger.run(barBuilder, new BarBuilder()));
     verify(postProcessor).accept(isA(RosettaModelObjectBuilder.class));
   }
 
   /**
    * Test {@link SimpleMerger#run(RosettaModelObjectBuilder, RosettaModelObjectBuilder)}.
-   *
    * <ul>
-   *   <li>When {@link PriceQuantity.PriceQuantityBuilderImpl} (default constructor).
-   *   <li>Then calls {@link Consumer#accept(Object)}.
+   *   <li>When {@link PriceQuantityBuilderImpl} (default constructor).</li>
+   *   <li>Then calls {@link Consumer#accept(Object)}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SimpleMerger#run(RosettaModelObjectBuilder,
-   * RosettaModelObjectBuilder)}
+   * <p>
+   * Method under test: {@link SimpleMerger#run(RosettaModelObjectBuilder, RosettaModelObjectBuilder)}
    */
   @Test
-  @DisplayName(
-      "Test run(RosettaModelObjectBuilder, RosettaModelObjectBuilder); when PriceQuantityBuilderImpl (default constructor); then calls accept(Object)")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void SimpleMerger.run(RosettaModelObjectBuilder, RosettaModelObjectBuilder)"})
-  void testRun_whenPriceQuantityBuilderImpl_thenCallsAccept() {
+  public void testRun_whenPriceQuantityBuilderImpl_thenCallsAccept() {
     // Arrange
     Consumer<RosettaModelObjectBuilder> postProcessor = mock(Consumer.class);
     doNothing().when(postProcessor).accept(Mockito.<RosettaModelObjectBuilder>any());
@@ -243,164 +209,40 @@ class SimpleMergerDiffblueTest {
   }
 
   /**
-   * Test {@link SimpleMerger#mergeRosetta(List, List, Function)} with {@code o1}, {@code o2},
-   * {@code o1GetOrCreateByIndex}.
-   *
-   * <ul>
-   *   <li>Given {@link BarBuilder} (default constructor).
-   * </ul>
-   *
-   * <p>Method under test: {@link SimpleMerger#mergeRosetta(List, List, Function)}
+   * Test {@link SimpleMerger#mergeRosetta(List, List, Function)} with {@code o1}, {@code o2}, {@code o1GetOrCreateByIndex}.
+   * <p>
+   * Method under test: {@link SimpleMerger#mergeRosetta(List, List, Function)}
    */
   @Test
-  @DisplayName(
-      "Test mergeRosetta(List, List, Function) with 'o1', 'o2', 'o1GetOrCreateByIndex'; given BarBuilder (default constructor)")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void SimpleMerger.mergeRosetta(List, List, Function)"})
-  void testMergeRosettaWithO1O2O1GetOrCreateByIndex_givenBarBuilder() {
+  public void testMergeRosettaWithO1O2O1GetOrCreateByIndex() {
     // Arrange
     SimpleMerger simpleMerger = new SimpleMerger();
     ArrayList<RosettaModelObjectBuilder> o1 = new ArrayList<>();
 
     ArrayList<RosettaModelObjectBuilder> o2 = new ArrayList<>();
     o2.add(new BarBuilder());
-
     Function<Integer, RosettaModelObjectBuilder> o1GetOrCreateByIndex = mock(Function.class);
-    when(o1GetOrCreateByIndex.apply(Mockito.<Integer>any())).thenReturn(new BarBuilder());
+    when(o1GetOrCreateByIndex.apply(Mockito.<Integer>any())).thenThrow(new IllegalArgumentException("foo"));
 
-    // Act
-    simpleMerger.mergeRosetta(o1, o2, o1GetOrCreateByIndex);
-
-    // Assert
-    verify(o1GetOrCreateByIndex).apply(0);
+    // Act and Assert
+    assertThrows(IllegalArgumentException.class, () -> simpleMerger.mergeRosetta(o1, o2, o1GetOrCreateByIndex));
+    verify(o1GetOrCreateByIndex).apply(eq(0));
   }
 
   /**
-   * Test {@link SimpleMerger#mergeRosetta(List, List, Function)} with {@code o1}, {@code o2},
-   * {@code o1GetOrCreateByIndex}.
-   *
+   * Test {@link SimpleMerger#mergeRosetta(List, List, Function)} with {@code o1}, {@code o2}, {@code o1GetOrCreateByIndex}.
    * <ul>
-   *   <li>Given {@link BarBuilder} (default constructor).
+   *   <li>Given {@link BarBuilder} (default constructor) Num is one.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SimpleMerger#mergeRosetta(List, List, Function)}
+   * <p>
+   * Method under test: {@link SimpleMerger#mergeRosetta(List, List, Function)}
    */
   @Test
-  @DisplayName(
-      "Test mergeRosetta(List, List, Function) with 'o1', 'o2', 'o1GetOrCreateByIndex'; given BarBuilder (default constructor)")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void SimpleMerger.mergeRosetta(List, List, Function)"})
-  void testMergeRosettaWithO1O2O1GetOrCreateByIndex_givenBarBuilder2() {
-    // Arrange
-    SimpleMerger simpleMerger = new SimpleMerger();
-    ArrayList<RosettaModelObjectBuilder> o1 = new ArrayList<>();
-
-    ArrayList<RosettaModelObjectBuilder> o2 = new ArrayList<>();
-    o2.add(new BarBuilder());
-    o2.add(new BarBuilder());
-
-    Function<Integer, RosettaModelObjectBuilder> o1GetOrCreateByIndex = mock(Function.class);
-    when(o1GetOrCreateByIndex.apply(Mockito.<Integer>any())).thenReturn(new BarBuilder());
-
-    // Act
-    simpleMerger.mergeRosetta(o1, o2, o1GetOrCreateByIndex);
-
-    // Assert
-    verify(o1GetOrCreateByIndex, atLeast(1)).apply(Mockito.<Integer>any());
-  }
-
-  /**
-   * Test {@link SimpleMerger#mergeRosetta(List, List, Function)} with {@code o1}, {@code o2},
-   * {@code o1GetOrCreateByIndex}.
-   *
-   * <ul>
-   *   <li>Given {@link BarBuilder} (default constructor).
-   * </ul>
-   *
-   * <p>Method under test: {@link SimpleMerger#mergeRosetta(List, List, Function)}
-   */
-  @Test
-  @DisplayName(
-      "Test mergeRosetta(List, List, Function) with 'o1', 'o2', 'o1GetOrCreateByIndex'; given BarBuilder (default constructor)")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void SimpleMerger.mergeRosetta(List, List, Function)"})
-  void testMergeRosettaWithO1O2O1GetOrCreateByIndex_givenBarBuilder3() {
-    // Arrange
-    SimpleMerger simpleMerger = new SimpleMerger();
-
-    ArrayList<RosettaModelObjectBuilder> o1 = new ArrayList<>();
-    o1.add(new BarBuilder());
-
-    ArrayList<RosettaModelObjectBuilder> o2 = new ArrayList<>();
-    o2.add(new BarBuilder());
-
-    Function<Integer, RosettaModelObjectBuilder> o1GetOrCreateByIndex = mock(Function.class);
-    when(o1GetOrCreateByIndex.apply(Mockito.<Integer>any())).thenReturn(new BarBuilder());
-
-    // Act
-    simpleMerger.mergeRosetta(o1, o2, o1GetOrCreateByIndex);
-
-    // Assert
-    verify(o1GetOrCreateByIndex).apply(0);
-  }
-
-  /**
-   * Test {@link SimpleMerger#mergeRosetta(List, List, Function)} with {@code o1}, {@code o2},
-   * {@code o1GetOrCreateByIndex}.
-   *
-   * <ul>
-   *   <li>Given {@link BarBuilder} (default constructor).
-   * </ul>
-   *
-   * <p>Method under test: {@link SimpleMerger#mergeRosetta(List, List, Function)}
-   */
-  @Test
-  @DisplayName(
-      "Test mergeRosetta(List, List, Function) with 'o1', 'o2', 'o1GetOrCreateByIndex'; given BarBuilder (default constructor)")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void SimpleMerger.mergeRosetta(List, List, Function)"})
-  void testMergeRosettaWithO1O2O1GetOrCreateByIndex_givenBarBuilder4() {
-    // Arrange
-    SimpleMerger simpleMerger = new SimpleMerger();
-
-    ArrayList<RosettaModelObjectBuilder> o1 = new ArrayList<>();
-    o1.add(new BarBuilder());
-    o1.add(new BarBuilder());
-
-    ArrayList<RosettaModelObjectBuilder> o2 = new ArrayList<>();
-    o2.add(new BarBuilder());
-
-    Function<Integer, RosettaModelObjectBuilder> o1GetOrCreateByIndex = mock(Function.class);
-    when(o1GetOrCreateByIndex.apply(Mockito.<Integer>any())).thenReturn(new BarBuilder());
-
-    // Act
-    simpleMerger.mergeRosetta(o1, o2, o1GetOrCreateByIndex);
-
-    // Assert
-    verify(o1GetOrCreateByIndex).apply(0);
-  }
-
-  /**
-   * Test {@link SimpleMerger#mergeRosetta(List, List, Function)} with {@code o1}, {@code o2},
-   * {@code o1GetOrCreateByIndex}.
-   *
-   * <ul>
-   *   <li>Given {@link BarBuilder} (default constructor) Num is one.
-   * </ul>
-   *
-   * <p>Method under test: {@link SimpleMerger#mergeRosetta(List, List, Function)}
-   */
-  @Test
-  @DisplayName(
-      "Test mergeRosetta(List, List, Function) with 'o1', 'o2', 'o1GetOrCreateByIndex'; given BarBuilder (default constructor) Num is one")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void SimpleMerger.mergeRosetta(List, List, Function)"})
-  void testMergeRosettaWithO1O2O1GetOrCreateByIndex_givenBarBuilderNumIsOne() {
+  public void testMergeRosettaWithO1O2O1GetOrCreateByIndex_givenBarBuilderNumIsOne() {
     // Arrange
     SimpleMerger simpleMerger = new SimpleMerger();
     ArrayList<RosettaModelObjectBuilder> o1 = new ArrayList<>();
@@ -413,34 +255,26 @@ class SimpleMergerDiffblueTest {
 
     BarBuilder barBuilder2 = new BarBuilder();
     barBuilder2.setNum(10);
-
     Function<Integer, RosettaModelObjectBuilder> o1GetOrCreateByIndex = mock(Function.class);
     when(o1GetOrCreateByIndex.apply(Mockito.<Integer>any())).thenReturn(barBuilder2);
 
     // Act and Assert
-    assertThrows(
-        IllegalArgumentException.class,
-        () -> simpleMerger.mergeRosetta(o1, o2, o1GetOrCreateByIndex));
-    verify(o1GetOrCreateByIndex).apply(0);
+    assertThrows(IllegalArgumentException.class, () -> simpleMerger.mergeRosetta(o1, o2, o1GetOrCreateByIndex));
+    verify(o1GetOrCreateByIndex).apply(eq(0));
   }
 
   /**
-   * Test {@link SimpleMerger#mergeRosetta(List, List, Function)} with {@code o1}, {@code o2},
-   * {@code o1GetOrCreateByIndex}.
-   *
+   * Test {@link SimpleMerger#mergeRosetta(List, List, Function)} with {@code o1}, {@code o2}, {@code o1GetOrCreateByIndex}.
    * <ul>
-   *   <li>Given {@link BarBuilder} (default constructor) Num is ten.
+   *   <li>Given {@link BarBuilder} (default constructor) Num is ten.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SimpleMerger#mergeRosetta(List, List, Function)}
+   * <p>
+   * Method under test: {@link SimpleMerger#mergeRosetta(List, List, Function)}
    */
   @Test
-  @DisplayName(
-      "Test mergeRosetta(List, List, Function) with 'o1', 'o2', 'o1GetOrCreateByIndex'; given BarBuilder (default constructor) Num is ten")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void SimpleMerger.mergeRosetta(List, List, Function)"})
-  void testMergeRosettaWithO1O2O1GetOrCreateByIndex_givenBarBuilderNumIsTen() {
+  public void testMergeRosettaWithO1O2O1GetOrCreateByIndex_givenBarBuilderNumIsTen() {
     // Arrange
     SimpleMerger simpleMerger = new SimpleMerger();
     ArrayList<RosettaModelObjectBuilder> o1 = new ArrayList<>();
@@ -450,7 +284,6 @@ class SimpleMergerDiffblueTest {
 
     BarBuilder barBuilder = new BarBuilder();
     barBuilder.setNum(10);
-
     Function<Integer, RosettaModelObjectBuilder> o1GetOrCreateByIndex = mock(Function.class);
     when(o1GetOrCreateByIndex.apply(Mockito.<Integer>any())).thenReturn(barBuilder);
 
@@ -458,26 +291,21 @@ class SimpleMergerDiffblueTest {
     simpleMerger.mergeRosetta(o1, o2, o1GetOrCreateByIndex);
 
     // Assert
-    verify(o1GetOrCreateByIndex).apply(0);
+    verify(o1GetOrCreateByIndex).apply(eq(0));
   }
 
   /**
-   * Test {@link SimpleMerger#mergeRosetta(List, List, Function)} with {@code o1}, {@code o2},
-   * {@code o1GetOrCreateByIndex}.
-   *
+   * Test {@link SimpleMerger#mergeRosetta(List, List, Function)} with {@code o1}, {@code o2}, {@code o1GetOrCreateByIndex}.
    * <ul>
-   *   <li>Given {@link BarBuilder} (default constructor) Num is ten.
+   *   <li>Given {@link BarBuilder} (default constructor) Num is ten.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SimpleMerger#mergeRosetta(List, List, Function)}
+   * <p>
+   * Method under test: {@link SimpleMerger#mergeRosetta(List, List, Function)}
    */
   @Test
-  @DisplayName(
-      "Test mergeRosetta(List, List, Function) with 'o1', 'o2', 'o1GetOrCreateByIndex'; given BarBuilder (default constructor) Num is ten")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void SimpleMerger.mergeRosetta(List, List, Function)"})
-  void testMergeRosettaWithO1O2O1GetOrCreateByIndex_givenBarBuilderNumIsTen2() {
+  public void testMergeRosettaWithO1O2O1GetOrCreateByIndex_givenBarBuilderNumIsTen2() {
     // Arrange
     SimpleMerger simpleMerger = new SimpleMerger();
     ArrayList<RosettaModelObjectBuilder> o1 = new ArrayList<>();
@@ -490,7 +318,6 @@ class SimpleMergerDiffblueTest {
 
     BarBuilder barBuilder2 = new BarBuilder();
     barBuilder2.setNum(10);
-
     Function<Integer, RosettaModelObjectBuilder> o1GetOrCreateByIndex = mock(Function.class);
     when(o1GetOrCreateByIndex.apply(Mockito.<Integer>any())).thenReturn(barBuilder2);
 
@@ -498,68 +325,27 @@ class SimpleMergerDiffblueTest {
     simpleMerger.mergeRosetta(o1, o2, o1GetOrCreateByIndex);
 
     // Assert
-    verify(o1GetOrCreateByIndex).apply(0);
+    verify(o1GetOrCreateByIndex).apply(eq(0));
   }
 
   /**
-   * Test {@link SimpleMerger#mergeRosetta(List, List, Function)} with {@code o1}, {@code o2},
-   * {@code o1GetOrCreateByIndex}.
-   *
+   * Test {@link SimpleMerger#mergeRosetta(List, List, Function)} with {@code o1}, {@code o2}, {@code o1GetOrCreateByIndex}.
    * <ul>
-   *   <li>Given {@link IllegalArgumentException#IllegalArgumentException()}.
+   *   <li>Given {@link KeyBuilderImpl} (default constructor).</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SimpleMerger#mergeRosetta(List, List, Function)}
+   * <p>
+   * Method under test: {@link SimpleMerger#mergeRosetta(List, List, Function)}
    */
   @Test
-  @DisplayName(
-      "Test mergeRosetta(List, List, Function) with 'o1', 'o2', 'o1GetOrCreateByIndex'; given IllegalArgumentException()")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void SimpleMerger.mergeRosetta(List, List, Function)"})
-  void testMergeRosettaWithO1O2O1GetOrCreateByIndex_givenIllegalArgumentException() {
-    // Arrange
-    SimpleMerger simpleMerger = new SimpleMerger();
-    ArrayList<RosettaModelObjectBuilder> o1 = new ArrayList<>();
-
-    ArrayList<RosettaModelObjectBuilder> o2 = new ArrayList<>();
-    o2.add(new BarBuilder());
-
-    Function<Integer, RosettaModelObjectBuilder> o1GetOrCreateByIndex = mock(Function.class);
-    when(o1GetOrCreateByIndex.apply(Mockito.<Integer>any()))
-        .thenThrow(new IllegalArgumentException());
-
-    // Act and Assert
-    assertThrows(
-        IllegalArgumentException.class,
-        () -> simpleMerger.mergeRosetta(o1, o2, o1GetOrCreateByIndex));
-    verify(o1GetOrCreateByIndex).apply(0);
-  }
-
-  /**
-   * Test {@link SimpleMerger#mergeRosetta(List, List, Function)} with {@code o1}, {@code o2},
-   * {@code o1GetOrCreateByIndex}.
-   *
-   * <ul>
-   *   <li>Given {@link KeyBuilderImpl} (default constructor).
-   * </ul>
-   *
-   * <p>Method under test: {@link SimpleMerger#mergeRosetta(List, List, Function)}
-   */
-  @Test
-  @DisplayName(
-      "Test mergeRosetta(List, List, Function) with 'o1', 'o2', 'o1GetOrCreateByIndex'; given KeyBuilderImpl (default constructor)")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void SimpleMerger.mergeRosetta(List, List, Function)"})
-  void testMergeRosettaWithO1O2O1GetOrCreateByIndex_givenKeyBuilderImpl() {
+  public void testMergeRosettaWithO1O2O1GetOrCreateByIndex_givenKeyBuilderImpl() {
     // Arrange
     SimpleMerger simpleMerger = new SimpleMerger();
     ArrayList<RosettaModelObjectBuilder> o1 = new ArrayList<>();
 
     ArrayList<RosettaModelObjectBuilder> o2 = new ArrayList<>();
     o2.add(new KeyBuilderImpl());
-
     Function<Integer, RosettaModelObjectBuilder> o1GetOrCreateByIndex = mock(Function.class);
     when(o1GetOrCreateByIndex.apply(Mockito.<Integer>any())).thenReturn(new KeyBuilderImpl());
 
@@ -567,35 +353,103 @@ class SimpleMergerDiffblueTest {
     simpleMerger.mergeRosetta(o1, o2, o1GetOrCreateByIndex);
 
     // Assert
-    verify(o1GetOrCreateByIndex).apply(0);
+    verify(o1GetOrCreateByIndex).apply(eq(0));
   }
 
   /**
-   * Test {@link SimpleMerger#mergeRosetta(RosettaModelObjectBuilder, RosettaModelObjectBuilder,
-   * Consumer)} with {@code o1}, {@code o2}, {@code o1Setter}.
-   *
+   * Test {@link SimpleMerger#mergeRosetta(List, List, Function)} with {@code o1}, {@code o2}, {@code o1GetOrCreateByIndex}.
    * <ul>
-   *   <li>Given {@link KeyBuilderImpl} (default constructor).
+   *   <li>When {@link Function} {@link Function#apply(Object)} return {@link BarBuilder} (default constructor).</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SimpleMerger#mergeRosetta(RosettaModelObjectBuilder,
-   * RosettaModelObjectBuilder, Consumer)}
+   * <p>
+   * Method under test: {@link SimpleMerger#mergeRosetta(List, List, Function)}
    */
   @Test
-  @DisplayName(
-      "Test mergeRosetta(RosettaModelObjectBuilder, RosettaModelObjectBuilder, Consumer) with 'o1', 'o2', 'o1Setter'; given KeyBuilderImpl (default constructor)")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void SimpleMerger.mergeRosetta(RosettaModelObjectBuilder, RosettaModelObjectBuilder, Consumer)"
-  })
-  void testMergeRosettaWithO1O2O1Setter_givenKeyBuilderImpl() {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void SimpleMerger.mergeRosetta(List, List, Function)"})
+  public void testMergeRosettaWithO1O2O1GetOrCreateByIndex_whenFunctionApplyReturnBarBuilder() {
     // Arrange
     SimpleMerger simpleMerger = new SimpleMerger();
+    ArrayList<RosettaModelObjectBuilder> o1 = new ArrayList<>();
 
+    ArrayList<RosettaModelObjectBuilder> o2 = new ArrayList<>();
+    o2.add(new BarBuilder());
+    Function<Integer, RosettaModelObjectBuilder> o1GetOrCreateByIndex = mock(Function.class);
+    when(o1GetOrCreateByIndex.apply(Mockito.<Integer>any())).thenReturn(new BarBuilder());
+
+    // Act
+    simpleMerger.mergeRosetta(o1, o2, o1GetOrCreateByIndex);
+
+    // Assert
+    verify(o1GetOrCreateByIndex).apply(eq(0));
+  }
+
+  /**
+   * Test {@link SimpleMerger#mergeRosetta(List, List, Function)} with {@code o1}, {@code o2}, {@code o1GetOrCreateByIndex}.
+   * <ul>
+   *   <li>When {@link Function} {@link Function#apply(Object)} return {@link BarBuilder} (default constructor).</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link SimpleMerger#mergeRosetta(List, List, Function)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void SimpleMerger.mergeRosetta(List, List, Function)"})
+  public void testMergeRosettaWithO1O2O1GetOrCreateByIndex_whenFunctionApplyReturnBarBuilder2() {
+    // Arrange
+    SimpleMerger simpleMerger = new SimpleMerger();
+    ArrayList<RosettaModelObjectBuilder> o1 = new ArrayList<>();
+
+    ArrayList<RosettaModelObjectBuilder> o2 = new ArrayList<>();
+    o2.add(new BarBuilder());
+    o2.add(new BarBuilder());
+    Function<Integer, RosettaModelObjectBuilder> o1GetOrCreateByIndex = mock(Function.class);
+    when(o1GetOrCreateByIndex.apply(Mockito.<Integer>any())).thenReturn(new BarBuilder());
+
+    // Act
+    simpleMerger.mergeRosetta(o1, o2, o1GetOrCreateByIndex);
+
+    // Assert
+    verify(o1GetOrCreateByIndex, atLeast(1)).apply(Mockito.<Integer>any());
+  }
+
+  /**
+   * Test {@link SimpleMerger#mergeRosetta(RosettaModelObjectBuilder, RosettaModelObjectBuilder, Consumer)} with {@code o1}, {@code o2}, {@code o1Setter}.
+   * <p>
+   * Method under test: {@link SimpleMerger#mergeRosetta(RosettaModelObjectBuilder, RosettaModelObjectBuilder, Consumer)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void SimpleMerger.mergeRosetta(RosettaModelObjectBuilder, RosettaModelObjectBuilder, Consumer)"})
+  public void testMergeRosettaWithO1O2O1Setter() {
+    // Arrange
+    SimpleMerger simpleMerger = new SimpleMerger();
     KeyBuilderImpl keyBuilderImpl = mock(KeyBuilderImpl.class);
-    when(keyBuilderImpl.merge(
-            Mockito.<RosettaModelObjectBuilder>any(), Mockito.<BuilderMerger>any()))
+    when(keyBuilderImpl.merge(Mockito.<RosettaModelObjectBuilder>any(), Mockito.<BuilderMerger>any()))
+        .thenThrow(new IllegalArgumentException("foo"));
+
+    // Act and Assert
+    assertThrows(IllegalArgumentException.class,
+        () -> simpleMerger.mergeRosetta(keyBuilderImpl, new BarBuilder(), mock(Consumer.class)));
+    verify(keyBuilderImpl).merge(isA(RosettaModelObjectBuilder.class), isA(BuilderMerger.class));
+  }
+
+  /**
+   * Test {@link SimpleMerger#mergeRosetta(RosettaModelObjectBuilder, RosettaModelObjectBuilder, Consumer)} with {@code o1}, {@code o2}, {@code o1Setter}.
+   * <ul>
+   *   <li>Given {@link KeyBuilderImpl} (default constructor).</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link SimpleMerger#mergeRosetta(RosettaModelObjectBuilder, RosettaModelObjectBuilder, Consumer)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void SimpleMerger.mergeRosetta(RosettaModelObjectBuilder, RosettaModelObjectBuilder, Consumer)"})
+  public void testMergeRosettaWithO1O2O1Setter_givenKeyBuilderImpl() {
+    // Arrange
+    SimpleMerger simpleMerger = new SimpleMerger();
+    KeyBuilderImpl keyBuilderImpl = mock(KeyBuilderImpl.class);
+    when(keyBuilderImpl.merge(Mockito.<RosettaModelObjectBuilder>any(), Mockito.<BuilderMerger>any()))
         .thenReturn(new KeyBuilderImpl());
 
     // Act
@@ -606,67 +460,81 @@ class SimpleMergerDiffblueTest {
   }
 
   /**
-   * Test {@link SimpleMerger#mergeRosetta(RosettaModelObjectBuilder, RosettaModelObjectBuilder,
-   * Consumer)} with {@code o1}, {@code o2}, {@code o1Setter}.
-   *
+   * Test {@link SimpleMerger#mergeRosetta(RosettaModelObjectBuilder, RosettaModelObjectBuilder, Consumer)} with {@code o1}, {@code o2}, {@code o1Setter}.
    * <ul>
-   *   <li>Then throw {@link IllegalArgumentException}.
+   *   <li>Given one.</li>
+   *   <li>When {@link BarBuilder} (default constructor) Num is one.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SimpleMerger#mergeRosetta(RosettaModelObjectBuilder,
-   * RosettaModelObjectBuilder, Consumer)}
+   * <p>
+   * Method under test: {@link SimpleMerger#mergeRosetta(RosettaModelObjectBuilder, RosettaModelObjectBuilder, Consumer)}
    */
   @Test
-  @DisplayName(
-      "Test mergeRosetta(RosettaModelObjectBuilder, RosettaModelObjectBuilder, Consumer) with 'o1', 'o2', 'o1Setter'; then throw IllegalArgumentException")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void SimpleMerger.mergeRosetta(RosettaModelObjectBuilder, RosettaModelObjectBuilder, Consumer)"
-  })
-  void testMergeRosettaWithO1O2O1Setter_thenThrowIllegalArgumentException() {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void SimpleMerger.mergeRosetta(RosettaModelObjectBuilder, RosettaModelObjectBuilder, Consumer)"})
+  public void testMergeRosettaWithO1O2O1Setter_givenOne_whenBarBuilderNumIsOne() {
     // Arrange
     SimpleMerger simpleMerger = new SimpleMerger();
 
-    KeyBuilderImpl keyBuilderImpl = mock(KeyBuilderImpl.class);
-    when(keyBuilderImpl.merge(
-            Mockito.<RosettaModelObjectBuilder>any(), Mockito.<BuilderMerger>any()))
-        .thenThrow(new IllegalArgumentException());
+    BarBuilder barBuilder = new BarBuilder();
+    barBuilder.setNum(1);
+
+    BarBuilder barBuilder2 = new BarBuilder();
+    barBuilder2.setNum(10);
 
     // Act and Assert
-    assertThrows(
-        IllegalArgumentException.class,
-        () -> simpleMerger.mergeRosetta(keyBuilderImpl, new BarBuilder(), mock(Consumer.class)));
-    verify(keyBuilderImpl).merge(isA(RosettaModelObjectBuilder.class), isA(BuilderMerger.class));
+    assertThrows(IllegalArgumentException.class,
+        () -> simpleMerger.mergeRosetta(barBuilder, barBuilder2, mock(Consumer.class)));
   }
 
   /**
-   * Test {@link SimpleMerger#mergeBasic(List, List, Consumer)} with {@code o1}, {@code o2}, {@code
-   * o1Add}.
-   *
+   * Test {@link SimpleMerger#mergeBasic(List, List, Consumer)} with {@code o1}, {@code o2}, {@code o1Add}.
    * <ul>
-   *   <li>Given {@link BeanPropertyWriter#MARKER_FOR_EMPTY}.
-   *   <li>When {@link ArrayList#ArrayList()}.
-   *   <li>Then calls {@link Consumer#accept(Object)}.
+   *   <li>When {@link Consumer} {@link Consumer#accept(Object)} does nothing.</li>
+   *   <li>Then calls {@link Consumer#accept(Object)}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SimpleMerger#mergeBasic(List, List, Consumer)}
+   * <p>
+   * Method under test: {@link SimpleMerger#mergeBasic(List, List, Consumer)}
    */
   @Test
-  @DisplayName(
-      "Test mergeBasic(List, List, Consumer) with 'o1', 'o2', 'o1Add'; given MARKER_FOR_EMPTY; when ArrayList(); then calls accept(Object)")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void SimpleMerger.mergeBasic(List, List, Consumer)"})
-  void testMergeBasicWithO1O2O1Add_givenMarker_for_empty_whenArrayList_thenCallsAccept() {
+  public void testMergeBasicWithO1O2O1Add_whenConsumerAcceptDoesNothing_thenCallsAccept() {
     // Arrange
     SimpleMerger simpleMerger = new SimpleMerger();
     ArrayList<Object> o1 = new ArrayList<>();
 
     ArrayList<Object> o2 = new ArrayList<>();
-    o2.add(BeanPropertyWriter.MARKER_FOR_EMPTY);
-    o2.add(BeanPropertyWriter.MARKER_FOR_EMPTY);
+    o2.add("42");
+    Consumer<Object> o1Add = mock(Consumer.class);
+    doNothing().when(o1Add).accept(Mockito.<Object>any());
 
+    // Act
+    simpleMerger.mergeBasic(o1, o2, o1Add);
+
+    // Assert
+    verify(o1Add).accept(isA(Object.class));
+  }
+
+  /**
+   * Test {@link SimpleMerger#mergeBasic(List, List, Consumer)} with {@code o1}, {@code o2}, {@code o1Add}.
+   * <ul>
+   *   <li>When {@link Consumer} {@link Consumer#accept(Object)} does nothing.</li>
+   *   <li>Then calls {@link Consumer#accept(Object)}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link SimpleMerger#mergeBasic(List, List, Consumer)}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void SimpleMerger.mergeBasic(List, List, Consumer)"})
+  public void testMergeBasicWithO1O2O1Add_whenConsumerAcceptDoesNothing_thenCallsAccept2() {
+    // Arrange
+    SimpleMerger simpleMerger = new SimpleMerger();
+    ArrayList<Object> o1 = new ArrayList<>();
+
+    ArrayList<Object> o2 = new ArrayList<>();
+    o2.add("42");
+    o2.add("42");
     Consumer<Object> o1Add = mock(Consumer.class);
     doNothing().when(o1Add).accept(Mockito.<Object>any());
 
@@ -678,201 +546,102 @@ class SimpleMergerDiffblueTest {
   }
 
   /**
-   * Test {@link SimpleMerger#mergeBasic(List, List, Consumer)} with {@code o1}, {@code o2}, {@code
-   * o1Add}.
-   *
+   * Test {@link SimpleMerger#mergeBasic(Object, Object, Consumer, AttributeMeta[])} with {@code o1}, {@code o2}, {@code o1Setter}, {@code metas}.
    * <ul>
-   *   <li>When {@link Consumer} {@link Consumer#accept(Object)} does nothing.
-   *   <li>Then calls {@link Consumer#accept(Object)}.
+   *   <li>Then calls {@link Consumer#accept(Object)}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SimpleMerger#mergeBasic(List, List, Consumer)}
+   * <p>
+   * Method under test: {@link SimpleMerger#mergeBasic(Object, Object, Consumer, AttributeMeta[])}
    */
   @Test
-  @DisplayName(
-      "Test mergeBasic(List, List, Consumer) with 'o1', 'o2', 'o1Add'; when Consumer accept(Object) does nothing; then calls accept(Object)")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void SimpleMerger.mergeBasic(List, List, Consumer)"})
-  void testMergeBasicWithO1O2O1Add_whenConsumerAcceptDoesNothing_thenCallsAccept() {
-    // Arrange
-    SimpleMerger simpleMerger = new SimpleMerger();
-
-    ArrayList<Object> o1 = new ArrayList<>();
-    o1.add(BeanPropertyWriter.MARKER_FOR_EMPTY);
-
-    ArrayList<Object> o2 = new ArrayList<>();
-    o2.add(BeanPropertyWriter.MARKER_FOR_EMPTY);
-
-    Consumer<Object> o1Add = mock(Consumer.class);
-    doNothing().when(o1Add).accept(Mockito.<Object>any());
-
-    // Act
-    simpleMerger.mergeBasic(o1, o2, o1Add);
-
-    // Assert
-    verify(o1Add).accept(isA(Object.class));
-  }
-
-  /**
-   * Test {@link SimpleMerger#mergeBasic(List, List, Consumer)} with {@code o1}, {@code o2}, {@code
-   * o1Add}.
-   *
-   * <ul>
-   *   <li>When {@link Consumer} {@link Consumer#accept(Object)} does nothing.
-   *   <li>Then calls {@link Consumer#accept(Object)}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SimpleMerger#mergeBasic(List, List, Consumer)}
-   */
-  @Test
-  @DisplayName(
-      "Test mergeBasic(List, List, Consumer) with 'o1', 'o2', 'o1Add'; when Consumer accept(Object) does nothing; then calls accept(Object)")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void SimpleMerger.mergeBasic(List, List, Consumer)"})
-  void testMergeBasicWithO1O2O1Add_whenConsumerAcceptDoesNothing_thenCallsAccept2() {
-    // Arrange
-    SimpleMerger simpleMerger = new SimpleMerger();
-
-    ArrayList<Object> o1 = new ArrayList<>();
-    o1.add(BeanPropertyWriter.MARKER_FOR_EMPTY);
-    o1.add(BeanPropertyWriter.MARKER_FOR_EMPTY);
-
-    ArrayList<Object> o2 = new ArrayList<>();
-    o2.add(BeanPropertyWriter.MARKER_FOR_EMPTY);
-
-    Consumer<Object> o1Add = mock(Consumer.class);
-    doNothing().when(o1Add).accept(Mockito.<Object>any());
-
-    // Act
-    simpleMerger.mergeBasic(o1, o2, o1Add);
-
-    // Assert
-    verify(o1Add).accept(isA(Object.class));
-  }
-
-  /**
-   * Test {@link SimpleMerger#mergeBasic(Object, Object, Consumer, AttributeMeta[])} with {@code
-   * o1}, {@code o2}, {@code o1Setter}, {@code metas}.
-   *
-   * <ul>
-   *   <li>Then calls {@link Consumer#accept(Object)}.
-   * </ul>
-   *
-   * <p>Method under test: {@link SimpleMerger#mergeBasic(Object, Object, Consumer,
-   * AttributeMeta[])}
-   */
-  @Test
-  @DisplayName(
-      "Test mergeBasic(Object, Object, Consumer, AttributeMeta[]) with 'o1', 'o2', 'o1Setter', 'metas'; then calls accept(Object)")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void SimpleMerger.mergeBasic(Object, Object, Consumer, AttributeMeta[])"})
-  void testMergeBasicWithO1O2O1SetterMetas_thenCallsAccept() {
+  public void testMergeBasicWithO1O2O1SetterMetas_thenCallsAccept() {
     // Arrange
     SimpleMerger simpleMerger = new SimpleMerger();
-
     Consumer<Object> o1Setter = mock(Consumer.class);
     doNothing().when(o1Setter).accept(Mockito.<Object>any());
 
     // Act
-    simpleMerger.mergeBasic(
-        BeanPropertyWriter.MARKER_FOR_EMPTY,
-        BeanPropertyWriter.MARKER_FOR_EMPTY,
-        o1Setter,
-        AttributeMeta.META);
+    simpleMerger.mergeBasic("O2", "O2", o1Setter, AttributeMeta.META);
 
     // Assert
     verify(o1Setter).accept(isA(Object.class));
   }
 
   /**
-   * Test {@link SimpleMerger#mergeBasic(Object, Object, Consumer, AttributeMeta[])} with {@code
-   * o1}, {@code o2}, {@code o1Setter}, {@code metas}.
-   *
+   * Test {@link SimpleMerger#mergeBasic(Object, Object, Consumer, AttributeMeta[])} with {@code o1}, {@code o2}, {@code o1Setter}, {@code metas}.
    * <ul>
-   *   <li>When {@code META} and {@code null}.
+   *   <li>Then throw {@link IllegalArgumentException}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SimpleMerger#mergeBasic(Object, Object, Consumer,
-   * AttributeMeta[])}
+   * <p>
+   * Method under test: {@link SimpleMerger#mergeBasic(Object, Object, Consumer, AttributeMeta[])}
    */
   @Test
-  @DisplayName(
-      "Test mergeBasic(Object, Object, Consumer, AttributeMeta[]) with 'o1', 'o2', 'o1Setter', 'metas'; when 'META' and 'null'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void SimpleMerger.mergeBasic(Object, Object, Consumer, AttributeMeta[])"})
-  void testMergeBasicWithO1O2O1SetterMetas_whenMetaAndNull() {
+  public void testMergeBasicWithO1O2O1SetterMetas_thenThrowIllegalArgumentException() {
     // Arrange, Act and Assert
-    assertThrows(
-        IllegalArgumentException.class,
-        () ->
-            new SimpleMerger()
-                .mergeBasic(
-                    1,
-                    BeanPropertyWriter.MARKER_FOR_EMPTY,
-                    mock(Consumer.class),
-                    AttributeMeta.META,
-                    null));
+    assertThrows(IllegalArgumentException.class, () -> (new SimpleMerger()).mergeBasic(1, "O2", mock(Consumer.class)));
   }
 
   /**
-   * Test {@link SimpleMerger#mergeBasic(Object, Object, Consumer, AttributeMeta[])} with {@code
-   * o1}, {@code o2}, {@code o1Setter}, {@code metas}.
-   *
+   * Test {@link SimpleMerger#mergeBasic(Object, Object, Consumer, AttributeMeta[])} with {@code o1}, {@code o2}, {@code o1Setter}, {@code metas}.
    * <ul>
-   *   <li>When one.
-   *   <li>Then throw {@link IllegalArgumentException}.
+   *   <li>When {@code META} and {@code null}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SimpleMerger#mergeBasic(Object, Object, Consumer,
-   * AttributeMeta[])}
+   * <p>
+   * Method under test: {@link SimpleMerger#mergeBasic(Object, Object, Consumer, AttributeMeta[])}
    */
   @Test
-  @DisplayName(
-      "Test mergeBasic(Object, Object, Consumer, AttributeMeta[]) with 'o1', 'o2', 'o1Setter', 'metas'; when one; then throw IllegalArgumentException")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void SimpleMerger.mergeBasic(Object, Object, Consumer, AttributeMeta[])"})
-  void testMergeBasicWithO1O2O1SetterMetas_whenOne_thenThrowIllegalArgumentException() {
+  public void testMergeBasicWithO1O2O1SetterMetas_whenMetaAndNull() {
     // Arrange, Act and Assert
-    assertThrows(
-        IllegalArgumentException.class,
-        () ->
-            new SimpleMerger()
-                .mergeBasic(
-                    1,
-                    BeanPropertyWriter.MARKER_FOR_EMPTY,
-                    mock(Consumer.class),
-                    AttributeMeta.META));
+    assertThrows(IllegalArgumentException.class,
+        () -> (new SimpleMerger()).mergeBasic(1, "O2", mock(Consumer.class), AttributeMeta.META, null));
   }
 
   /**
-   * Test {@link SimpleMerger#mergeBasic(Object, Object, Consumer, AttributeMeta[])} with {@code
-   * o1}, {@code o2}, {@code o1Setter}, {@code metas}.
-   *
+   * Test {@link SimpleMerger#mergeBasic(Object, Object, Consumer, AttributeMeta[])} with {@code o1}, {@code o2}, {@code o1Setter}, {@code metas}.
    * <ul>
-   *   <li>When one.
-   *   <li>Then throw {@link IllegalArgumentException}.
+   *   <li>When {@code null}.</li>
+   *   <li>Then calls {@link Consumer#accept(Object)}.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link SimpleMerger#mergeBasic(Object, Object, Consumer,
-   * AttributeMeta[])}
+   * <p>
+   * Method under test: {@link SimpleMerger#mergeBasic(Object, Object, Consumer, AttributeMeta[])}
    */
   @Test
-  @DisplayName(
-      "Test mergeBasic(Object, Object, Consumer, AttributeMeta[]) with 'o1', 'o2', 'o1Setter', 'metas'; when one; then throw IllegalArgumentException")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void SimpleMerger.mergeBasic(Object, Object, Consumer, AttributeMeta[])"})
-  void testMergeBasicWithO1O2O1SetterMetas_whenOne_thenThrowIllegalArgumentException2() {
+  public void testMergeBasicWithO1O2O1SetterMetas_whenNull_thenCallsAccept() {
+    // Arrange
+    SimpleMerger simpleMerger = new SimpleMerger();
+    Consumer<Object> o1Setter = mock(Consumer.class);
+    doNothing().when(o1Setter).accept(Mockito.<Object>any());
+
+    // Act
+    simpleMerger.mergeBasic(null, "O2", o1Setter, AttributeMeta.META);
+
+    // Assert
+    verify(o1Setter).accept(isA(Object.class));
+  }
+
+  /**
+   * Test {@link SimpleMerger#mergeBasic(Object, Object, Consumer, AttributeMeta[])} with {@code o1}, {@code o2}, {@code o1Setter}, {@code metas}.
+   * <ul>
+   *   <li>When {@code O1}.</li>
+   *   <li>Then throw {@link IllegalArgumentException}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link SimpleMerger#mergeBasic(Object, Object, Consumer, AttributeMeta[])}
+   */
+  @Test
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void SimpleMerger.mergeBasic(Object, Object, Consumer, AttributeMeta[])"})
+  public void testMergeBasicWithO1O2O1SetterMetas_whenO1_thenThrowIllegalArgumentException() {
     // Arrange, Act and Assert
-    assertThrows(
-        IllegalArgumentException.class,
-        () ->
-            new SimpleMerger()
-                .mergeBasic(1, BeanPropertyWriter.MARKER_FOR_EMPTY, mock(Consumer.class)));
+    assertThrows(IllegalArgumentException.class,
+        () -> (new SimpleMerger()).mergeBasic("O1", "O2", mock(Consumer.class), AttributeMeta.META));
   }
 }

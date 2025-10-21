@@ -20,34 +20,29 @@ package com.regnosys.rosetta.common.compile;
  * ==============
  */
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertSame;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertSame;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Tag;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
-class CompilationTargetDeletionExceptionDiffblueTest {
+public class CompilationTargetDeletionExceptionDiffblueTest {
   /**
-   * Test {@link CompilationTargetDeletionException#CompilationTargetDeletionException(String,
-   * Throwable)}.
-   *
-   * <p>Method under test: {@link
-   * CompilationTargetDeletionException#CompilationTargetDeletionException(String, Throwable)}
+   * Test {@link CompilationTargetDeletionException#CompilationTargetDeletionException(String, Throwable)}.
+   * <p>
+   * Method under test: {@link CompilationTargetDeletionException#CompilationTargetDeletionException(String, Throwable)}
    */
   @Test
-  @DisplayName("Test new CompilationTargetDeletionException(String, Throwable)")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"void CompilationTargetDeletionException.<init>(String, Throwable)"})
-  void testNewCompilationTargetDeletionException() {
+  public void testNewCompilationTargetDeletionException() {
     // Arrange
     Throwable cause = new Throwable();
 
     // Act
-    CompilationTargetDeletionException actualCompilationTargetDeletionException =
-        new CompilationTargetDeletionException("An error occurred", cause);
+    CompilationTargetDeletionException actualCompilationTargetDeletionException = new CompilationTargetDeletionException(
+        "An error occurred", cause);
 
     // Assert
     assertEquals("An error occurred", actualCompilationTargetDeletionException.getMessage());

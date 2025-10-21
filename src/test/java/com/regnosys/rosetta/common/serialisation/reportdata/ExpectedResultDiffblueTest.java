@@ -20,27 +20,25 @@ package com.regnosys.rosetta.common.serialisation.reportdata;
  * ==============
  */
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertSame;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import com.diffblue.cover.annotations.ManagedByDiffblue;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
+import com.diffblue.cover.annotations.MaintainedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import com.rosetta.model.lib.ModelReportId;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Tag;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
-class ExpectedResultDiffblueTest {
+public class ExpectedResultDiffblueTest {
   /**
    * Test getters and setters.
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link ExpectedResult#ExpectedResult()}
    *   <li>{@link ExpectedResult#toString()}
@@ -48,16 +46,10 @@ class ExpectedResultDiffblueTest {
    * </ul>
    */
   @Test
-  @DisplayName("Test getters and setters")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void ExpectedResult.<init>()",
-    "void ExpectedResult.<init>(Map)",
-    "Map ExpectedResult.getExpectationsPerReport()",
-    "String ExpectedResult.toString()"
-  })
-  void testGettersAndSetters() {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void ExpectedResult.<init>()", "void ExpectedResult.<init>(Map)",
+      "Map ExpectedResult.getExpectationsPerReport()", "String ExpectedResult.toString()"})
+  public void testGettersAndSetters() {
     // Arrange and Act
     ExpectedResult actualExpectedResult = new ExpectedResult();
     String actualToStringResult = actualExpectedResult.toString();
@@ -69,13 +61,11 @@ class ExpectedResultDiffblueTest {
 
   /**
    * Test getters and setters.
-   *
    * <ul>
-   *   <li>Then return toString is {@code ExpectedResult{expectationsPerReport={}}}.
+   *   <li>Then return toString is {@code ExpectedResult{expectationsPerReport={}}}.</li>
    * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link ExpectedResult#ExpectedResult(Map)}
    *   <li>{@link ExpectedResult#toString()}
@@ -83,25 +73,18 @@ class ExpectedResultDiffblueTest {
    * </ul>
    */
   @Test
-  @DisplayName(
-      "Test getters and setters; then return toString is 'ExpectedResult{expectationsPerReport={}}'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "void ExpectedResult.<init>()",
-    "void ExpectedResult.<init>(Map)",
-    "Map ExpectedResult.getExpectationsPerReport()",
-    "String ExpectedResult.toString()"
-  })
-  void testGettersAndSetters_thenReturnToStringIsExpectedResultExpectationsPerReport() {
+  @Category(MaintainedByDiffblue.class)
+  @MethodsUnderTest({"void ExpectedResult.<init>()", "void ExpectedResult.<init>(Map)",
+      "Map ExpectedResult.getExpectationsPerReport()", "String ExpectedResult.toString()"})
+  public void testGettersAndSetters_thenReturnToStringIsExpectedResultExpectationsPerReport() {
     // Arrange
     HashMap<ModelReportId, List<ExpectedResultField>> expectationsPerReport = new HashMap<>();
 
     // Act
     ExpectedResult actualExpectedResult = new ExpectedResult(expectationsPerReport);
     String actualToStringResult = actualExpectedResult.toString();
-    Map<ModelReportId, List<ExpectedResultField>> actualExpectationsPerReport =
-        actualExpectedResult.getExpectationsPerReport();
+    Map<ModelReportId, List<ExpectedResultField>> actualExpectationsPerReport = actualExpectedResult
+        .getExpectationsPerReport();
 
     // Assert
     assertEquals("ExpectedResult{expectationsPerReport={}}", actualToStringResult);
@@ -111,55 +94,48 @@ class ExpectedResultDiffblueTest {
 
   /**
    * Test {@link ExpectedResult#equals(Object)}, and {@link ExpectedResult#hashCode()}.
-   *
    * <ul>
-   *   <li>When other is equal.
-   *   <li>Then return equal.
+   *   <li>When other is equal.</li>
+   *   <li>Then return equal.</li>
    * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link ExpectedResult#equals(Object)}
    *   <li>{@link ExpectedResult#hashCode()}
    * </ul>
    */
   @Test
-  @DisplayName("Test equals(Object), and hashCode(); when other is equal; then return equal")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean ExpectedResult.equals(Object)", "int ExpectedResult.hashCode()"})
-  void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
+  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
     // Arrange
     ExpectedResult expectedResult = new ExpectedResult();
     ExpectedResult expectedResult2 = new ExpectedResult();
 
     // Act and Assert
     assertEquals(expectedResult, expectedResult2);
-    assertEquals(expectedResult.hashCode(), expectedResult2.hashCode());
+    int expectedHashCodeResult = expectedResult.hashCode();
+    assertEquals(expectedHashCodeResult, expectedResult2.hashCode());
   }
 
   /**
    * Test {@link ExpectedResult#equals(Object)}, and {@link ExpectedResult#hashCode()}.
-   *
    * <ul>
-   *   <li>When other is same.
-   *   <li>Then return equal.
+   *   <li>When other is same.</li>
+   *   <li>Then return equal.</li>
    * </ul>
-   *
-   * <p>Methods under test:
-   *
+   * <p>
+   * Methods under test:
    * <ul>
    *   <li>{@link ExpectedResult#equals(Object)}
    *   <li>{@link ExpectedResult#hashCode()}
    * </ul>
    */
   @Test
-  @DisplayName("Test equals(Object), and hashCode(); when other is same; then return equal")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean ExpectedResult.equals(Object)", "int ExpectedResult.hashCode()"})
-  void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
+  public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
     ExpectedResult expectedResult = new ExpectedResult();
 
@@ -171,20 +147,17 @@ class ExpectedResultDiffblueTest {
 
   /**
    * Test {@link ExpectedResult#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is different.
-   *   <li>Then return not equal.
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link ExpectedResult#equals(Object)}
+   * <p>
+   * Method under test: {@link ExpectedResult#equals(Object)}
    */
   @Test
-  @DisplayName("Test equals(Object); when other is different; then return not equal")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean ExpectedResult.equals(Object)", "int ExpectedResult.hashCode()"})
-  void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange
     ExpectedResult expectedResult = new ExpectedResult(new HashMap<>());
 
@@ -194,40 +167,34 @@ class ExpectedResultDiffblueTest {
 
   /**
    * Test {@link ExpectedResult#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is {@code null}.
-   *   <li>Then return not equal.
+   *   <li>When other is {@code null}.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link ExpectedResult#equals(Object)}
+   * <p>
+   * Method under test: {@link ExpectedResult#equals(Object)}
    */
   @Test
-  @DisplayName("Test equals(Object); when other is 'null'; then return not equal")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean ExpectedResult.equals(Object)", "int ExpectedResult.hashCode()"})
-  void testEquals_whenOtherIsNull_thenReturnNotEqual() {
+  public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(new ExpectedResult(), null);
   }
 
   /**
    * Test {@link ExpectedResult#equals(Object)}.
-   *
    * <ul>
-   *   <li>When other is wrong type.
-   *   <li>Then return not equal.
+   *   <li>When other is wrong type.</li>
+   *   <li>Then return not equal.</li>
    * </ul>
-   *
-   * <p>Method under test: {@link ExpectedResult#equals(Object)}
+   * <p>
+   * Method under test: {@link ExpectedResult#equals(Object)}
    */
   @Test
-  @DisplayName("Test equals(Object); when other is wrong type; then return not equal")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
+  @Category(MaintainedByDiffblue.class)
   @MethodsUnderTest({"boolean ExpectedResult.equals(Object)", "int ExpectedResult.hashCode()"})
-  void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
+  public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(new ExpectedResult(), "Different type to ExpectedResult");
   }
