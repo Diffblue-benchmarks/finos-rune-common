@@ -21,23 +21,20 @@ package com.regnosys.rosetta.common.serialisation.mixin.legacy;
  */
 
 import static org.junit.Assert.assertFalse;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
+import static org.mockito.Mockito.mock;
 import com.fasterxml.jackson.databind.introspect.Annotated;
+import com.fasterxml.jackson.databind.introspect.TypeResolutionContext;
+import com.fasterxml.jackson.databind.introspect.VirtualAnnotatedMember;
 import com.fasterxml.jackson.databind.type.PlaceholderForType;
 import com.regnosys.rosetta.common.serialisation.xml.VirtualXMLAttribute;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
 
 public class LegacyRosettaBuilderIntrospectorDiffblueTest {
   /**
-   * Test {@link LegacyRosettaBuilderIntrospector#findNameForDeserialization(Annotated)}.
-   * <p>
-   * Method under test: {@link LegacyRosettaBuilderIntrospector#findNameForDeserialization(Annotated)}
+   * Method under test:
+   * {@link LegacyRosettaBuilderIntrospector#findNameForDeserialization(Annotated)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"java.util.Optional LegacyRosettaBuilderIntrospector.findNameForDeserialization(Annotated)"})
   public void testFindNameForDeserialization() {
     // Arrange
     LegacyRosettaBuilderIntrospector legacyRosettaBuilderIntrospector = new LegacyRosettaBuilderIntrospector();
@@ -50,13 +47,29 @@ public class LegacyRosettaBuilderIntrospectorDiffblueTest {
   }
 
   /**
-   * Test {@link LegacyRosettaBuilderIntrospector#findPropertyIgnorals(Annotated)}.
-   * <p>
-   * Method under test: {@link LegacyRosettaBuilderIntrospector#findPropertyIgnorals(Annotated)}
+   * Method under test:
+   * {@link LegacyRosettaBuilderIntrospector#findNameForDeserialization(Annotated)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"java.util.Optional LegacyRosettaBuilderIntrospector.findPropertyIgnorals(Annotated)"})
+  public void testFindNameForDeserialization2() {
+    // Arrange
+    LegacyRosettaBuilderIntrospector legacyRosettaBuilderIntrospector = new LegacyRosettaBuilderIntrospector();
+    TypeResolutionContext typeContext = mock(TypeResolutionContext.class);
+    Class<Object> declaringClass = Object.class;
+
+    // Act and Assert
+    assertFalse(
+        legacyRosettaBuilderIntrospector
+            .findNameForDeserialization(
+                new VirtualAnnotatedMember(typeContext, declaringClass, "Name", new PlaceholderForType(1)))
+            .isPresent());
+  }
+
+  /**
+   * Method under test:
+   * {@link LegacyRosettaBuilderIntrospector#findPropertyIgnorals(Annotated)}
+   */
+  @Test
   public void testFindPropertyIgnorals() {
     // Arrange
     LegacyRosettaBuilderIntrospector legacyRosettaBuilderIntrospector = new LegacyRosettaBuilderIntrospector();
@@ -66,5 +79,24 @@ public class LegacyRosettaBuilderIntrospectorDiffblueTest {
     assertFalse(legacyRosettaBuilderIntrospector
         .findPropertyIgnorals(new VirtualXMLAttribute(declaringClass, "Name", new PlaceholderForType(1)))
         .isPresent());
+  }
+
+  /**
+   * Method under test:
+   * {@link LegacyRosettaBuilderIntrospector#findPropertyIgnorals(Annotated)}
+   */
+  @Test
+  public void testFindPropertyIgnorals2() {
+    // Arrange
+    LegacyRosettaBuilderIntrospector legacyRosettaBuilderIntrospector = new LegacyRosettaBuilderIntrospector();
+    TypeResolutionContext typeContext = mock(TypeResolutionContext.class);
+    Class<Object> declaringClass = Object.class;
+
+    // Act and Assert
+    assertFalse(
+        legacyRosettaBuilderIntrospector
+            .findPropertyIgnorals(
+                new VirtualAnnotatedMember(typeContext, declaringClass, "Name", new PlaceholderForType(1)))
+            .isPresent());
   }
 }

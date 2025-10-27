@@ -22,60 +22,17 @@ package com.regnosys.rosetta.common.serialisation;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
 
 public class BeanUtilDiffblueTest {
   /**
-   * Test {@link BeanUtil#toLowerCamelCase(String)}.
-   * <ul>
-   *   <li>When empty string.</li>
-   *   <li>Then return empty string.</li>
-   * </ul>
-   * <p>
    * Method under test: {@link BeanUtil#toLowerCamelCase(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"String BeanUtil.toLowerCamelCase(String)"})
-  public void testToLowerCamelCase_whenEmptyString_thenReturnEmptyString() {
-    // Arrange, Act and Assert
-    assertEquals("", BeanUtil.toLowerCamelCase(""));
-  }
-
-  /**
-   * Test {@link BeanUtil#toLowerCamelCase(String)}.
-   * <ul>
-   *   <li>When {@code null}.</li>
-   *   <li>Then return {@code null}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link BeanUtil#toLowerCamelCase(String)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"String BeanUtil.toLowerCamelCase(String)"})
-  public void testToLowerCamelCase_whenNull_thenReturnNull() {
-    // Arrange, Act and Assert
-    assertNull(BeanUtil.toLowerCamelCase(null));
-  }
-
-  /**
-   * Test {@link BeanUtil#toLowerCamelCase(String)}.
-   * <ul>
-   *   <li>When {@code String}.</li>
-   *   <li>Then return {@code string}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link BeanUtil#toLowerCamelCase(String)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"String BeanUtil.toLowerCamelCase(String)"})
-  public void testToLowerCamelCase_whenString_thenReturnString() {
+  public void testToLowerCamelCase() {
     // Arrange, Act and Assert
     assertEquals("string", BeanUtil.toLowerCamelCase("String"));
+    assertNull(BeanUtil.toLowerCamelCase(null));
+    assertEquals("", BeanUtil.toLowerCamelCase(""));
   }
 }

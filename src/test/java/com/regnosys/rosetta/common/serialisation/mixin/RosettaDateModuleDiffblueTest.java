@@ -23,23 +23,17 @@ package com.regnosys.rosetta.common.serialisation.mixin;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
 import com.fasterxml.jackson.core.Version;
 import com.fasterxml.jackson.databind.Module;
 import java.util.List;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
 
 public class RosettaDateModuleDiffblueTest {
   /**
-   * Test new {@link RosettaDateModule} (default constructor).
-   * <p>
-   * Method under test: default or parameterless constructor of {@link RosettaDateModule}
+   * Method under test: default or parameterless constructor of
+   * {@link RosettaDateModule}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void RosettaDateModule.<init>()"})
   public void testNewRosettaDateModule() {
     // Arrange and Act
     RosettaDateModule actualRosettaDateModule = new RosettaDateModule();

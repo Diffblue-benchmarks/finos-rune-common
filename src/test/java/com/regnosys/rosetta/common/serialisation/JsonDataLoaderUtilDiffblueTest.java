@@ -25,506 +25,686 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.ArgumentMatchers.isNull;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.core.Base64Variant;
+import com.fasterxml.jackson.core.Base64Variants;
 import com.fasterxml.jackson.databind.DeserializationConfig;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectMapper.DefaultTypeResolverBuilder;
-import com.fasterxml.jackson.databind.ObjectMapper.DefaultTyping;
-import com.fasterxml.jackson.databind.SerializationConfig;
-import com.fasterxml.jackson.databind.cfg.CacheProvider;
-import com.fasterxml.jackson.databind.json.JsonMapper;
-import com.fasterxml.jackson.databind.json.JsonMapper.Builder;
+import com.fasterxml.jackson.databind.PropertyNamingStrategy;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.databind.cfg.BaseSettings;
+import com.fasterxml.jackson.databind.cfg.CoercionConfigs;
+import com.fasterxml.jackson.databind.cfg.ConfigOverrides;
+import com.fasterxml.jackson.databind.cfg.DatatypeFeatures;
+import com.fasterxml.jackson.databind.cfg.HandlerInstantiator;
+import com.fasterxml.jackson.databind.introspect.BasicClassIntrospector;
+import com.fasterxml.jackson.databind.introspect.ClassIntrospector;
+import com.fasterxml.jackson.databind.introspect.SimpleMixInResolver;
+import com.fasterxml.jackson.databind.jsontype.DefaultBaseTypeLimitingValidator;
+import com.fasterxml.jackson.databind.jsontype.impl.ClassNameIdResolver;
+import com.fasterxml.jackson.databind.jsontype.impl.StdSubtypeResolver;
 import com.fasterxml.jackson.databind.jsontype.impl.StdTypeResolverBuilder;
-import com.fasterxml.jackson.databind.util.LRUMap;
+import com.fasterxml.jackson.databind.type.PlaceholderForType;
+import com.fasterxml.jackson.databind.type.TypeFactory;
+import com.fasterxml.jackson.databind.util.RootNameLookup;
+import com.fasterxml.jackson.dataformat.xml.XmlMapper;
+import com.fasterxml.jackson.dataformat.yaml.YAMLMapper;
 import com.regnosys.rosetta.common.postprocess.qualify.QualificationReport;
 import com.regnosys.rosetta.common.projection.ProjectionDataItemExpectation;
+import com.regnosys.rosetta.common.serialisation.mixin.RosettaJSONAnnotationIntrospector;
 import java.io.CharArrayReader;
 import java.io.Reader;
 import java.io.StringReader;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLClassLoader;
+import java.net.URLStreamHandlerFactory;
 import java.nio.file.Paths;
+import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
+import java.util.TimeZone;
 import javax.management.loading.MLet;
+import org.eclipse.core.internal.boot.PlatformURLHandler;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
 import org.mockito.Mockito;
 
 public class JsonDataLoaderUtilDiffblueTest {
   /**
-   * Test {@link JsonDataLoaderUtil#readType(Class, ObjectMapper, String)} with {@code type}, {@code rosettaObjectMapper}, {@code json}.
-   * <p>
-   * Method under test: {@link JsonDataLoaderUtil#readType(Class, ObjectMapper, String)}
+   * Method under test:
+   * {@link JsonDataLoaderUtil#readType(Class, ObjectMapper, String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"Object JsonDataLoaderUtil.readType(Class, ObjectMapper, String)"})
-  public void testReadTypeWithTypeRosettaObjectMapperJson() {
-    // Arrange
-    Class<Object> type = Object.class;
-    CacheProvider cacheProvider = mock(CacheProvider.class);
-    when(cacheProvider.forDeserializerCache(Mockito.<DeserializationConfig>any())).thenReturn(new LRUMap<>(1, 3));
-    when(cacheProvider.forSerializerCache(Mockito.<SerializationConfig>any())).thenReturn(new LRUMap<>(1, 3));
-    when(cacheProvider.forTypeFactory()).thenReturn(new LRUMap<>(1, 3));
-    Builder builderResult = JsonMapper.builder();
-    builderResult.setDefaultTyping(new DefaultTypeResolverBuilder(DefaultTyping.JAVA_LANG_OBJECT));
-    builderResult.cacheProvider(cacheProvider);
-    Class<Object> target = Object.class;
-    Class<Object> mixinSource = Object.class;
-    builderResult.addMixIn(target, mixinSource);
-
-    // Act and Assert
-    assertThrows(RuntimeException.class,
-        () -> JsonDataLoaderUtil.readType(type, builderResult.findAndAddModules().build(), "["));
-    verify(cacheProvider).forDeserializerCache(isNull());
-    verify(cacheProvider).forSerializerCache(isNull());
-    verify(cacheProvider).forTypeFactory();
-  }
-
-  /**
-   * Test {@link JsonDataLoaderUtil#readType(Class, ObjectMapper, String)} with {@code type}, {@code rosettaObjectMapper}, {@code json}.
-   * <p>
-   * Method under test: {@link JsonDataLoaderUtil#readType(Class, ObjectMapper, String)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"Object JsonDataLoaderUtil.readType(Class, ObjectMapper, String)"})
-  public void testReadTypeWithTypeRosettaObjectMapperJson2() {
-    // Arrange
-    Class<Object> type = Object.class;
-    CacheProvider cacheProvider = mock(CacheProvider.class);
-    when(cacheProvider.forDeserializerCache(Mockito.<DeserializationConfig>any())).thenReturn(new LRUMap<>(1, 3));
-    when(cacheProvider.forSerializerCache(Mockito.<SerializationConfig>any())).thenReturn(new LRUMap<>(1, 3));
-    when(cacheProvider.forTypeFactory()).thenReturn(new LRUMap<>(1, 3));
-    Builder builderResult = JsonMapper.builder();
-    builderResult.setDefaultTyping(new DefaultTypeResolverBuilder(DefaultTyping.OBJECT_AND_NON_CONCRETE));
-    builderResult.cacheProvider(cacheProvider);
-    Class<Object> target = Object.class;
-    Class<Object> mixinSource = Object.class;
-    builderResult.addMixIn(target, mixinSource);
-
-    // Act and Assert
-    assertThrows(RuntimeException.class,
-        () -> JsonDataLoaderUtil.readType(type, builderResult.findAndAddModules().build(), "["));
-    verify(cacheProvider).forDeserializerCache(isNull());
-    verify(cacheProvider).forSerializerCache(isNull());
-    verify(cacheProvider).forTypeFactory();
-  }
-
-  /**
-   * Test {@link JsonDataLoaderUtil#readType(Class, ObjectMapper, String)} with {@code type}, {@code rosettaObjectMapper}, {@code json}.
-   * <p>
-   * Method under test: {@link JsonDataLoaderUtil#readType(Class, ObjectMapper, String)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"Object JsonDataLoaderUtil.readType(Class, ObjectMapper, String)"})
-  public void testReadTypeWithTypeRosettaObjectMapperJson3() {
-    // Arrange
-    Class<Object> type = Object.class;
-    CacheProvider cacheProvider = mock(CacheProvider.class);
-    when(cacheProvider.forDeserializerCache(Mockito.<DeserializationConfig>any())).thenReturn(new LRUMap<>(1, 3));
-    when(cacheProvider.forSerializerCache(Mockito.<SerializationConfig>any())).thenReturn(new LRUMap<>(1, 3));
-    when(cacheProvider.forTypeFactory()).thenReturn(new LRUMap<>(1, 3));
-    Builder builderResult = JsonMapper.builder();
-    builderResult.setDefaultTyping(new DefaultTypeResolverBuilder(DefaultTyping.NON_CONCRETE_AND_ARRAYS));
-    builderResult.cacheProvider(cacheProvider);
-    Class<Object> target = Object.class;
-    Class<Object> mixinSource = Object.class;
-    builderResult.addMixIn(target, mixinSource);
-
-    // Act and Assert
-    assertThrows(RuntimeException.class,
-        () -> JsonDataLoaderUtil.readType(type, builderResult.findAndAddModules().build(), "["));
-    verify(cacheProvider).forDeserializerCache(isNull());
-    verify(cacheProvider).forSerializerCache(isNull());
-    verify(cacheProvider).forTypeFactory();
-  }
-
-  /**
-   * Test {@link JsonDataLoaderUtil#readType(Class, ObjectMapper, String)} with {@code type}, {@code rosettaObjectMapper}, {@code json}.
-   * <p>
-   * Method under test: {@link JsonDataLoaderUtil#readType(Class, ObjectMapper, String)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"Object JsonDataLoaderUtil.readType(Class, ObjectMapper, String)"})
-  public void testReadTypeWithTypeRosettaObjectMapperJson4() {
-    // Arrange
-    Class<Object> type = Object.class;
-    CacheProvider cacheProvider = mock(CacheProvider.class);
-    when(cacheProvider.forDeserializerCache(Mockito.<DeserializationConfig>any())).thenReturn(new LRUMap<>(1, 3));
-    when(cacheProvider.forSerializerCache(Mockito.<SerializationConfig>any())).thenReturn(new LRUMap<>(1, 3));
-    when(cacheProvider.forTypeFactory()).thenReturn(new LRUMap<>(1, 3));
-    Builder builderResult = JsonMapper.builder();
-    builderResult.setDefaultTyping(new DefaultTypeResolverBuilder(DefaultTyping.NON_FINAL));
-    builderResult.cacheProvider(cacheProvider);
-    Class<Object> target = Object.class;
-    Class<Object> mixinSource = Object.class;
-    builderResult.addMixIn(target, mixinSource);
-
-    // Act and Assert
-    assertThrows(RuntimeException.class,
-        () -> JsonDataLoaderUtil.readType(type, builderResult.findAndAddModules().build(), "["));
-    verify(cacheProvider).forDeserializerCache(isNull());
-    verify(cacheProvider).forSerializerCache(isNull());
-    verify(cacheProvider).forTypeFactory();
-  }
-
-  /**
-   * Test {@link JsonDataLoaderUtil#readType(Class, ObjectMapper, String)} with {@code type}, {@code rosettaObjectMapper}, {@code json}.
-   * <p>
-   * Method under test: {@link JsonDataLoaderUtil#readType(Class, ObjectMapper, String)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"Object JsonDataLoaderUtil.readType(Class, ObjectMapper, String)"})
-  public void testReadTypeWithTypeRosettaObjectMapperJson5() {
-    // Arrange
-    Class<Object> type = Object.class;
-    CacheProvider cacheProvider = mock(CacheProvider.class);
-    when(cacheProvider.forDeserializerCache(Mockito.<DeserializationConfig>any())).thenReturn(new LRUMap<>(1, 3));
-    when(cacheProvider.forSerializerCache(Mockito.<SerializationConfig>any())).thenReturn(new LRUMap<>(1, 3));
-    when(cacheProvider.forTypeFactory()).thenReturn(new LRUMap<>(1, 3));
-    Builder builderResult = JsonMapper.builder();
-    builderResult.setDefaultTyping(new DefaultTypeResolverBuilder(DefaultTyping.NON_FINAL_AND_ENUMS));
-    builderResult.cacheProvider(cacheProvider);
-    Class<Object> target = Object.class;
-    Class<Object> mixinSource = Object.class;
-    builderResult.addMixIn(target, mixinSource);
-
-    // Act and Assert
-    assertThrows(RuntimeException.class,
-        () -> JsonDataLoaderUtil.readType(type, builderResult.findAndAddModules().build(), "["));
-    verify(cacheProvider).forDeserializerCache(isNull());
-    verify(cacheProvider).forSerializerCache(isNull());
-    verify(cacheProvider).forTypeFactory();
-  }
-
-  /**
-   * Test {@link JsonDataLoaderUtil#readType(Class, ObjectMapper, String)} with {@code type}, {@code rosettaObjectMapper}, {@code json}.
-   * <ul>
-   *   <li>Given {@code List}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link JsonDataLoaderUtil#readType(Class, ObjectMapper, String)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"Object JsonDataLoaderUtil.readType(Class, ObjectMapper, String)"})
-  public void testReadTypeWithTypeRosettaObjectMapperJson_givenJavaUtilList() {
-    // Arrange
-    Class<Object> type = Object.class;
-    Builder builderResult = JsonMapper.builder();
-    Class<List> target = List.class;
-    Class<Object> mixinSource = Object.class;
-    builderResult.addMixIn(target, mixinSource);
-
-    // Act and Assert
-    assertThrows(RuntimeException.class,
-        () -> JsonDataLoaderUtil.readType(type, builderResult.findAndAddModules().build(), "["));
-  }
-
-  /**
-   * Test {@link JsonDataLoaderUtil#readType(Class, ObjectMapper, String)} with {@code type}, {@code rosettaObjectMapper}, {@code json}.
-   * <ul>
-   *   <li>Given {@link StdTypeResolverBuilder#StdTypeResolverBuilder()}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link JsonDataLoaderUtil#readType(Class, ObjectMapper, String)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"Object JsonDataLoaderUtil.readType(Class, ObjectMapper, String)"})
-  public void testReadTypeWithTypeRosettaObjectMapperJson_givenStdTypeResolverBuilder() {
-    // Arrange
-    Class<Object> type = Object.class;
-    CacheProvider cacheProvider = mock(CacheProvider.class);
-    when(cacheProvider.forDeserializerCache(Mockito.<DeserializationConfig>any())).thenReturn(new LRUMap<>(1, 3));
-    when(cacheProvider.forSerializerCache(Mockito.<SerializationConfig>any())).thenReturn(new LRUMap<>(1, 3));
-    when(cacheProvider.forTypeFactory()).thenReturn(new LRUMap<>(1, 3));
-    Builder builderResult = JsonMapper.builder();
-    builderResult.setDefaultTyping(new StdTypeResolverBuilder());
-    builderResult.cacheProvider(cacheProvider);
-    Class<Object> target = Object.class;
-    Class<Object> mixinSource = Object.class;
-    builderResult.addMixIn(target, mixinSource);
-
-    // Act and Assert
-    assertThrows(RuntimeException.class,
-        () -> JsonDataLoaderUtil.readType(type, builderResult.findAndAddModules().build(), "["));
-    verify(cacheProvider).forDeserializerCache(isNull());
-    verify(cacheProvider).forSerializerCache(isNull());
-    verify(cacheProvider).forTypeFactory();
-  }
-
-  /**
-   * Test {@link JsonDataLoaderUtil#readType(Class, ObjectMapper, String)} with {@code type}, {@code rosettaObjectMapper}, {@code json}.
-   * <ul>
-   *   <li>When {@code 42}.</li>
-   *   <li>Then return intValue is forty-two.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link JsonDataLoaderUtil#readType(Class, ObjectMapper, String)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"Object JsonDataLoaderUtil.readType(Class, ObjectMapper, String)"})
-  public void testReadTypeWithTypeRosettaObjectMapperJson_when42_thenReturnIntValueIsFortyTwo() {
+  public void testReadType() {
     // Arrange
     Class<Object> type = Object.class;
 
     // Act and Assert
-    assertEquals(42,
-        ((Integer) JsonDataLoaderUtil.readType(type, JsonMapper.builder().findAndAddModules().build(), "42"))
-            .intValue());
+    assertThrows(RuntimeException.class, () -> JsonDataLoaderUtil.readType(type, new ObjectMapper(), "Json"));
   }
 
   /**
-   * Test {@link JsonDataLoaderUtil#readType(Class, ObjectMapper, String)} with {@code type}, {@code rosettaObjectMapper}, {@code json}.
-   * <ul>
-   *   <li>When {@code 42}.</li>
-   *   <li>Then throw {@link RuntimeException}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link JsonDataLoaderUtil#readType(Class, ObjectMapper, String)}
+   * Method under test:
+   * {@link JsonDataLoaderUtil#readType(Class, ObjectMapper, String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"Object JsonDataLoaderUtil.readType(Class, ObjectMapper, String)"})
-  public void testReadTypeWithTypeRosettaObjectMapperJson_when42_thenThrowRuntimeException() {
+  public void testReadType2() {
     // Arrange
     Class<List> type = List.class;
 
     // Act and Assert
-    assertThrows(RuntimeException.class,
-        () -> JsonDataLoaderUtil.readType(type, JsonMapper.builder().findAndAddModules().build(), "42"));
+    assertThrows(RuntimeException.class, () -> JsonDataLoaderUtil.readType(type, new ObjectMapper(), "Json"));
   }
 
   /**
-   * Test {@link JsonDataLoaderUtil#readType(Class, ObjectMapper, String)} with {@code type}, {@code rosettaObjectMapper}, {@code json}.
-   * <ul>
-   *   <li>When builder addMixIn {@link Object} and {@link Object}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link JsonDataLoaderUtil#readType(Class, ObjectMapper, String)}
+   * Method under test:
+   * {@link JsonDataLoaderUtil#readType(Class, ObjectMapper, String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"Object JsonDataLoaderUtil.readType(Class, ObjectMapper, String)"})
-  public void testReadTypeWithTypeRosettaObjectMapperJson_whenBuilderAddMixInObjectAndObject() {
-    // Arrange
-    Class<Object> type = Object.class;
-    Builder builderResult = JsonMapper.builder();
-    Class<Object> target = Object.class;
-    Class<Object> mixinSource = Object.class;
-    builderResult.addMixIn(target, mixinSource);
-
-    // Act and Assert
-    assertThrows(RuntimeException.class,
-        () -> JsonDataLoaderUtil.readType(type, builderResult.findAndAddModules().build(), "["));
-  }
-
-  /**
-   * Test {@link JsonDataLoaderUtil#readType(Class, ObjectMapper, String)} with {@code type}, {@code rosettaObjectMapper}, {@code json}.
-   * <ul>
-   *   <li>When empty string.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link JsonDataLoaderUtil#readType(Class, ObjectMapper, String)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"Object JsonDataLoaderUtil.readType(Class, ObjectMapper, String)"})
-  public void testReadTypeWithTypeRosettaObjectMapperJson_whenEmptyString() {
+  public void testReadType3() {
     // Arrange
     Class<Object> type = Object.class;
 
     // Act and Assert
-    assertThrows(RuntimeException.class,
-        () -> JsonDataLoaderUtil.readType(type, JsonMapper.builder().findAndAddModules().build(), ""));
+    assertThrows(RuntimeException.class, () -> JsonDataLoaderUtil.readType(type, new XmlMapper(), "Json"));
   }
 
   /**
-   * Test {@link JsonDataLoaderUtil#readType(Class, ObjectMapper, String)} with {@code type}, {@code rosettaObjectMapper}, {@code json}.
-   * <ul>
-   *   <li>When {@code List}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link JsonDataLoaderUtil#readType(Class, ObjectMapper, String)}
+   * Method under test:
+   * {@link JsonDataLoaderUtil#readType(Class, ObjectMapper, String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"Object JsonDataLoaderUtil.readType(Class, ObjectMapper, String)"})
-  public void testReadTypeWithTypeRosettaObjectMapperJson_whenJavaUtilList() {
+  public void testReadType4() {
+    // Arrange
+    Class<Object> type = Object.class;
+
+    // Act and Assert
+    assertEquals("Json", JsonDataLoaderUtil.readType(type, new YAMLMapper(), "Json"));
+  }
+
+  /**
+   * Method under test:
+   * {@link JsonDataLoaderUtil#readType(Class, ObjectMapper, String)}
+   */
+  @Test
+  public void testReadType5() {
+    // Arrange
+    Class<Object> type = Object.class;
+
+    // Act and Assert
+    assertThrows(RuntimeException.class, () -> JsonDataLoaderUtil.readType(type, new ObjectMapper(), "["));
+  }
+
+  /**
+   * Method under test:
+   * {@link JsonDataLoaderUtil#readType(Class, ObjectMapper, String)}
+   */
+  @Test
+  public void testReadType6() {
+    // Arrange
+    Class<Object> type = Object.class;
+
+    // Act and Assert
+    assertThrows(RuntimeException.class, () -> JsonDataLoaderUtil.readType(type, new ObjectMapper(), "]"));
+  }
+
+  /**
+   * Method under test:
+   * {@link JsonDataLoaderUtil#readType(Class, ObjectMapper, String)}
+   */
+  @Test
+  public void testReadType7() {
+    // Arrange
+    Class<Object> type = Object.class;
+
+    // Act and Assert
+    assertThrows(RuntimeException.class, () -> JsonDataLoaderUtil.readType(type, new ObjectMapper(), ""));
+  }
+
+  /**
+   * Method under test:
+   * {@link JsonDataLoaderUtil#readType(Class, ObjectMapper, String)}
+   */
+  @Test
+  public void testReadType8() {
     // Arrange
     Class<List> type = List.class;
 
     // Act and Assert
-    assertThrows(RuntimeException.class,
-        () -> JsonDataLoaderUtil.readType(type, JsonMapper.builder().findAndAddModules().build(), "Json"));
+    assertThrows(RuntimeException.class, () -> JsonDataLoaderUtil.readType(type, new YAMLMapper(), "Json"));
   }
 
   /**
-   * Test {@link JsonDataLoaderUtil#readType(Class, ObjectMapper, String)} with {@code type}, {@code rosettaObjectMapper}, {@code json}.
-   * <ul>
-   *   <li>When {@code List}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link JsonDataLoaderUtil#readType(Class, ObjectMapper, String)}
+   * Method under test:
+   * {@link JsonDataLoaderUtil#readType(Class, ObjectMapper, String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"Object JsonDataLoaderUtil.readType(Class, ObjectMapper, String)"})
-  public void testReadTypeWithTypeRosettaObjectMapperJson_whenJavaUtilList2() {
+  public void testReadType9() {
     // Arrange
     Class<List> type = List.class;
 
     // Act and Assert
-    assertThrows(RuntimeException.class,
-        () -> JsonDataLoaderUtil.readType(type, JsonMapper.builder().findAndAddModules().build(), "["));
+    assertThrows(RuntimeException.class, () -> JsonDataLoaderUtil.readType(type, new ObjectMapper(), "["));
   }
 
   /**
-   * Test {@link JsonDataLoaderUtil#readType(Class, ObjectMapper, String)} with {@code type}, {@code rosettaObjectMapper}, {@code json}.
-   * <ul>
-   *   <li>When {@code Json}.</li>
-   *   <li>Then throw {@link RuntimeException}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link JsonDataLoaderUtil#readType(Class, ObjectMapper, String)}
+   * Method under test:
+   * {@link JsonDataLoaderUtil#readType(Class, ObjectMapper, String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"Object JsonDataLoaderUtil.readType(Class, ObjectMapper, String)"})
-  public void testReadTypeWithTypeRosettaObjectMapperJson_whenJson_thenThrowRuntimeException() {
+  public void testReadType10() {
     // Arrange
     Class<Object> type = Object.class;
+    ClassIntrospector.MixInResolver overrides = mock(ClassIntrospector.MixInResolver.class);
+    Class<Object> forNameResult = Object.class;
+    Mockito.<Class<?>>when(overrides.findMixInClassFor(Mockito.<Class<Object>>any())).thenReturn(forNameResult);
+    SimpleMixInResolver mixins = new SimpleMixInResolver(overrides);
+    BasicClassIntrospector ci = new BasicClassIntrospector();
+    RosettaJSONAnnotationIntrospector ai = new RosettaJSONAnnotationIntrospector(true);
+    PropertyNamingStrategy pns = new PropertyNamingStrategy();
+    TypeFactory tf = TypeFactory.defaultInstance();
+    ObjectMapper.DefaultTypeResolverBuilder typer = new ObjectMapper.DefaultTypeResolverBuilder(
+        ObjectMapper.DefaultTyping.JAVA_LANG_OBJECT);
+    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/mm/dd");
+    HandlerInstantiator hi = mock(HandlerInstantiator.class);
+    Locale locale = Locale.getDefault();
+    TimeZone tz = TimeZone.getTimeZone("America/Los_Angeles");
+    Base64Variant defaultBase64 = Base64Variants.getDefaultVariant();
+    BaseSettings base = new BaseSettings(ci, ai, pns, tf, typer, dateFormat, hi, locale, tz, defaultBase64,
+        new DefaultBaseTypeLimitingValidator());
+
+    StdSubtypeResolver str = new StdSubtypeResolver();
+    RootNameLookup rootNames = new RootNameLookup();
+    ConfigOverrides configOverrides = new ConfigOverrides();
+    DeserializationConfig config = new DeserializationConfig(base, str, mixins, rootNames, configOverrides,
+        new CoercionConfigs(), mock(DatatypeFeatures.class));
+
+    ObjectMapper rosettaObjectMapper = new ObjectMapper();
+    rosettaObjectMapper.setConfig(config);
 
     // Act and Assert
-    assertThrows(RuntimeException.class,
-        () -> JsonDataLoaderUtil.readType(type, JsonMapper.builder().findAndAddModules().build(), "Json"));
+    assertThrows(RuntimeException.class, () -> JsonDataLoaderUtil.readType(type, rosettaObjectMapper, "["));
+    verify(overrides, atLeast(1)).findMixInClassFor(Mockito.<Class<Object>>any());
   }
 
   /**
-   * Test {@link JsonDataLoaderUtil#readType(Class, ObjectMapper, String)} with {@code type}, {@code rosettaObjectMapper}, {@code json}.
-   * <ul>
-   *   <li>When {@code [}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link JsonDataLoaderUtil#readType(Class, ObjectMapper, String)}
+   * Method under test:
+   * {@link JsonDataLoaderUtil#readType(Class, ObjectMapper, String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"Object JsonDataLoaderUtil.readType(Class, ObjectMapper, String)"})
-  public void testReadTypeWithTypeRosettaObjectMapperJson_whenLeftSquareBracket() {
+  public void testReadType11() {
     // Arrange
     Class<Object> type = Object.class;
+    ClassIntrospector.MixInResolver overrides = mock(ClassIntrospector.MixInResolver.class);
+    Class<Object> forNameResult = Object.class;
+    Mockito.<Class<?>>when(overrides.findMixInClassFor(Mockito.<Class<Object>>any())).thenReturn(forNameResult);
+    SimpleMixInResolver mixins = new SimpleMixInResolver(overrides);
+    BasicClassIntrospector ci = new BasicClassIntrospector();
+    RosettaJSONAnnotationIntrospector ai = new RosettaJSONAnnotationIntrospector(true);
+    PropertyNamingStrategy pns = new PropertyNamingStrategy();
+    TypeFactory tf = TypeFactory.defaultInstance();
+    ObjectMapper.DefaultTypeResolverBuilder typer = new ObjectMapper.DefaultTypeResolverBuilder(
+        ObjectMapper.DefaultTyping.OBJECT_AND_NON_CONCRETE);
+    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/mm/dd");
+    HandlerInstantiator hi = mock(HandlerInstantiator.class);
+    Locale locale = Locale.getDefault();
+    TimeZone tz = TimeZone.getTimeZone("America/Los_Angeles");
+    Base64Variant defaultBase64 = Base64Variants.getDefaultVariant();
+    BaseSettings base = new BaseSettings(ci, ai, pns, tf, typer, dateFormat, hi, locale, tz, defaultBase64,
+        new DefaultBaseTypeLimitingValidator());
+
+    StdSubtypeResolver str = new StdSubtypeResolver();
+    RootNameLookup rootNames = new RootNameLookup();
+    ConfigOverrides configOverrides = new ConfigOverrides();
+    DeserializationConfig config = new DeserializationConfig(base, str, mixins, rootNames, configOverrides,
+        new CoercionConfigs(), mock(DatatypeFeatures.class));
+
+    ObjectMapper rosettaObjectMapper = new ObjectMapper();
+    rosettaObjectMapper.setConfig(config);
 
     // Act and Assert
-    assertThrows(RuntimeException.class,
-        () -> JsonDataLoaderUtil.readType(type, JsonMapper.builder().findAndAddModules().build(), "["));
+    assertThrows(RuntimeException.class, () -> JsonDataLoaderUtil.readType(type, rosettaObjectMapper, "["));
+    verify(overrides, atLeast(1)).findMixInClassFor(Mockito.<Class<Object>>any());
   }
 
   /**
-   * Test {@link JsonDataLoaderUtil#readType(Class, ObjectMapper, String)} with {@code type}, {@code rosettaObjectMapper}, {@code json}.
-   * <ul>
-   *   <li>When {@code ]}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link JsonDataLoaderUtil#readType(Class, ObjectMapper, String)}
+   * Method under test:
+   * {@link JsonDataLoaderUtil#readType(Class, ObjectMapper, String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"Object JsonDataLoaderUtil.readType(Class, ObjectMapper, String)"})
-  public void testReadTypeWithTypeRosettaObjectMapperJson_whenRightSquareBracket() {
+  public void testReadType12() {
     // Arrange
     Class<Object> type = Object.class;
+    ClassIntrospector.MixInResolver overrides = mock(ClassIntrospector.MixInResolver.class);
+    Class<Object> forNameResult = Object.class;
+    Mockito.<Class<?>>when(overrides.findMixInClassFor(Mockito.<Class<Object>>any())).thenReturn(forNameResult);
+    SimpleMixInResolver mixins = new SimpleMixInResolver(overrides);
+    BasicClassIntrospector ci = new BasicClassIntrospector();
+    RosettaJSONAnnotationIntrospector ai = new RosettaJSONAnnotationIntrospector(true);
+    PropertyNamingStrategy pns = new PropertyNamingStrategy();
+    TypeFactory tf = TypeFactory.defaultInstance();
+    ObjectMapper.DefaultTypeResolverBuilder typer = new ObjectMapper.DefaultTypeResolverBuilder(
+        ObjectMapper.DefaultTyping.NON_CONCRETE_AND_ARRAYS);
+    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/mm/dd");
+    HandlerInstantiator hi = mock(HandlerInstantiator.class);
+    Locale locale = Locale.getDefault();
+    TimeZone tz = TimeZone.getTimeZone("America/Los_Angeles");
+    Base64Variant defaultBase64 = Base64Variants.getDefaultVariant();
+    BaseSettings base = new BaseSettings(ci, ai, pns, tf, typer, dateFormat, hi, locale, tz, defaultBase64,
+        new DefaultBaseTypeLimitingValidator());
+
+    StdSubtypeResolver str = new StdSubtypeResolver();
+    RootNameLookup rootNames = new RootNameLookup();
+    ConfigOverrides configOverrides = new ConfigOverrides();
+    DeserializationConfig config = new DeserializationConfig(base, str, mixins, rootNames, configOverrides,
+        new CoercionConfigs(), mock(DatatypeFeatures.class));
+
+    ObjectMapper rosettaObjectMapper = new ObjectMapper();
+    rosettaObjectMapper.setConfig(config);
 
     // Act and Assert
-    assertThrows(RuntimeException.class,
-        () -> JsonDataLoaderUtil.readType(type, JsonMapper.builder().findAndAddModules().build(), "]"));
+    assertThrows(RuntimeException.class, () -> JsonDataLoaderUtil.readType(type, rosettaObjectMapper, "["));
+    verify(overrides, atLeast(1)).findMixInClassFor(Mockito.<Class<Object>>any());
   }
 
   /**
-   * Test {@link JsonDataLoaderUtil#readType(Class, ObjectMapper, URL)} with {@code type}, {@code rosettaObjectMapper}, {@code url}.
-   * <p>
-   * Method under test: {@link JsonDataLoaderUtil#readType(Class, ObjectMapper, URL)}
+   * Method under test:
+   * {@link JsonDataLoaderUtil#readType(Class, ObjectMapper, String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"Object JsonDataLoaderUtil.readType(Class, ObjectMapper, URL)"})
-  public void testReadTypeWithTypeRosettaObjectMapperUrl() throws MalformedURLException {
+  public void testReadType13() {
     // Arrange
     Class<Object> type = Object.class;
+    ClassIntrospector.MixInResolver overrides = mock(ClassIntrospector.MixInResolver.class);
+    Class<Object> forNameResult = Object.class;
+    Mockito.<Class<?>>when(overrides.findMixInClassFor(Mockito.<Class<Object>>any())).thenReturn(forNameResult);
+    SimpleMixInResolver mixins = new SimpleMixInResolver(overrides);
+    BasicClassIntrospector ci = new BasicClassIntrospector();
+    RosettaJSONAnnotationIntrospector ai = new RosettaJSONAnnotationIntrospector(true);
+    PropertyNamingStrategy pns = new PropertyNamingStrategy();
+    TypeFactory tf = TypeFactory.defaultInstance();
+    ObjectMapper.DefaultTypeResolverBuilder typer = new ObjectMapper.DefaultTypeResolverBuilder(
+        ObjectMapper.DefaultTyping.NON_FINAL);
+    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/mm/dd");
+    HandlerInstantiator hi = mock(HandlerInstantiator.class);
+    Locale locale = Locale.getDefault();
+    TimeZone tz = TimeZone.getTimeZone("America/Los_Angeles");
+    Base64Variant defaultBase64 = Base64Variants.getDefaultVariant();
+    BaseSettings base = new BaseSettings(ci, ai, pns, tf, typer, dateFormat, hi, locale, tz, defaultBase64,
+        new DefaultBaseTypeLimitingValidator());
+
+    StdSubtypeResolver str = new StdSubtypeResolver();
+    RootNameLookup rootNames = new RootNameLookup();
+    ConfigOverrides configOverrides = new ConfigOverrides();
+    DeserializationConfig config = new DeserializationConfig(base, str, mixins, rootNames, configOverrides,
+        new CoercionConfigs(), mock(DatatypeFeatures.class));
+
+    ObjectMapper rosettaObjectMapper = new ObjectMapper();
+    rosettaObjectMapper.setConfig(config);
 
     // Act and Assert
-    assertThrows(RuntimeException.class,
-        () -> JsonDataLoaderUtil.readType(type, JsonMapper.builder().findAndAddModules().build(),
-            Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toUri().toURL()));
+    assertThrows(RuntimeException.class, () -> JsonDataLoaderUtil.readType(type, rosettaObjectMapper, "["));
+    verify(overrides, atLeast(1)).findMixInClassFor(Mockito.<Class<Object>>any());
   }
 
   /**
-   * Test {@link JsonDataLoaderUtil#readType(Class, ObjectMapper, URL)} with {@code type}, {@code rosettaObjectMapper}, {@code url}.
-   * <ul>
-   *   <li>When {@code Object}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link JsonDataLoaderUtil#readType(Class, ObjectMapper, URL)}
+   * Method under test:
+   * {@link JsonDataLoaderUtil#readType(Class, ObjectMapper, String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"Object JsonDataLoaderUtil.readType(Class, ObjectMapper, URL)"})
-  public void testReadTypeWithTypeRosettaObjectMapperUrl_whenJavaLangObject() throws MalformedURLException {
+  public void testReadType14() {
     // Arrange
     Class<Object> type = Object.class;
+    ClassIntrospector.MixInResolver overrides = mock(ClassIntrospector.MixInResolver.class);
+    Class<Object> forNameResult = Object.class;
+    Mockito.<Class<?>>when(overrides.findMixInClassFor(Mockito.<Class<Object>>any())).thenReturn(forNameResult);
+    SimpleMixInResolver mixins = new SimpleMixInResolver(overrides);
+    BasicClassIntrospector ci = new BasicClassIntrospector();
+    RosettaJSONAnnotationIntrospector ai = new RosettaJSONAnnotationIntrospector(true);
+    PropertyNamingStrategy pns = new PropertyNamingStrategy();
+    TypeFactory tf = TypeFactory.defaultInstance();
+    StdTypeResolverBuilder typer = new StdTypeResolverBuilder();
+    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/mm/dd");
+    HandlerInstantiator hi = mock(HandlerInstantiator.class);
+    Locale locale = Locale.getDefault();
+    TimeZone tz = TimeZone.getTimeZone("America/Los_Angeles");
+    Base64Variant defaultBase64 = Base64Variants.getDefaultVariant();
+    BaseSettings base = new BaseSettings(ci, ai, pns, tf, typer, dateFormat, hi, locale, tz, defaultBase64,
+        new DefaultBaseTypeLimitingValidator());
+
+    StdSubtypeResolver str = new StdSubtypeResolver();
+    RootNameLookup rootNames = new RootNameLookup();
+    ConfigOverrides configOverrides = new ConfigOverrides();
+    DeserializationConfig config = new DeserializationConfig(base, str, mixins, rootNames, configOverrides,
+        new CoercionConfigs(), mock(DatatypeFeatures.class));
+
+    ObjectMapper rosettaObjectMapper = new ObjectMapper();
+    rosettaObjectMapper.setConfig(config);
 
     // Act and Assert
-    assertThrows(RuntimeException.class,
-        () -> JsonDataLoaderUtil.readType(type, JsonMapper.builder().findAndAddModules().build(),
-            Paths.get(System.getProperty("java.io.tmpdir"), "").toUri().toURL()));
+    assertThrows(RuntimeException.class, () -> JsonDataLoaderUtil.readType(type, rosettaObjectMapper, "["));
+    verify(overrides, atLeast(1)).findMixInClassFor(Mockito.<Class<Object>>any());
   }
 
   /**
-   * Test {@link JsonDataLoaderUtil#readType(Class, ObjectMapper, URL)} with {@code type}, {@code rosettaObjectMapper}, {@code url}.
-   * <ul>
-   *   <li>When {@code List}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link JsonDataLoaderUtil#readType(Class, ObjectMapper, URL)}
+   * Method under test:
+   * {@link JsonDataLoaderUtil#readType(Class, ObjectMapper, String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"Object JsonDataLoaderUtil.readType(Class, ObjectMapper, URL)"})
-  public void testReadTypeWithTypeRosettaObjectMapperUrl_whenJavaUtilList() throws MalformedURLException {
+  public void testReadType15() {
+    // Arrange
+    Class<Object> type = Object.class;
+    ClassIntrospector.MixInResolver overrides = mock(ClassIntrospector.MixInResolver.class);
+    Class<Object> forNameResult = Object.class;
+    Mockito.<Class<?>>when(overrides.findMixInClassFor(Mockito.<Class<Object>>any())).thenReturn(forNameResult);
+    SimpleMixInResolver mixins = new SimpleMixInResolver(overrides);
+    BasicClassIntrospector ci = new BasicClassIntrospector();
+    RosettaJSONAnnotationIntrospector ai = new RosettaJSONAnnotationIntrospector(true);
+    PropertyNamingStrategy pns = new PropertyNamingStrategy();
+    TypeFactory tf = TypeFactory.defaultInstance();
+    ObjectMapper.DefaultTypeResolverBuilder typer = new ObjectMapper.DefaultTypeResolverBuilder(
+        ObjectMapper.DefaultTyping.NON_FINAL_AND_ENUMS);
+    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/mm/dd");
+    HandlerInstantiator hi = mock(HandlerInstantiator.class);
+    Locale locale = Locale.getDefault();
+    TimeZone tz = TimeZone.getTimeZone("America/Los_Angeles");
+    Base64Variant defaultBase64 = Base64Variants.getDefaultVariant();
+    BaseSettings base = new BaseSettings(ci, ai, pns, tf, typer, dateFormat, hi, locale, tz, defaultBase64,
+        new DefaultBaseTypeLimitingValidator());
+
+    StdSubtypeResolver str = new StdSubtypeResolver();
+    RootNameLookup rootNames = new RootNameLookup();
+    ConfigOverrides configOverrides = new ConfigOverrides();
+    DeserializationConfig config = new DeserializationConfig(base, str, mixins, rootNames, configOverrides,
+        new CoercionConfigs(), mock(DatatypeFeatures.class));
+
+    ObjectMapper rosettaObjectMapper = new ObjectMapper();
+    rosettaObjectMapper.setConfig(config);
+
+    // Act and Assert
+    assertThrows(RuntimeException.class, () -> JsonDataLoaderUtil.readType(type, rosettaObjectMapper, "["));
+    verify(overrides, atLeast(1)).findMixInClassFor(Mockito.<Class<Object>>any());
+  }
+
+  /**
+   * Method under test:
+   * {@link JsonDataLoaderUtil#readType(Class, ObjectMapper, String)}
+   */
+  @Test
+  public void testReadType16() {
+    // Arrange
+    Class<Object> type = Object.class;
+    JsonTypeInfo.Value settings = mock(JsonTypeInfo.Value.class);
+    when(settings.getIdVisible()).thenReturn(true);
+    when(settings.getInclusionType()).thenReturn(JsonTypeInfo.As.PROPERTY);
+    when(settings.getRequireTypeIdForSubtypes()).thenReturn(true);
+    Class<Object> forNameResult = Object.class;
+    Mockito.<Class<?>>when(settings.getDefaultImpl()).thenReturn(forNameResult);
+    when(settings.getPropertyName()).thenReturn("Property Name");
+    when(settings.getIdType()).thenReturn(JsonTypeInfo.Id.NONE);
+
+    ObjectMapper.DefaultTypeResolverBuilder typer = new ObjectMapper.DefaultTypeResolverBuilder(
+        ObjectMapper.DefaultTyping.JAVA_LANG_OBJECT);
+    PlaceholderForType baseType = new PlaceholderForType(1);
+    TypeFactory typeFactory = TypeFactory.defaultInstance();
+    typer.init(settings, new ClassNameIdResolver(baseType, typeFactory, new DefaultBaseTypeLimitingValidator()));
+    BasicClassIntrospector ci = new BasicClassIntrospector();
+    RosettaJSONAnnotationIntrospector ai = new RosettaJSONAnnotationIntrospector(true);
+    PropertyNamingStrategy pns = new PropertyNamingStrategy();
+    TypeFactory tf = TypeFactory.defaultInstance();
+    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/mm/dd");
+    HandlerInstantiator hi = mock(HandlerInstantiator.class);
+    Locale locale = Locale.getDefault();
+    TimeZone tz = TimeZone.getTimeZone("America/Los_Angeles");
+    Base64Variant defaultBase64 = Base64Variants.getDefaultVariant();
+    BaseSettings base = new BaseSettings(ci, ai, pns, tf, typer, dateFormat, hi, locale, tz, defaultBase64,
+        new DefaultBaseTypeLimitingValidator());
+
+    ClassIntrospector.MixInResolver overrides = mock(ClassIntrospector.MixInResolver.class);
+    Class<Object> forNameResult2 = Object.class;
+    Mockito.<Class<?>>when(overrides.findMixInClassFor(Mockito.<Class<Object>>any())).thenReturn(forNameResult2);
+    SimpleMixInResolver mixins = new SimpleMixInResolver(overrides);
+    StdSubtypeResolver str = new StdSubtypeResolver();
+    RootNameLookup rootNames = new RootNameLookup();
+    ConfigOverrides configOverrides = new ConfigOverrides();
+    DeserializationConfig config = new DeserializationConfig(base, str, mixins, rootNames, configOverrides,
+        new CoercionConfigs(), mock(DatatypeFeatures.class));
+
+    ObjectMapper rosettaObjectMapper = new ObjectMapper();
+    rosettaObjectMapper.setConfig(config);
+
+    // Act and Assert
+    assertThrows(RuntimeException.class, () -> JsonDataLoaderUtil.readType(type, rosettaObjectMapper, "["));
+    verify(settings).getDefaultImpl();
+    verify(settings).getIdType();
+    verify(settings).getIdVisible();
+    verify(settings).getInclusionType();
+    verify(settings).getPropertyName();
+    verify(settings).getRequireTypeIdForSubtypes();
+    verify(overrides, atLeast(1)).findMixInClassFor(Mockito.<Class<Object>>any());
+  }
+
+  /**
+   * Method under test:
+   * {@link JsonDataLoaderUtil#readType(Class, ObjectMapper, String)}
+   */
+  @Test
+  public void testReadType17() {
     // Arrange
     Class<List> type = List.class;
+    JsonTypeInfo.Value settings = mock(JsonTypeInfo.Value.class);
+    when(settings.getIdVisible()).thenReturn(true);
+    when(settings.getInclusionType()).thenReturn(JsonTypeInfo.As.PROPERTY);
+    when(settings.getRequireTypeIdForSubtypes()).thenReturn(true);
+    Class<Object> forNameResult = Object.class;
+    Mockito.<Class<?>>when(settings.getDefaultImpl()).thenReturn(forNameResult);
+    when(settings.getPropertyName()).thenReturn("Property Name");
+    when(settings.getIdType()).thenReturn(JsonTypeInfo.Id.NONE);
+
+    ObjectMapper.DefaultTypeResolverBuilder typer = new ObjectMapper.DefaultTypeResolverBuilder(
+        ObjectMapper.DefaultTyping.JAVA_LANG_OBJECT);
+    PlaceholderForType baseType = new PlaceholderForType(1);
+    TypeFactory typeFactory = TypeFactory.defaultInstance();
+    typer.init(settings, new ClassNameIdResolver(baseType, typeFactory, new DefaultBaseTypeLimitingValidator()));
+    BasicClassIntrospector ci = new BasicClassIntrospector();
+    RosettaJSONAnnotationIntrospector ai = new RosettaJSONAnnotationIntrospector(true);
+    PropertyNamingStrategy pns = new PropertyNamingStrategy();
+    TypeFactory tf = TypeFactory.defaultInstance();
+    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/mm/dd");
+    HandlerInstantiator hi = mock(HandlerInstantiator.class);
+    Locale locale = Locale.getDefault();
+    TimeZone tz = TimeZone.getTimeZone("America/Los_Angeles");
+    Base64Variant defaultBase64 = Base64Variants.getDefaultVariant();
+    BaseSettings base = new BaseSettings(ci, ai, pns, tf, typer, dateFormat, hi, locale, tz, defaultBase64,
+        new DefaultBaseTypeLimitingValidator());
+
+    ClassIntrospector.MixInResolver overrides = mock(ClassIntrospector.MixInResolver.class);
+    Class<Object> forNameResult2 = Object.class;
+    Mockito.<Class<?>>when(overrides.findMixInClassFor(Mockito.<Class<Object>>any())).thenReturn(forNameResult2);
+    SimpleMixInResolver mixins = new SimpleMixInResolver(overrides);
+    StdSubtypeResolver str = new StdSubtypeResolver();
+    RootNameLookup rootNames = new RootNameLookup();
+    ConfigOverrides configOverrides = new ConfigOverrides();
+    DeserializationConfig config = new DeserializationConfig(base, str, mixins, rootNames, configOverrides,
+        new CoercionConfigs(), mock(DatatypeFeatures.class));
+
+    ObjectMapper rosettaObjectMapper = new ObjectMapper();
+    rosettaObjectMapper.setConfig(config);
 
     // Act and Assert
-    assertThrows(RuntimeException.class,
-        () -> JsonDataLoaderUtil.readType(type, JsonMapper.builder().findAndAddModules().build(),
-            Paths.get(System.getProperty("java.io.tmpdir"), "").toUri().toURL()));
+    assertThrows(RuntimeException.class, () -> JsonDataLoaderUtil.readType(type, rosettaObjectMapper, "["));
+    verify(settings).getDefaultImpl();
+    verify(settings).getIdType();
+    verify(settings).getIdVisible();
+    verify(settings).getInclusionType();
+    verify(settings).getPropertyName();
+    verify(settings).getRequireTypeIdForSubtypes();
+    verify(overrides, atLeast(1)).findMixInClassFor(Mockito.<Class<Object>>any());
   }
 
   /**
-   * Test {@link JsonDataLoaderUtil#readTypeList(Class, ObjectMapper, Reader)} with {@code type}, {@code rosettaObjectMapper}, {@code input}.
-   * <p>
-   * Method under test: {@link JsonDataLoaderUtil#readTypeList(Class, ObjectMapper, Reader)}
+   * Method under test:
+   * {@link JsonDataLoaderUtil#readType(Class, ObjectMapper, String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"List JsonDataLoaderUtil.readTypeList(Class, ObjectMapper, Reader)"})
-  public void testReadTypeListWithTypeRosettaObjectMapperInput() {
+  public void testReadType18() {
     // Arrange
     Class<Object> type = Object.class;
-    JsonMapper rosettaObjectMapper = JsonMapper.builder().findAndAddModules().build();
+    JsonTypeInfo.Value settings = mock(JsonTypeInfo.Value.class);
+    when(settings.getIdVisible()).thenReturn(true);
+    when(settings.getInclusionType()).thenReturn(JsonTypeInfo.As.PROPERTY);
+    when(settings.getRequireTypeIdForSubtypes()).thenReturn(true);
+    Class<Object> forNameResult = Object.class;
+    Mockito.<Class<?>>when(settings.getDefaultImpl()).thenReturn(forNameResult);
+    when(settings.getPropertyName()).thenReturn("Property Name");
+    when(settings.getIdType()).thenReturn(JsonTypeInfo.Id.CLASS);
+
+    ObjectMapper.DefaultTypeResolverBuilder typer = new ObjectMapper.DefaultTypeResolverBuilder(
+        ObjectMapper.DefaultTyping.JAVA_LANG_OBJECT);
+    PlaceholderForType baseType = new PlaceholderForType(1);
+    TypeFactory typeFactory = TypeFactory.defaultInstance();
+    typer.init(settings, new ClassNameIdResolver(baseType, typeFactory, new DefaultBaseTypeLimitingValidator()));
+    BasicClassIntrospector ci = new BasicClassIntrospector();
+    RosettaJSONAnnotationIntrospector ai = new RosettaJSONAnnotationIntrospector(true);
+    PropertyNamingStrategy pns = new PropertyNamingStrategy();
+    TypeFactory tf = TypeFactory.defaultInstance();
+    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/mm/dd");
+    HandlerInstantiator hi = mock(HandlerInstantiator.class);
+    Locale locale = Locale.getDefault();
+    TimeZone tz = TimeZone.getTimeZone("America/Los_Angeles");
+    Base64Variant defaultBase64 = Base64Variants.getDefaultVariant();
+    BaseSettings base = new BaseSettings(ci, ai, pns, tf, typer, dateFormat, hi, locale, tz, defaultBase64,
+        new DefaultBaseTypeLimitingValidator());
+
+    ClassIntrospector.MixInResolver overrides = mock(ClassIntrospector.MixInResolver.class);
+    Class<Object> forNameResult2 = Object.class;
+    Mockito.<Class<?>>when(overrides.findMixInClassFor(Mockito.<Class<Object>>any())).thenReturn(forNameResult2);
+    SimpleMixInResolver mixins = new SimpleMixInResolver(overrides);
+    StdSubtypeResolver str = new StdSubtypeResolver();
+    RootNameLookup rootNames = new RootNameLookup();
+    ConfigOverrides configOverrides = new ConfigOverrides();
+    DeserializationConfig config = new DeserializationConfig(base, str, mixins, rootNames, configOverrides,
+        new CoercionConfigs(), mock(DatatypeFeatures.class));
+
+    ObjectMapper rosettaObjectMapper = new ObjectMapper();
+    rosettaObjectMapper.setConfig(config);
+
+    // Act and Assert
+    assertThrows(RuntimeException.class, () -> JsonDataLoaderUtil.readType(type, rosettaObjectMapper, "["));
+    verify(settings).getDefaultImpl();
+    verify(settings).getIdType();
+    verify(settings).getIdVisible();
+    verify(settings).getInclusionType();
+    verify(settings).getPropertyName();
+    verify(settings).getRequireTypeIdForSubtypes();
+    verify(overrides, atLeast(1)).findMixInClassFor(Mockito.<Class<Object>>any());
+  }
+
+  /**
+   * Method under test:
+   * {@link JsonDataLoaderUtil#readType(Class, ObjectMapper, URL)}
+   */
+  @Test
+  public void testReadType19() throws MalformedURLException {
+    // Arrange
+    Class<Object> type = Object.class;
+
+    // Act and Assert
+    assertThrows(RuntimeException.class, () -> JsonDataLoaderUtil.readType(type, new ObjectMapper(),
+        Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toUri().toURL()));
+  }
+
+  /**
+   * Method under test:
+   * {@link JsonDataLoaderUtil#readType(Class, ObjectMapper, URL)}
+   */
+  @Test
+  public void testReadType20() throws MalformedURLException {
+    // Arrange
+    Class<Object> type = Object.class;
+
+    // Act and Assert
+    assertThrows(RuntimeException.class, () -> JsonDataLoaderUtil.readType(type, new ObjectMapper(),
+        Paths.get(System.getProperty("java.io.tmpdir"), "").toUri().toURL()));
+  }
+
+  /**
+   * Method under test:
+   * {@link JsonDataLoaderUtil#readTypeList(Class, ObjectMapper, Reader)}
+   */
+  @Test
+  public void testReadTypeList() {
+    // Arrange
+    Class<Object> type = Object.class;
+    ObjectMapper rosettaObjectMapper = new ObjectMapper();
+
+    // Act and Assert
+    assertThrows(RuntimeException.class,
+        () -> JsonDataLoaderUtil.readTypeList(type, rosettaObjectMapper, new StringReader("foo")));
+  }
+
+  /**
+   * Method under test:
+   * {@link JsonDataLoaderUtil#readTypeList(Class, ObjectMapper, Reader)}
+   */
+  @Test
+  public void testReadTypeList2() {
+    // Arrange
+    Class<List> type = List.class;
+    ObjectMapper rosettaObjectMapper = new ObjectMapper();
+
+    // Act and Assert
+    assertThrows(RuntimeException.class,
+        () -> JsonDataLoaderUtil.readTypeList(type, rosettaObjectMapper, new StringReader("foo")));
+  }
+
+  /**
+   * Method under test:
+   * {@link JsonDataLoaderUtil#readTypeList(Class, ObjectMapper, Reader)}
+   */
+  @Test
+  public void testReadTypeList3() {
+    // Arrange
+    Class<Object> type = Object.class;
+    XmlMapper rosettaObjectMapper = new XmlMapper();
+
+    // Act and Assert
+    assertThrows(RuntimeException.class,
+        () -> JsonDataLoaderUtil.readTypeList(type, rosettaObjectMapper, new StringReader("foo")));
+  }
+
+  /**
+   * Method under test:
+   * {@link JsonDataLoaderUtil#readTypeList(Class, ObjectMapper, Reader)}
+   */
+  @Test
+  public void testReadTypeList4() {
+    // Arrange
+    Class<Object> type = Object.class;
+    YAMLMapper rosettaObjectMapper = new YAMLMapper();
+
+    // Act and Assert
+    assertThrows(RuntimeException.class,
+        () -> JsonDataLoaderUtil.readTypeList(type, rosettaObjectMapper, new StringReader("foo")));
+  }
+
+  /**
+   * Method under test:
+   * {@link JsonDataLoaderUtil#readTypeList(Class, ObjectMapper, Reader)}
+   */
+  @Test
+  public void testReadTypeList5() {
+    // Arrange
+    Class<Object> type = Object.class;
+    ObjectMapper rosettaObjectMapper = new ObjectMapper();
 
     // Act and Assert
     assertThrows(RuntimeException.class, () -> JsonDataLoaderUtil.readTypeList(type, rosettaObjectMapper,
@@ -532,39 +712,14 @@ public class JsonDataLoaderUtilDiffblueTest {
   }
 
   /**
-   * Test {@link JsonDataLoaderUtil#readTypeList(Class, ObjectMapper, Reader)} with {@code type}, {@code rosettaObjectMapper}, {@code input}.
-   * <p>
-   * Method under test: {@link JsonDataLoaderUtil#readTypeList(Class, ObjectMapper, Reader)}
+   * Method under test:
+   * {@link JsonDataLoaderUtil#readTypeList(Class, ObjectMapper, Reader)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"List JsonDataLoaderUtil.readTypeList(Class, ObjectMapper, Reader)"})
-  public void testReadTypeListWithTypeRosettaObjectMapperInput2() {
+  public void testReadTypeList6() {
     // Arrange
     Class<Object> type = Object.class;
-    JsonMapper rosettaObjectMapper = JsonMapper.builder().findAndAddModules().build();
-
-    // Act and Assert
-    assertThrows(RuntimeException.class, () -> JsonDataLoaderUtil.readTypeList(type, rosettaObjectMapper,
-        new CharArrayReader("A\u0000A\u0000".toCharArray(), 1, 1)));
-  }
-
-  /**
-   * Test {@link JsonDataLoaderUtil#readTypeList(Class, ObjectMapper, Reader)} with {@code type}, {@code rosettaObjectMapper}, {@code input}.
-   * <p>
-   * Method under test: {@link JsonDataLoaderUtil#readTypeList(Class, ObjectMapper, Reader)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"List JsonDataLoaderUtil.readTypeList(Class, ObjectMapper, Reader)"})
-  public void testReadTypeListWithTypeRosettaObjectMapperInput3() {
-    // Arrange
-    Class<Object> type = Object.class;
-    Builder builderResult = JsonMapper.builder();
-    Class<Object> target = Object.class;
-    Class<Object> mixinSource = Object.class;
-    builderResult.addMixIn(target, mixinSource);
-    JsonMapper rosettaObjectMapper = builderResult.findAndAddModules().build();
+    ObjectMapper rosettaObjectMapper = new ObjectMapper();
 
     // Act and Assert
     assertThrows(RuntimeException.class,
@@ -572,173 +727,14 @@ public class JsonDataLoaderUtilDiffblueTest {
   }
 
   /**
-   * Test {@link JsonDataLoaderUtil#readTypeList(Class, ObjectMapper, Reader)} with {@code type}, {@code rosettaObjectMapper}, {@code input}.
-   * <p>
-   * Method under test: {@link JsonDataLoaderUtil#readTypeList(Class, ObjectMapper, Reader)}
+   * Method under test:
+   * {@link JsonDataLoaderUtil#readTypeList(Class, ObjectMapper, Reader)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"List JsonDataLoaderUtil.readTypeList(Class, ObjectMapper, Reader)"})
-  public void testReadTypeListWithTypeRosettaObjectMapperInput4() {
+  public void testReadTypeList7() {
     // Arrange
     Class<Object> type = Object.class;
-    CacheProvider cacheProvider = mock(CacheProvider.class);
-    when(cacheProvider.forDeserializerCache(Mockito.<DeserializationConfig>any())).thenReturn(new LRUMap<>(1, 3));
-    when(cacheProvider.forSerializerCache(Mockito.<SerializationConfig>any())).thenReturn(new LRUMap<>(1, 3));
-    when(cacheProvider.forTypeFactory()).thenReturn(new LRUMap<>(1, 3));
-    Builder builderResult = JsonMapper.builder();
-    builderResult.setDefaultTyping(new DefaultTypeResolverBuilder(DefaultTyping.JAVA_LANG_OBJECT));
-    builderResult.cacheProvider(cacheProvider);
-    Class<Object> target = Object.class;
-    Class<Object> mixinSource = Object.class;
-    builderResult.addMixIn(target, mixinSource);
-    JsonMapper rosettaObjectMapper = builderResult.findAndAddModules().build();
-
-    // Act and Assert
-    assertThrows(RuntimeException.class,
-        () -> JsonDataLoaderUtil.readTypeList(type, rosettaObjectMapper, new StringReader("42")));
-    verify(cacheProvider).forDeserializerCache(isNull());
-    verify(cacheProvider).forSerializerCache(isNull());
-    verify(cacheProvider).forTypeFactory();
-  }
-
-  /**
-   * Test {@link JsonDataLoaderUtil#readTypeList(Class, ObjectMapper, Reader)} with {@code type}, {@code rosettaObjectMapper}, {@code input}.
-   * <ul>
-   *   <li>Given {@code List}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link JsonDataLoaderUtil#readTypeList(Class, ObjectMapper, Reader)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"List JsonDataLoaderUtil.readTypeList(Class, ObjectMapper, Reader)"})
-  public void testReadTypeListWithTypeRosettaObjectMapperInput_givenJavaUtilList() {
-    // Arrange
-    Class<Object> type = Object.class;
-    Builder builderResult = JsonMapper.builder();
-    Class<List> target = List.class;
-    Class<Object> mixinSource = Object.class;
-    builderResult.addMixIn(target, mixinSource);
-    JsonMapper rosettaObjectMapper = builderResult.findAndAddModules().build();
-
-    // Act and Assert
-    assertThrows(RuntimeException.class,
-        () -> JsonDataLoaderUtil.readTypeList(type, rosettaObjectMapper, new StringReader("42")));
-  }
-
-  /**
-   * Test {@link JsonDataLoaderUtil#readTypeList(Class, ObjectMapper, Reader)} with {@code type}, {@code rosettaObjectMapper}, {@code input}.
-   * <ul>
-   *   <li>Given {@code true}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link JsonDataLoaderUtil#readTypeList(Class, ObjectMapper, Reader)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"List JsonDataLoaderUtil.readTypeList(Class, ObjectMapper, Reader)"})
-  public void testReadTypeListWithTypeRosettaObjectMapperInput_givenTrue() {
-    // Arrange
-    Class<Object> type = Object.class;
-    CacheProvider cacheProvider = mock(CacheProvider.class);
-    when(cacheProvider.forDeserializerCache(Mockito.<DeserializationConfig>any())).thenReturn(new LRUMap<>(1, 3));
-    when(cacheProvider.forSerializerCache(Mockito.<SerializationConfig>any())).thenReturn(new LRUMap<>(1, 3));
-    when(cacheProvider.forTypeFactory()).thenReturn(new LRUMap<>(1, 3));
-    Builder builderResult = JsonMapper.builder();
-    builderResult.defaultLeniency(true);
-    builderResult.cacheProvider(cacheProvider);
-    Class<Object> target = Object.class;
-    Class<Object> mixinSource = Object.class;
-    builderResult.addMixIn(target, mixinSource);
-    JsonMapper rosettaObjectMapper = builderResult.findAndAddModules().build();
-
-    // Act and Assert
-    assertThrows(RuntimeException.class,
-        () -> JsonDataLoaderUtil.readTypeList(type, rosettaObjectMapper, new StringReader("42")));
-    verify(cacheProvider).forDeserializerCache(isNull());
-    verify(cacheProvider).forSerializerCache(isNull());
-    verify(cacheProvider).forTypeFactory();
-  }
-
-  /**
-   * Test {@link JsonDataLoaderUtil#readTypeList(Class, ObjectMapper, Reader)} with {@code type}, {@code rosettaObjectMapper}, {@code input}.
-   * <ul>
-   *   <li>When {@code List}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link JsonDataLoaderUtil#readTypeList(Class, ObjectMapper, Reader)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"List JsonDataLoaderUtil.readTypeList(Class, ObjectMapper, Reader)"})
-  public void testReadTypeListWithTypeRosettaObjectMapperInput_whenJavaUtilList() {
-    // Arrange
-    Class<List> type = List.class;
-    JsonMapper rosettaObjectMapper = JsonMapper.builder().findAndAddModules().build();
-
-    // Act and Assert
-    assertThrows(RuntimeException.class,
-        () -> JsonDataLoaderUtil.readTypeList(type, rosettaObjectMapper, new StringReader("foo")));
-  }
-
-  /**
-   * Test {@link JsonDataLoaderUtil#readTypeList(Class, ObjectMapper, Reader)} with {@code type}, {@code rosettaObjectMapper}, {@code input}.
-   * <ul>
-   *   <li>When {@code List}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link JsonDataLoaderUtil#readTypeList(Class, ObjectMapper, Reader)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"List JsonDataLoaderUtil.readTypeList(Class, ObjectMapper, Reader)"})
-  public void testReadTypeListWithTypeRosettaObjectMapperInput_whenJavaUtilList2() {
-    // Arrange
-    Class<List> type = List.class;
-    JsonMapper rosettaObjectMapper = JsonMapper.builder().findAndAddModules().build();
-
-    // Act and Assert
-    assertThrows(RuntimeException.class,
-        () -> JsonDataLoaderUtil.readTypeList(type, rosettaObjectMapper, new StringReader("42")));
-  }
-
-  /**
-   * Test {@link JsonDataLoaderUtil#readTypeList(Class, ObjectMapper, Reader)} with {@code type}, {@code rosettaObjectMapper}, {@code input}.
-   * <ul>
-   *   <li>When {@link StringReader#StringReader(String)} with {@code 42}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link JsonDataLoaderUtil#readTypeList(Class, ObjectMapper, Reader)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"List JsonDataLoaderUtil.readTypeList(Class, ObjectMapper, Reader)"})
-  public void testReadTypeListWithTypeRosettaObjectMapperInput_whenStringReaderWith42() {
-    // Arrange
-    Class<Object> type = Object.class;
-    JsonMapper rosettaObjectMapper = JsonMapper.builder().findAndAddModules().build();
-
-    // Act and Assert
-    assertThrows(RuntimeException.class,
-        () -> JsonDataLoaderUtil.readTypeList(type, rosettaObjectMapper, new StringReader("42")));
-  }
-
-  /**
-   * Test {@link JsonDataLoaderUtil#readTypeList(Class, ObjectMapper, Reader)} with {@code type}, {@code rosettaObjectMapper}, {@code input}.
-   * <ul>
-   *   <li>When {@link StringReader#StringReader(String)} with empty string.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link JsonDataLoaderUtil#readTypeList(Class, ObjectMapper, Reader)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"List JsonDataLoaderUtil.readTypeList(Class, ObjectMapper, Reader)"})
-  public void testReadTypeListWithTypeRosettaObjectMapperInput_whenStringReaderWithEmptyString() {
-    // Arrange
-    Class<Object> type = Object.class;
-    JsonMapper rosettaObjectMapper = JsonMapper.builder().findAndAddModules().build();
+    ObjectMapper rosettaObjectMapper = new ObjectMapper();
 
     // Act and Assert
     assertThrows(RuntimeException.class,
@@ -746,20 +742,29 @@ public class JsonDataLoaderUtilDiffblueTest {
   }
 
   /**
-   * Test {@link JsonDataLoaderUtil#readTypeList(Class, ObjectMapper, Reader)} with {@code type}, {@code rosettaObjectMapper}, {@code input}.
-   * <ul>
-   *   <li>When {@link StringReader#StringReader(String)} with {@code foo}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link JsonDataLoaderUtil#readTypeList(Class, ObjectMapper, Reader)}
+   * Method under test:
+   * {@link JsonDataLoaderUtil#readTypeList(Class, ObjectMapper, Reader)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"List JsonDataLoaderUtil.readTypeList(Class, ObjectMapper, Reader)"})
-  public void testReadTypeListWithTypeRosettaObjectMapperInput_whenStringReaderWithFoo() {
+  public void testReadTypeList8() {
     // Arrange
     Class<Object> type = Object.class;
-    JsonMapper rosettaObjectMapper = JsonMapper.builder().findAndAddModules().build();
+    ObjectMapper rosettaObjectMapper = new ObjectMapper();
+
+    // Act and Assert
+    assertThrows(RuntimeException.class, () -> JsonDataLoaderUtil.readTypeList(type, rosettaObjectMapper,
+        new CharArrayReader("A\u0000A\u0000".toCharArray(), 1, 1)));
+  }
+
+  /**
+   * Method under test:
+   * {@link JsonDataLoaderUtil#readTypeList(Class, ObjectMapper, Reader)}
+   */
+  @Test
+  public void testReadTypeList9() {
+    // Arrange
+    Class<List> type = List.class;
+    YAMLMapper rosettaObjectMapper = new YAMLMapper();
 
     // Act and Assert
     assertThrows(RuntimeException.class,
@@ -767,88 +772,508 @@ public class JsonDataLoaderUtilDiffblueTest {
   }
 
   /**
-   * Test {@link JsonDataLoaderUtil#readTypeList(Class, ObjectMapper, URL)} with {@code type}, {@code rosettaObjectMapper}, {@code url}.
-   * <p>
-   * Method under test: {@link JsonDataLoaderUtil#readTypeList(Class, ObjectMapper, URL)}
+   * Method under test:
+   * {@link JsonDataLoaderUtil#readTypeList(Class, ObjectMapper, Reader)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"List JsonDataLoaderUtil.readTypeList(Class, ObjectMapper, URL)"})
-  public void testReadTypeListWithTypeRosettaObjectMapperUrl() throws MalformedURLException {
+  public void testReadTypeList10() {
     // Arrange
     Class<Object> type = Object.class;
+    ClassIntrospector.MixInResolver overrides = mock(ClassIntrospector.MixInResolver.class);
+    Class<Object> forNameResult = Object.class;
+    Mockito.<Class<?>>when(overrides.findMixInClassFor(Mockito.<Class<Object>>any())).thenReturn(forNameResult);
+    SimpleMixInResolver mixins = new SimpleMixInResolver(overrides);
+    BasicClassIntrospector ci = new BasicClassIntrospector();
+    RosettaJSONAnnotationIntrospector ai = new RosettaJSONAnnotationIntrospector(true);
+    PropertyNamingStrategy pns = new PropertyNamingStrategy();
+    TypeFactory tf = TypeFactory.defaultInstance();
+    ObjectMapper.DefaultTypeResolverBuilder typer = new ObjectMapper.DefaultTypeResolverBuilder(
+        ObjectMapper.DefaultTyping.JAVA_LANG_OBJECT);
+    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/mm/dd");
+    HandlerInstantiator hi = mock(HandlerInstantiator.class);
+    Locale locale = Locale.getDefault();
+    TimeZone tz = TimeZone.getTimeZone("America/Los_Angeles");
+    Base64Variant defaultBase64 = Base64Variants.getDefaultVariant();
+    BaseSettings base = new BaseSettings(ci, ai, pns, tf, typer, dateFormat, hi, locale, tz, defaultBase64,
+        new DefaultBaseTypeLimitingValidator());
+
+    StdSubtypeResolver str = new StdSubtypeResolver();
+    RootNameLookup rootNames = new RootNameLookup();
+    ConfigOverrides configOverrides = new ConfigOverrides();
+    DeserializationConfig config = new DeserializationConfig(base, str, mixins, rootNames, configOverrides,
+        new CoercionConfigs(), mock(DatatypeFeatures.class));
+
+    ObjectMapper rosettaObjectMapper = new ObjectMapper();
+    rosettaObjectMapper.setConfig(config);
 
     // Act and Assert
     assertThrows(RuntimeException.class,
-        () -> JsonDataLoaderUtil.readTypeList(type, JsonMapper.builder().findAndAddModules().build(),
-            Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toUri().toURL()));
+        () -> JsonDataLoaderUtil.readTypeList(type, rosettaObjectMapper, new StringReader("42")));
+    verify(overrides, atLeast(1)).findMixInClassFor(Mockito.<Class<Object>>any());
   }
 
   /**
-   * Test {@link JsonDataLoaderUtil#readTypeList(Class, ObjectMapper, URL)} with {@code type}, {@code rosettaObjectMapper}, {@code url}.
-   * <ul>
-   *   <li>When {@code Object}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link JsonDataLoaderUtil#readTypeList(Class, ObjectMapper, URL)}
+   * Method under test:
+   * {@link JsonDataLoaderUtil#readTypeList(Class, ObjectMapper, Reader)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"List JsonDataLoaderUtil.readTypeList(Class, ObjectMapper, URL)"})
-  public void testReadTypeListWithTypeRosettaObjectMapperUrl_whenJavaLangObject() throws MalformedURLException {
-    // Arrange
-    Class<Object> type = Object.class;
-
-    // Act and Assert
-    assertThrows(RuntimeException.class,
-        () -> JsonDataLoaderUtil.readTypeList(type, JsonMapper.builder().findAndAddModules().build(),
-            Paths.get(System.getProperty("java.io.tmpdir"), "").toUri().toURL()));
-  }
-
-  /**
-   * Test {@link JsonDataLoaderUtil#readTypeList(Class, ObjectMapper, URL)} with {@code type}, {@code rosettaObjectMapper}, {@code url}.
-   * <ul>
-   *   <li>When {@code List}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link JsonDataLoaderUtil#readTypeList(Class, ObjectMapper, URL)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"List JsonDataLoaderUtil.readTypeList(Class, ObjectMapper, URL)"})
-  public void testReadTypeListWithTypeRosettaObjectMapperUrl_whenJavaUtilList() throws MalformedURLException {
+  public void testReadTypeList11() {
     // Arrange
     Class<List> type = List.class;
+    ClassIntrospector.MixInResolver overrides = mock(ClassIntrospector.MixInResolver.class);
+    Class<Object> forNameResult = Object.class;
+    Mockito.<Class<?>>when(overrides.findMixInClassFor(Mockito.<Class<Object>>any())).thenReturn(forNameResult);
+    SimpleMixInResolver mixins = new SimpleMixInResolver(overrides);
+    BasicClassIntrospector ci = new BasicClassIntrospector();
+    RosettaJSONAnnotationIntrospector ai = new RosettaJSONAnnotationIntrospector(true);
+    PropertyNamingStrategy pns = new PropertyNamingStrategy();
+    TypeFactory tf = TypeFactory.defaultInstance();
+    ObjectMapper.DefaultTypeResolverBuilder typer = new ObjectMapper.DefaultTypeResolverBuilder(
+        ObjectMapper.DefaultTyping.JAVA_LANG_OBJECT);
+    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/mm/dd");
+    HandlerInstantiator hi = mock(HandlerInstantiator.class);
+    Locale locale = Locale.getDefault();
+    TimeZone tz = TimeZone.getTimeZone("America/Los_Angeles");
+    Base64Variant defaultBase64 = Base64Variants.getDefaultVariant();
+    BaseSettings base = new BaseSettings(ci, ai, pns, tf, typer, dateFormat, hi, locale, tz, defaultBase64,
+        new DefaultBaseTypeLimitingValidator());
+
+    StdSubtypeResolver str = new StdSubtypeResolver();
+    RootNameLookup rootNames = new RootNameLookup();
+    ConfigOverrides configOverrides = new ConfigOverrides();
+    DeserializationConfig config = new DeserializationConfig(base, str, mixins, rootNames, configOverrides,
+        new CoercionConfigs(), mock(DatatypeFeatures.class));
+
+    ObjectMapper rosettaObjectMapper = new ObjectMapper();
+    rosettaObjectMapper.setConfig(config);
 
     // Act and Assert
     assertThrows(RuntimeException.class,
-        () -> JsonDataLoaderUtil.readTypeList(type, JsonMapper.builder().findAndAddModules().build(),
-            Paths.get(System.getProperty("java.io.tmpdir"), "").toUri().toURL()));
+        () -> JsonDataLoaderUtil.readTypeList(type, rosettaObjectMapper, new StringReader("42")));
+    verify(overrides, atLeast(1)).findMixInClassFor(Mockito.<Class<Object>>any());
   }
 
   /**
-   * Test {@link JsonDataLoaderUtil#fromObject(Object, Class, ObjectMapper)}.
-   * <ul>
-   *   <li>Given {@code List}.</li>
-   *   <li>When builder addMixIn {@link List} and {@link Object}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link JsonDataLoaderUtil#fromObject(Object, Class, ObjectMapper)}
+   * Method under test:
+   * {@link JsonDataLoaderUtil#readTypeList(Class, ObjectMapper, Reader)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"Object JsonDataLoaderUtil.fromObject(Object, Class, ObjectMapper)"})
-  public void testFromObject_givenJavaUtilList_whenBuilderAddMixInListAndObject() {
+  public void testReadTypeList12() {
     // Arrange
     Class<Object> type = Object.class;
-    Builder builderResult = JsonMapper.builder();
-    Class<List> target = List.class;
-    Class<Object> mixinSource = Object.class;
-    builderResult.addMixIn(target, mixinSource);
+    ClassIntrospector.MixInResolver overrides = mock(ClassIntrospector.MixInResolver.class);
+    Class<Object> forNameResult = Object.class;
+    Mockito.<Class<?>>when(overrides.findMixInClassFor(Mockito.<Class<Object>>any())).thenReturn(forNameResult);
+    SimpleMixInResolver mixins = new SimpleMixInResolver(overrides);
+    BasicClassIntrospector ci = new BasicClassIntrospector();
+    RosettaJSONAnnotationIntrospector ai = new RosettaJSONAnnotationIntrospector(true);
+    PropertyNamingStrategy pns = new PropertyNamingStrategy();
+    TypeFactory tf = TypeFactory.defaultInstance();
+    ObjectMapper.DefaultTypeResolverBuilder typer = new ObjectMapper.DefaultTypeResolverBuilder(
+        ObjectMapper.DefaultTyping.OBJECT_AND_NON_CONCRETE);
+    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/mm/dd");
+    HandlerInstantiator hi = mock(HandlerInstantiator.class);
+    Locale locale = Locale.getDefault();
+    TimeZone tz = TimeZone.getTimeZone("America/Los_Angeles");
+    Base64Variant defaultBase64 = Base64Variants.getDefaultVariant();
+    BaseSettings base = new BaseSettings(ci, ai, pns, tf, typer, dateFormat, hi, locale, tz, defaultBase64,
+        new DefaultBaseTypeLimitingValidator());
+
+    StdSubtypeResolver str = new StdSubtypeResolver();
+    RootNameLookup rootNames = new RootNameLookup();
+    ConfigOverrides configOverrides = new ConfigOverrides();
+    DeserializationConfig config = new DeserializationConfig(base, str, mixins, rootNames, configOverrides,
+        new CoercionConfigs(), mock(DatatypeFeatures.class));
+
+    ObjectMapper rosettaObjectMapper = new ObjectMapper();
+    rosettaObjectMapper.setConfig(config);
+
+    // Act and Assert
+    assertThrows(RuntimeException.class,
+        () -> JsonDataLoaderUtil.readTypeList(type, rosettaObjectMapper, new StringReader("42")));
+    verify(overrides, atLeast(1)).findMixInClassFor(Mockito.<Class<Object>>any());
+  }
+
+  /**
+   * Method under test:
+   * {@link JsonDataLoaderUtil#readTypeList(Class, ObjectMapper, Reader)}
+   */
+  @Test
+  public void testReadTypeList13() {
+    // Arrange
+    Class<Object> type = Object.class;
+    ClassIntrospector.MixInResolver overrides = mock(ClassIntrospector.MixInResolver.class);
+    Class<Object> forNameResult = Object.class;
+    Mockito.<Class<?>>when(overrides.findMixInClassFor(Mockito.<Class<Object>>any())).thenReturn(forNameResult);
+    SimpleMixInResolver mixins = new SimpleMixInResolver(overrides);
+    BasicClassIntrospector ci = new BasicClassIntrospector();
+    RosettaJSONAnnotationIntrospector ai = new RosettaJSONAnnotationIntrospector(true);
+    PropertyNamingStrategy pns = new PropertyNamingStrategy();
+    TypeFactory tf = TypeFactory.defaultInstance();
+    ObjectMapper.DefaultTypeResolverBuilder typer = new ObjectMapper.DefaultTypeResolverBuilder(
+        ObjectMapper.DefaultTyping.NON_CONCRETE_AND_ARRAYS);
+    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/mm/dd");
+    HandlerInstantiator hi = mock(HandlerInstantiator.class);
+    Locale locale = Locale.getDefault();
+    TimeZone tz = TimeZone.getTimeZone("America/Los_Angeles");
+    Base64Variant defaultBase64 = Base64Variants.getDefaultVariant();
+    BaseSettings base = new BaseSettings(ci, ai, pns, tf, typer, dateFormat, hi, locale, tz, defaultBase64,
+        new DefaultBaseTypeLimitingValidator());
+
+    StdSubtypeResolver str = new StdSubtypeResolver();
+    RootNameLookup rootNames = new RootNameLookup();
+    ConfigOverrides configOverrides = new ConfigOverrides();
+    DeserializationConfig config = new DeserializationConfig(base, str, mixins, rootNames, configOverrides,
+        new CoercionConfigs(), mock(DatatypeFeatures.class));
+
+    ObjectMapper rosettaObjectMapper = new ObjectMapper();
+    rosettaObjectMapper.setConfig(config);
+
+    // Act and Assert
+    assertThrows(RuntimeException.class,
+        () -> JsonDataLoaderUtil.readTypeList(type, rosettaObjectMapper, new StringReader("42")));
+    verify(overrides, atLeast(1)).findMixInClassFor(Mockito.<Class<Object>>any());
+  }
+
+  /**
+   * Method under test:
+   * {@link JsonDataLoaderUtil#readTypeList(Class, ObjectMapper, Reader)}
+   */
+  @Test
+  public void testReadTypeList14() {
+    // Arrange
+    Class<Object> type = Object.class;
+    ClassIntrospector.MixInResolver overrides = mock(ClassIntrospector.MixInResolver.class);
+    Class<Object> forNameResult = Object.class;
+    Mockito.<Class<?>>when(overrides.findMixInClassFor(Mockito.<Class<Object>>any())).thenReturn(forNameResult);
+    SimpleMixInResolver mixins = new SimpleMixInResolver(overrides);
+    BasicClassIntrospector ci = new BasicClassIntrospector();
+    RosettaJSONAnnotationIntrospector ai = new RosettaJSONAnnotationIntrospector(true);
+    PropertyNamingStrategy pns = new PropertyNamingStrategy();
+    TypeFactory tf = TypeFactory.defaultInstance();
+    ObjectMapper.DefaultTypeResolverBuilder typer = new ObjectMapper.DefaultTypeResolverBuilder(
+        ObjectMapper.DefaultTyping.NON_FINAL);
+    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/mm/dd");
+    HandlerInstantiator hi = mock(HandlerInstantiator.class);
+    Locale locale = Locale.getDefault();
+    TimeZone tz = TimeZone.getTimeZone("America/Los_Angeles");
+    Base64Variant defaultBase64 = Base64Variants.getDefaultVariant();
+    BaseSettings base = new BaseSettings(ci, ai, pns, tf, typer, dateFormat, hi, locale, tz, defaultBase64,
+        new DefaultBaseTypeLimitingValidator());
+
+    StdSubtypeResolver str = new StdSubtypeResolver();
+    RootNameLookup rootNames = new RootNameLookup();
+    ConfigOverrides configOverrides = new ConfigOverrides();
+    DeserializationConfig config = new DeserializationConfig(base, str, mixins, rootNames, configOverrides,
+        new CoercionConfigs(), mock(DatatypeFeatures.class));
+
+    ObjectMapper rosettaObjectMapper = new ObjectMapper();
+    rosettaObjectMapper.setConfig(config);
+
+    // Act and Assert
+    assertThrows(RuntimeException.class,
+        () -> JsonDataLoaderUtil.readTypeList(type, rosettaObjectMapper, new StringReader("42")));
+    verify(overrides, atLeast(1)).findMixInClassFor(Mockito.<Class<Object>>any());
+  }
+
+  /**
+   * Method under test:
+   * {@link JsonDataLoaderUtil#readTypeList(Class, ObjectMapper, Reader)}
+   */
+  @Test
+  public void testReadTypeList15() {
+    // Arrange
+    Class<Object> type = Object.class;
+    ClassIntrospector.MixInResolver overrides = mock(ClassIntrospector.MixInResolver.class);
+    Class<Object> forNameResult = Object.class;
+    Mockito.<Class<?>>when(overrides.findMixInClassFor(Mockito.<Class<Object>>any())).thenReturn(forNameResult);
+    SimpleMixInResolver mixins = new SimpleMixInResolver(overrides);
+    BasicClassIntrospector ci = new BasicClassIntrospector();
+    RosettaJSONAnnotationIntrospector ai = new RosettaJSONAnnotationIntrospector(true);
+    PropertyNamingStrategy pns = new PropertyNamingStrategy();
+    TypeFactory tf = TypeFactory.defaultInstance();
+    StdTypeResolverBuilder typer = new StdTypeResolverBuilder();
+    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/mm/dd");
+    HandlerInstantiator hi = mock(HandlerInstantiator.class);
+    Locale locale = Locale.getDefault();
+    TimeZone tz = TimeZone.getTimeZone("America/Los_Angeles");
+    Base64Variant defaultBase64 = Base64Variants.getDefaultVariant();
+    BaseSettings base = new BaseSettings(ci, ai, pns, tf, typer, dateFormat, hi, locale, tz, defaultBase64,
+        new DefaultBaseTypeLimitingValidator());
+
+    StdSubtypeResolver str = new StdSubtypeResolver();
+    RootNameLookup rootNames = new RootNameLookup();
+    ConfigOverrides configOverrides = new ConfigOverrides();
+    DeserializationConfig config = new DeserializationConfig(base, str, mixins, rootNames, configOverrides,
+        new CoercionConfigs(), mock(DatatypeFeatures.class));
+
+    ObjectMapper rosettaObjectMapper = new ObjectMapper();
+    rosettaObjectMapper.setConfig(config);
+
+    // Act and Assert
+    assertThrows(RuntimeException.class,
+        () -> JsonDataLoaderUtil.readTypeList(type, rosettaObjectMapper, new StringReader("42")));
+    verify(overrides, atLeast(1)).findMixInClassFor(Mockito.<Class<Object>>any());
+  }
+
+  /**
+   * Method under test:
+   * {@link JsonDataLoaderUtil#readTypeList(Class, ObjectMapper, Reader)}
+   */
+  @Test
+  public void testReadTypeList16() {
+    // Arrange
+    Class<Object> type = Object.class;
+    ClassIntrospector.MixInResolver overrides = mock(ClassIntrospector.MixInResolver.class);
+    Class<Object> forNameResult = Object.class;
+    Mockito.<Class<?>>when(overrides.findMixInClassFor(Mockito.<Class<Object>>any())).thenReturn(forNameResult);
+    SimpleMixInResolver mixins = new SimpleMixInResolver(overrides);
+    BasicClassIntrospector ci = new BasicClassIntrospector();
+    RosettaJSONAnnotationIntrospector ai = new RosettaJSONAnnotationIntrospector(true);
+    PropertyNamingStrategy pns = new PropertyNamingStrategy();
+    TypeFactory tf = TypeFactory.defaultInstance();
+    ObjectMapper.DefaultTypeResolverBuilder typer = new ObjectMapper.DefaultTypeResolverBuilder(
+        ObjectMapper.DefaultTyping.NON_FINAL_AND_ENUMS);
+    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/mm/dd");
+    HandlerInstantiator hi = mock(HandlerInstantiator.class);
+    Locale locale = Locale.getDefault();
+    TimeZone tz = TimeZone.getTimeZone("America/Los_Angeles");
+    Base64Variant defaultBase64 = Base64Variants.getDefaultVariant();
+    BaseSettings base = new BaseSettings(ci, ai, pns, tf, typer, dateFormat, hi, locale, tz, defaultBase64,
+        new DefaultBaseTypeLimitingValidator());
+
+    StdSubtypeResolver str = new StdSubtypeResolver();
+    RootNameLookup rootNames = new RootNameLookup();
+    ConfigOverrides configOverrides = new ConfigOverrides();
+    DeserializationConfig config = new DeserializationConfig(base, str, mixins, rootNames, configOverrides,
+        new CoercionConfigs(), mock(DatatypeFeatures.class));
+
+    ObjectMapper rosettaObjectMapper = new ObjectMapper();
+    rosettaObjectMapper.setConfig(config);
+
+    // Act and Assert
+    assertThrows(RuntimeException.class,
+        () -> JsonDataLoaderUtil.readTypeList(type, rosettaObjectMapper, new StringReader("42")));
+    verify(overrides, atLeast(1)).findMixInClassFor(Mockito.<Class<Object>>any());
+  }
+
+  /**
+   * Method under test:
+   * {@link JsonDataLoaderUtil#readTypeList(Class, ObjectMapper, Reader)}
+   */
+  @Test
+  public void testReadTypeList17() {
+    // Arrange
+    Class<Object> type = Object.class;
+    JsonTypeInfo.Value settings = mock(JsonTypeInfo.Value.class);
+    when(settings.getIdVisible()).thenReturn(true);
+    when(settings.getInclusionType()).thenReturn(JsonTypeInfo.As.PROPERTY);
+    when(settings.getRequireTypeIdForSubtypes()).thenReturn(true);
+    Class<Object> forNameResult = Object.class;
+    Mockito.<Class<?>>when(settings.getDefaultImpl()).thenReturn(forNameResult);
+    when(settings.getPropertyName()).thenReturn("Property Name");
+    when(settings.getIdType()).thenReturn(JsonTypeInfo.Id.NONE);
+
+    ObjectMapper.DefaultTypeResolverBuilder typer = new ObjectMapper.DefaultTypeResolverBuilder(
+        ObjectMapper.DefaultTyping.JAVA_LANG_OBJECT);
+    PlaceholderForType baseType = new PlaceholderForType(1);
+    TypeFactory typeFactory = TypeFactory.defaultInstance();
+    typer.init(settings, new ClassNameIdResolver(baseType, typeFactory, new DefaultBaseTypeLimitingValidator()));
+    BasicClassIntrospector ci = new BasicClassIntrospector();
+    RosettaJSONAnnotationIntrospector ai = new RosettaJSONAnnotationIntrospector(true);
+    PropertyNamingStrategy pns = new PropertyNamingStrategy();
+    TypeFactory tf = TypeFactory.defaultInstance();
+    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/mm/dd");
+    HandlerInstantiator hi = mock(HandlerInstantiator.class);
+    Locale locale = Locale.getDefault();
+    TimeZone tz = TimeZone.getTimeZone("America/Los_Angeles");
+    Base64Variant defaultBase64 = Base64Variants.getDefaultVariant();
+    BaseSettings base = new BaseSettings(ci, ai, pns, tf, typer, dateFormat, hi, locale, tz, defaultBase64,
+        new DefaultBaseTypeLimitingValidator());
+
+    ClassIntrospector.MixInResolver overrides = mock(ClassIntrospector.MixInResolver.class);
+    Class<Object> forNameResult2 = Object.class;
+    Mockito.<Class<?>>when(overrides.findMixInClassFor(Mockito.<Class<Object>>any())).thenReturn(forNameResult2);
+    SimpleMixInResolver mixins = new SimpleMixInResolver(overrides);
+    StdSubtypeResolver str = new StdSubtypeResolver();
+    RootNameLookup rootNames = new RootNameLookup();
+    ConfigOverrides configOverrides = new ConfigOverrides();
+    DeserializationConfig config = new DeserializationConfig(base, str, mixins, rootNames, configOverrides,
+        new CoercionConfigs(), mock(DatatypeFeatures.class));
+
+    ObjectMapper rosettaObjectMapper = new ObjectMapper();
+    rosettaObjectMapper.setConfig(config);
+
+    // Act and Assert
+    assertThrows(RuntimeException.class,
+        () -> JsonDataLoaderUtil.readTypeList(type, rosettaObjectMapper, new StringReader("42")));
+    verify(settings).getDefaultImpl();
+    verify(settings).getIdType();
+    verify(settings).getIdVisible();
+    verify(settings).getInclusionType();
+    verify(settings).getPropertyName();
+    verify(settings).getRequireTypeIdForSubtypes();
+    verify(overrides, atLeast(1)).findMixInClassFor(Mockito.<Class<Object>>any());
+  }
+
+  /**
+   * Method under test:
+   * {@link JsonDataLoaderUtil#readTypeList(Class, ObjectMapper, Reader)}
+   */
+  @Test
+  public void testReadTypeList18() {
+    // Arrange
+    Class<Object> type = Object.class;
+    JsonTypeInfo.Value settings = mock(JsonTypeInfo.Value.class);
+    when(settings.getIdVisible()).thenReturn(true);
+    when(settings.getInclusionType()).thenReturn(JsonTypeInfo.As.PROPERTY);
+    when(settings.getRequireTypeIdForSubtypes()).thenReturn(true);
+    Class<Object> forNameResult = Object.class;
+    Mockito.<Class<?>>when(settings.getDefaultImpl()).thenReturn(forNameResult);
+    when(settings.getPropertyName()).thenReturn("Property Name");
+    when(settings.getIdType()).thenReturn(JsonTypeInfo.Id.NONE);
+
+    ObjectMapper.DefaultTypeResolverBuilder typer = new ObjectMapper.DefaultTypeResolverBuilder(
+        ObjectMapper.DefaultTyping.OBJECT_AND_NON_CONCRETE);
+    PlaceholderForType baseType = new PlaceholderForType(1);
+    TypeFactory typeFactory = TypeFactory.defaultInstance();
+    typer.init(settings, new ClassNameIdResolver(baseType, typeFactory, new DefaultBaseTypeLimitingValidator()));
+    BasicClassIntrospector ci = new BasicClassIntrospector();
+    RosettaJSONAnnotationIntrospector ai = new RosettaJSONAnnotationIntrospector(true);
+    PropertyNamingStrategy pns = new PropertyNamingStrategy();
+    TypeFactory tf = TypeFactory.defaultInstance();
+    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/mm/dd");
+    HandlerInstantiator hi = mock(HandlerInstantiator.class);
+    Locale locale = Locale.getDefault();
+    TimeZone tz = TimeZone.getTimeZone("America/Los_Angeles");
+    Base64Variant defaultBase64 = Base64Variants.getDefaultVariant();
+    BaseSettings base = new BaseSettings(ci, ai, pns, tf, typer, dateFormat, hi, locale, tz, defaultBase64,
+        new DefaultBaseTypeLimitingValidator());
+
+    ClassIntrospector.MixInResolver overrides = mock(ClassIntrospector.MixInResolver.class);
+    Class<Object> forNameResult2 = Object.class;
+    Mockito.<Class<?>>when(overrides.findMixInClassFor(Mockito.<Class<Object>>any())).thenReturn(forNameResult2);
+    SimpleMixInResolver mixins = new SimpleMixInResolver(overrides);
+    StdSubtypeResolver str = new StdSubtypeResolver();
+    RootNameLookup rootNames = new RootNameLookup();
+    ConfigOverrides configOverrides = new ConfigOverrides();
+    DeserializationConfig config = new DeserializationConfig(base, str, mixins, rootNames, configOverrides,
+        new CoercionConfigs(), mock(DatatypeFeatures.class));
+
+    ObjectMapper rosettaObjectMapper = new ObjectMapper();
+    rosettaObjectMapper.setConfig(config);
+
+    // Act and Assert
+    assertThrows(RuntimeException.class,
+        () -> JsonDataLoaderUtil.readTypeList(type, rosettaObjectMapper, new StringReader("42")));
+    verify(settings).getDefaultImpl();
+    verify(settings).getIdType();
+    verify(settings).getIdVisible();
+    verify(settings).getInclusionType();
+    verify(settings).getPropertyName();
+    verify(settings).getRequireTypeIdForSubtypes();
+    verify(overrides, atLeast(1)).findMixInClassFor(Mockito.<Class<Object>>any());
+  }
+
+  /**
+   * Method under test:
+   * {@link JsonDataLoaderUtil#readTypeList(Class, ObjectMapper, Reader)}
+   */
+  @Test
+  public void testReadTypeList19() {
+    // Arrange
+    Class<Object> type = Object.class;
+    JsonTypeInfo.Value settings = mock(JsonTypeInfo.Value.class);
+    when(settings.getIdVisible()).thenReturn(true);
+    when(settings.getInclusionType()).thenReturn(JsonTypeInfo.As.PROPERTY);
+    when(settings.getRequireTypeIdForSubtypes()).thenReturn(true);
+    Class<Object> forNameResult = Object.class;
+    Mockito.<Class<?>>when(settings.getDefaultImpl()).thenReturn(forNameResult);
+    when(settings.getPropertyName()).thenReturn("Property Name");
+    when(settings.getIdType()).thenReturn(JsonTypeInfo.Id.CLASS);
+
+    ObjectMapper.DefaultTypeResolverBuilder typer = new ObjectMapper.DefaultTypeResolverBuilder(
+        ObjectMapper.DefaultTyping.JAVA_LANG_OBJECT);
+    PlaceholderForType baseType = new PlaceholderForType(1);
+    TypeFactory typeFactory = TypeFactory.defaultInstance();
+    typer.init(settings, new ClassNameIdResolver(baseType, typeFactory, new DefaultBaseTypeLimitingValidator()));
+    BasicClassIntrospector ci = new BasicClassIntrospector();
+    RosettaJSONAnnotationIntrospector ai = new RosettaJSONAnnotationIntrospector(true);
+    PropertyNamingStrategy pns = new PropertyNamingStrategy();
+    TypeFactory tf = TypeFactory.defaultInstance();
+    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/mm/dd");
+    HandlerInstantiator hi = mock(HandlerInstantiator.class);
+    Locale locale = Locale.getDefault();
+    TimeZone tz = TimeZone.getTimeZone("America/Los_Angeles");
+    Base64Variant defaultBase64 = Base64Variants.getDefaultVariant();
+    BaseSettings base = new BaseSettings(ci, ai, pns, tf, typer, dateFormat, hi, locale, tz, defaultBase64,
+        new DefaultBaseTypeLimitingValidator());
+
+    ClassIntrospector.MixInResolver overrides = mock(ClassIntrospector.MixInResolver.class);
+    Class<Object> forNameResult2 = Object.class;
+    Mockito.<Class<?>>when(overrides.findMixInClassFor(Mockito.<Class<Object>>any())).thenReturn(forNameResult2);
+    SimpleMixInResolver mixins = new SimpleMixInResolver(overrides);
+    StdSubtypeResolver str = new StdSubtypeResolver();
+    RootNameLookup rootNames = new RootNameLookup();
+    ConfigOverrides configOverrides = new ConfigOverrides();
+    DeserializationConfig config = new DeserializationConfig(base, str, mixins, rootNames, configOverrides,
+        new CoercionConfigs(), mock(DatatypeFeatures.class));
+
+    ObjectMapper rosettaObjectMapper = new ObjectMapper();
+    rosettaObjectMapper.setConfig(config);
+
+    // Act and Assert
+    assertThrows(RuntimeException.class,
+        () -> JsonDataLoaderUtil.readTypeList(type, rosettaObjectMapper, new StringReader("42")));
+    verify(settings).getDefaultImpl();
+    verify(settings).getIdType();
+    verify(settings).getIdVisible();
+    verify(settings).getInclusionType();
+    verify(settings).getPropertyName();
+    verify(settings).getRequireTypeIdForSubtypes();
+    verify(overrides, atLeast(1)).findMixInClassFor(Mockito.<Class<Object>>any());
+  }
+
+  /**
+   * Method under test:
+   * {@link JsonDataLoaderUtil#readTypeList(Class, ObjectMapper, URL)}
+   */
+  @Test
+  public void testReadTypeList20() throws MalformedURLException {
+    // Arrange
+    Class<Object> type = Object.class;
+
+    // Act and Assert
+    assertThrows(RuntimeException.class, () -> JsonDataLoaderUtil.readTypeList(type, new ObjectMapper(),
+        Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toUri().toURL()));
+  }
+
+  /**
+   * Method under test:
+   * {@link JsonDataLoaderUtil#readTypeList(Class, ObjectMapper, URL)}
+   */
+  @Test
+  public void testReadTypeList21() throws MalformedURLException {
+    // Arrange
+    Class<Object> type = Object.class;
+
+    // Act and Assert
+    assertThrows(RuntimeException.class, () -> JsonDataLoaderUtil.readTypeList(type, new ObjectMapper(),
+        Paths.get(System.getProperty("java.io.tmpdir"), "").toUri().toURL()));
+  }
+
+  /**
+   * Method under test:
+   * {@link JsonDataLoaderUtil#fromObject(Object, Class, ObjectMapper)}
+   */
+  @Test
+  public void testFromObject() {
+    // Arrange
+    Class<Object> type = Object.class;
 
     // Act
     Object actualFromObjectResult = JsonDataLoaderUtil.fromObject(QualificationReport.SUCCESS, type,
-        builderResult.findAndAddModules().build());
+        new ObjectMapper());
 
     // Assert
     assertEquals(4, ((Map<String, Object>) actualFromObjectResult).size());
@@ -856,62 +1281,31 @@ public class JsonDataLoaderUtilDiffblueTest {
     assertTrue(getResult instanceof List);
     assertTrue(actualFromObjectResult instanceof Map);
     assertNull(((Map<String, Object>) actualFromObjectResult).get("ingestedObject"));
-    assertEquals(0,
-        ((Integer) ((Map<String, Object>) actualFromObjectResult).get("qualifiableObjectsCount")).intValue());
-    assertEquals(0,
-        ((Integer) ((Map<String, Object>) actualFromObjectResult).get("uniquelyQualifiedObjectsCount")).intValue());
     assertTrue(((List<Object>) getResult).isEmpty());
+    assertTrue(((Map<String, Object>) actualFromObjectResult).containsKey("qualifiableObjectsCount"));
+    assertTrue(((Map<String, Object>) actualFromObjectResult).containsKey("uniquelyQualifiedObjectsCount"));
   }
 
   /**
-   * Test {@link JsonDataLoaderUtil#fromObject(Object, Class, ObjectMapper)}.
-   * <ul>
-   *   <li>Given {@code List}.</li>
-   *   <li>When builder addMixIn {@link Object} and {@link List}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link JsonDataLoaderUtil#fromObject(Object, Class, ObjectMapper)}
+   * Method under test:
+   * {@link JsonDataLoaderUtil#fromObject(Object, Class, ObjectMapper)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"Object JsonDataLoaderUtil.fromObject(Object, Class, ObjectMapper)"})
-  public void testFromObject_givenJavaUtilList_whenBuilderAddMixInObjectAndList() {
+  public void testFromObject2() {
     // Arrange
+    Class<Object> forNameResult = Object.class;
     Class<Object> type = Object.class;
-    Builder builderResult = JsonMapper.builder();
-    Class<Object> target = Object.class;
-    Class<List> mixinSource = List.class;
-    builderResult.addMixIn(target, mixinSource);
 
-    // Act
-    Object actualFromObjectResult = JsonDataLoaderUtil.fromObject(QualificationReport.SUCCESS, type,
-        builderResult.findAndAddModules().build());
-
-    // Assert
-    assertEquals(4, ((Map<String, Object>) actualFromObjectResult).size());
-    Object getResult = ((Map<String, Object>) actualFromObjectResult).get("results");
-    assertTrue(getResult instanceof List);
-    assertTrue(actualFromObjectResult instanceof Map);
-    assertNull(((Map<String, Object>) actualFromObjectResult).get("ingestedObject"));
-    assertEquals(0,
-        ((Integer) ((Map<String, Object>) actualFromObjectResult).get("qualifiableObjectsCount")).intValue());
-    assertEquals(0,
-        ((Integer) ((Map<String, Object>) actualFromObjectResult).get("uniquelyQualifiedObjectsCount")).intValue());
-    assertTrue(((List<Object>) getResult).isEmpty());
+    // Act and Assert
+    assertEquals("java.lang.Object", JsonDataLoaderUtil.fromObject(forNameResult, type, new ObjectMapper()));
   }
 
   /**
-   * Test {@link JsonDataLoaderUtil#fromObject(Object, Class, ObjectMapper)}.
-   * <ul>
-   *   <li>Then return size is six.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link JsonDataLoaderUtil#fromObject(Object, Class, ObjectMapper)}
+   * Method under test:
+   * {@link JsonDataLoaderUtil#fromObject(Object, Class, ObjectMapper)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"Object JsonDataLoaderUtil.fromObject(Object, Class, ObjectMapper)"})
-  public void testFromObject_thenReturnSizeIsSix() {
+  public void testFromObject3() {
     // Arrange
     ProjectionDataItemExpectation projectionDataItemExpectation = new ProjectionDataItemExpectation("Input File", "42",
         "Output File", 1, true, true);
@@ -920,7 +1314,7 @@ public class JsonDataLoaderUtilDiffblueTest {
 
     // Act
     Object actualFromObjectResult = JsonDataLoaderUtil.fromObject(projectionDataItemExpectation, type,
-        JsonMapper.builder().findAndAddModules().build());
+        new ObjectMapper());
 
     // Assert
     assertTrue(actualFromObjectResult instanceof Map);
@@ -928,132 +1322,57 @@ public class JsonDataLoaderUtilDiffblueTest {
     assertEquals("42", ((Map<String, Object>) actualFromObjectResult).get("keyValueFile"));
     assertEquals("Input File", ((Map<String, Object>) actualFromObjectResult).get("inputFile"));
     assertEquals("Output File", ((Map<String, Object>) actualFromObjectResult).get("outputFile"));
-    assertEquals(1, ((Integer) ((Map<String, Object>) actualFromObjectResult).get("validationFailures")).intValue());
-    assertTrue((Boolean) ((Map<String, Object>) actualFromObjectResult).get("error"));
-    assertTrue((Boolean) ((Map<String, Object>) actualFromObjectResult).get("validXml"));
+    assertTrue(((Map<String, Object>) actualFromObjectResult).containsKey("error"));
+    assertTrue(((Map<String, Object>) actualFromObjectResult).containsKey("validXml"));
+    assertTrue(((Map<String, Object>) actualFromObjectResult).containsKey("validationFailures"));
   }
 
   /**
-   * Test {@link JsonDataLoaderUtil#fromObject(Object, Class, ObjectMapper)}.
-   * <ul>
-   *   <li>When builder addMixIn {@link Object} and {@link Object}.</li>
-   *   <li>Then return size is four.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link JsonDataLoaderUtil#fromObject(Object, Class, ObjectMapper)}
+   * Method under test:
+   * {@link JsonDataLoaderUtil#fromObject(Object, Class, ObjectMapper)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"Object JsonDataLoaderUtil.fromObject(Object, Class, ObjectMapper)"})
-  public void testFromObject_whenBuilderAddMixInObjectAndObject_thenReturnSizeIsFour() {
-    // Arrange
-    Class<Object> type = Object.class;
-    Builder builderResult = JsonMapper.builder();
-    Class<Object> target = Object.class;
-    Class<Object> mixinSource = Object.class;
-    builderResult.addMixIn(target, mixinSource);
-
-    // Act
-    Object actualFromObjectResult = JsonDataLoaderUtil.fromObject(QualificationReport.SUCCESS, type,
-        builderResult.findAndAddModules().build());
-
-    // Assert
-    assertEquals(4, ((Map<String, Object>) actualFromObjectResult).size());
-    Object getResult = ((Map<String, Object>) actualFromObjectResult).get("results");
-    assertTrue(getResult instanceof List);
-    assertTrue(actualFromObjectResult instanceof Map);
-    assertNull(((Map<String, Object>) actualFromObjectResult).get("ingestedObject"));
-    assertEquals(0,
-        ((Integer) ((Map<String, Object>) actualFromObjectResult).get("qualifiableObjectsCount")).intValue());
-    assertEquals(0,
-        ((Integer) ((Map<String, Object>) actualFromObjectResult).get("uniquelyQualifiedObjectsCount")).intValue());
-    assertTrue(((List<Object>) getResult).isEmpty());
-  }
-
-  /**
-   * Test {@link JsonDataLoaderUtil#fromObject(Object, Class, ObjectMapper)}.
-   * <ul>
-   *   <li>When forty-two.</li>
-   *   <li>Then return intValue is forty-two.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link JsonDataLoaderUtil#fromObject(Object, Class, ObjectMapper)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"Object JsonDataLoaderUtil.fromObject(Object, Class, ObjectMapper)"})
-  public void testFromObject_whenFortyTwo_thenReturnIntValueIsFortyTwo() {
-    // Arrange
-    Class<Object> type = Object.class;
-
-    // Act and Assert
-    assertEquals(42,
-        ((Integer) JsonDataLoaderUtil.fromObject(42, type, JsonMapper.builder().findAndAddModules().build()))
-            .intValue());
-  }
-
-  /**
-   * Test {@link JsonDataLoaderUtil#fromObject(Object, Class, ObjectMapper)}.
-   * <ul>
-   *   <li>When {@code Object}.</li>
-   *   <li>Then return {@code Object}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link JsonDataLoaderUtil#fromObject(Object, Class, ObjectMapper)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"Object JsonDataLoaderUtil.fromObject(Object, Class, ObjectMapper)"})
-  public void testFromObject_whenJavaLangObject_thenReturnJavaLangObject() {
-    // Arrange
-    Class<Object> forNameResult = Object.class;
-    Class<Object> type = Object.class;
-
-    // Act and Assert
-    assertEquals("java.lang.Object",
-        JsonDataLoaderUtil.fromObject(forNameResult, type, JsonMapper.builder().findAndAddModules().build()));
-  }
-
-  /**
-   * Test {@link JsonDataLoaderUtil#fromObject(Object, Class, ObjectMapper)}.
-   * <ul>
-   *   <li>When {@code List}.</li>
-   *   <li>Then throw {@link RuntimeException}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link JsonDataLoaderUtil#fromObject(Object, Class, ObjectMapper)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"Object JsonDataLoaderUtil.fromObject(Object, Class, ObjectMapper)"})
-  public void testFromObject_whenJavaUtilList_thenThrowRuntimeException() {
+  public void testFromObject4() {
     // Arrange
     Class<List> type = List.class;
 
     // Act and Assert
-    assertThrows(RuntimeException.class, () -> JsonDataLoaderUtil.fromObject(QualificationReport.SUCCESS, type,
-        JsonMapper.builder().findAndAddModules().build()));
+    assertThrows(RuntimeException.class,
+        () -> JsonDataLoaderUtil.fromObject(QualificationReport.SUCCESS, type, new ObjectMapper()));
   }
 
   /**
-   * Test {@link JsonDataLoaderUtil#fromObject(Object, Class, ObjectMapper)}.
-   * <ul>
-   *   <li>When {@link QualificationReport#SUCCESS}.</li>
-   *   <li>Then return size is four.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link JsonDataLoaderUtil#fromObject(Object, Class, ObjectMapper)}
+   * Method under test:
+   * {@link JsonDataLoaderUtil#fromObject(Object, Class, ObjectMapper)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"Object JsonDataLoaderUtil.fromObject(Object, Class, ObjectMapper)"})
-  public void testFromObject_whenSuccess_thenReturnSizeIsFour() {
+  public void testFromObject5() {
     // Arrange
     Class<Object> type = Object.class;
 
     // Act
-    Object actualFromObjectResult = JsonDataLoaderUtil.fromObject(QualificationReport.SUCCESS, type,
-        JsonMapper.builder().findAndAddModules().build());
+    Object actualFromObjectResult = JsonDataLoaderUtil.fromObject(QualificationReport.SUCCESS, type, new XmlMapper());
+
+    // Assert
+    assertTrue(actualFromObjectResult instanceof Map);
+    assertEquals(4, ((Map<String, String>) actualFromObjectResult).size());
+    assertEquals("", ((Map<String, String>) actualFromObjectResult).get("ingestedObject"));
+    assertEquals("", ((Map<String, String>) actualFromObjectResult).get("results"));
+    assertEquals("0", ((Map<String, String>) actualFromObjectResult).get("qualifiableObjectsCount"));
+    assertEquals("0", ((Map<String, String>) actualFromObjectResult).get("uniquelyQualifiedObjectsCount"));
+  }
+
+  /**
+   * Method under test:
+   * {@link JsonDataLoaderUtil#fromObject(Object, Class, ObjectMapper)}
+   */
+  @Test
+  public void testFromObject6() {
+    // Arrange
+    Class<Object> type = Object.class;
+
+    // Act
+    Object actualFromObjectResult = JsonDataLoaderUtil.fromObject(QualificationReport.SUCCESS, type, new YAMLMapper());
 
     // Assert
     assertEquals(4, ((Map<String, Object>) actualFromObjectResult).size());
@@ -1061,49 +1380,813 @@ public class JsonDataLoaderUtilDiffblueTest {
     assertTrue(getResult instanceof List);
     assertTrue(actualFromObjectResult instanceof Map);
     assertNull(((Map<String, Object>) actualFromObjectResult).get("ingestedObject"));
-    assertEquals(0,
-        ((Integer) ((Map<String, Object>) actualFromObjectResult).get("qualifiableObjectsCount")).intValue());
-    assertEquals(0,
-        ((Integer) ((Map<String, Object>) actualFromObjectResult).get("uniquelyQualifiedObjectsCount")).intValue());
     assertTrue(((List<Object>) getResult).isEmpty());
+    assertTrue(((Map<String, Object>) actualFromObjectResult).containsKey("qualifiableObjectsCount"));
+    assertTrue(((Map<String, Object>) actualFromObjectResult).containsKey("uniquelyQualifiedObjectsCount"));
   }
 
   /**
-   * Test {@link JsonDataLoaderUtil#openURL(URL)}.
-   * <ul>
-   *   <li>When Property is {@code java.io.tmpdir} is empty string toUri toURL.</li>
-   *   <li>Then return Present.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link JsonDataLoaderUtil#openURL(URL)}
+   * Method under test:
+   * {@link JsonDataLoaderUtil#fromObject(Object, Class, ObjectMapper)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"Optional JsonDataLoaderUtil.openURL(URL)"})
-  public void testOpenURL_whenPropertyIsJavaIoTmpdirIsEmptyStringToUriToURL_thenReturnPresent()
-      throws MalformedURLException {
-    // Arrange and Act
-    Optional<Reader> actualOpenURLResult = JsonDataLoaderUtil
-        .openURL(Paths.get(System.getProperty("java.io.tmpdir"), "").toUri().toURL());
+  public void testFromObject7() {
+    // Arrange
+    Class<Object> type = Object.class;
+
+    ObjectMapper rosettaObjectMapper = new ObjectMapper();
+    Class<Object> target = Object.class;
+    Class<Object> mixinSource = Object.class;
+    rosettaObjectMapper.addMixIn(target, mixinSource);
+
+    // Act
+    Object actualFromObjectResult = JsonDataLoaderUtil.fromObject(QualificationReport.SUCCESS, type,
+        rosettaObjectMapper);
 
     // Assert
-    assertTrue(actualOpenURLResult.isPresent());
+    assertEquals(4, ((Map<String, Object>) actualFromObjectResult).size());
+    Object getResult = ((Map<String, Object>) actualFromObjectResult).get("results");
+    assertTrue(getResult instanceof List);
+    assertTrue(actualFromObjectResult instanceof Map);
+    assertNull(((Map<String, Object>) actualFromObjectResult).get("ingestedObject"));
+    assertTrue(((List<Object>) getResult).isEmpty());
+    assertTrue(((Map<String, Object>) actualFromObjectResult).containsKey("qualifiableObjectsCount"));
+    assertTrue(((Map<String, Object>) actualFromObjectResult).containsKey("uniquelyQualifiedObjectsCount"));
   }
 
   /**
-   * Test {@link JsonDataLoaderUtil#openURL(URL)}.
-   * <ul>
-   *   <li>When Property is {@code java.io.tmpdir} is {@code test.txt} toUri toURL.</li>
-   *   <li>Then return not Present.</li>
-   * </ul>
-   * <p>
+   * Method under test:
+   * {@link JsonDataLoaderUtil#fromObject(Object, Class, ObjectMapper)}
+   */
+  @Test
+  public void testFromObject8() {
+    // Arrange
+    Class<Object> type = Object.class;
+
+    ObjectMapper rosettaObjectMapper = new ObjectMapper();
+    rosettaObjectMapper.setDefaultLeniency(true);
+    Class<Object> target = Object.class;
+    Class<Object> mixinSource = Object.class;
+    rosettaObjectMapper.addMixIn(target, mixinSource);
+
+    // Act
+    Object actualFromObjectResult = JsonDataLoaderUtil.fromObject(QualificationReport.SUCCESS, type,
+        rosettaObjectMapper);
+
+    // Assert
+    assertEquals(4, ((Map<String, Object>) actualFromObjectResult).size());
+    Object getResult = ((Map<String, Object>) actualFromObjectResult).get("results");
+    assertTrue(getResult instanceof List);
+    assertTrue(actualFromObjectResult instanceof Map);
+    assertNull(((Map<String, Object>) actualFromObjectResult).get("ingestedObject"));
+    assertTrue(((List<Object>) getResult).isEmpty());
+    assertTrue(((Map<String, Object>) actualFromObjectResult).containsKey("qualifiableObjectsCount"));
+    assertTrue(((Map<String, Object>) actualFromObjectResult).containsKey("uniquelyQualifiedObjectsCount"));
+  }
+
+  /**
+   * Method under test:
+   * {@link JsonDataLoaderUtil#fromObject(Object, Class, ObjectMapper)}
+   */
+  @Test
+  public void testFromObject9() {
+    // Arrange
+    Class<Object> type = Object.class;
+    ClassIntrospector.MixInResolver overrides = mock(ClassIntrospector.MixInResolver.class);
+    Class<Object> forNameResult = Object.class;
+    Mockito.<Class<?>>when(overrides.findMixInClassFor(Mockito.<Class<Object>>any())).thenReturn(forNameResult);
+    SimpleMixInResolver mixins = new SimpleMixInResolver(overrides);
+    BasicClassIntrospector ci = new BasicClassIntrospector();
+    RosettaJSONAnnotationIntrospector ai = new RosettaJSONAnnotationIntrospector(true);
+    PropertyNamingStrategy pns = new PropertyNamingStrategy();
+    TypeFactory tf = TypeFactory.defaultInstance();
+    ObjectMapper.DefaultTypeResolverBuilder typer = new ObjectMapper.DefaultTypeResolverBuilder(
+        ObjectMapper.DefaultTyping.JAVA_LANG_OBJECT);
+    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/mm/dd");
+    HandlerInstantiator hi = mock(HandlerInstantiator.class);
+    Locale locale = Locale.getDefault();
+    TimeZone tz = TimeZone.getTimeZone("America/Los_Angeles");
+    Base64Variant defaultBase64 = Base64Variants.getDefaultVariant();
+    BaseSettings base = new BaseSettings(ci, ai, pns, tf, typer, dateFormat, hi, locale, tz, defaultBase64,
+        new DefaultBaseTypeLimitingValidator());
+
+    StdSubtypeResolver str = new StdSubtypeResolver();
+    RootNameLookup rootNames = new RootNameLookup();
+    ConfigOverrides configOverrides = new ConfigOverrides();
+    DeserializationConfig config = new DeserializationConfig(base, str, mixins, rootNames, configOverrides,
+        new CoercionConfigs(), mock(DatatypeFeatures.class));
+
+    ObjectMapper rosettaObjectMapper = new ObjectMapper();
+    rosettaObjectMapper.setConfig(config);
+    Class<Object> target = Object.class;
+    Class<Object> mixinSource = Object.class;
+    rosettaObjectMapper.addMixIn(target, mixinSource);
+
+    // Act and Assert
+    assertThrows(RuntimeException.class,
+        () -> JsonDataLoaderUtil.fromObject(QualificationReport.SUCCESS, type, rosettaObjectMapper));
+    verify(overrides, atLeast(1)).findMixInClassFor(Mockito.<Class<Object>>any());
+  }
+
+  /**
+   * Method under test:
+   * {@link JsonDataLoaderUtil#fromObject(Object, Class, ObjectMapper)}
+   */
+  @Test
+  public void testFromObject10() {
+    // Arrange
+    Class<Object> type = Object.class;
+    ClassIntrospector.MixInResolver overrides = mock(ClassIntrospector.MixInResolver.class);
+    Class<Object> forNameResult = Object.class;
+    Mockito.<Class<?>>when(overrides.findMixInClassFor(Mockito.<Class<Object>>any())).thenReturn(forNameResult);
+    SimpleMixInResolver mixins = new SimpleMixInResolver(overrides);
+    BasicClassIntrospector ci = new BasicClassIntrospector();
+    RosettaJSONAnnotationIntrospector ai = new RosettaJSONAnnotationIntrospector(true);
+    PropertyNamingStrategy pns = new PropertyNamingStrategy();
+    TypeFactory tf = TypeFactory.defaultInstance();
+    ObjectMapper.DefaultTypeResolverBuilder typer = new ObjectMapper.DefaultTypeResolverBuilder(
+        ObjectMapper.DefaultTyping.JAVA_LANG_OBJECT);
+    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/mm/dd");
+    HandlerInstantiator hi = mock(HandlerInstantiator.class);
+    Locale locale = Locale.getDefault();
+    TimeZone tz = TimeZone.getTimeZone("America/Los_Angeles");
+    Base64Variant defaultBase64 = Base64Variants.getDefaultVariant();
+    BaseSettings base = new BaseSettings(ci, ai, pns, tf, typer, dateFormat, hi, locale, tz, defaultBase64,
+        new DefaultBaseTypeLimitingValidator());
+
+    StdSubtypeResolver str = new StdSubtypeResolver();
+    RootNameLookup rootNames = new RootNameLookup();
+    ConfigOverrides configOverrides = new ConfigOverrides();
+    DeserializationConfig config = new DeserializationConfig(base, str, mixins, rootNames, configOverrides,
+        new CoercionConfigs(), mock(DatatypeFeatures.class));
+
+    ObjectMapper rosettaObjectMapper = new ObjectMapper();
+    rosettaObjectMapper.setConfig(config);
+    Class<Object> target = Object.class;
+    Class<Object> mixinSource = Object.class;
+    rosettaObjectMapper.addMixIn(target, mixinSource);
+
+    // Act and Assert
+    assertThrows(RuntimeException.class, () -> JsonDataLoaderUtil.fromObject(null, type, rosettaObjectMapper));
+    verify(overrides, atLeast(1)).findMixInClassFor(Mockito.<Class<Object>>any());
+  }
+
+  /**
+   * Method under test:
+   * {@link JsonDataLoaderUtil#fromObject(Object, Class, ObjectMapper)}
+   */
+  @Test
+  public void testFromObject11() {
+    // Arrange
+    Class<Object> type = Object.class;
+    ClassIntrospector.MixInResolver overrides = mock(ClassIntrospector.MixInResolver.class);
+    Class<Object> forNameResult = Object.class;
+    Mockito.<Class<?>>when(overrides.findMixInClassFor(Mockito.<Class<Object>>any())).thenReturn(forNameResult);
+    SimpleMixInResolver mixins = new SimpleMixInResolver(overrides);
+    BasicClassIntrospector ci = new BasicClassIntrospector();
+    RosettaJSONAnnotationIntrospector ai = new RosettaJSONAnnotationIntrospector(true);
+    PropertyNamingStrategy pns = new PropertyNamingStrategy();
+    TypeFactory tf = TypeFactory.defaultInstance();
+    ObjectMapper.DefaultTypeResolverBuilder typer = new ObjectMapper.DefaultTypeResolverBuilder(
+        ObjectMapper.DefaultTyping.OBJECT_AND_NON_CONCRETE);
+    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/mm/dd");
+    HandlerInstantiator hi = mock(HandlerInstantiator.class);
+    Locale locale = Locale.getDefault();
+    TimeZone tz = TimeZone.getTimeZone("America/Los_Angeles");
+    Base64Variant defaultBase64 = Base64Variants.getDefaultVariant();
+    BaseSettings base = new BaseSettings(ci, ai, pns, tf, typer, dateFormat, hi, locale, tz, defaultBase64,
+        new DefaultBaseTypeLimitingValidator());
+
+    StdSubtypeResolver str = new StdSubtypeResolver();
+    RootNameLookup rootNames = new RootNameLookup();
+    ConfigOverrides configOverrides = new ConfigOverrides();
+    DeserializationConfig config = new DeserializationConfig(base, str, mixins, rootNames, configOverrides,
+        new CoercionConfigs(), mock(DatatypeFeatures.class));
+
+    ObjectMapper rosettaObjectMapper = new ObjectMapper();
+    rosettaObjectMapper.setConfig(config);
+    Class<Object> target = Object.class;
+    Class<Object> mixinSource = Object.class;
+    rosettaObjectMapper.addMixIn(target, mixinSource);
+
+    // Act and Assert
+    assertThrows(RuntimeException.class,
+        () -> JsonDataLoaderUtil.fromObject(QualificationReport.SUCCESS, type, rosettaObjectMapper));
+    verify(overrides, atLeast(1)).findMixInClassFor(Mockito.<Class<Object>>any());
+  }
+
+  /**
+   * Method under test:
+   * {@link JsonDataLoaderUtil#fromObject(Object, Class, ObjectMapper)}
+   */
+  @Test
+  public void testFromObject12() {
+    // Arrange
+    Class<Object> type = Object.class;
+    ClassIntrospector.MixInResolver overrides = mock(ClassIntrospector.MixInResolver.class);
+    Class<Object> forNameResult = Object.class;
+    Mockito.<Class<?>>when(overrides.findMixInClassFor(Mockito.<Class<Object>>any())).thenReturn(forNameResult);
+    SimpleMixInResolver mixins = new SimpleMixInResolver(overrides);
+    BasicClassIntrospector ci = new BasicClassIntrospector();
+    RosettaJSONAnnotationIntrospector ai = new RosettaJSONAnnotationIntrospector(true);
+    PropertyNamingStrategy pns = new PropertyNamingStrategy();
+    TypeFactory tf = TypeFactory.defaultInstance();
+    ObjectMapper.DefaultTypeResolverBuilder typer = new ObjectMapper.DefaultTypeResolverBuilder(
+        ObjectMapper.DefaultTyping.NON_CONCRETE_AND_ARRAYS);
+    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/mm/dd");
+    HandlerInstantiator hi = mock(HandlerInstantiator.class);
+    Locale locale = Locale.getDefault();
+    TimeZone tz = TimeZone.getTimeZone("America/Los_Angeles");
+    Base64Variant defaultBase64 = Base64Variants.getDefaultVariant();
+    BaseSettings base = new BaseSettings(ci, ai, pns, tf, typer, dateFormat, hi, locale, tz, defaultBase64,
+        new DefaultBaseTypeLimitingValidator());
+
+    StdSubtypeResolver str = new StdSubtypeResolver();
+    RootNameLookup rootNames = new RootNameLookup();
+    ConfigOverrides configOverrides = new ConfigOverrides();
+    DeserializationConfig config = new DeserializationConfig(base, str, mixins, rootNames, configOverrides,
+        new CoercionConfigs(), mock(DatatypeFeatures.class));
+
+    ObjectMapper rosettaObjectMapper = new ObjectMapper();
+    rosettaObjectMapper.setConfig(config);
+    Class<Object> target = Object.class;
+    Class<Object> mixinSource = Object.class;
+    rosettaObjectMapper.addMixIn(target, mixinSource);
+
+    // Act and Assert
+    assertThrows(RuntimeException.class,
+        () -> JsonDataLoaderUtil.fromObject(QualificationReport.SUCCESS, type, rosettaObjectMapper));
+    verify(overrides, atLeast(1)).findMixInClassFor(Mockito.<Class<Object>>any());
+  }
+
+  /**
+   * Method under test:
+   * {@link JsonDataLoaderUtil#fromObject(Object, Class, ObjectMapper)}
+   */
+  @Test
+  public void testFromObject13() {
+    // Arrange
+    Class<Object> type = Object.class;
+    ClassIntrospector.MixInResolver overrides = mock(ClassIntrospector.MixInResolver.class);
+    Class<Object> forNameResult = Object.class;
+    Mockito.<Class<?>>when(overrides.findMixInClassFor(Mockito.<Class<Object>>any())).thenReturn(forNameResult);
+    SimpleMixInResolver mixins = new SimpleMixInResolver(overrides);
+    BasicClassIntrospector ci = new BasicClassIntrospector();
+    RosettaJSONAnnotationIntrospector ai = new RosettaJSONAnnotationIntrospector(true);
+    PropertyNamingStrategy pns = new PropertyNamingStrategy();
+    TypeFactory tf = TypeFactory.defaultInstance();
+    ObjectMapper.DefaultTypeResolverBuilder typer = new ObjectMapper.DefaultTypeResolverBuilder(
+        ObjectMapper.DefaultTyping.NON_FINAL);
+    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/mm/dd");
+    HandlerInstantiator hi = mock(HandlerInstantiator.class);
+    Locale locale = Locale.getDefault();
+    TimeZone tz = TimeZone.getTimeZone("America/Los_Angeles");
+    Base64Variant defaultBase64 = Base64Variants.getDefaultVariant();
+    BaseSettings base = new BaseSettings(ci, ai, pns, tf, typer, dateFormat, hi, locale, tz, defaultBase64,
+        new DefaultBaseTypeLimitingValidator());
+
+    StdSubtypeResolver str = new StdSubtypeResolver();
+    RootNameLookup rootNames = new RootNameLookup();
+    ConfigOverrides configOverrides = new ConfigOverrides();
+    DeserializationConfig config = new DeserializationConfig(base, str, mixins, rootNames, configOverrides,
+        new CoercionConfigs(), mock(DatatypeFeatures.class));
+
+    ObjectMapper rosettaObjectMapper = new ObjectMapper();
+    rosettaObjectMapper.setConfig(config);
+    Class<Object> target = Object.class;
+    Class<Object> mixinSource = Object.class;
+    rosettaObjectMapper.addMixIn(target, mixinSource);
+
+    // Act and Assert
+    assertThrows(RuntimeException.class,
+        () -> JsonDataLoaderUtil.fromObject(QualificationReport.SUCCESS, type, rosettaObjectMapper));
+    verify(overrides, atLeast(1)).findMixInClassFor(Mockito.<Class<Object>>any());
+  }
+
+  /**
+   * Method under test:
+   * {@link JsonDataLoaderUtil#fromObject(Object, Class, ObjectMapper)}
+   */
+  @Test
+  public void testFromObject14() {
+    // Arrange
+    Class<Object> type = Object.class;
+    ClassIntrospector.MixInResolver overrides = mock(ClassIntrospector.MixInResolver.class);
+    Class<Object> forNameResult = Object.class;
+    Mockito.<Class<?>>when(overrides.findMixInClassFor(Mockito.<Class<Object>>any())).thenReturn(forNameResult);
+    SimpleMixInResolver mixins = new SimpleMixInResolver(overrides);
+    BasicClassIntrospector ci = new BasicClassIntrospector();
+    RosettaJSONAnnotationIntrospector ai = new RosettaJSONAnnotationIntrospector(true);
+    PropertyNamingStrategy pns = new PropertyNamingStrategy();
+    TypeFactory tf = TypeFactory.defaultInstance();
+    StdTypeResolverBuilder typer = new StdTypeResolverBuilder();
+    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/mm/dd");
+    HandlerInstantiator hi = mock(HandlerInstantiator.class);
+    Locale locale = Locale.getDefault();
+    TimeZone tz = TimeZone.getTimeZone("America/Los_Angeles");
+    Base64Variant defaultBase64 = Base64Variants.getDefaultVariant();
+    BaseSettings base = new BaseSettings(ci, ai, pns, tf, typer, dateFormat, hi, locale, tz, defaultBase64,
+        new DefaultBaseTypeLimitingValidator());
+
+    StdSubtypeResolver str = new StdSubtypeResolver();
+    RootNameLookup rootNames = new RootNameLookup();
+    ConfigOverrides configOverrides = new ConfigOverrides();
+    DeserializationConfig config = new DeserializationConfig(base, str, mixins, rootNames, configOverrides,
+        new CoercionConfigs(), mock(DatatypeFeatures.class));
+
+    ObjectMapper rosettaObjectMapper = new ObjectMapper();
+    rosettaObjectMapper.setConfig(config);
+    Class<Object> target = Object.class;
+    Class<Object> mixinSource = Object.class;
+    rosettaObjectMapper.addMixIn(target, mixinSource);
+
+    // Act and Assert
+    assertThrows(RuntimeException.class,
+        () -> JsonDataLoaderUtil.fromObject(QualificationReport.SUCCESS, type, rosettaObjectMapper));
+    verify(overrides, atLeast(1)).findMixInClassFor(Mockito.<Class<Object>>any());
+  }
+
+  /**
+   * Method under test:
+   * {@link JsonDataLoaderUtil#fromObject(Object, Class, ObjectMapper)}
+   */
+  @Test
+  public void testFromObject15() {
+    // Arrange
+    Class<Object> type = Object.class;
+    ClassIntrospector.MixInResolver overrides = mock(ClassIntrospector.MixInResolver.class);
+    Class<Object> forNameResult = Object.class;
+    Mockito.<Class<?>>when(overrides.findMixInClassFor(Mockito.<Class<Object>>any())).thenReturn(forNameResult);
+    SimpleMixInResolver mixins = new SimpleMixInResolver(overrides);
+    BasicClassIntrospector ci = new BasicClassIntrospector();
+    RosettaJSONAnnotationIntrospector ai = new RosettaJSONAnnotationIntrospector(true);
+    PropertyNamingStrategy pns = new PropertyNamingStrategy();
+    TypeFactory tf = TypeFactory.defaultInstance();
+    ObjectMapper.DefaultTypeResolverBuilder typer = new ObjectMapper.DefaultTypeResolverBuilder(
+        ObjectMapper.DefaultTyping.JAVA_LANG_OBJECT);
+    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/mm/dd");
+    HandlerInstantiator hi = mock(HandlerInstantiator.class);
+    Locale locale = Locale.getDefault();
+    TimeZone tz = TimeZone.getTimeZone("America/Los_Angeles");
+    Base64Variant defaultBase64 = Base64Variants.getDefaultVariant();
+    BaseSettings base = new BaseSettings(ci, ai, pns, tf, typer, dateFormat, hi, locale, tz, defaultBase64,
+        new DefaultBaseTypeLimitingValidator());
+
+    StdSubtypeResolver str = new StdSubtypeResolver();
+    RootNameLookup rootNames = new RootNameLookup();
+    ConfigOverrides configOverrides = new ConfigOverrides();
+    DeserializationConfig config = new DeserializationConfig(base, str, mixins, rootNames, configOverrides,
+        new CoercionConfigs(), mock(DatatypeFeatures.class));
+
+    ObjectMapper rosettaObjectMapper = new ObjectMapper();
+    rosettaObjectMapper.setConfig(config);
+    Class<Object> target = Object.class;
+    Class<List> mixinSource = List.class;
+    rosettaObjectMapper.addMixIn(target, mixinSource);
+
+    // Act and Assert
+    assertThrows(RuntimeException.class,
+        () -> JsonDataLoaderUtil.fromObject(QualificationReport.SUCCESS, type, rosettaObjectMapper));
+    verify(overrides, atLeast(1)).findMixInClassFor(Mockito.<Class<Object>>any());
+  }
+
+  /**
+   * Method under test:
+   * {@link JsonDataLoaderUtil#fromObject(Object, Class, ObjectMapper)}
+   */
+  @Test
+  public void testFromObject16() {
+    // Arrange
+    Class<Object> type = Object.class;
+    ClassIntrospector.MixInResolver overrides = mock(ClassIntrospector.MixInResolver.class);
+    Class<Object> forNameResult = Object.class;
+    Mockito.<Class<?>>when(overrides.findMixInClassFor(Mockito.<Class<Object>>any())).thenReturn(forNameResult);
+    SimpleMixInResolver mixins = new SimpleMixInResolver(overrides);
+    BasicClassIntrospector ci = new BasicClassIntrospector();
+    RosettaJSONAnnotationIntrospector ai = new RosettaJSONAnnotationIntrospector(true);
+    PropertyNamingStrategy pns = new PropertyNamingStrategy();
+    TypeFactory tf = TypeFactory.defaultInstance();
+    ObjectMapper.DefaultTypeResolverBuilder typer = new ObjectMapper.DefaultTypeResolverBuilder(
+        ObjectMapper.DefaultTyping.JAVA_LANG_OBJECT);
+    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/mm/dd");
+    HandlerInstantiator hi = mock(HandlerInstantiator.class);
+    Locale locale = Locale.getDefault();
+    TimeZone tz = TimeZone.getTimeZone("America/Los_Angeles");
+    Base64Variant defaultBase64 = Base64Variants.getDefaultVariant();
+    BaseSettings base = new BaseSettings(ci, ai, pns, tf, typer, dateFormat, hi, locale, tz, defaultBase64,
+        new DefaultBaseTypeLimitingValidator());
+
+    StdSubtypeResolver str = new StdSubtypeResolver();
+    RootNameLookup rootNames = new RootNameLookup();
+    ConfigOverrides configOverrides = new ConfigOverrides();
+    DeserializationConfig config = new DeserializationConfig(base, str, mixins, rootNames, configOverrides,
+        new CoercionConfigs(), mock(DatatypeFeatures.class));
+
+    ObjectMapper rosettaObjectMapper = new ObjectMapper();
+    rosettaObjectMapper.configure(SerializationFeature.WRAP_ROOT_VALUE, true);
+    rosettaObjectMapper.setConfig(config);
+    Class<Object> target = Object.class;
+    Class<Object> mixinSource = Object.class;
+    rosettaObjectMapper.addMixIn(target, mixinSource);
+
+    // Act and Assert
+    assertThrows(RuntimeException.class,
+        () -> JsonDataLoaderUtil.fromObject(QualificationReport.SUCCESS, type, rosettaObjectMapper));
+    verify(overrides, atLeast(1)).findMixInClassFor(Mockito.<Class<Object>>any());
+  }
+
+  /**
+   * Method under test:
+   * {@link JsonDataLoaderUtil#fromObject(Object, Class, ObjectMapper)}
+   */
+  @Test
+  public void testFromObject17() {
+    // Arrange
+    Class<Object> type = Object.class;
+    ClassIntrospector.MixInResolver overrides = mock(ClassIntrospector.MixInResolver.class);
+    Class<Object> forNameResult = Object.class;
+    Mockito.<Class<?>>when(overrides.findMixInClassFor(Mockito.<Class<Object>>any())).thenReturn(forNameResult);
+    SimpleMixInResolver mixins = new SimpleMixInResolver(overrides);
+    BasicClassIntrospector ci = new BasicClassIntrospector();
+    RosettaJSONAnnotationIntrospector ai = new RosettaJSONAnnotationIntrospector(true);
+    PropertyNamingStrategy pns = new PropertyNamingStrategy();
+    TypeFactory tf = TypeFactory.defaultInstance();
+    ObjectMapper.DefaultTypeResolverBuilder typer = new ObjectMapper.DefaultTypeResolverBuilder(
+        ObjectMapper.DefaultTyping.NON_FINAL_AND_ENUMS);
+    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/mm/dd");
+    HandlerInstantiator hi = mock(HandlerInstantiator.class);
+    Locale locale = Locale.getDefault();
+    TimeZone tz = TimeZone.getTimeZone("America/Los_Angeles");
+    Base64Variant defaultBase64 = Base64Variants.getDefaultVariant();
+    BaseSettings base = new BaseSettings(ci, ai, pns, tf, typer, dateFormat, hi, locale, tz, defaultBase64,
+        new DefaultBaseTypeLimitingValidator());
+
+    StdSubtypeResolver str = new StdSubtypeResolver();
+    RootNameLookup rootNames = new RootNameLookup();
+    ConfigOverrides configOverrides = new ConfigOverrides();
+    DeserializationConfig config = new DeserializationConfig(base, str, mixins, rootNames, configOverrides,
+        new CoercionConfigs(), mock(DatatypeFeatures.class));
+
+    ObjectMapper rosettaObjectMapper = new ObjectMapper();
+    rosettaObjectMapper.setConfig(config);
+    Class<Object> target = Object.class;
+    Class<Object> mixinSource = Object.class;
+    rosettaObjectMapper.addMixIn(target, mixinSource);
+
+    // Act and Assert
+    assertThrows(RuntimeException.class,
+        () -> JsonDataLoaderUtil.fromObject(QualificationReport.SUCCESS, type, rosettaObjectMapper));
+    verify(overrides, atLeast(1)).findMixInClassFor(Mockito.<Class<Object>>any());
+  }
+
+  /**
+   * Method under test:
+   * {@link JsonDataLoaderUtil#fromObject(Object, Class, ObjectMapper)}
+   */
+  @Test
+  public void testFromObject18() {
+    // Arrange
+    Class<Object> type = Object.class;
+    JsonTypeInfo.Value settings = mock(JsonTypeInfo.Value.class);
+    when(settings.getIdVisible()).thenReturn(true);
+    when(settings.getInclusionType()).thenReturn(JsonTypeInfo.As.PROPERTY);
+    when(settings.getRequireTypeIdForSubtypes()).thenReturn(true);
+    Class<Object> forNameResult = Object.class;
+    Mockito.<Class<?>>when(settings.getDefaultImpl()).thenReturn(forNameResult);
+    when(settings.getPropertyName()).thenReturn("Property Name");
+    when(settings.getIdType()).thenReturn(JsonTypeInfo.Id.NONE);
+
+    ObjectMapper.DefaultTypeResolverBuilder typer = new ObjectMapper.DefaultTypeResolverBuilder(
+        ObjectMapper.DefaultTyping.JAVA_LANG_OBJECT);
+    PlaceholderForType baseType = new PlaceholderForType(1);
+    TypeFactory typeFactory = TypeFactory.defaultInstance();
+    typer.init(settings, new ClassNameIdResolver(baseType, typeFactory, new DefaultBaseTypeLimitingValidator()));
+    BasicClassIntrospector ci = new BasicClassIntrospector();
+    RosettaJSONAnnotationIntrospector ai = new RosettaJSONAnnotationIntrospector(true);
+    PropertyNamingStrategy pns = new PropertyNamingStrategy();
+    TypeFactory tf = TypeFactory.defaultInstance();
+    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/mm/dd");
+    HandlerInstantiator hi = mock(HandlerInstantiator.class);
+    Locale locale = Locale.getDefault();
+    TimeZone tz = TimeZone.getTimeZone("America/Los_Angeles");
+    Base64Variant defaultBase64 = Base64Variants.getDefaultVariant();
+    BaseSettings base = new BaseSettings(ci, ai, pns, tf, typer, dateFormat, hi, locale, tz, defaultBase64,
+        new DefaultBaseTypeLimitingValidator());
+
+    ClassIntrospector.MixInResolver overrides = mock(ClassIntrospector.MixInResolver.class);
+    Class<Object> forNameResult2 = Object.class;
+    Mockito.<Class<?>>when(overrides.findMixInClassFor(Mockito.<Class<Object>>any())).thenReturn(forNameResult2);
+    SimpleMixInResolver mixins = new SimpleMixInResolver(overrides);
+    StdSubtypeResolver str = new StdSubtypeResolver();
+    RootNameLookup rootNames = new RootNameLookup();
+    ConfigOverrides configOverrides = new ConfigOverrides();
+    DeserializationConfig config = new DeserializationConfig(base, str, mixins, rootNames, configOverrides,
+        new CoercionConfigs(), mock(DatatypeFeatures.class));
+
+    ObjectMapper rosettaObjectMapper = new ObjectMapper();
+    rosettaObjectMapper.setConfig(config);
+    Class<Object> target = Object.class;
+    Class<Object> mixinSource = Object.class;
+    rosettaObjectMapper.addMixIn(target, mixinSource);
+
+    // Act
+    Object actualFromObjectResult = JsonDataLoaderUtil.fromObject(QualificationReport.SUCCESS, type,
+        rosettaObjectMapper);
+
+    // Assert
+    verify(settings).getDefaultImpl();
+    verify(settings).getIdType();
+    verify(settings).getIdVisible();
+    verify(settings).getInclusionType();
+    verify(settings).getPropertyName();
+    verify(settings).getRequireTypeIdForSubtypes();
+    verify(overrides, atLeast(1)).findMixInClassFor(Mockito.<Class<Object>>any());
+    assertEquals(4, ((Map<String, Object>) actualFromObjectResult).size());
+    Object getResult = ((Map<String, Object>) actualFromObjectResult).get("results");
+    assertTrue(getResult instanceof List);
+    assertTrue(actualFromObjectResult instanceof Map);
+    assertNull(((Map<String, Object>) actualFromObjectResult).get("ingestedObject"));
+    assertTrue(((List<Object>) getResult).isEmpty());
+    assertTrue(((Map<String, Object>) actualFromObjectResult).containsKey("qualifiableObjectsCount"));
+    assertTrue(((Map<String, Object>) actualFromObjectResult).containsKey("uniquelyQualifiedObjectsCount"));
+  }
+
+  /**
+   * Method under test:
+   * {@link JsonDataLoaderUtil#fromObject(Object, Class, ObjectMapper)}
+   */
+  @Test
+  public void testFromObject19() {
+    // Arrange
+    Class<Object> type = Object.class;
+    JsonTypeInfo.Value settings = mock(JsonTypeInfo.Value.class);
+    when(settings.getIdVisible()).thenReturn(true);
+    when(settings.getInclusionType()).thenReturn(JsonTypeInfo.As.PROPERTY);
+    when(settings.getRequireTypeIdForSubtypes()).thenReturn(true);
+    Class<Object> forNameResult = Object.class;
+    Mockito.<Class<?>>when(settings.getDefaultImpl()).thenReturn(forNameResult);
+    when(settings.getPropertyName()).thenReturn("Property Name");
+    when(settings.getIdType()).thenReturn(JsonTypeInfo.Id.NONE);
+
+    ObjectMapper.DefaultTypeResolverBuilder typer = new ObjectMapper.DefaultTypeResolverBuilder(
+        ObjectMapper.DefaultTyping.JAVA_LANG_OBJECT);
+    PlaceholderForType baseType = new PlaceholderForType(1);
+    TypeFactory typeFactory = TypeFactory.defaultInstance();
+    typer.init(settings, new ClassNameIdResolver(baseType, typeFactory, new DefaultBaseTypeLimitingValidator()));
+    BasicClassIntrospector ci = new BasicClassIntrospector();
+    RosettaJSONAnnotationIntrospector ai = new RosettaJSONAnnotationIntrospector(true);
+    PropertyNamingStrategy pns = new PropertyNamingStrategy();
+    TypeFactory tf = TypeFactory.defaultInstance();
+    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/mm/dd");
+    HandlerInstantiator hi = mock(HandlerInstantiator.class);
+    Locale locale = Locale.getDefault();
+    TimeZone tz = TimeZone.getTimeZone("America/Los_Angeles");
+    Base64Variant defaultBase64 = Base64Variants.getDefaultVariant();
+    BaseSettings base = new BaseSettings(ci, ai, pns, tf, typer, dateFormat, hi, locale, tz, defaultBase64,
+        new DefaultBaseTypeLimitingValidator());
+
+    ClassIntrospector.MixInResolver overrides = mock(ClassIntrospector.MixInResolver.class);
+    Class<Object> forNameResult2 = Object.class;
+    Mockito.<Class<?>>when(overrides.findMixInClassFor(Mockito.<Class<Object>>any())).thenReturn(forNameResult2);
+    SimpleMixInResolver mixins = new SimpleMixInResolver(overrides);
+    StdSubtypeResolver str = new StdSubtypeResolver();
+    RootNameLookup rootNames = new RootNameLookup();
+    ConfigOverrides configOverrides = new ConfigOverrides();
+    DeserializationConfig config = new DeserializationConfig(base, str, mixins, rootNames, configOverrides,
+        new CoercionConfigs(), mock(DatatypeFeatures.class));
+
+    ObjectMapper rosettaObjectMapper = new ObjectMapper();
+    rosettaObjectMapper.setConfig(config);
+    Class<Object> target = Object.class;
+    Class<Object> mixinSource = Object.class;
+    rosettaObjectMapper.addMixIn(target, mixinSource);
+
+    // Act
+    Object actualFromObjectResult = JsonDataLoaderUtil.fromObject(null, type, rosettaObjectMapper);
+
+    // Assert
+    verify(settings).getDefaultImpl();
+    verify(settings).getIdType();
+    verify(settings).getIdVisible();
+    verify(settings).getInclusionType();
+    verify(settings).getPropertyName();
+    verify(settings).getRequireTypeIdForSubtypes();
+    verify(overrides, atLeast(1)).findMixInClassFor(Mockito.<Class<Object>>any());
+    assertNull(actualFromObjectResult);
+  }
+
+  /**
+   * Method under test:
+   * {@link JsonDataLoaderUtil#fromObject(Object, Class, ObjectMapper)}
+   */
+  @Test
+  public void testFromObject20() {
+    // Arrange
+    JsonIgnoreProperties.Value emptyResult = JsonIgnoreProperties.Value.empty();
+    Class<Object> type = Object.class;
+    JsonTypeInfo.Value settings = mock(JsonTypeInfo.Value.class);
+    when(settings.getIdVisible()).thenReturn(true);
+    when(settings.getInclusionType()).thenReturn(JsonTypeInfo.As.PROPERTY);
+    when(settings.getRequireTypeIdForSubtypes()).thenReturn(true);
+    Class<Object> forNameResult = Object.class;
+    Mockito.<Class<?>>when(settings.getDefaultImpl()).thenReturn(forNameResult);
+    when(settings.getPropertyName()).thenReturn("Property Name");
+    when(settings.getIdType()).thenReturn(JsonTypeInfo.Id.NONE);
+
+    ObjectMapper.DefaultTypeResolverBuilder typer = new ObjectMapper.DefaultTypeResolverBuilder(
+        ObjectMapper.DefaultTyping.JAVA_LANG_OBJECT);
+    PlaceholderForType baseType = new PlaceholderForType(1);
+    TypeFactory typeFactory = TypeFactory.defaultInstance();
+    typer.init(settings, new ClassNameIdResolver(baseType, typeFactory, new DefaultBaseTypeLimitingValidator()));
+    BasicClassIntrospector ci = new BasicClassIntrospector();
+    RosettaJSONAnnotationIntrospector ai = new RosettaJSONAnnotationIntrospector(true);
+    PropertyNamingStrategy pns = new PropertyNamingStrategy();
+    TypeFactory tf = TypeFactory.defaultInstance();
+    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/mm/dd");
+    HandlerInstantiator hi = mock(HandlerInstantiator.class);
+    Locale locale = Locale.getDefault();
+    TimeZone tz = TimeZone.getTimeZone("America/Los_Angeles");
+    Base64Variant defaultBase64 = Base64Variants.getDefaultVariant();
+    BaseSettings base = new BaseSettings(ci, ai, pns, tf, typer, dateFormat, hi, locale, tz, defaultBase64,
+        new DefaultBaseTypeLimitingValidator());
+
+    ClassIntrospector.MixInResolver overrides = mock(ClassIntrospector.MixInResolver.class);
+    Class<Object> forNameResult2 = Object.class;
+    Mockito.<Class<?>>when(overrides.findMixInClassFor(Mockito.<Class<Object>>any())).thenReturn(forNameResult2);
+    SimpleMixInResolver mixins = new SimpleMixInResolver(overrides);
+    StdSubtypeResolver str = new StdSubtypeResolver();
+    RootNameLookup rootNames = new RootNameLookup();
+    ConfigOverrides configOverrides = new ConfigOverrides();
+    DeserializationConfig config = new DeserializationConfig(base, str, mixins, rootNames, configOverrides,
+        new CoercionConfigs(), mock(DatatypeFeatures.class));
+
+    ObjectMapper rosettaObjectMapper = new ObjectMapper();
+    rosettaObjectMapper.setConfig(config);
+    Class<Object> target = Object.class;
+    Class<Object> mixinSource = Object.class;
+    rosettaObjectMapper.addMixIn(target, mixinSource);
+
+    // Act
+    Object actualFromObjectResult = JsonDataLoaderUtil.fromObject(emptyResult, type, rosettaObjectMapper);
+
+    // Assert
+    verify(settings).getDefaultImpl();
+    verify(settings).getIdType();
+    verify(settings).getIdVisible();
+    verify(settings).getInclusionType();
+    verify(settings).getPropertyName();
+    verify(settings).getRequireTypeIdForSubtypes();
+    verify(overrides, atLeast(1)).findMixInClassFor(Mockito.<Class<Object>>any());
+    assertEquals(5, ((Map<String, Object>) actualFromObjectResult).size());
+    Object getResult = ((Map<String, Object>) actualFromObjectResult).get("ignored");
+    assertTrue(getResult instanceof List);
+    assertTrue(actualFromObjectResult instanceof Map);
+    assertTrue(((List<Object>) getResult).isEmpty());
+    assertTrue(((Map<String, Object>) actualFromObjectResult).containsKey("allowGetters"));
+    assertTrue(((Map<String, Object>) actualFromObjectResult).containsKey("allowSetters"));
+    assertTrue(((Map<String, Object>) actualFromObjectResult).containsKey("ignoreUnknown"));
+    assertTrue(((Map<String, Object>) actualFromObjectResult).containsKey("merge"));
+  }
+
+  /**
+   * Method under test:
+   * {@link JsonDataLoaderUtil#fromObject(Object, Class, ObjectMapper)}
+   */
+  @Test
+  public void testFromObject21() {
+    // Arrange
+    Class<List> type = List.class;
+    JsonTypeInfo.Value settings = mock(JsonTypeInfo.Value.class);
+    when(settings.getIdVisible()).thenReturn(true);
+    when(settings.getInclusionType()).thenReturn(JsonTypeInfo.As.PROPERTY);
+    when(settings.getRequireTypeIdForSubtypes()).thenReturn(true);
+    Class<Object> forNameResult = Object.class;
+    Mockito.<Class<?>>when(settings.getDefaultImpl()).thenReturn(forNameResult);
+    when(settings.getPropertyName()).thenReturn("Property Name");
+    when(settings.getIdType()).thenReturn(JsonTypeInfo.Id.NONE);
+
+    ObjectMapper.DefaultTypeResolverBuilder typer = new ObjectMapper.DefaultTypeResolverBuilder(
+        ObjectMapper.DefaultTyping.JAVA_LANG_OBJECT);
+    PlaceholderForType baseType = new PlaceholderForType(1);
+    TypeFactory typeFactory = TypeFactory.defaultInstance();
+    typer.init(settings, new ClassNameIdResolver(baseType, typeFactory, new DefaultBaseTypeLimitingValidator()));
+    BasicClassIntrospector ci = new BasicClassIntrospector();
+    RosettaJSONAnnotationIntrospector ai = new RosettaJSONAnnotationIntrospector(true);
+    PropertyNamingStrategy pns = new PropertyNamingStrategy();
+    TypeFactory tf = TypeFactory.defaultInstance();
+    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/mm/dd");
+    HandlerInstantiator hi = mock(HandlerInstantiator.class);
+    Locale locale = Locale.getDefault();
+    TimeZone tz = TimeZone.getTimeZone("America/Los_Angeles");
+    Base64Variant defaultBase64 = Base64Variants.getDefaultVariant();
+    BaseSettings base = new BaseSettings(ci, ai, pns, tf, typer, dateFormat, hi, locale, tz, defaultBase64,
+        new DefaultBaseTypeLimitingValidator());
+
+    ClassIntrospector.MixInResolver overrides = mock(ClassIntrospector.MixInResolver.class);
+    Class<Object> forNameResult2 = Object.class;
+    Mockito.<Class<?>>when(overrides.findMixInClassFor(Mockito.<Class<Object>>any())).thenReturn(forNameResult2);
+    SimpleMixInResolver mixins = new SimpleMixInResolver(overrides);
+    StdSubtypeResolver str = new StdSubtypeResolver();
+    RootNameLookup rootNames = new RootNameLookup();
+    ConfigOverrides configOverrides = new ConfigOverrides();
+    DeserializationConfig config = new DeserializationConfig(base, str, mixins, rootNames, configOverrides,
+        new CoercionConfigs(), mock(DatatypeFeatures.class));
+
+    ObjectMapper rosettaObjectMapper = new ObjectMapper();
+    rosettaObjectMapper.setConfig(config);
+    Class<Object> target = Object.class;
+    Class<Object> mixinSource = Object.class;
+    rosettaObjectMapper.addMixIn(target, mixinSource);
+
+    // Act and Assert
+    assertThrows(RuntimeException.class,
+        () -> JsonDataLoaderUtil.fromObject(QualificationReport.SUCCESS, type, rosettaObjectMapper));
+    verify(settings).getDefaultImpl();
+    verify(settings).getIdType();
+    verify(settings).getIdVisible();
+    verify(settings).getInclusionType();
+    verify(settings).getPropertyName();
+    verify(settings).getRequireTypeIdForSubtypes();
+    verify(overrides, atLeast(1)).findMixInClassFor(Mockito.<Class<Object>>any());
+  }
+
+  /**
+   * Method under test:
+   * {@link JsonDataLoaderUtil#fromObject(Object, Class, ObjectMapper)}
+   */
+  @Test
+  public void testFromObject22() {
+    // Arrange
+    Class<Object> type = Object.class;
+    JsonTypeInfo.Value settings = mock(JsonTypeInfo.Value.class);
+    when(settings.getIdVisible()).thenReturn(true);
+    when(settings.getInclusionType()).thenReturn(JsonTypeInfo.As.PROPERTY);
+    when(settings.getRequireTypeIdForSubtypes()).thenReturn(true);
+    Class<Object> forNameResult = Object.class;
+    Mockito.<Class<?>>when(settings.getDefaultImpl()).thenReturn(forNameResult);
+    when(settings.getPropertyName()).thenReturn("Property Name");
+    when(settings.getIdType()).thenReturn(JsonTypeInfo.Id.CLASS);
+
+    ObjectMapper.DefaultTypeResolverBuilder typer = new ObjectMapper.DefaultTypeResolverBuilder(
+        ObjectMapper.DefaultTyping.JAVA_LANG_OBJECT);
+    PlaceholderForType baseType = new PlaceholderForType(1);
+    TypeFactory typeFactory = TypeFactory.defaultInstance();
+    typer.init(settings, new ClassNameIdResolver(baseType, typeFactory, new DefaultBaseTypeLimitingValidator()));
+    BasicClassIntrospector ci = new BasicClassIntrospector();
+    RosettaJSONAnnotationIntrospector ai = new RosettaJSONAnnotationIntrospector(true);
+    PropertyNamingStrategy pns = new PropertyNamingStrategy();
+    TypeFactory tf = TypeFactory.defaultInstance();
+    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/mm/dd");
+    HandlerInstantiator hi = mock(HandlerInstantiator.class);
+    Locale locale = Locale.getDefault();
+    TimeZone tz = TimeZone.getTimeZone("America/Los_Angeles");
+    Base64Variant defaultBase64 = Base64Variants.getDefaultVariant();
+    BaseSettings base = new BaseSettings(ci, ai, pns, tf, typer, dateFormat, hi, locale, tz, defaultBase64,
+        new DefaultBaseTypeLimitingValidator());
+
+    ClassIntrospector.MixInResolver overrides = mock(ClassIntrospector.MixInResolver.class);
+    Class<Object> forNameResult2 = Object.class;
+    Mockito.<Class<?>>when(overrides.findMixInClassFor(Mockito.<Class<Object>>any())).thenReturn(forNameResult2);
+    SimpleMixInResolver mixins = new SimpleMixInResolver(overrides);
+    StdSubtypeResolver str = new StdSubtypeResolver();
+    RootNameLookup rootNames = new RootNameLookup();
+    ConfigOverrides configOverrides = new ConfigOverrides();
+    DeserializationConfig config = new DeserializationConfig(base, str, mixins, rootNames, configOverrides,
+        new CoercionConfigs(), mock(DatatypeFeatures.class));
+
+    ObjectMapper rosettaObjectMapper = new ObjectMapper();
+    rosettaObjectMapper.setConfig(config);
+    Class<Object> target = Object.class;
+    Class<Object> mixinSource = Object.class;
+    rosettaObjectMapper.addMixIn(target, mixinSource);
+
+    // Act
+    Object actualFromObjectResult = JsonDataLoaderUtil.fromObject(QualificationReport.SUCCESS, type,
+        rosettaObjectMapper);
+
+    // Assert
+    verify(settings).getDefaultImpl();
+    verify(settings).getIdType();
+    verify(settings).getIdVisible();
+    verify(settings).getInclusionType();
+    verify(settings).getPropertyName();
+    verify(settings).getRequireTypeIdForSubtypes();
+    verify(overrides, atLeast(1)).findMixInClassFor(Mockito.<Class<Object>>any());
+    assertEquals(4, ((Map<String, Object>) actualFromObjectResult).size());
+    Object getResult = ((Map<String, Object>) actualFromObjectResult).get("results");
+    assertTrue(getResult instanceof List);
+    assertTrue(actualFromObjectResult instanceof Map);
+    assertNull(((Map<String, Object>) actualFromObjectResult).get("ingestedObject"));
+    assertTrue(((List<Object>) getResult).isEmpty());
+    assertTrue(((Map<String, Object>) actualFromObjectResult).containsKey("qualifiableObjectsCount"));
+    assertTrue(((Map<String, Object>) actualFromObjectResult).containsKey("uniquelyQualifiedObjectsCount"));
+  }
+
+  /**
    * Method under test: {@link JsonDataLoaderUtil#openURL(URL)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"Optional JsonDataLoaderUtil.openURL(URL)"})
-  public void testOpenURL_whenPropertyIsJavaIoTmpdirIsTestTxtToUriToURL_thenReturnNotPresent()
-      throws MalformedURLException {
+  public void testOpenURL() throws MalformedURLException {
     // Arrange and Act
     Optional<Reader> actualOpenURLResult = JsonDataLoaderUtil
         .openURL(Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toUri().toURL());
@@ -1113,18 +2196,32 @@ public class JsonDataLoaderUtilDiffblueTest {
   }
 
   /**
-   * Test {@link JsonDataLoaderUtil#loadClass(String, ClassLoader)}.
-   * <ul>
-   *   <li>When {@code List}.</li>
-   *   <li>Then return {@link List}.</li>
-   * </ul>
-   * <p>
+   * Method under test: {@link JsonDataLoaderUtil#openURL(URL)}
+   */
+  @Test
+  public void testOpenURL2() throws MalformedURLException {
+    // Arrange and Act
+    Optional<Reader> actualOpenURLResult = JsonDataLoaderUtil
+        .openURL(Paths.get(System.getProperty("java.io.tmpdir"), "").toUri().toURL());
+
+    // Assert
+    assertTrue(actualOpenURLResult.isPresent());
+  }
+
+  /**
    * Method under test: {@link JsonDataLoaderUtil#loadClass(String, ClassLoader)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"Class JsonDataLoaderUtil.loadClass(String, ClassLoader)"})
-  public void testLoadClass_whenJavaUtilList_thenReturnList() {
+  public void testLoadClass() {
+    // Arrange, Act and Assert
+    assertThrows(RuntimeException.class, () -> JsonDataLoaderUtil.loadClass("Type", new MLet()));
+  }
+
+  /**
+   * Method under test: {@link JsonDataLoaderUtil#loadClass(String, ClassLoader)}
+   */
+  @Test
+  public void testLoadClass2() {
     // Arrange and Act
     Class<?> actualLoadClassResult = JsonDataLoaderUtil.loadClass("java.util.List", new MLet());
 
@@ -1134,19 +2231,22 @@ public class JsonDataLoaderUtilDiffblueTest {
   }
 
   /**
-   * Test {@link JsonDataLoaderUtil#loadClass(String, ClassLoader)}.
-   * <ul>
-   *   <li>When {@code Type}.</li>
-   *   <li>Then throw {@link RuntimeException}.</li>
-   * </ul>
-   * <p>
    * Method under test: {@link JsonDataLoaderUtil#loadClass(String, ClassLoader)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"Class JsonDataLoaderUtil.loadClass(String, ClassLoader)"})
-  public void testLoadClass_whenType_thenThrowRuntimeException() {
-    // Arrange, Act and Assert
-    assertThrows(RuntimeException.class, () -> JsonDataLoaderUtil.loadClass("Type", new MLet()));
+  public void testLoadClass3() throws MalformedURLException {
+    // Arrange
+    URLStreamHandlerFactory urlStreamHandlerFactory = mock(URLStreamHandlerFactory.class);
+    when(urlStreamHandlerFactory.createURLStreamHandler(Mockito.<String>any())).thenReturn(new PlatformURLHandler());
+
+    // Act
+    Class<?> actualLoadClassResult = JsonDataLoaderUtil.loadClass("java.util.List",
+        new URLClassLoader(new URL[]{Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toUri().toURL()},
+            new MLet(), urlStreamHandlerFactory));
+
+    // Assert
+    verify(urlStreamHandlerFactory).createURLStreamHandler(eq("jar"));
+    Class<List> expectedLoadClassResult = List.class;
+    assertEquals(expectedLoadClassResult, actualLoadClassResult);
   }
 }

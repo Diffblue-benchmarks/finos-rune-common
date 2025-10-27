@@ -28,13 +28,14 @@ import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.anyInt;
 import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
+import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.json.JsonMapper;
+import com.fasterxml.jackson.dataformat.xml.XmlMapper;
+import com.fasterxml.jackson.dataformat.yaml.YAMLMapper;
 import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
 import java.io.IOException;
@@ -44,155 +45,10 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.file.Paths;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
 import org.mockito.Mockito;
 
 public class ExecutionDescriptorDiffblueTest {
   /**
-   * Test {@link ExecutionDescriptor#loadExecutionDescriptor(ObjectMapper, String, InputStream)} with {@code objectMapper}, {@code resourceName}, {@code inputStream}.
-   * <p>
-   * Method under test: {@link ExecutionDescriptor#loadExecutionDescriptor(ObjectMapper, String, InputStream)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"java.util.List ExecutionDescriptor.loadExecutionDescriptor(ObjectMapper, String, InputStream)"})
-  public void testLoadExecutionDescriptorWithObjectMapperResourceNameInputStream() throws UnsupportedEncodingException {
-    // Arrange
-    JsonMapper objectMapper = JsonMapper.builder().findAndAddModules().build();
-
-    // Act and Assert
-    assertThrows(RuntimeException.class, () -> ExecutionDescriptor.loadExecutionDescriptor(objectMapper,
-        "Resource Name", new ByteArrayInputStream("AXAXAXAX".getBytes("UTF-8"))));
-  }
-
-  /**
-   * Test {@link ExecutionDescriptor#loadExecutionDescriptor(ObjectMapper, String, InputStream)} with {@code objectMapper}, {@code resourceName}, {@code inputStream}.
-   * <p>
-   * Method under test: {@link ExecutionDescriptor#loadExecutionDescriptor(ObjectMapper, String, InputStream)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"java.util.List ExecutionDescriptor.loadExecutionDescriptor(ObjectMapper, String, InputStream)"})
-  public void testLoadExecutionDescriptorWithObjectMapperResourceNameInputStream2() {
-    // Arrange
-    JsonMapper objectMapper = JsonMapper.builder().findAndAddModules().build();
-
-    // Act and Assert
-    assertThrows(RuntimeException.class, () -> ExecutionDescriptor.loadExecutionDescriptor(objectMapper,
-        "Resource Name", new ByteArrayInputStream(new byte[]{0, 'X', 'A', 'X', 'A', 'X', 'A', 'X'})));
-  }
-
-  /**
-   * Test {@link ExecutionDescriptor#loadExecutionDescriptor(ObjectMapper, String, InputStream)} with {@code objectMapper}, {@code resourceName}, {@code inputStream}.
-   * <p>
-   * Method under test: {@link ExecutionDescriptor#loadExecutionDescriptor(ObjectMapper, String, InputStream)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"java.util.List ExecutionDescriptor.loadExecutionDescriptor(ObjectMapper, String, InputStream)"})
-  public void testLoadExecutionDescriptorWithObjectMapperResourceNameInputStream3() {
-    // Arrange
-    JsonMapper objectMapper = JsonMapper.builder().findAndAddModules().build();
-
-    // Act and Assert
-    assertThrows(RuntimeException.class, () -> ExecutionDescriptor.loadExecutionDescriptor(objectMapper,
-        "Resource Name", new ByteArrayInputStream(new byte[]{Byte.MAX_VALUE, 'X', 'A', 'X', 'A', 'X', 'A', 'X'})));
-  }
-
-  /**
-   * Test {@link ExecutionDescriptor#loadExecutionDescriptor(ObjectMapper, String, InputStream)} with {@code objectMapper}, {@code resourceName}, {@code inputStream}.
-   * <p>
-   * Method under test: {@link ExecutionDescriptor#loadExecutionDescriptor(ObjectMapper, String, InputStream)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"java.util.List ExecutionDescriptor.loadExecutionDescriptor(ObjectMapper, String, InputStream)"})
-  public void testLoadExecutionDescriptorWithObjectMapperResourceNameInputStream4() {
-    // Arrange
-    JsonMapper objectMapper = JsonMapper.builder().findAndAddModules().build();
-
-    // Act and Assert
-    assertThrows(RuntimeException.class, () -> ExecutionDescriptor.loadExecutionDescriptor(objectMapper,
-        "Resource Name", new ByteArrayInputStream(new byte[]{'A', -1, 'A', 'X', 'A', 'X', 'A', 'X'})));
-  }
-
-  /**
-   * Test {@link ExecutionDescriptor#loadExecutionDescriptor(ObjectMapper, String, InputStream)} with {@code objectMapper}, {@code resourceName}, {@code inputStream}.
-   * <p>
-   * Method under test: {@link ExecutionDescriptor#loadExecutionDescriptor(ObjectMapper, String, InputStream)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"java.util.List ExecutionDescriptor.loadExecutionDescriptor(ObjectMapper, String, InputStream)"})
-  public void testLoadExecutionDescriptorWithObjectMapperResourceNameInputStream5() {
-    // Arrange
-    JsonMapper objectMapper = JsonMapper.builder().findAndAddModules().build();
-
-    // Act and Assert
-    assertThrows(RuntimeException.class, () -> ExecutionDescriptor.loadExecutionDescriptor(objectMapper,
-        "Resource Name", new ByteArrayInputStream(new byte[]{})));
-  }
-
-  /**
-   * Test {@link ExecutionDescriptor#loadExecutionDescriptor(ObjectMapper, String, InputStream)} with {@code objectMapper}, {@code resourceName}, {@code inputStream}.
-   * <p>
-   * Method under test: {@link ExecutionDescriptor#loadExecutionDescriptor(ObjectMapper, String, InputStream)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"java.util.List ExecutionDescriptor.loadExecutionDescriptor(ObjectMapper, String, InputStream)"})
-  public void testLoadExecutionDescriptorWithObjectMapperResourceNameInputStream6() throws IOException {
-    // Arrange
-    JsonMapper objectMapper = JsonMapper.builder().findAndAddModules().build();
-    DataInputStream inputStream = mock(DataInputStream.class);
-    when(inputStream.read(Mockito.<byte[]>any(), anyInt(), anyInt())).thenReturn(1);
-    doNothing().when(inputStream).close();
-
-    // Act and Assert
-    assertThrows(RuntimeException.class,
-        () -> ExecutionDescriptor.loadExecutionDescriptor(objectMapper, "Resource Name", inputStream));
-    verify(inputStream, atLeast(1)).read(isA(byte[].class), anyInt(), anyInt());
-    verify(inputStream).close();
-  }
-
-  /**
-   * Test {@link ExecutionDescriptor#loadExecutionDescriptor(ObjectMapper, String, InputStream)} with {@code objectMapper}, {@code resourceName}, {@code inputStream}.
-   * <p>
-   * Method under test: {@link ExecutionDescriptor#loadExecutionDescriptor(ObjectMapper, String, InputStream)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"java.util.List ExecutionDescriptor.loadExecutionDescriptor(ObjectMapper, String, InputStream)"})
-  public void testLoadExecutionDescriptorWithObjectMapperResourceNameInputStream7() throws IOException {
-    // Arrange
-    JsonMapper objectMapper = JsonMapper.builder().findAndAddModules().build();
-    DataInputStream inputStream = mock(DataInputStream.class);
-    when(inputStream.read(Mockito.<byte[]>any(), anyInt(), anyInt())).thenThrow(new RuntimeException("foo"));
-
-    // Act and Assert
-    assertThrows(RuntimeException.class,
-        () -> ExecutionDescriptor.loadExecutionDescriptor(objectMapper, "Resource Name", inputStream));
-    verify(inputStream).read(isA(byte[].class), eq(0), eq(8000));
-  }
-
-  /**
-   * Test {@link ExecutionDescriptor#loadExecutionDescriptor(ObjectMapper, URL)} with {@code objectMapper}, {@code url}.
-   * <p>
-   * Method under test: {@link ExecutionDescriptor#loadExecutionDescriptor(ObjectMapper, URL)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"java.util.List ExecutionDescriptor.loadExecutionDescriptor(ObjectMapper, URL)"})
-  public void testLoadExecutionDescriptorWithObjectMapperUrl() throws MalformedURLException {
-    // Arrange, Act and Assert
-    assertThrows(RuntimeException.class,
-        () -> ExecutionDescriptor.loadExecutionDescriptor(JsonMapper.builder().findAndAddModules().build(),
-            Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toUri().toURL()));
-  }
-
-  /**
-   * Test getters and setters.
-   * <p>
    * Methods under test:
    * <ul>
    *   <li>default or parameterless constructor of {@link ExecutionDescriptor}
@@ -207,12 +63,6 @@ public class ExecutionDescriptorDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void ExecutionDescriptor.<init>()", "String ExecutionDescriptor.getDescription()",
-      "String ExecutionDescriptor.getExecutableFunctionClass()", "String ExecutionDescriptor.getExpectedOutputFile()",
-      "String ExecutionDescriptor.getGroup()", "String ExecutionDescriptor.getInputFile()",
-      "String ExecutionDescriptor.getMarkDownFile()", "String ExecutionDescriptor.getName()",
-      "boolean ExecutionDescriptor.isNativeFunction()"})
   public void testGettersAndSetters() {
     // Arrange and Act
     ExecutionDescriptor actualExecutionDescriptor = new ExecutionDescriptor();
@@ -233,5 +83,196 @@ public class ExecutionDescriptorDiffblueTest {
     assertNull(actualMarkDownFile);
     assertNull(actualName);
     assertFalse(actualExecutionDescriptor.isNativeFunction());
+  }
+
+  /**
+   * Method under test:
+   * {@link ExecutionDescriptor#loadExecutionDescriptor(ObjectMapper, String, InputStream)}
+   */
+  @Test
+  public void testLoadExecutionDescriptor() throws UnsupportedEncodingException {
+    // Arrange
+    ObjectMapper objectMapper = new ObjectMapper();
+
+    // Act and Assert
+    assertThrows(RuntimeException.class, () -> ExecutionDescriptor.loadExecutionDescriptor(objectMapper,
+        "Resource Name", new ByteArrayInputStream("AXAXAXAX".getBytes("UTF-8"))));
+  }
+
+  /**
+   * Method under test:
+   * {@link ExecutionDescriptor#loadExecutionDescriptor(ObjectMapper, String, InputStream)}
+   */
+  @Test
+  public void testLoadExecutionDescriptor2() throws UnsupportedEncodingException {
+    // Arrange
+    ObjectMapper objectMapper = new ObjectMapper(new JsonFactory());
+
+    // Act and Assert
+    assertThrows(RuntimeException.class, () -> ExecutionDescriptor.loadExecutionDescriptor(objectMapper,
+        "Resource Name", new ByteArrayInputStream("AXAXAXAX".getBytes("UTF-8"))));
+  }
+
+  /**
+   * Method under test:
+   * {@link ExecutionDescriptor#loadExecutionDescriptor(ObjectMapper, String, InputStream)}
+   */
+  @Test
+  public void testLoadExecutionDescriptor3() throws UnsupportedEncodingException {
+    // Arrange
+    XmlMapper objectMapper = new XmlMapper();
+
+    // Act and Assert
+    assertThrows(RuntimeException.class, () -> ExecutionDescriptor.loadExecutionDescriptor(objectMapper,
+        "Resource Name", new ByteArrayInputStream("AXAXAXAX".getBytes("UTF-8"))));
+  }
+
+  /**
+   * Method under test:
+   * {@link ExecutionDescriptor#loadExecutionDescriptor(ObjectMapper, String, InputStream)}
+   */
+  @Test
+  public void testLoadExecutionDescriptor4() throws UnsupportedEncodingException {
+    // Arrange
+    YAMLMapper objectMapper = new YAMLMapper();
+
+    // Act and Assert
+    assertThrows(RuntimeException.class, () -> ExecutionDescriptor.loadExecutionDescriptor(objectMapper,
+        "Resource Name", new ByteArrayInputStream("AXAXAXAX".getBytes("UTF-8"))));
+  }
+
+  /**
+   * Method under test:
+   * {@link ExecutionDescriptor#loadExecutionDescriptor(ObjectMapper, String, InputStream)}
+   */
+  @Test
+  public void testLoadExecutionDescriptor5() {
+    // Arrange
+    ObjectMapper objectMapper = new ObjectMapper();
+
+    // Act and Assert
+    assertThrows(RuntimeException.class, () -> ExecutionDescriptor.loadExecutionDescriptor(objectMapper,
+        "Resource Name", new ByteArrayInputStream(new byte[]{0, 'X', 'A', 'X', 'A', 'X', 'A', 'X'})));
+  }
+
+  /**
+   * Method under test:
+   * {@link ExecutionDescriptor#loadExecutionDescriptor(ObjectMapper, String, InputStream)}
+   */
+  @Test
+  public void testLoadExecutionDescriptor6() {
+    // Arrange
+    ObjectMapper objectMapper = new ObjectMapper();
+
+    // Act and Assert
+    assertThrows(RuntimeException.class, () -> ExecutionDescriptor.loadExecutionDescriptor(objectMapper,
+        "Resource Name", new ByteArrayInputStream(new byte[]{Byte.MAX_VALUE, 'X', 'A', 'X', 'A', 'X', 'A', 'X'})));
+  }
+
+  /**
+   * Method under test:
+   * {@link ExecutionDescriptor#loadExecutionDescriptor(ObjectMapper, String, InputStream)}
+   */
+  @Test
+  public void testLoadExecutionDescriptor7() {
+    // Arrange
+    ObjectMapper objectMapper = new ObjectMapper();
+
+    // Act and Assert
+    assertThrows(RuntimeException.class, () -> ExecutionDescriptor.loadExecutionDescriptor(objectMapper,
+        "Resource Name", new ByteArrayInputStream(new byte[]{'A', -1, 'A', 'X', 'A', 'X', 'A', 'X'})));
+  }
+
+  /**
+   * Method under test:
+   * {@link ExecutionDescriptor#loadExecutionDescriptor(ObjectMapper, String, InputStream)}
+   */
+  @Test
+  public void testLoadExecutionDescriptor8() {
+    // Arrange
+    ObjectMapper objectMapper = new ObjectMapper();
+
+    // Act and Assert
+    assertThrows(RuntimeException.class, () -> ExecutionDescriptor.loadExecutionDescriptor(objectMapper,
+        "Resource Name", new ByteArrayInputStream(new byte[]{})));
+  }
+
+  /**
+   * Method under test:
+   * {@link ExecutionDescriptor#loadExecutionDescriptor(ObjectMapper, String, InputStream)}
+   */
+  @Test
+  public void testLoadExecutionDescriptor9() throws IOException {
+    // Arrange
+    ObjectMapper objectMapper = new ObjectMapper();
+    DataInputStream inputStream = mock(DataInputStream.class);
+    when(inputStream.read(Mockito.<byte[]>any(), anyInt(), anyInt())).thenReturn(1);
+    doNothing().when(inputStream).close();
+
+    // Act and Assert
+    assertThrows(RuntimeException.class,
+        () -> ExecutionDescriptor.loadExecutionDescriptor(objectMapper, "Resource Name", inputStream));
+    verify(inputStream, atLeast(1)).read(isA(byte[].class), anyInt(), anyInt());
+    verify(inputStream).close();
+  }
+
+  /**
+   * Method under test:
+   * {@link ExecutionDescriptor#loadExecutionDescriptor(ObjectMapper, String, InputStream)}
+   */
+  @Test
+  public void testLoadExecutionDescriptor10() throws IOException {
+    // Arrange
+    ObjectMapper objectMapper = new ObjectMapper();
+    DataInputStream inputStream = mock(DataInputStream.class);
+    when(inputStream.read(Mockito.<byte[]>any(), anyInt(), anyInt()))
+        .thenThrow(new RuntimeException("Unable to load expectations "));
+
+    // Act and Assert
+    assertThrows(RuntimeException.class,
+        () -> ExecutionDescriptor.loadExecutionDescriptor(objectMapper, "Resource Name", inputStream));
+    verify(inputStream).read(isA(byte[].class), eq(0), eq(8000));
+  }
+
+  /**
+   * Method under test:
+   * {@link ExecutionDescriptor#loadExecutionDescriptor(ObjectMapper, String, InputStream)}
+   */
+  @Test
+  public void testLoadExecutionDescriptor11() throws IOException {
+    // Arrange
+    YAMLMapper objectMapper = new YAMLMapper();
+    DataInputStream inputStream = mock(DataInputStream.class);
+    when(inputStream.read(Mockito.<byte[]>any(), anyInt(), anyInt()))
+        .thenThrow(new RuntimeException("Unable to load expectations "));
+    doThrow(new RuntimeException("Unable to load expectations ")).when(inputStream).close();
+
+    // Act and Assert
+    assertThrows(RuntimeException.class,
+        () -> ExecutionDescriptor.loadExecutionDescriptor(objectMapper, "Resource Name", inputStream));
+    verify(inputStream).read(isA(byte[].class), eq(0), eq(8000));
+    verify(inputStream).close();
+  }
+
+  /**
+   * Method under test:
+   * {@link ExecutionDescriptor#loadExecutionDescriptor(ObjectMapper, URL)}
+   */
+  @Test
+  public void testLoadExecutionDescriptor12() throws MalformedURLException {
+    // Arrange, Act and Assert
+    assertThrows(RuntimeException.class, () -> ExecutionDescriptor.loadExecutionDescriptor(new ObjectMapper(),
+        Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toUri().toURL()));
+  }
+
+  /**
+   * Method under test:
+   * {@link ExecutionDescriptor#loadExecutionDescriptor(ObjectMapper, URL)}
+   */
+  @Test
+  public void testLoadExecutionDescriptor13() throws MalformedURLException {
+    // Arrange, Act and Assert
+    assertThrows(RuntimeException.class, () -> ExecutionDescriptor.loadExecutionDescriptor(new YAMLMapper(),
+        Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toUri().toURL()));
   }
 }

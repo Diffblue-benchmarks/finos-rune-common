@@ -24,31 +24,23 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import java.util.List;
 import javax.tools.Diagnostic;
 import javax.tools.JavaFileObject;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
 
 public class JavaCompilationResultDiffblueTest {
   /**
-   * Test getters and setters.
-   * <p>
    * Methods under test:
    * <ul>
-   *   <li>{@link JavaCompilationResult#JavaCompilationResult(CompilationCompletionState, List)}
+   *   <li>
+   * {@link JavaCompilationResult#JavaCompilationResult(CompilationCompletionState, List)}
    *   <li>{@link JavaCompilationResult#getCompilationCompletionState()}
    *   <li>{@link JavaCompilationResult#getDiagnostics()}
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void JavaCompilationResult.<init>(CompilationCompletionState, List)",
-      "CompilationCompletionState JavaCompilationResult.getCompilationCompletionState()",
-      "List JavaCompilationResult.getDiagnostics()"})
   public void testGettersAndSetters() {
     // Arrange
     ArrayList<Diagnostic<? extends JavaFileObject>> diagnostics = new ArrayList<>();
@@ -67,36 +59,14 @@ public class JavaCompilationResultDiffblueTest {
   }
 
   /**
-   * Test {@link JavaCompilationResult#isCompilationSuccessful()}.
-   * <ul>
-   *   <li>Then return {@code false}.</li>
-   * </ul>
-   * <p>
    * Method under test: {@link JavaCompilationResult#isCompilationSuccessful()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean JavaCompilationResult.isCompilationSuccessful()"})
-  public void testIsCompilationSuccessful_thenReturnFalse() {
-    // Arrange, Act and Assert
-    assertFalse((new JavaCompilationResult(CompilationCompletionState.COMPILATION_FAILURES, new ArrayList<>()))
-        .isCompilationSuccessful());
-  }
-
-  /**
-   * Test {@link JavaCompilationResult#isCompilationSuccessful()}.
-   * <ul>
-   *   <li>Then return {@code true}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link JavaCompilationResult#isCompilationSuccessful()}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean JavaCompilationResult.isCompilationSuccessful()"})
-  public void testIsCompilationSuccessful_thenReturnTrue() {
+  public void testIsCompilationSuccessful() {
     // Arrange, Act and Assert
     assertTrue((new JavaCompilationResult(CompilationCompletionState.COMPILATION_SUCCESS, new ArrayList<>()))
+        .isCompilationSuccessful());
+    assertFalse((new JavaCompilationResult(CompilationCompletionState.COMPILATION_FAILURES, new ArrayList<>()))
         .isCompilationSuccessful());
   }
 }

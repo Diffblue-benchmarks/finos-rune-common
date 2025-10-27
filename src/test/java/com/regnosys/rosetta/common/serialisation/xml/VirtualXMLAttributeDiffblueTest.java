@@ -23,22 +23,16 @@ package com.regnosys.rosetta.common.serialisation.xml;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.type.PlaceholderForType;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
 
 public class VirtualXMLAttributeDiffblueTest {
   /**
-   * Test {@link VirtualXMLAttribute#VirtualXMLAttribute(Class, String, JavaType)}.
-   * <p>
-   * Method under test: {@link VirtualXMLAttribute#VirtualXMLAttribute(Class, String, JavaType)}
+   * Method under test:
+   * {@link VirtualXMLAttribute#VirtualXMLAttribute(Class, String, JavaType)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void VirtualXMLAttribute.<init>(Class, String, JavaType)"})
   public void testNewVirtualXMLAttribute() {
     // Arrange
     Class<Object> declaringClass = Object.class;

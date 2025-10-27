@@ -21,77 +21,26 @@ package com.regnosys.rosetta.common.util;
  */
 
 import static org.junit.Assert.assertEquals;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
 
 public class StringExtensionsDiffblueTest {
   /**
-   * Test {@link StringExtensions#toFirstLower(String)}.
-   * <ul>
-   *   <li>When {@code foo}.</li>
-   *   <li>Then return {@code foo}.</li>
-   * </ul>
-   * <p>
    * Method under test: {@link StringExtensions#toFirstLower(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"String StringExtensions.toFirstLower(String)"})
-  public void testToFirstLower_whenFoo_thenReturnFoo() {
+  public void testToFirstLower() {
     // Arrange, Act and Assert
     assertEquals("foo", StringExtensions.toFirstLower("foo"));
-  }
-
-  /**
-   * Test {@link StringExtensions#toFirstLower(String)}.
-   * <ul>
-   *   <li>When {@code null}.</li>
-   *   <li>Then return empty string.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link StringExtensions#toFirstLower(String)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"String StringExtensions.toFirstLower(String)"})
-  public void testToFirstLower_whenNull_thenReturnEmptyString() {
-    // Arrange, Act and Assert
     assertEquals("", StringExtensions.toFirstLower(null));
   }
 
   /**
-   * Test {@link StringExtensions#toFirstUpper(String)}.
-   * <ul>
-   *   <li>When {@code foo}.</li>
-   *   <li>Then return {@code Foo}.</li>
-   * </ul>
-   * <p>
    * Method under test: {@link StringExtensions#toFirstUpper(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"String StringExtensions.toFirstUpper(String)"})
-  public void testToFirstUpper_whenFoo_thenReturnFoo() {
+  public void testToFirstUpper() {
     // Arrange, Act and Assert
     assertEquals("Foo", StringExtensions.toFirstUpper("foo"));
-  }
-
-  /**
-   * Test {@link StringExtensions#toFirstUpper(String)}.
-   * <ul>
-   *   <li>When {@code null}.</li>
-   *   <li>Then return empty string.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link StringExtensions#toFirstUpper(String)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"String StringExtensions.toFirstUpper(String)"})
-  public void testToFirstUpper_whenNull_thenReturnEmptyString() {
-    // Arrange, Act and Assert
     assertEquals("", StringExtensions.toFirstUpper(null));
   }
 }

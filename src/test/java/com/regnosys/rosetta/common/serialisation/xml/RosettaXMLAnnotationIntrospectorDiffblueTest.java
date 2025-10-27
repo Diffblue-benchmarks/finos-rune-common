@@ -29,18 +29,12 @@ import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties.Value;
 import com.fasterxml.jackson.core.Base64Variant;
 import com.fasterxml.jackson.core.Base64Variants;
 import com.fasterxml.jackson.core.Version;
 import com.fasterxml.jackson.databind.DeserializationConfig;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectMapper.DefaultTypeResolverBuilder;
-import com.fasterxml.jackson.databind.ObjectMapper.DefaultTyping;
 import com.fasterxml.jackson.databind.PropertyName;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.cfg.BaseSettings;
@@ -54,9 +48,7 @@ import com.fasterxml.jackson.databind.introspect.AnnotatedMember;
 import com.fasterxml.jackson.databind.introspect.AnnotatedMethod;
 import com.fasterxml.jackson.databind.introspect.BasicClassIntrospector;
 import com.fasterxml.jackson.databind.introspect.ClassIntrospector;
-import com.fasterxml.jackson.databind.introspect.ClassIntrospector.MixInResolver;
 import com.fasterxml.jackson.databind.introspect.SimpleMixInResolver;
-import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.databind.jsontype.DefaultBaseTypeLimitingValidator;
 import com.fasterxml.jackson.databind.jsontype.impl.StdSubtypeResolver;
 import com.fasterxml.jackson.databind.type.PlaceholderForType;
@@ -72,119 +64,73 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.TimeZone;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
 import org.mockito.Mockito;
 
 public class RosettaXMLAnnotationIntrospectorDiffblueTest {
   /**
-   * Test {@link RosettaXMLAnnotationIntrospector#RosettaXMLAnnotationIntrospector(ObjectMapper, RosettaXMLConfiguration, RosettaEnumBuilderIntrospector, EnumAsStringBuilderIntrospector)}.
-   * <p>
-   * Method under test: {@link RosettaXMLAnnotationIntrospector#RosettaXMLAnnotationIntrospector(ObjectMapper, RosettaXMLConfiguration, RosettaEnumBuilderIntrospector, EnumAsStringBuilderIntrospector)}
+   * Method under test:
+   * {@link RosettaXMLAnnotationIntrospector#findSubstitutionMap(MapperConfig, AnnotatedMember)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({
-      "void RosettaXMLAnnotationIntrospector.<init>(ObjectMapper, RosettaXMLConfiguration, RosettaEnumBuilderIntrospector, EnumAsStringBuilderIntrospector)"})
-  public void testNewRosettaXMLAnnotationIntrospector() {
-    // Arrange
-    JsonMapper mapper = JsonMapper.builder().findAndAddModules().build();
-    RosettaXMLConfiguration rosettaXMLConfiguration = new RosettaXMLConfiguration(new HashMap<>());
-    RosettaEnumBuilderIntrospector rosettaEnumBuilderIntrospector = new RosettaEnumBuilderIntrospector(true);
-
-    // Act and Assert
-    Version versionResult = (new RosettaXMLAnnotationIntrospector(mapper, rosettaXMLConfiguration,
-        rosettaEnumBuilderIntrospector, new EnumAsStringBuilderIntrospector())).version();
-    assertEquals("com.fasterxml.jackson.core", versionResult.getGroupId());
-    assertEquals("com.fasterxml.jackson.core/jackson-databind/2.17.1", versionResult.toFullString());
-    assertEquals("jackson-databind", versionResult.getArtifactId());
-    assertEquals(1, versionResult.getPatchLevel());
-    assertEquals(17, versionResult.getMinorVersion());
-    assertEquals(2, versionResult.getMajorVersion());
-    assertFalse(versionResult.isSnapshot());
-    assertFalse(versionResult.isUknownVersion());
-    assertFalse(versionResult.isUnknownVersion());
-  }
-
-  /**
-   * Test {@link RosettaXMLAnnotationIntrospector#RosettaXMLAnnotationIntrospector(ObjectMapper, RosettaXMLConfiguration, boolean)}.
-   * <ul>
-   *   <li>When {@code false}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link RosettaXMLAnnotationIntrospector#RosettaXMLAnnotationIntrospector(ObjectMapper, RosettaXMLConfiguration, boolean)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void RosettaXMLAnnotationIntrospector.<init>(ObjectMapper, RosettaXMLConfiguration, boolean)"})
-  public void testNewRosettaXMLAnnotationIntrospector_whenFalse() {
-    // Arrange
-    JsonMapper mapper = JsonMapper.builder().findAndAddModules().build();
-
-    // Act and Assert
-    Version versionResult = (new RosettaXMLAnnotationIntrospector(mapper, new RosettaXMLConfiguration(new HashMap<>()),
-        false)).version();
-    assertEquals("com.fasterxml.jackson.core", versionResult.getGroupId());
-    assertEquals("com.fasterxml.jackson.core/jackson-databind/2.17.1", versionResult.toFullString());
-    assertEquals("jackson-databind", versionResult.getArtifactId());
-    assertEquals(1, versionResult.getPatchLevel());
-    assertEquals(17, versionResult.getMinorVersion());
-    assertEquals(2, versionResult.getMajorVersion());
-    assertFalse(versionResult.isSnapshot());
-    assertFalse(versionResult.isUknownVersion());
-    assertFalse(versionResult.isUnknownVersion());
-  }
-
-  /**
-   * Test {@link RosettaXMLAnnotationIntrospector#RosettaXMLAnnotationIntrospector(ObjectMapper, RosettaXMLConfiguration, boolean)}.
-   * <ul>
-   *   <li>When {@code true}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link RosettaXMLAnnotationIntrospector#RosettaXMLAnnotationIntrospector(ObjectMapper, RosettaXMLConfiguration, boolean)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void RosettaXMLAnnotationIntrospector.<init>(ObjectMapper, RosettaXMLConfiguration, boolean)"})
-  public void testNewRosettaXMLAnnotationIntrospector_whenTrue() {
-    // Arrange
-    JsonMapper mapper = JsonMapper.builder().findAndAddModules().build();
-
-    // Act and Assert
-    Version versionResult = (new RosettaXMLAnnotationIntrospector(mapper, new RosettaXMLConfiguration(new HashMap<>()),
-        true)).version();
-    assertEquals("com.fasterxml.jackson.core", versionResult.getGroupId());
-    assertEquals("com.fasterxml.jackson.core/jackson-databind/2.17.1", versionResult.toFullString());
-    assertEquals("jackson-databind", versionResult.getArtifactId());
-    assertEquals(1, versionResult.getPatchLevel());
-    assertEquals(17, versionResult.getMinorVersion());
-    assertEquals(2, versionResult.getMajorVersion());
-    assertFalse(versionResult.isSnapshot());
-    assertFalse(versionResult.isUknownVersion());
-    assertFalse(versionResult.isUnknownVersion());
-  }
-
-  /**
-   * Test {@link RosettaXMLAnnotationIntrospector#findSubstitutionMap(MapperConfig, AnnotatedMember)}.
-   * <p>
-   * Method under test: {@link RosettaXMLAnnotationIntrospector#findSubstitutionMap(MapperConfig, AnnotatedMember)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({
-      "SubstitutionMap RosettaXMLAnnotationIntrospector.findSubstitutionMap(MapperConfig, AnnotatedMember)"})
   public void testFindSubstitutionMap() {
     // Arrange
-    JsonMapper mapper = JsonMapper.builder().findAndAddModules().build();
+    ObjectMapper mapper = new ObjectMapper();
     RosettaXMLAnnotationIntrospector rosettaXMLAnnotationIntrospector = new RosettaXMLAnnotationIntrospector(mapper,
         new RosettaXMLConfiguration(new HashMap<>()), true);
-    MixInResolver overrides = mock(MixInResolver.class);
+    ClassIntrospector.MixInResolver overrides = mock(ClassIntrospector.MixInResolver.class);
+    Class<Object> forNameResult = Object.class;
+    Mockito.<Class<?>>when(overrides.findMixInClassFor(Mockito.<Class<Object>>any())).thenReturn(forNameResult);
+    SimpleMixInResolver mixins = new SimpleMixInResolver(overrides);
+    BasicClassIntrospector ci = new BasicClassIntrospector();
+    RosettaJSONAnnotationIntrospector ai = new RosettaJSONAnnotationIntrospector(true);
+    PropertyNamingStrategy pns = new PropertyNamingStrategy();
+    TypeFactory tf = TypeFactory.defaultInstance();
+    ObjectMapper.DefaultTypeResolverBuilder typer = new ObjectMapper.DefaultTypeResolverBuilder(
+        ObjectMapper.DefaultTyping.JAVA_LANG_OBJECT);
+    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/mm/dd");
+    HandlerInstantiator hi = mock(HandlerInstantiator.class);
+    Locale locale = Locale.getDefault();
+    TimeZone tz = TimeZone.getTimeZone("America/Los_Angeles");
+    Base64Variant defaultBase64 = Base64Variants.getDefaultVariant();
+    BaseSettings base = new BaseSettings(ci, ai, pns, tf, typer, dateFormat, hi, locale, tz, defaultBase64,
+        new DefaultBaseTypeLimitingValidator());
+
+    StdSubtypeResolver str = new StdSubtypeResolver();
+    RootNameLookup rootNames = new RootNameLookup();
+    ConfigOverrides configOverrides = new ConfigOverrides();
+    DeserializationConfig config = new DeserializationConfig(base, str, mixins, rootNames, configOverrides,
+        new CoercionConfigs(), mock(DatatypeFeatures.class));
+
+    Class<Object> declaringClass = Object.class;
+
+    // Act
+    SubstitutionMap actualFindSubstitutionMapResult = rosettaXMLAnnotationIntrospector.findSubstitutionMap(config,
+        new VirtualXMLAttribute(declaringClass, "Name", new PlaceholderForType(1)));
+
+    // Assert
+    verify(overrides, atLeast(1)).findMixInClassFor(isA(Class.class));
+    assertNull(actualFindSubstitutionMapResult);
+  }
+
+  /**
+   * Method under test:
+   * {@link RosettaXMLAnnotationIntrospector#findSubstitutionMap(MapperConfig, AnnotatedMember)}
+   */
+  @Test
+  public void testFindSubstitutionMap2() {
+    // Arrange
+    ObjectMapper mapper = new ObjectMapper();
+    RosettaXMLAnnotationIntrospector rosettaXMLAnnotationIntrospector = new RosettaXMLAnnotationIntrospector(mapper,
+        new RosettaXMLConfiguration(new HashMap<>()), true);
+    ClassIntrospector.MixInResolver overrides = mock(ClassIntrospector.MixInResolver.class);
     Class<Object> forNameResult = Object.class;
     Mockito.<Class<?>>when(overrides.findMixInClassFor(Mockito.<Class<Object>>any())).thenReturn(forNameResult);
     SimpleMixInResolver mixins = new SimpleMixInResolver(overrides);
     BasicClassIntrospector ci = new BasicClassIntrospector();
     PropertyNamingStrategy pns = new PropertyNamingStrategy();
     TypeFactory tf = TypeFactory.defaultInstance();
-    DefaultTypeResolverBuilder typer = new DefaultTypeResolverBuilder(DefaultTyping.JAVA_LANG_OBJECT);
+    ObjectMapper.DefaultTypeResolverBuilder typer = new ObjectMapper.DefaultTypeResolverBuilder(
+        ObjectMapper.DefaultTyping.JAVA_LANG_OBJECT);
     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/mm/dd");
     HandlerInstantiator hi = mock(HandlerInstantiator.class);
     Locale locale = Locale.getDefault();
@@ -211,20 +157,16 @@ public class RosettaXMLAnnotationIntrospectorDiffblueTest {
   }
 
   /**
-   * Test {@link RosettaXMLAnnotationIntrospector#findSubstitutionMap(MapperConfig, AnnotatedMember)}.
-   * <p>
-   * Method under test: {@link RosettaXMLAnnotationIntrospector#findSubstitutionMap(MapperConfig, AnnotatedMember)}
+   * Method under test:
+   * {@link RosettaXMLAnnotationIntrospector#findSubstitutionMap(MapperConfig, AnnotatedMember)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({
-      "SubstitutionMap RosettaXMLAnnotationIntrospector.findSubstitutionMap(MapperConfig, AnnotatedMember)"})
-  public void testFindSubstitutionMap2() {
+  public void testFindSubstitutionMap3() {
     // Arrange
-    JsonMapper mapper = JsonMapper.builder().findAndAddModules().build();
+    ObjectMapper mapper = new ObjectMapper();
     RosettaXMLAnnotationIntrospector rosettaXMLAnnotationIntrospector = new RosettaXMLAnnotationIntrospector(mapper,
         new RosettaXMLConfiguration(new HashMap<>()), true);
-    MixInResolver overrides = mock(MixInResolver.class);
+    ClassIntrospector.MixInResolver overrides = mock(ClassIntrospector.MixInResolver.class);
     Class<AnnotatedMethod> forNameResult = AnnotatedMethod.class;
     Mockito.<Class<?>>when(overrides.findMixInClassFor(Mockito.<Class<Object>>any())).thenReturn(forNameResult);
     SimpleMixInResolver mixins = new SimpleMixInResolver(overrides);
@@ -232,7 +174,8 @@ public class RosettaXMLAnnotationIntrospectorDiffblueTest {
     RosettaJSONAnnotationIntrospector ai = new RosettaJSONAnnotationIntrospector(true);
     PropertyNamingStrategy pns = new PropertyNamingStrategy();
     TypeFactory tf = TypeFactory.defaultInstance();
-    DefaultTypeResolverBuilder typer = new DefaultTypeResolverBuilder(DefaultTyping.JAVA_LANG_OBJECT);
+    ObjectMapper.DefaultTypeResolverBuilder typer = new ObjectMapper.DefaultTypeResolverBuilder(
+        ObjectMapper.DefaultTyping.JAVA_LANG_OBJECT);
     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/mm/dd");
     HandlerInstantiator hi = mock(HandlerInstantiator.class);
     Locale locale = Locale.getDefault();
@@ -259,23 +202,16 @@ public class RosettaXMLAnnotationIntrospectorDiffblueTest {
   }
 
   /**
-   * Test {@link RosettaXMLAnnotationIntrospector#findSubstitutionMap(MapperConfig, AnnotatedMember)}.
-   * <ul>
-   *   <li>Given {@code RosettaAttribute}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link RosettaXMLAnnotationIntrospector#findSubstitutionMap(MapperConfig, AnnotatedMember)}
+   * Method under test:
+   * {@link RosettaXMLAnnotationIntrospector#findSubstitutionMap(MapperConfig, AnnotatedMember)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({
-      "SubstitutionMap RosettaXMLAnnotationIntrospector.findSubstitutionMap(MapperConfig, AnnotatedMember)"})
-  public void testFindSubstitutionMap_givenComRosettaModelLibAnnotationsRosettaAttribute() {
+  public void testFindSubstitutionMap4() {
     // Arrange
-    JsonMapper mapper = JsonMapper.builder().findAndAddModules().build();
+    ObjectMapper mapper = new ObjectMapper();
     RosettaXMLAnnotationIntrospector rosettaXMLAnnotationIntrospector = new RosettaXMLAnnotationIntrospector(mapper,
         new RosettaXMLConfiguration(new HashMap<>()), true);
-    MixInResolver overrides = mock(MixInResolver.class);
+    ClassIntrospector.MixInResolver overrides = mock(ClassIntrospector.MixInResolver.class);
     Class<RosettaAttribute> forNameResult = RosettaAttribute.class;
     Mockito.<Class<?>>when(overrides.findMixInClassFor(Mockito.<Class<Object>>any())).thenReturn(forNameResult);
     SimpleMixInResolver mixins = new SimpleMixInResolver(overrides);
@@ -283,7 +219,8 @@ public class RosettaXMLAnnotationIntrospectorDiffblueTest {
     RosettaJSONAnnotationIntrospector ai = new RosettaJSONAnnotationIntrospector(true);
     PropertyNamingStrategy pns = new PropertyNamingStrategy();
     TypeFactory tf = TypeFactory.defaultInstance();
-    DefaultTypeResolverBuilder typer = new DefaultTypeResolverBuilder(DefaultTyping.JAVA_LANG_OBJECT);
+    ObjectMapper.DefaultTypeResolverBuilder typer = new ObjectMapper.DefaultTypeResolverBuilder(
+        ObjectMapper.DefaultTyping.JAVA_LANG_OBJECT);
     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/mm/dd");
     HandlerInstantiator hi = mock(HandlerInstantiator.class);
     Locale locale = Locale.getDefault();
@@ -310,31 +247,24 @@ public class RosettaXMLAnnotationIntrospectorDiffblueTest {
   }
 
   /**
-   * Test {@link RosettaXMLAnnotationIntrospector#findSubstitutionMap(MapperConfig, AnnotatedMember)}.
-   * <ul>
-   *   <li>Given {@code null}.</li>
-   *   <li>When {@link ClassIntrospector.MixInResolver} {@link ClassIntrospector.MixInResolver#findMixInClassFor(Class)} return {@code null}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link RosettaXMLAnnotationIntrospector#findSubstitutionMap(MapperConfig, AnnotatedMember)}
+   * Method under test:
+   * {@link RosettaXMLAnnotationIntrospector#findSubstitutionMap(MapperConfig, AnnotatedMember)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({
-      "SubstitutionMap RosettaXMLAnnotationIntrospector.findSubstitutionMap(MapperConfig, AnnotatedMember)"})
-  public void testFindSubstitutionMap_givenNull_whenMixInResolverFindMixInClassForReturnNull() {
+  public void testFindSubstitutionMap5() {
     // Arrange
-    JsonMapper mapper = JsonMapper.builder().findAndAddModules().build();
+    ObjectMapper mapper = new ObjectMapper();
     RosettaXMLAnnotationIntrospector rosettaXMLAnnotationIntrospector = new RosettaXMLAnnotationIntrospector(mapper,
         new RosettaXMLConfiguration(new HashMap<>()), true);
-    MixInResolver overrides = mock(MixInResolver.class);
+    ClassIntrospector.MixInResolver overrides = mock(ClassIntrospector.MixInResolver.class);
     Mockito.<Class<?>>when(overrides.findMixInClassFor(Mockito.<Class<Object>>any())).thenReturn(null);
     SimpleMixInResolver mixins = new SimpleMixInResolver(overrides);
     BasicClassIntrospector ci = new BasicClassIntrospector();
     RosettaJSONAnnotationIntrospector ai = new RosettaJSONAnnotationIntrospector(true);
     PropertyNamingStrategy pns = new PropertyNamingStrategy();
     TypeFactory tf = TypeFactory.defaultInstance();
-    DefaultTypeResolverBuilder typer = new DefaultTypeResolverBuilder(DefaultTyping.JAVA_LANG_OBJECT);
+    ObjectMapper.DefaultTypeResolverBuilder typer = new ObjectMapper.DefaultTypeResolverBuilder(
+        ObjectMapper.DefaultTyping.JAVA_LANG_OBJECT);
     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/mm/dd");
     HandlerInstantiator hi = mock(HandlerInstantiator.class);
     Locale locale = Locale.getDefault();
@@ -361,72 +291,13 @@ public class RosettaXMLAnnotationIntrospectorDiffblueTest {
   }
 
   /**
-   * Test {@link RosettaXMLAnnotationIntrospector#findSubstitutionMap(MapperConfig, AnnotatedMember)}.
-   * <ul>
-   *   <li>Then return {@code null}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link RosettaXMLAnnotationIntrospector#findSubstitutionMap(MapperConfig, AnnotatedMember)}
+   * Method under test:
+   * {@link RosettaXMLAnnotationIntrospector#findUnwrappingNameTransformer(AnnotatedMember)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({
-      "SubstitutionMap RosettaXMLAnnotationIntrospector.findSubstitutionMap(MapperConfig, AnnotatedMember)"})
-  public void testFindSubstitutionMap_thenReturnNull() {
+  public void testFindUnwrappingNameTransformer() {
     // Arrange
-    JsonMapper mapper = JsonMapper.builder().findAndAddModules().build();
-    RosettaXMLAnnotationIntrospector rosettaXMLAnnotationIntrospector = new RosettaXMLAnnotationIntrospector(mapper,
-        new RosettaXMLConfiguration(new HashMap<>()), true);
-    MixInResolver overrides = mock(MixInResolver.class);
-    Class<Object> forNameResult = Object.class;
-    Mockito.<Class<?>>when(overrides.findMixInClassFor(Mockito.<Class<Object>>any())).thenReturn(forNameResult);
-    SimpleMixInResolver mixins = new SimpleMixInResolver(overrides);
-    BasicClassIntrospector ci = new BasicClassIntrospector();
-    RosettaJSONAnnotationIntrospector ai = new RosettaJSONAnnotationIntrospector(true);
-    PropertyNamingStrategy pns = new PropertyNamingStrategy();
-    TypeFactory tf = TypeFactory.defaultInstance();
-    DefaultTypeResolverBuilder typer = new DefaultTypeResolverBuilder(DefaultTyping.JAVA_LANG_OBJECT);
-    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/mm/dd");
-    HandlerInstantiator hi = mock(HandlerInstantiator.class);
-    Locale locale = Locale.getDefault();
-    TimeZone tz = TimeZone.getTimeZone("America/Los_Angeles");
-    Base64Variant defaultBase64 = Base64Variants.getDefaultVariant();
-    BaseSettings base = new BaseSettings(ci, ai, pns, tf, typer, dateFormat, hi, locale, tz, defaultBase64,
-        new DefaultBaseTypeLimitingValidator());
-
-    StdSubtypeResolver str = new StdSubtypeResolver();
-    RootNameLookup rootNames = new RootNameLookup();
-    ConfigOverrides configOverrides = new ConfigOverrides();
-    DeserializationConfig config = new DeserializationConfig(base, str, mixins, rootNames, configOverrides,
-        new CoercionConfigs(), mock(DatatypeFeatures.class));
-
-    Class<Object> declaringClass = Object.class;
-
-    // Act
-    SubstitutionMap actualFindSubstitutionMapResult = rosettaXMLAnnotationIntrospector.findSubstitutionMap(config,
-        new VirtualXMLAttribute(declaringClass, "Name", new PlaceholderForType(1)));
-
-    // Assert
-    verify(overrides, atLeast(1)).findMixInClassFor(isA(Class.class));
-    assertNull(actualFindSubstitutionMapResult);
-  }
-
-  /**
-   * Test {@link RosettaXMLAnnotationIntrospector#findUnwrappingNameTransformer(AnnotatedMember)}.
-   * <ul>
-   *   <li>When {@code Object}.</li>
-   *   <li>Then return {@code null}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link RosettaXMLAnnotationIntrospector#findUnwrappingNameTransformer(AnnotatedMember)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({
-      "com.fasterxml.jackson.databind.util.NameTransformer RosettaXMLAnnotationIntrospector.findUnwrappingNameTransformer(AnnotatedMember)"})
-  public void testFindUnwrappingNameTransformer_whenJavaLangObject_thenReturnNull() {
-    // Arrange
-    JsonMapper mapper = JsonMapper.builder().findAndAddModules().build();
+    ObjectMapper mapper = new ObjectMapper();
     RosettaXMLAnnotationIntrospector rosettaXMLAnnotationIntrospector = new RosettaXMLAnnotationIntrospector(mapper,
         new RosettaXMLConfiguration(new HashMap<>()), true);
     Class<Object> declaringClass = Object.class;
@@ -437,20 +308,38 @@ public class RosettaXMLAnnotationIntrospectorDiffblueTest {
   }
 
   /**
-   * Test {@link RosettaXMLAnnotationIntrospector#_findXmlName(Annotated)}.
-   * <ul>
-   *   <li>When {@link PlaceholderForType#PlaceholderForType(int)} with ordinal is one.</li>
-   *   <li>Then return {@code null}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link RosettaXMLAnnotationIntrospector#_findXmlName(Annotated)}
+   * Method under test:
+   * {@link RosettaXMLAnnotationIntrospector#RosettaXMLAnnotationIntrospector(ObjectMapper, RosettaXMLConfiguration, RosettaEnumBuilderIntrospector, EnumAsStringBuilderIntrospector)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"PropertyName RosettaXMLAnnotationIntrospector._findXmlName(Annotated)"})
-  public void test_findXmlName_whenPlaceholderForTypeWithOrdinalIsOne_thenReturnNull() {
+  public void testNewRosettaXMLAnnotationIntrospector() {
     // Arrange
-    JsonMapper mapper = JsonMapper.builder().findAndAddModules().build();
+    ObjectMapper mapper = new ObjectMapper();
+    RosettaXMLConfiguration rosettaXMLConfiguration = new RosettaXMLConfiguration(new HashMap<>());
+    RosettaEnumBuilderIntrospector rosettaEnumBuilderIntrospector = new RosettaEnumBuilderIntrospector(true);
+
+    // Act and Assert
+    Version versionResult = (new RosettaXMLAnnotationIntrospector(mapper, rosettaXMLConfiguration,
+        rosettaEnumBuilderIntrospector, new EnumAsStringBuilderIntrospector())).version();
+    assertEquals("com.fasterxml.jackson.core", versionResult.getGroupId());
+    assertEquals("com.fasterxml.jackson.core/jackson-databind/2.17.1", versionResult.toFullString());
+    assertEquals("jackson-databind", versionResult.getArtifactId());
+    assertEquals(1, versionResult.getPatchLevel());
+    assertEquals(17, versionResult.getMinorVersion());
+    assertEquals(2, versionResult.getMajorVersion());
+    assertFalse(versionResult.isSnapshot());
+    assertFalse(versionResult.isUknownVersion());
+    assertFalse(versionResult.isUnknownVersion());
+  }
+
+  /**
+   * Method under test:
+   * {@link RosettaXMLAnnotationIntrospector#_findXmlName(Annotated)}
+   */
+  @Test
+  public void test_findXmlName() {
+    // Arrange
+    ObjectMapper mapper = new ObjectMapper();
     RosettaXMLAnnotationIntrospector rosettaXMLAnnotationIntrospector = new RosettaXMLAnnotationIntrospector(mapper,
         new RosettaXMLConfiguration(new HashMap<>()), true);
     Class<Object> declaringClass = Object.class;
@@ -461,27 +350,21 @@ public class RosettaXMLAnnotationIntrospectorDiffblueTest {
   }
 
   /**
-   * Test {@link RosettaXMLAnnotationIntrospector#isOutputAsAttribute(MapperConfig, Annotated)}.
-   * <ul>
-   *   <li>When {@code Object}.</li>
-   *   <li>Then return {@code true}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link RosettaXMLAnnotationIntrospector#isOutputAsAttribute(MapperConfig, Annotated)}
+   * Method under test:
+   * {@link RosettaXMLAnnotationIntrospector#isOutputAsAttribute(MapperConfig, Annotated)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"java.lang.Boolean RosettaXMLAnnotationIntrospector.isOutputAsAttribute(MapperConfig, Annotated)"})
-  public void testIsOutputAsAttribute_whenJavaLangObject_thenReturnTrue() {
+  public void testIsOutputAsAttribute() {
     // Arrange
-    JsonMapper mapper = JsonMapper.builder().findAndAddModules().build();
+    ObjectMapper mapper = new ObjectMapper();
     RosettaXMLAnnotationIntrospector rosettaXMLAnnotationIntrospector = new RosettaXMLAnnotationIntrospector(mapper,
         new RosettaXMLConfiguration(new HashMap<>()), true);
     BasicClassIntrospector ci = new BasicClassIntrospector();
     RosettaJSONAnnotationIntrospector ai = new RosettaJSONAnnotationIntrospector(true);
     PropertyNamingStrategy pns = new PropertyNamingStrategy();
     TypeFactory tf = TypeFactory.defaultInstance();
-    DefaultTypeResolverBuilder typer = new DefaultTypeResolverBuilder(DefaultTyping.JAVA_LANG_OBJECT);
+    ObjectMapper.DefaultTypeResolverBuilder typer = new ObjectMapper.DefaultTypeResolverBuilder(
+        ObjectMapper.DefaultTyping.JAVA_LANG_OBJECT);
     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/mm/dd");
     HandlerInstantiator hi = mock(HandlerInstantiator.class);
     Locale locale = Locale.getDefault();
@@ -491,7 +374,7 @@ public class RosettaXMLAnnotationIntrospectorDiffblueTest {
         new DefaultBaseTypeLimitingValidator());
 
     StdSubtypeResolver str = new StdSubtypeResolver();
-    SimpleMixInResolver mixins = new SimpleMixInResolver(mock(MixInResolver.class));
+    SimpleMixInResolver mixins = new SimpleMixInResolver(mock(ClassIntrospector.MixInResolver.class));
     RootNameLookup rootNames = new RootNameLookup();
     ConfigOverrides configOverrides = new ConfigOverrides();
     DeserializationConfig config = new DeserializationConfig(base, str, mixins, rootNames, configOverrides,
@@ -505,27 +388,21 @@ public class RosettaXMLAnnotationIntrospectorDiffblueTest {
   }
 
   /**
-   * Test {@link RosettaXMLAnnotationIntrospector#isOutputAsText(MapperConfig, Annotated)}.
-   * <ul>
-   *   <li>When {@code Object}.</li>
-   *   <li>Then return {@code null}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link RosettaXMLAnnotationIntrospector#isOutputAsText(MapperConfig, Annotated)}
+   * Method under test:
+   * {@link RosettaXMLAnnotationIntrospector#isOutputAsText(MapperConfig, Annotated)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"java.lang.Boolean RosettaXMLAnnotationIntrospector.isOutputAsText(MapperConfig, Annotated)"})
-  public void testIsOutputAsText_whenJavaLangObject_thenReturnNull() {
+  public void testIsOutputAsText() {
     // Arrange
-    JsonMapper mapper = JsonMapper.builder().findAndAddModules().build();
+    ObjectMapper mapper = new ObjectMapper();
     RosettaXMLAnnotationIntrospector rosettaXMLAnnotationIntrospector = new RosettaXMLAnnotationIntrospector(mapper,
         new RosettaXMLConfiguration(new HashMap<>()), true);
     BasicClassIntrospector ci = new BasicClassIntrospector();
     RosettaJSONAnnotationIntrospector ai = new RosettaJSONAnnotationIntrospector(true);
     PropertyNamingStrategy pns = new PropertyNamingStrategy();
     TypeFactory tf = TypeFactory.defaultInstance();
-    DefaultTypeResolverBuilder typer = new DefaultTypeResolverBuilder(DefaultTyping.JAVA_LANG_OBJECT);
+    ObjectMapper.DefaultTypeResolverBuilder typer = new ObjectMapper.DefaultTypeResolverBuilder(
+        ObjectMapper.DefaultTyping.JAVA_LANG_OBJECT);
     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/mm/dd");
     HandlerInstantiator hi = mock(HandlerInstantiator.class);
     Locale locale = Locale.getDefault();
@@ -535,7 +412,7 @@ public class RosettaXMLAnnotationIntrospectorDiffblueTest {
         new DefaultBaseTypeLimitingValidator());
 
     StdSubtypeResolver str = new StdSubtypeResolver();
-    SimpleMixInResolver mixins = new SimpleMixInResolver(mock(MixInResolver.class));
+    SimpleMixInResolver mixins = new SimpleMixInResolver(mock(ClassIntrospector.MixInResolver.class));
     RootNameLookup rootNames = new RootNameLookup();
     ConfigOverrides configOverrides = new ConfigOverrides();
     DeserializationConfig config = new DeserializationConfig(base, str, mixins, rootNames, configOverrides,
@@ -549,20 +426,13 @@ public class RosettaXMLAnnotationIntrospectorDiffblueTest {
   }
 
   /**
-   * Test {@link RosettaXMLAnnotationIntrospector#_isIgnorable(Annotated)}.
-   * <ul>
-   *   <li>When {@code Object}.</li>
-   *   <li>Then return {@code true}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link RosettaXMLAnnotationIntrospector#_isIgnorable(Annotated)}
+   * Method under test:
+   * {@link RosettaXMLAnnotationIntrospector#_isIgnorable(Annotated)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean RosettaXMLAnnotationIntrospector._isIgnorable(Annotated)"})
-  public void test_isIgnorable_whenJavaLangObject_thenReturnTrue() {
+  public void test_isIgnorable() {
     // Arrange
-    JsonMapper mapper = JsonMapper.builder().findAndAddModules().build();
+    ObjectMapper mapper = new ObjectMapper();
     RosettaXMLAnnotationIntrospector rosettaXMLAnnotationIntrospector = new RosettaXMLAnnotationIntrospector(mapper,
         new RosettaXMLConfiguration(new HashMap<>()), true);
     Class<Object> declaringClass = Object.class;
@@ -573,27 +443,21 @@ public class RosettaXMLAnnotationIntrospectorDiffblueTest {
   }
 
   /**
-   * Test {@link RosettaXMLAnnotationIntrospector#findPropertyIgnoralByName(MapperConfig, Annotated)}.
-   * <ul>
-   *   <li>When {@code Object}.</li>
-   *   <li>Then return not AllowGetters.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link RosettaXMLAnnotationIntrospector#findPropertyIgnoralByName(MapperConfig, Annotated)}
+   * Method under test:
+   * {@link RosettaXMLAnnotationIntrospector#findPropertyIgnoralByName(MapperConfig, Annotated)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"Value RosettaXMLAnnotationIntrospector.findPropertyIgnoralByName(MapperConfig, Annotated)"})
-  public void testFindPropertyIgnoralByName_whenJavaLangObject_thenReturnNotAllowGetters() {
+  public void testFindPropertyIgnoralByName() {
     // Arrange
-    JsonMapper mapper = JsonMapper.builder().findAndAddModules().build();
+    ObjectMapper mapper = new ObjectMapper();
     RosettaXMLAnnotationIntrospector rosettaXMLAnnotationIntrospector = new RosettaXMLAnnotationIntrospector(mapper,
         new RosettaXMLConfiguration(new HashMap<>()), true);
     BasicClassIntrospector ci = new BasicClassIntrospector();
     RosettaJSONAnnotationIntrospector ai = new RosettaJSONAnnotationIntrospector(true);
     PropertyNamingStrategy pns = new PropertyNamingStrategy();
     TypeFactory tf = TypeFactory.defaultInstance();
-    DefaultTypeResolverBuilder typer = new DefaultTypeResolverBuilder(DefaultTyping.JAVA_LANG_OBJECT);
+    ObjectMapper.DefaultTypeResolverBuilder typer = new ObjectMapper.DefaultTypeResolverBuilder(
+        ObjectMapper.DefaultTyping.JAVA_LANG_OBJECT);
     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/mm/dd");
     HandlerInstantiator hi = mock(HandlerInstantiator.class);
     Locale locale = Locale.getDefault();
@@ -603,7 +467,7 @@ public class RosettaXMLAnnotationIntrospectorDiffblueTest {
         new DefaultBaseTypeLimitingValidator());
 
     StdSubtypeResolver str = new StdSubtypeResolver();
-    SimpleMixInResolver mixins = new SimpleMixInResolver(mock(MixInResolver.class));
+    SimpleMixInResolver mixins = new SimpleMixInResolver(mock(ClassIntrospector.MixInResolver.class));
     RootNameLookup rootNames = new RootNameLookup();
     ConfigOverrides configOverrides = new ConfigOverrides();
     DeserializationConfig config = new DeserializationConfig(base, str, mixins, rootNames, configOverrides,
@@ -612,8 +476,8 @@ public class RosettaXMLAnnotationIntrospectorDiffblueTest {
     Class<Object> declaringClass = Object.class;
 
     // Act
-    Value actualFindPropertyIgnoralByNameResult = rosettaXMLAnnotationIntrospector.findPropertyIgnoralByName(config,
-        new VirtualXMLAttribute(declaringClass, "Name", new PlaceholderForType(1)));
+    JsonIgnoreProperties.Value actualFindPropertyIgnoralByNameResult = rosettaXMLAnnotationIntrospector
+        .findPropertyIgnoralByName(config, new VirtualXMLAttribute(declaringClass, "Name", new PlaceholderForType(1)));
 
     // Assert
     assertFalse(actualFindPropertyIgnoralByNameResult.getAllowGetters());
@@ -624,20 +488,13 @@ public class RosettaXMLAnnotationIntrospectorDiffblueTest {
   }
 
   /**
-   * Test {@link RosettaXMLAnnotationIntrospector#findWrapperName(Annotated)}.
-   * <ul>
-   *   <li>When {@code Object}.</li>
-   *   <li>Then return {@link PropertyName#USE_DEFAULT}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link RosettaXMLAnnotationIntrospector#findWrapperName(Annotated)}
+   * Method under test:
+   * {@link RosettaXMLAnnotationIntrospector#findWrapperName(Annotated)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"PropertyName RosettaXMLAnnotationIntrospector.findWrapperName(Annotated)"})
-  public void testFindWrapperName_whenJavaLangObject_thenReturnUse_default() {
+  public void testFindWrapperName() {
     // Arrange
-    JsonMapper mapper = JsonMapper.builder().findAndAddModules().build();
+    ObjectMapper mapper = new ObjectMapper();
     RosettaXMLAnnotationIntrospector rosettaXMLAnnotationIntrospector = new RosettaXMLAnnotationIntrospector(mapper,
         new RosettaXMLConfiguration(new HashMap<>()), true);
     Class<Object> declaringClass = Object.class;
@@ -648,5 +505,139 @@ public class RosettaXMLAnnotationIntrospectorDiffblueTest {
 
     // Assert
     assertSame(actualFindWrapperNameResult.USE_DEFAULT, actualFindWrapperNameResult);
+  }
+
+  /**
+   * Method under test:
+   * {@link RosettaXMLAnnotationIntrospector#RosettaXMLAnnotationIntrospector(ObjectMapper, RosettaXMLConfiguration, RosettaEnumBuilderIntrospector, EnumAsStringBuilderIntrospector)}
+   */
+  @Test
+  public void testNewRosettaXMLAnnotationIntrospector2() {
+    // Arrange
+    ObjectMapper mapper = new ObjectMapper();
+    BasicClassIntrospector ci = new BasicClassIntrospector();
+    RosettaJSONAnnotationIntrospector ai = new RosettaJSONAnnotationIntrospector(true);
+    PropertyNamingStrategy pns = new PropertyNamingStrategy();
+    TypeFactory tf = TypeFactory.defaultInstance();
+    ObjectMapper.DefaultTypeResolverBuilder typer = new ObjectMapper.DefaultTypeResolverBuilder(
+        ObjectMapper.DefaultTyping.JAVA_LANG_OBJECT);
+    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/mm/dd");
+    HandlerInstantiator hi = mock(HandlerInstantiator.class);
+    Locale locale = Locale.getDefault();
+    TimeZone tz = TimeZone.getTimeZone("America/Los_Angeles");
+    Base64Variant defaultBase64 = Base64Variants.getDefaultVariant();
+    BaseSettings base = new BaseSettings(ci, ai, pns, tf, typer, dateFormat, hi, locale, tz, defaultBase64,
+        new DefaultBaseTypeLimitingValidator());
+
+    StdSubtypeResolver str = new StdSubtypeResolver();
+    SimpleMixInResolver mixins = new SimpleMixInResolver(mock(ClassIntrospector.MixInResolver.class));
+    RootNameLookup rootNames = new RootNameLookup();
+    ConfigOverrides configOverrides = new ConfigOverrides();
+    mapper.setConfig(new DeserializationConfig(base, str, mixins, rootNames, configOverrides, new CoercionConfigs(),
+        mock(DatatypeFeatures.class)));
+    RosettaXMLConfiguration rosettaXMLConfiguration = new RosettaXMLConfiguration(new HashMap<>());
+    RosettaEnumBuilderIntrospector rosettaEnumBuilderIntrospector = new RosettaEnumBuilderIntrospector(true);
+
+    // Act and Assert
+    Version versionResult = (new RosettaXMLAnnotationIntrospector(mapper, rosettaXMLConfiguration,
+        rosettaEnumBuilderIntrospector, new EnumAsStringBuilderIntrospector())).version();
+    assertEquals("com.fasterxml.jackson.core", versionResult.getGroupId());
+    assertEquals("com.fasterxml.jackson.core/jackson-databind/2.17.1", versionResult.toFullString());
+    assertEquals("jackson-databind", versionResult.getArtifactId());
+    assertEquals(1, versionResult.getPatchLevel());
+    assertEquals(17, versionResult.getMinorVersion());
+    assertEquals(2, versionResult.getMajorVersion());
+    assertFalse(versionResult.isSnapshot());
+    assertFalse(versionResult.isUknownVersion());
+    assertFalse(versionResult.isUnknownVersion());
+  }
+
+  /**
+   * Method under test:
+   * {@link RosettaXMLAnnotationIntrospector#RosettaXMLAnnotationIntrospector(ObjectMapper, RosettaXMLConfiguration, boolean)}
+   */
+  @Test
+  public void testNewRosettaXMLAnnotationIntrospector3() {
+    // Arrange
+    ObjectMapper mapper = new ObjectMapper();
+
+    // Act and Assert
+    Version versionResult = (new RosettaXMLAnnotationIntrospector(mapper, new RosettaXMLConfiguration(new HashMap<>()),
+        true)).version();
+    assertEquals("com.fasterxml.jackson.core", versionResult.getGroupId());
+    assertEquals("com.fasterxml.jackson.core/jackson-databind/2.17.1", versionResult.toFullString());
+    assertEquals("jackson-databind", versionResult.getArtifactId());
+    assertEquals(1, versionResult.getPatchLevel());
+    assertEquals(17, versionResult.getMinorVersion());
+    assertEquals(2, versionResult.getMajorVersion());
+    assertFalse(versionResult.isSnapshot());
+    assertFalse(versionResult.isUknownVersion());
+    assertFalse(versionResult.isUnknownVersion());
+  }
+
+  /**
+   * Method under test:
+   * {@link RosettaXMLAnnotationIntrospector#RosettaXMLAnnotationIntrospector(ObjectMapper, RosettaXMLConfiguration, boolean)}
+   */
+  @Test
+  public void testNewRosettaXMLAnnotationIntrospector4() {
+    // Arrange
+    ObjectMapper mapper = new ObjectMapper();
+
+    // Act and Assert
+    Version versionResult = (new RosettaXMLAnnotationIntrospector(mapper, new RosettaXMLConfiguration(new HashMap<>()),
+        false)).version();
+    assertEquals("com.fasterxml.jackson.core", versionResult.getGroupId());
+    assertEquals("com.fasterxml.jackson.core/jackson-databind/2.17.1", versionResult.toFullString());
+    assertEquals("jackson-databind", versionResult.getArtifactId());
+    assertEquals(1, versionResult.getPatchLevel());
+    assertEquals(17, versionResult.getMinorVersion());
+    assertEquals(2, versionResult.getMajorVersion());
+    assertFalse(versionResult.isSnapshot());
+    assertFalse(versionResult.isUknownVersion());
+    assertFalse(versionResult.isUnknownVersion());
+  }
+
+  /**
+   * Method under test:
+   * {@link RosettaXMLAnnotationIntrospector#RosettaXMLAnnotationIntrospector(ObjectMapper, RosettaXMLConfiguration, boolean)}
+   */
+  @Test
+  public void testNewRosettaXMLAnnotationIntrospector5() {
+    // Arrange
+    ObjectMapper mapper = new ObjectMapper();
+    BasicClassIntrospector ci = new BasicClassIntrospector();
+    RosettaJSONAnnotationIntrospector ai = new RosettaJSONAnnotationIntrospector(true);
+    PropertyNamingStrategy pns = new PropertyNamingStrategy();
+    TypeFactory tf = TypeFactory.defaultInstance();
+    ObjectMapper.DefaultTypeResolverBuilder typer = new ObjectMapper.DefaultTypeResolverBuilder(
+        ObjectMapper.DefaultTyping.JAVA_LANG_OBJECT);
+    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/mm/dd");
+    HandlerInstantiator hi = mock(HandlerInstantiator.class);
+    Locale locale = Locale.getDefault();
+    TimeZone tz = TimeZone.getTimeZone("America/Los_Angeles");
+    Base64Variant defaultBase64 = Base64Variants.getDefaultVariant();
+    BaseSettings base = new BaseSettings(ci, ai, pns, tf, typer, dateFormat, hi, locale, tz, defaultBase64,
+        new DefaultBaseTypeLimitingValidator());
+
+    StdSubtypeResolver str = new StdSubtypeResolver();
+    SimpleMixInResolver mixins = new SimpleMixInResolver(mock(ClassIntrospector.MixInResolver.class));
+    RootNameLookup rootNames = new RootNameLookup();
+    ConfigOverrides configOverrides = new ConfigOverrides();
+    mapper.setConfig(new DeserializationConfig(base, str, mixins, rootNames, configOverrides, new CoercionConfigs(),
+        mock(DatatypeFeatures.class)));
+
+    // Act and Assert
+    Version versionResult = (new RosettaXMLAnnotationIntrospector(mapper, new RosettaXMLConfiguration(new HashMap<>()),
+        true)).version();
+    assertEquals("com.fasterxml.jackson.core", versionResult.getGroupId());
+    assertEquals("com.fasterxml.jackson.core/jackson-databind/2.17.1", versionResult.toFullString());
+    assertEquals("jackson-databind", versionResult.getArtifactId());
+    assertEquals(1, versionResult.getPatchLevel());
+    assertEquals(17, versionResult.getMinorVersion());
+    assertEquals(2, versionResult.getMajorVersion());
+    assertFalse(versionResult.isSnapshot());
+    assertFalse(versionResult.isUknownVersion());
+    assertFalse(versionResult.isUnknownVersion());
   }
 }

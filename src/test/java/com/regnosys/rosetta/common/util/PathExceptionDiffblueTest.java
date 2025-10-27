@@ -23,25 +23,14 @@ package com.regnosys.rosetta.common.util;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
 
 public class PathExceptionDiffblueTest {
   /**
-   * Test {@link PathException#PathException(String)}.
-   * <ul>
-   *   <li>When {@code 0123456789ABCDEF}.</li>
-   *   <li>Then return Cause is {@code null}.</li>
-   * </ul>
-   * <p>
    * Method under test: {@link PathException#PathException(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void PathException.<init>(String)", "void PathException.<init>(String, Throwable)"})
-  public void testNewPathException_when0123456789abcdef_thenReturnCauseIsNull() {
+  public void testNewPathException() {
     // Arrange and Act
     PathException actualPathException = new PathException("0123456789ABCDEF");
 
@@ -52,18 +41,10 @@ public class PathExceptionDiffblueTest {
   }
 
   /**
-   * Test {@link PathException#PathException(String, Throwable)}.
-   * <ul>
-   *   <li>When {@link Throwable#Throwable()}.</li>
-   *   <li>Then return Cause is {@link Throwable#Throwable()}.</li>
-   * </ul>
-   * <p>
    * Method under test: {@link PathException#PathException(String, Throwable)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void PathException.<init>(String)", "void PathException.<init>(String, Throwable)"})
-  public void testNewPathException_whenThrowable_thenReturnCauseIsThrowable() {
+  public void testNewPathException2() {
     // Arrange
     Throwable cause = new Throwable();
 

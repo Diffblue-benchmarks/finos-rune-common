@@ -23,8 +23,6 @@ package com.regnosys.rosetta.common.util;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
 import com.regnosys.rosetta.common.hashing.NonNullHashCollector;
 import com.regnosys.rosetta.common.merger.BarBuilder;
 import com.rosetta.model.lib.RosettaModelObject;
@@ -33,19 +31,14 @@ import com.rosetta.model.lib.process.AttributeMeta;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
 
 public class SimpleProcessorDiffblueTest {
   /**
-   * Test {@link SimpleProcessor#processRosetta(RosettaPath, Class, List, RosettaModelObject, AttributeMeta[])} with {@code RosettaPath}, {@code Class}, {@code List}, {@code RosettaModelObject}, {@code AttributeMeta[]}.
-   * <p>
-   * Method under test: {@link SimpleProcessor#processRosetta(RosettaPath, Class, List, RosettaModelObject, AttributeMeta[])}
+   * Method under test:
+   * {@link SimpleProcessor#processRosetta(RosettaPath, Class, List, RosettaModelObject, AttributeMeta[])}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({
-      "boolean SimpleProcessor.processRosetta(RosettaPath, Class, List, RosettaModelObject, AttributeMeta[])"})
-  public void testProcessRosettaWithRosettaPathClassListRosettaModelObjectAttributeMeta() {
+  public void testProcessRosetta() {
     // Arrange
     NonNullHashCollector nonNullHashCollector = new NonNullHashCollector();
     RosettaPath path = mock(RosettaPath.class);
@@ -57,15 +50,11 @@ public class SimpleProcessorDiffblueTest {
   }
 
   /**
-   * Test {@link SimpleProcessor#processRosetta(RosettaPath, Class, List, RosettaModelObject, AttributeMeta[])} with {@code RosettaPath}, {@code Class}, {@code List}, {@code RosettaModelObject}, {@code AttributeMeta[]}.
-   * <p>
-   * Method under test: {@link SimpleProcessor#processRosetta(RosettaPath, Class, List, RosettaModelObject, AttributeMeta[])}
+   * Method under test:
+   * {@link SimpleProcessor#processRosetta(RosettaPath, Class, List, RosettaModelObject, AttributeMeta[])}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({
-      "boolean SimpleProcessor.processRosetta(RosettaPath, Class, List, RosettaModelObject, AttributeMeta[])"})
-  public void testProcessRosettaWithRosettaPathClassListRosettaModelObjectAttributeMeta2() {
+  public void testProcessRosetta2() {
     // Arrange
     NonNullHashCollector nonNullHashCollector = new NonNullHashCollector();
     RosettaPath path = mock(RosettaPath.class);

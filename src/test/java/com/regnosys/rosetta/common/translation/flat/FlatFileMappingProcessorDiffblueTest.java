@@ -22,37 +22,26 @@ package com.regnosys.rosetta.common.translation.flat;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
 import com.regnosys.rosetta.common.translation.Path;
-import com.regnosys.rosetta.common.translation.flat.FlatFileMappingProcessor.PathValue;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
 
 public class FlatFileMappingProcessorDiffblueTest {
   /**
-   * Test PathValue getters and setters.
-   * <ul>
-   *   <li>When {@link FlatFileMappingProcessor#BASE_PATH}.</li>
-   * </ul>
-   * <p>
    * Methods under test:
    * <ul>
-   *   <li>{@link PathValue#PathValue(Path, Object)}
-   *   <li>{@link PathValue#getModelPath()}
-   *   <li>{@link PathValue#getValue()}
+   *   <li>{@link FlatFileMappingProcessor.PathValue#PathValue(Path, Object)}
+   *   <li>{@link FlatFileMappingProcessor.PathValue#getModelPath()}
+   *   <li>{@link FlatFileMappingProcessor.PathValue#getValue()}
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void PathValue.<init>(Path, Object)", "void PathValue.<init>(Path, Object, boolean)",
-      "Path PathValue.getModelPath()", "Object PathValue.getValue()"})
-  public void testPathValueGettersAndSetters_whenBase_path() {
+  public void testPathValueGettersAndSetters() {
     // Arrange
     Path modelPath = FlatFileMappingProcessor.BASE_PATH;
 
     // Act
-    PathValue<Object> actualPathValue = new PathValue<>(modelPath, "Value");
+    FlatFileMappingProcessor.PathValue<Object> actualPathValue = new FlatFileMappingProcessor.PathValue<>(modelPath,
+        "Value");
     Path actualModelPath = actualPathValue.getModelPath();
 
     // Assert
@@ -61,28 +50,22 @@ public class FlatFileMappingProcessorDiffblueTest {
   }
 
   /**
-   * Test PathValue getters and setters.
-   * <ul>
-   *   <li>When {@code true}.</li>
-   * </ul>
-   * <p>
    * Methods under test:
    * <ul>
-   *   <li>{@link PathValue#PathValue(Path, Object, boolean)}
-   *   <li>{@link PathValue#getModelPath()}
-   *   <li>{@link PathValue#getValue()}
+   *   <li>
+   * {@link FlatFileMappingProcessor.PathValue#PathValue(Path, Object, boolean)}
+   *   <li>{@link FlatFileMappingProcessor.PathValue#getModelPath()}
+   *   <li>{@link FlatFileMappingProcessor.PathValue#getValue()}
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void PathValue.<init>(Path, Object)", "void PathValue.<init>(Path, Object, boolean)",
-      "Path PathValue.getModelPath()", "Object PathValue.getValue()"})
-  public void testPathValueGettersAndSetters_whenTrue() {
+  public void testPathValueGettersAndSetters2() {
     // Arrange
     Path modelPath = FlatFileMappingProcessor.BASE_PATH;
 
     // Act
-    PathValue<Object> actualPathValue = new PathValue<>(modelPath, "Value", true);
+    FlatFileMappingProcessor.PathValue<Object> actualPathValue = new FlatFileMappingProcessor.PathValue<>(modelPath,
+        "Value", true);
     Path actualModelPath = actualPathValue.getModelPath();
 
     // Assert

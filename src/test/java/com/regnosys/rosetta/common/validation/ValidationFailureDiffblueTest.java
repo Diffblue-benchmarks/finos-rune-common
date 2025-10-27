@@ -21,20 +21,15 @@ package com.regnosys.rosetta.common.validation;
  */
 
 import static org.junit.Assert.assertEquals;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
 import com.rosetta.model.lib.validation.ValidationResult;
-import com.rosetta.model.lib.validation.ValidationResult.ValidationType;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
 
 public class ValidationFailureDiffblueTest {
   /**
-   * Test getters and setters.
-   * <p>
    * Methods under test:
    * <ul>
-   *   <li>{@link ValidationFailure#ValidationFailure(ValidationType, String, String, String)}
+   *   <li>
+   * {@link ValidationFailure#ValidationFailure(ValidationResult.ValidationType, String, String, String)}
    *   <li>{@link ValidationFailure#getFailureReason()}
    *   <li>{@link ValidationFailure#getModelClassName()}
    *   <li>{@link ValidationFailure#getRuleName()}
@@ -42,14 +37,10 @@ public class ValidationFailureDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void ValidationFailure.<init>(ValidationType, String, String, String)",
-      "String ValidationFailure.getFailureReason()", "String ValidationFailure.getModelClassName()",
-      "String ValidationFailure.getRuleName()", "ValidationType ValidationFailure.getValidationType()"})
   public void testGettersAndSetters() {
     // Arrange and Act
-    ValidationFailure actualValidationFailure = new ValidationFailure(ValidationType.DATA_RULE, "Rule Name",
-        "Just cause", "Model Class Name");
+    ValidationFailure actualValidationFailure = new ValidationFailure(ValidationResult.ValidationType.DATA_RULE,
+        "Rule Name", "Just cause", "Model Class Name");
     String actualFailureReason = actualValidationFailure.getFailureReason();
     String actualModelClassName = actualValidationFailure.getModelClassName();
     String actualRuleName = actualValidationFailure.getRuleName();
@@ -58,6 +49,6 @@ public class ValidationFailureDiffblueTest {
     assertEquals("Just cause", actualFailureReason);
     assertEquals("Model Class Name", actualModelClassName);
     assertEquals("Rule Name", actualRuleName);
-    assertEquals(ValidationType.DATA_RULE, actualValidationFailure.getValidationType());
+    assertEquals(ValidationResult.ValidationType.DATA_RULE, actualValidationFailure.getValidationType());
   }
 }

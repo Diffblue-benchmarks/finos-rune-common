@@ -30,70 +30,28 @@ import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
 import com.regnosys.rosetta.common.hashing.ScopeReferenceHelper;
 import com.regnosys.rosetta.common.translation.Path;
-import com.regnosys.rosetta.common.translation.Path.PathElement;
 import com.rosetta.model.lib.path.RosettaPath;
-import com.rosetta.model.lib.path.RosettaPath.Element;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import java.util.OptionalInt;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
 
 public class PathUtilsDiffblueTest {
   /**
-   * Test {@link PathUtils#toRosettaPath(Path)}.
-   * <ul>
-   *   <li>Then return Parent Parent Parent Element Uri is {@code FpML_5_10}.</li>
-   * </ul>
-   * <p>
    * Method under test: {@link PathUtils#toRosettaPath(Path)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"RosettaPath PathUtils.toRosettaPath(Path)"})
-  public void testToRosettaPath_thenReturnParentParentParentElementUriIsFpML510() {
-    // Arrange and Act
-    RosettaPath actualToRosettaPathResult = PathUtils
-        .toRosettaPath(Path.parse("com.regnosys.rosetta.common.translation.Path", true));
-
-    // Assert
-    RosettaPath parent = actualToRosettaPathResult.getParent();
-    RosettaPath parent2 = parent.getParent();
-    Element element = parent2.getParent().getElement();
-    assertEquals("FpML_5_10", element.getUri());
-    Element element2 = parent2.getElement();
-    assertEquals("FpML_5_10", element2.getUri());
-    Element element3 = parent.getElement();
-    assertEquals("FpML_5_10", element3.getUri());
-    assertEquals("Path", actualToRosettaPathResult.getElement().getPath());
-    assertEquals("common", element2.getPath());
-    assertEquals("rosetta", element.getPath());
-    assertEquals("translation", element3.getPath());
-  }
-
-  /**
-   * Test {@link PathUtils#toRosettaPath(Path)}.
-   * <ul>
-   *   <li>When {@link ScopeReferenceHelper#EMPTY_SCOPE}.</li>
-   *   <li>Then return Element Uri is {@code FpML_5_10}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link PathUtils#toRosettaPath(Path)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"RosettaPath PathUtils.toRosettaPath(Path)"})
-  public void testToRosettaPath_whenEmpty_scope_thenReturnElementUriIsFpML510() {
+  public void testToRosettaPath() {
     // Arrange and Act
     RosettaPath actualToRosettaPathResult = PathUtils.toRosettaPath(ScopeReferenceHelper.EMPTY_SCOPE);
 
     // Assert
-    Element element = actualToRosettaPathResult.getElement();
+    RosettaPath.Element element = actualToRosettaPathResult.getElement();
     assertEquals("FpML_5_10", element.getUri());
     assertEquals("emptyScope", element.getPath());
     assertNull(actualToRosettaPathResult.getParent());
@@ -102,35 +60,69 @@ public class PathUtilsDiffblueTest {
   }
 
   /**
-   * Test {@link PathUtils#toRosettaPath(Path)}.
-   * <ul>
-   *   <li>When {@link Path#Path()}.</li>
-   *   <li>Then return {@code null}.</li>
-   * </ul>
-   * <p>
    * Method under test: {@link PathUtils#toRosettaPath(Path)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"RosettaPath PathUtils.toRosettaPath(Path)"})
-  public void testToRosettaPath_whenPath_thenReturnNull() {
+  public void testToRosettaPath2() {
     // Arrange, Act and Assert
     assertNull(PathUtils.toRosettaPath(new Path()));
   }
 
   /**
-   * Test {@link PathUtils#toPath(RosettaPath)}.
-   * <ul>
-   *   <li>Given {@link LinkedList#LinkedList()}.</li>
-   *   <li>Then return LastElement is {@code null}.</li>
-   * </ul>
-   * <p>
+   * Method under test: {@link PathUtils#toRosettaPath(Path)}
+   */
+  @Test
+  public void testToRosettaPath3() {
+    // Arrange and Act
+    RosettaPath actualToRosettaPathResult = PathUtils
+        .toRosettaPath(Path.parse("com.regnosys.rosetta.common.translation.Path", true));
+
+    // Assert
+    RosettaPath parent = actualToRosettaPathResult.getParent();
+    RosettaPath parent2 = parent.getParent();
+    RosettaPath parent3 = parent2.getParent();
+    RosettaPath parent4 = parent3.getParent();
+    RosettaPath parent5 = parent4.getParent();
+    RosettaPath.Element element = parent5.getElement();
+    assertEquals("FpML_5_10", element.getUri());
+    RosettaPath.Element element2 = parent4.getElement();
+    assertEquals("FpML_5_10", element2.getUri());
+    RosettaPath.Element element3 = parent3.getElement();
+    assertEquals("FpML_5_10", element3.getUri());
+    RosettaPath.Element element4 = parent2.getElement();
+    assertEquals("FpML_5_10", element4.getUri());
+    RosettaPath.Element element5 = parent.getElement();
+    assertEquals("FpML_5_10", element5.getUri());
+    RosettaPath.Element element6 = actualToRosettaPathResult.getElement();
+    assertEquals("FpML_5_10", element6.getUri());
+    assertEquals("Path", element6.getPath());
+    assertEquals("com", element.getPath());
+    assertEquals("common", element4.getPath());
+    assertEquals("regnosys", element2.getPath());
+    assertEquals("rosetta", element3.getPath());
+    assertEquals("translation", element5.getPath());
+    assertNull(parent5.getParent());
+    OptionalInt index = element6.getIndex();
+    assertFalse(index.isPresent());
+    Map<String, String> metas = element6.getMetas();
+    assertTrue(metas.isEmpty());
+    assertSame(index, element.getIndex());
+    assertSame(index, element2.getIndex());
+    assertSame(index, element3.getIndex());
+    assertSame(index, element4.getIndex());
+    assertSame(index, element5.getIndex());
+    assertSame(metas, element.getMetas());
+    assertSame(metas, element2.getMetas());
+    assertSame(metas, element3.getMetas());
+    assertSame(metas, element4.getMetas());
+    assertSame(metas, element5.getMetas());
+  }
+
+  /**
    * Method under test: {@link PathUtils#toPath(RosettaPath)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"Path PathUtils.toPath(RosettaPath)"})
-  public void testToPath_givenLinkedList_thenReturnLastElementIsNull() {
+  public void testToPath() {
     // Arrange
     RosettaPath rosettaPath = mock(RosettaPath.class);
     when(rosettaPath.allElements()).thenReturn(new LinkedList<>());
@@ -146,17 +138,10 @@ public class PathUtilsDiffblueTest {
   }
 
   /**
-   * Test {@link PathUtils#toPath(RosettaPath)}.
-   * <ul>
-   *   <li>Then throw {@link PathException}.</li>
-   * </ul>
-   * <p>
    * Method under test: {@link PathUtils#toPath(RosettaPath)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"Path PathUtils.toPath(RosettaPath)"})
-  public void testToPath_thenThrowPathException() {
+  public void testToPath2() {
     // Arrange
     RosettaPath rosettaPath = mock(RosettaPath.class);
     when(rosettaPath.allElements()).thenThrow(new PathException("0123456789ABCDEF"));
@@ -167,18 +152,22 @@ public class PathUtilsDiffblueTest {
   }
 
   /**
-   * Test {@link PathUtils#filterSubPaths(Collection)}.
-   * <ul>
-   *   <li>Given {@link ScopeReferenceHelper#EMPTY_SCOPE}.</li>
-   *   <li>Then return {@link ArrayList#ArrayList()}.</li>
-   * </ul>
-   * <p>
    * Method under test: {@link PathUtils#filterSubPaths(Collection)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"List PathUtils.filterSubPaths(Collection)"})
-  public void testFilterSubPaths_givenEmpty_scope_thenReturnArrayList() {
+  public void testFilterSubPaths() {
+    // Arrange and Act
+    List<Path> actualFilterSubPathsResult = PathUtils.filterSubPaths(new ArrayList<>());
+
+    // Assert
+    assertTrue(actualFilterSubPathsResult.isEmpty());
+  }
+
+  /**
+   * Method under test: {@link PathUtils#filterSubPaths(Collection)}
+   */
+  @Test
+  public void testFilterSubPaths2() {
     // Arrange
     ArrayList<Path> paths = new ArrayList<>();
     paths.add(ScopeReferenceHelper.EMPTY_SCOPE);
@@ -191,18 +180,10 @@ public class PathUtilsDiffblueTest {
   }
 
   /**
-   * Test {@link PathUtils#filterSubPaths(Collection)}.
-   * <ul>
-   *   <li>Given {@link ScopeReferenceHelper#EMPTY_SCOPE}.</li>
-   *   <li>Then return second is first.</li>
-   * </ul>
-   * <p>
    * Method under test: {@link PathUtils#filterSubPaths(Collection)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"List PathUtils.filterSubPaths(Collection)"})
-  public void testFilterSubPaths_givenEmpty_scope_thenReturnSecondIsFirst() {
+  public void testFilterSubPaths3() {
     // Arrange
     ArrayList<Path> paths = new ArrayList<>();
     paths.add(ScopeReferenceHelper.EMPTY_SCOPE);
@@ -212,54 +193,30 @@ public class PathUtilsDiffblueTest {
     List<Path> actualFilterSubPathsResult = PathUtils.filterSubPaths(paths);
 
     // Assert
-    assertEquals(2, actualFilterSubPathsResult.size());
-    Path getResult = actualFilterSubPathsResult.get(0);
-    assertEquals("emptyScope", getResult.getLastElement().getPathName());
-    assertSame(getResult, actualFilterSubPathsResult.get(1));
-    assertArrayEquals(new String[]{"emptyScope"}, getResult.getPathNames());
+    assertEquals(paths, actualFilterSubPathsResult);
   }
 
   /**
-   * Test {@link PathUtils#filterSubPaths(Collection)}.
-   * <ul>
-   *   <li>Given {@link Path#Path()}.</li>
-   *   <li>When {@link ArrayList#ArrayList()} add {@link Path#Path()}.</li>
-   *   <li>Then return first is {@link Path#Path()}.</li>
-   * </ul>
-   * <p>
    * Method under test: {@link PathUtils#filterSubPaths(Collection)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"List PathUtils.filterSubPaths(Collection)"})
-  public void testFilterSubPaths_givenPath_whenArrayListAddPath_thenReturnFirstIsPath() {
+  public void testFilterSubPaths4() {
     // Arrange
     ArrayList<Path> paths = new ArrayList<>();
-    Path path = new Path();
-    paths.add(path);
+    paths.add(new Path());
 
     // Act
     List<Path> actualFilterSubPathsResult = PathUtils.filterSubPaths(paths);
 
     // Assert
-    assertEquals(1, actualFilterSubPathsResult.size());
-    assertSame(path, actualFilterSubPathsResult.get(0));
+    assertEquals(paths, actualFilterSubPathsResult);
   }
 
   /**
-   * Test {@link PathUtils#filterSubPaths(Collection)}.
-   * <ul>
-   *   <li>Given {@link Path#Path()}.</li>
-   *   <li>When {@link ArrayList#ArrayList()} add {@link Path#Path()}.</li>
-   *   <li>Then return first Parent is {@link Path#Path()}.</li>
-   * </ul>
-   * <p>
    * Method under test: {@link PathUtils#filterSubPaths(Collection)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"List PathUtils.filterSubPaths(Collection)"})
-  public void testFilterSubPaths_givenPath_whenArrayListAddPath_thenReturnFirstParentIsPath() {
+  public void testFilterSubPaths5() {
     // Arrange
     ArrayList<Path> paths = new ArrayList<>();
     Path path = new Path();
@@ -272,61 +229,31 @@ public class PathUtilsDiffblueTest {
     // Assert
     assertEquals(1, actualFilterSubPathsResult.size());
     Path getResult = actualFilterSubPathsResult.get(0);
-    assertEquals("emptyScope", getResult.getLastElement().getPathName());
-    assertEquals(path, getResult.getParent());
-    assertArrayEquals(new String[]{"emptyScope"}, getResult.getPathNames());
-  }
-
-  /**
-   * Test {@link PathUtils#filterSubPaths(Collection)}.
-   * <ul>
-   *   <li>Then return second LastElement PathName is {@code emptyScope}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link PathUtils#filterSubPaths(Collection)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"List PathUtils.filterSubPaths(Collection)"})
-  public void testFilterSubPaths_thenReturnSecondLastElementPathNameIsEmptyScope() {
-    // Arrange
-    ArrayList<Path> paths = new ArrayList<>();
-    Path valueOfResult = Path.valueOf("Path");
-    paths.add(valueOfResult);
-    paths.add(ScopeReferenceHelper.EMPTY_SCOPE);
-
-    // Act
-    List<Path> actualFilterSubPathsResult = PathUtils.filterSubPaths(paths);
-
-    // Assert
-    assertEquals(2, actualFilterSubPathsResult.size());
-    Path getResult = actualFilterSubPathsResult.get(1);
-    PathElement lastElement = getResult.getLastElement();
+    Path.PathElement lastElement = getResult.getLastElement();
     assertEquals("emptyScope", lastElement.getPathName());
-    List<PathElement> elements = getResult.getElements();
+    List<Path.PathElement> elements = getResult.getElements();
     assertEquals(1, elements.size());
+    assertFalse(lastElement.getIndex().isPresent());
+    assertTrue(lastElement.getMetas().isEmpty());
+    assertEquals(path, getResult.getParent());
     assertSame(lastElement, elements.get(0));
-    assertSame(valueOfResult, actualFilterSubPathsResult.get(0));
     assertArrayEquals(new String[]{"emptyScope"}, getResult.getPathNames());
   }
 
   /**
-   * Test {@link PathUtils#filterSubPaths(Collection)}.
-   * <ul>
-   *   <li>When {@link ArrayList#ArrayList()}.</li>
-   *   <li>Then return Empty.</li>
-   * </ul>
-   * <p>
    * Method under test: {@link PathUtils#filterSubPaths(Collection)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"List PathUtils.filterSubPaths(Collection)"})
-  public void testFilterSubPaths_whenArrayList_thenReturnEmpty() {
-    // Arrange and Act
-    List<Path> actualFilterSubPathsResult = PathUtils.filterSubPaths(new ArrayList<>());
+  public void testFilterSubPaths6() {
+    // Arrange
+    ArrayList<Path> paths = new ArrayList<>();
+    paths.add(Path.valueOf("Path"));
+    paths.add(ScopeReferenceHelper.EMPTY_SCOPE);
+
+    // Act
+    List<Path> actualFilterSubPathsResult = PathUtils.filterSubPaths(paths);
 
     // Assert
-    assertTrue(actualFilterSubPathsResult.isEmpty());
+    assertEquals(paths, actualFilterSubPathsResult);
   }
 }

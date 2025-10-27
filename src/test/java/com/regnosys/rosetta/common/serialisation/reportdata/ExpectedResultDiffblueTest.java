@@ -25,19 +25,97 @@ import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
+import static org.mockito.Mockito.mock;
 import com.rosetta.model.lib.ModelReportId;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.BiFunction;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
 
 public class ExpectedResultDiffblueTest {
   /**
-   * Test getters and setters.
-   * <p>
+   * Methods under test:
+   * <ul>
+   *   <li>{@link ExpectedResult#equals(Object)}
+   *   <li>{@link ExpectedResult#hashCode()}
+   * </ul>
+   */
+  @Test
+  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
+    // Arrange
+    ExpectedResult expectedResult = new ExpectedResult();
+    ExpectedResult expectedResult2 = new ExpectedResult();
+
+    // Act and Assert
+    assertEquals(expectedResult, expectedResult2);
+    int expectedHashCodeResult = expectedResult.hashCode();
+    assertEquals(expectedHashCodeResult, expectedResult2.hashCode());
+  }
+
+  /**
+   * Methods under test:
+   * <ul>
+   *   <li>{@link ExpectedResult#equals(Object)}
+   *   <li>{@link ExpectedResult#hashCode()}
+   * </ul>
+   */
+  @Test
+  public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
+    // Arrange
+    ExpectedResult expectedResult = new ExpectedResult();
+
+    // Act and Assert
+    assertEquals(expectedResult, expectedResult);
+    int expectedHashCodeResult = expectedResult.hashCode();
+    assertEquals(expectedHashCodeResult, expectedResult.hashCode());
+  }
+
+  /**
+   * Method under test: {@link ExpectedResult#equals(Object)}
+   */
+  @Test
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
+    // Arrange
+    ExpectedResult expectedResult = new ExpectedResult(new HashMap<>());
+
+    // Act and Assert
+    assertNotEquals(expectedResult, new ExpectedResult());
+  }
+
+  /**
+   * Method under test: {@link ExpectedResult#equals(Object)}
+   */
+  @Test
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual2() {
+    // Arrange
+    HashMap<ModelReportId, List<ExpectedResultField>> expectationsPerReport = new HashMap<>();
+    expectationsPerReport.computeIfPresent(null, mock(BiFunction.class));
+    ExpectedResult expectedResult = new ExpectedResult(expectationsPerReport);
+
+    // Act and Assert
+    assertNotEquals(expectedResult, new ExpectedResult());
+  }
+
+  /**
+   * Method under test: {@link ExpectedResult#equals(Object)}
+   */
+  @Test
+  public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
+    // Arrange, Act and Assert
+    assertNotEquals(new ExpectedResult(), null);
+  }
+
+  /**
+   * Method under test: {@link ExpectedResult#equals(Object)}
+   */
+  @Test
+  public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
+    // Arrange, Act and Assert
+    assertNotEquals(new ExpectedResult(), "Different type to ExpectedResult");
+  }
+
+  /**
    * Methods under test:
    * <ul>
    *   <li>{@link ExpectedResult#ExpectedResult()}
@@ -46,9 +124,6 @@ public class ExpectedResultDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void ExpectedResult.<init>()", "void ExpectedResult.<init>(Map)",
-      "Map ExpectedResult.getExpectationsPerReport()", "String ExpectedResult.toString()"})
   public void testGettersAndSetters() {
     // Arrange and Act
     ExpectedResult actualExpectedResult = new ExpectedResult();
@@ -60,11 +135,6 @@ public class ExpectedResultDiffblueTest {
   }
 
   /**
-   * Test getters and setters.
-   * <ul>
-   *   <li>Then return toString is {@code ExpectedResult{expectationsPerReport={}}}.</li>
-   * </ul>
-   * <p>
    * Methods under test:
    * <ul>
    *   <li>{@link ExpectedResult#ExpectedResult(Map)}
@@ -73,10 +143,7 @@ public class ExpectedResultDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void ExpectedResult.<init>()", "void ExpectedResult.<init>(Map)",
-      "Map ExpectedResult.getExpectationsPerReport()", "String ExpectedResult.toString()"})
-  public void testGettersAndSetters_thenReturnToStringIsExpectedResultExpectationsPerReport() {
+  public void testGettersAndSetters2() {
     // Arrange
     HashMap<ModelReportId, List<ExpectedResultField>> expectationsPerReport = new HashMap<>();
 
@@ -90,112 +157,5 @@ public class ExpectedResultDiffblueTest {
     assertEquals("ExpectedResult{expectationsPerReport={}}", actualToStringResult);
     assertTrue(actualExpectationsPerReport.isEmpty());
     assertSame(expectationsPerReport, actualExpectationsPerReport);
-  }
-
-  /**
-   * Test {@link ExpectedResult#equals(Object)}, and {@link ExpectedResult#hashCode()}.
-   * <ul>
-   *   <li>When other is equal.</li>
-   *   <li>Then return equal.</li>
-   * </ul>
-   * <p>
-   * Methods under test:
-   * <ul>
-   *   <li>{@link ExpectedResult#equals(Object)}
-   *   <li>{@link ExpectedResult#hashCode()}
-   * </ul>
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean ExpectedResult.equals(Object)", "int ExpectedResult.hashCode()"})
-  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
-    // Arrange
-    ExpectedResult expectedResult = new ExpectedResult();
-    ExpectedResult expectedResult2 = new ExpectedResult();
-
-    // Act and Assert
-    assertEquals(expectedResult, expectedResult2);
-    int expectedHashCodeResult = expectedResult.hashCode();
-    assertEquals(expectedHashCodeResult, expectedResult2.hashCode());
-  }
-
-  /**
-   * Test {@link ExpectedResult#equals(Object)}, and {@link ExpectedResult#hashCode()}.
-   * <ul>
-   *   <li>When other is same.</li>
-   *   <li>Then return equal.</li>
-   * </ul>
-   * <p>
-   * Methods under test:
-   * <ul>
-   *   <li>{@link ExpectedResult#equals(Object)}
-   *   <li>{@link ExpectedResult#hashCode()}
-   * </ul>
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean ExpectedResult.equals(Object)", "int ExpectedResult.hashCode()"})
-  public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
-    // Arrange
-    ExpectedResult expectedResult = new ExpectedResult();
-
-    // Act and Assert
-    assertEquals(expectedResult, expectedResult);
-    int expectedHashCodeResult = expectedResult.hashCode();
-    assertEquals(expectedHashCodeResult, expectedResult.hashCode());
-  }
-
-  /**
-   * Test {@link ExpectedResult#equals(Object)}.
-   * <ul>
-   *   <li>When other is different.</li>
-   *   <li>Then return not equal.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link ExpectedResult#equals(Object)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean ExpectedResult.equals(Object)", "int ExpectedResult.hashCode()"})
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
-    // Arrange
-    ExpectedResult expectedResult = new ExpectedResult(new HashMap<>());
-
-    // Act and Assert
-    assertNotEquals(expectedResult, new ExpectedResult());
-  }
-
-  /**
-   * Test {@link ExpectedResult#equals(Object)}.
-   * <ul>
-   *   <li>When other is {@code null}.</li>
-   *   <li>Then return not equal.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link ExpectedResult#equals(Object)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean ExpectedResult.equals(Object)", "int ExpectedResult.hashCode()"})
-  public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
-    // Arrange, Act and Assert
-    assertNotEquals(new ExpectedResult(), null);
-  }
-
-  /**
-   * Test {@link ExpectedResult#equals(Object)}.
-   * <ul>
-   *   <li>When other is wrong type.</li>
-   *   <li>Then return not equal.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link ExpectedResult#equals(Object)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean ExpectedResult.equals(Object)", "int ExpectedResult.hashCode()"})
-  public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
-    // Arrange, Act and Assert
-    assertNotEquals(new ExpectedResult(), "Different type to ExpectedResult");
   }
 }

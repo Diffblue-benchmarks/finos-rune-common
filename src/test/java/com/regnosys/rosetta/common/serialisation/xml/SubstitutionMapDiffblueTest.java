@@ -28,8 +28,6 @@ import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.type.CollectionLikeType;
 import com.fasterxml.jackson.databind.type.PlaceholderForType;
@@ -37,23 +35,207 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.BiFunction;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
 import org.mockito.Mockito;
 
 public class SubstitutionMapDiffblueTest {
   /**
-   * Test {@link SubstitutionMap#SubstitutionMap(Map)}.
-   * <ul>
-   *   <li>Given empty string.</li>
-   * </ul>
-   * <p>
+   * Method under test: {@link SubstitutionMap#getSubstitutedName(Object)}
+   */
+  @Test
+  public void testGetSubstitutedName() {
+    // Arrange, Act and Assert
+    assertNull((new SubstitutionMap(new HashMap<>())).getSubstitutedName("Object"));
+    assertNull((new SubstitutionMap(new HashMap<>())).getSubstitutedName(null));
+  }
+
+  /**
+   * Method under test: {@link SubstitutionMap#getSubstitutedName(Object)}
+   */
+  @Test
+  public void testGetSubstitutedName2() {
+    // Arrange
+    HashMap<JavaType, String> typeToNameMap = new HashMap<>();
+    typeToNameMap.put(new PlaceholderForType(1), "foo");
+
+    // Act and Assert
+    assertEquals("foo", (new SubstitutionMap(typeToNameMap)).getSubstitutedName("Object"));
+  }
+
+  /**
+   * Method under test: {@link SubstitutionMap#getSubstitutedName(Object)}
+   */
+  @Test
+  public void testGetSubstitutedName3() {
+    // Arrange
+    HashMap<JavaType, String> typeToNameMap = new HashMap<>();
+    typeToNameMap.computeIfPresent(new PlaceholderForType(1), mock(BiFunction.class));
+    typeToNameMap.put(new PlaceholderForType(1), "foo");
+
+    // Act and Assert
+    assertEquals("foo", (new SubstitutionMap(typeToNameMap)).getSubstitutedName("Object"));
+  }
+
+  /**
+   * Method under test: {@link SubstitutionMap#getSubstitutedName(Object)}
+   */
+  @Test
+  public void testGetSubstitutedName4() {
+    // Arrange
+    CollectionLikeType collectionLikeType = mock(CollectionLikeType.class);
+    when(collectionLikeType.isTypeOrSuperTypeOf(Mockito.<Class<Object>>any())).thenReturn(true);
+
+    HashMap<JavaType, String> typeToNameMap = new HashMap<>();
+    typeToNameMap.put(collectionLikeType, "foo");
+
+    // Act
+    String actualSubstitutedName = (new SubstitutionMap(typeToNameMap)).getSubstitutedName("Object");
+
+    // Assert
+    verify(collectionLikeType).isTypeOrSuperTypeOf(isA(Class.class));
+    assertEquals("foo", actualSubstitutedName);
+  }
+
+  /**
+   * Method under test: {@link SubstitutionMap#getSubstitutedName(Object)}
+   */
+  @Test
+  public void testGetSubstitutedName5() {
+    // Arrange
+    CollectionLikeType collectionLikeType = mock(CollectionLikeType.class);
+    when(collectionLikeType.isTypeOrSuperTypeOf(Mockito.<Class<Object>>any())).thenReturn(false);
+
+    HashMap<JavaType, String> typeToNameMap = new HashMap<>();
+    typeToNameMap.put(collectionLikeType, "foo");
+
+    // Act
+    String actualSubstitutedName = (new SubstitutionMap(typeToNameMap)).getSubstitutedName("Object");
+
+    // Assert
+    verify(collectionLikeType).isTypeOrSuperTypeOf(isA(Class.class));
+    assertNull(actualSubstitutedName);
+  }
+
+  /**
+   * Method under test: {@link SubstitutionMap#getTypes()}
+   */
+  @Test
+  public void testGetTypes() {
+    // Arrange and Act
+    Collection<JavaType> actualTypes = (new SubstitutionMap(new HashMap<>())).getTypes();
+
+    // Assert
+    assertTrue(actualTypes instanceof Set);
+    assertTrue(actualTypes.isEmpty());
+  }
+
+  /**
+   * Method under test: {@link SubstitutionMap#getTypes()}
+   */
+  @Test
+  public void testGetTypes2() {
+    // Arrange
+    HashMap<JavaType, String> typeToNameMap = new HashMap<>();
+    typeToNameMap.computeIfPresent(new PlaceholderForType(1), mock(BiFunction.class));
+
+    // Act
+    Collection<JavaType> actualTypes = (new SubstitutionMap(typeToNameMap)).getTypes();
+
+    // Assert
+    assertTrue(actualTypes instanceof Set);
+    assertTrue(actualTypes.isEmpty());
+  }
+
+  /**
+   * Method under test: {@link SubstitutionMap#getName(JavaType)}
+   */
+  @Test
+  public void testGetName() {
+    // Arrange
+    SubstitutionMap substitutionMap = new SubstitutionMap(new HashMap<>());
+
+    // Act and Assert
+    assertNull(substitutionMap.getName(new PlaceholderForType(1)));
+  }
+
+  /**
+   * Method under test: {@link SubstitutionMap#getName(JavaType)}
+   */
+  @Test
+  public void testGetName2() {
+    // Arrange
+    HashMap<JavaType, String> typeToNameMap = new HashMap<>();
+    typeToNameMap.computeIfPresent(new PlaceholderForType(1), mock(BiFunction.class));
+    SubstitutionMap substitutionMap = new SubstitutionMap(typeToNameMap);
+
+    // Act and Assert
+    assertNull(substitutionMap.getName(new PlaceholderForType(1)));
+  }
+
+  /**
    * Method under test: {@link SubstitutionMap#SubstitutionMap(Map)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void SubstitutionMap.<init>(Map)"})
-  public void testNewSubstitutionMap_givenEmptyString() {
+  public void testNewSubstitutionMap() {
+    // Arrange, Act and Assert
+    Collection<JavaType> types = (new SubstitutionMap(new HashMap<>())).getTypes();
+    assertTrue(types instanceof Set);
+    assertTrue(types.isEmpty());
+  }
+
+  /**
+   * Method under test: {@link SubstitutionMap#SubstitutionMap(Map)}
+   */
+  @Test
+  public void testNewSubstitutionMap2() {
+    // Arrange
+    HashMap<JavaType, String> typeToNameMap = new HashMap<>();
+    typeToNameMap.put(new PlaceholderForType(1), "foo");
+
+    // Act and Assert
+    Collection<JavaType> types = (new SubstitutionMap(typeToNameMap)).getTypes();
+    assertEquals(1, types.size());
+    assertTrue(types instanceof Set);
+  }
+
+  /**
+   * Method under test: {@link SubstitutionMap#SubstitutionMap(Map)}
+   */
+  @Test
+  public void testNewSubstitutionMap3() {
+    // Arrange
+    HashMap<JavaType, String> typeToNameMap = new HashMap<>();
+    typeToNameMap.put(new PlaceholderForType(1), "42");
+    typeToNameMap.put(new PlaceholderForType(1), "foo");
+
+    // Act and Assert
+    Collection<JavaType> types = (new SubstitutionMap(typeToNameMap)).getTypes();
+    assertEquals(2, types.size());
+    assertTrue(types instanceof Set);
+  }
+
+  /**
+   * Method under test: {@link SubstitutionMap#SubstitutionMap(Map)}
+   */
+  @Test
+  public void testNewSubstitutionMap4() {
+    // Arrange
+    HashMap<JavaType, String> typeToNameMap = new HashMap<>();
+    typeToNameMap.computeIfPresent(new PlaceholderForType(1), mock(BiFunction.class));
+    typeToNameMap.put(new PlaceholderForType(1), "foo");
+
+    // Act and Assert
+    Collection<JavaType> types = (new SubstitutionMap(typeToNameMap)).getTypes();
+    assertEquals(1, types.size());
+    assertTrue(types instanceof Set);
+  }
+
+  /**
+   * Method under test: {@link SubstitutionMap#SubstitutionMap(Map)}
+   */
+  @Test
+  public void testNewSubstitutionMap5() {
     // Arrange
     HashMap<JavaType, String> typeToNameMap = new HashMap<>();
     typeToNameMap.put(new PlaceholderForType(1), "");
@@ -67,18 +249,10 @@ public class SubstitutionMapDiffblueTest {
   }
 
   /**
-   * Test {@link SubstitutionMap#SubstitutionMap(Map)}.
-   * <ul>
-   *   <li>Given {@code Object}.</li>
-   *   <li>Then return Types size is two.</li>
-   * </ul>
-   * <p>
    * Method under test: {@link SubstitutionMap#SubstitutionMap(Map)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void SubstitutionMap.<init>(Map)"})
-  public void testNewSubstitutionMap_givenJavaLangObject_thenReturnTypesSizeIsTwo() {
+  public void testNewSubstitutionMap6() {
     // Arrange
     CollectionLikeType collectionLikeType = mock(CollectionLikeType.class);
     Class<Object> forNameResult = Object.class;
@@ -103,18 +277,62 @@ public class SubstitutionMapDiffblueTest {
   }
 
   /**
-   * Test {@link SubstitutionMap#SubstitutionMap(Map)}.
-   * <ul>
-   *   <li>Given {@code String}.</li>
-   *   <li>Then return Types size is two.</li>
-   * </ul>
-   * <p>
    * Method under test: {@link SubstitutionMap#SubstitutionMap(Map)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void SubstitutionMap.<init>(Map)"})
-  public void testNewSubstitutionMap_givenJavaLangString_thenReturnTypesSizeIsTwo() {
+  public void testNewSubstitutionMap7() {
+    // Arrange
+    HashMap<JavaType, String> typeToNameMap = new HashMap<>();
+    Class<JavaType> forNameResult = JavaType.class;
+    CollectionLikeType collectionLikeType = mock(CollectionLikeType.class);
+    Mockito.<Class<?>>when(collectionLikeType.getRawClass()).thenReturn(forNameResult);
+    typeToNameMap.put(collectionLikeType, "42");
+    Class<Object> forNameResult2 = Object.class;
+    CollectionLikeType collectionLikeType2 = mock(CollectionLikeType.class);
+    Mockito.<Class<?>>when(collectionLikeType2.getRawClass()).thenReturn(forNameResult2);
+    typeToNameMap.put(collectionLikeType2, "foo");
+
+    // Act and Assert
+    Collection<JavaType> types = (new SubstitutionMap(typeToNameMap)).getTypes();
+    verify(collectionLikeType, atLeast(1)).getRawClass();
+    verify(collectionLikeType2, atLeast(1)).getRawClass();
+    assertEquals(2, types.size());
+    assertTrue(types instanceof Set);
+  }
+
+  /**
+   * Method under test: {@link SubstitutionMap#SubstitutionMap(Map)}
+   */
+  @Test
+  public void testNewSubstitutionMap8() {
+    // Arrange
+    CollectionLikeType collectionLikeType = mock(CollectionLikeType.class);
+    Class<Object> forNameResult = Object.class;
+    Mockito.<Class<?>>when(collectionLikeType.getRawClass()).thenReturn(forNameResult);
+    CollectionLikeType collectionLikeType2 = mock(CollectionLikeType.class);
+    Class<String> forNameResult2 = String.class;
+    Mockito.<Class<?>>when(collectionLikeType2.getRawClass()).thenReturn(forNameResult2);
+
+    HashMap<JavaType, String> typeToNameMap = new HashMap<>();
+    typeToNameMap.put(collectionLikeType2, "42");
+    typeToNameMap.put(collectionLikeType, "foo");
+
+    // Act
+    SubstitutionMap actualSubstitutionMap = new SubstitutionMap(typeToNameMap);
+
+    // Assert
+    verify(collectionLikeType2, atLeast(1)).getRawClass();
+    verify(collectionLikeType, atLeast(1)).getRawClass();
+    Collection<JavaType> types = actualSubstitutionMap.getTypes();
+    assertEquals(2, types.size());
+    assertTrue(types instanceof Set);
+  }
+
+  /**
+   * Method under test: {@link SubstitutionMap#SubstitutionMap(Map)}
+   */
+  @Test
+  public void testNewSubstitutionMap9() {
     // Arrange
     CollectionLikeType collectionLikeType = mock(CollectionLikeType.class);
     Class<String> forNameResult = String.class;
@@ -136,210 +354,5 @@ public class SubstitutionMapDiffblueTest {
     Collection<JavaType> types = actualSubstitutionMap.getTypes();
     assertEquals(2, types.size());
     assertTrue(types instanceof Set);
-  }
-
-  /**
-   * Test {@link SubstitutionMap#SubstitutionMap(Map)}.
-   * <ul>
-   *   <li>Then return Types size is one.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SubstitutionMap#SubstitutionMap(Map)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void SubstitutionMap.<init>(Map)"})
-  public void testNewSubstitutionMap_thenReturnTypesSizeIsOne() {
-    // Arrange
-    HashMap<JavaType, String> typeToNameMap = new HashMap<>();
-    typeToNameMap.put(new PlaceholderForType(1), "foo");
-
-    // Act and Assert
-    Collection<JavaType> types = (new SubstitutionMap(typeToNameMap)).getTypes();
-    assertEquals(1, types.size());
-    assertTrue(types instanceof Set);
-  }
-
-  /**
-   * Test {@link SubstitutionMap#SubstitutionMap(Map)}.
-   * <ul>
-   *   <li>When {@link HashMap#HashMap()} {@link PlaceholderForType#PlaceholderForType(int)} with ordinal is one is {@code 42}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SubstitutionMap#SubstitutionMap(Map)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void SubstitutionMap.<init>(Map)"})
-  public void testNewSubstitutionMap_whenHashMapPlaceholderForTypeWithOrdinalIsOneIs42() {
-    // Arrange
-    HashMap<JavaType, String> typeToNameMap = new HashMap<>();
-    typeToNameMap.put(new PlaceholderForType(1), "42");
-    typeToNameMap.put(new PlaceholderForType(1), "foo");
-
-    // Act and Assert
-    Collection<JavaType> types = (new SubstitutionMap(typeToNameMap)).getTypes();
-    assertEquals(2, types.size());
-    assertTrue(types instanceof Set);
-  }
-
-  /**
-   * Test {@link SubstitutionMap#SubstitutionMap(Map)}.
-   * <ul>
-   *   <li>When {@link HashMap#HashMap()}.</li>
-   *   <li>Then return Types Empty.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SubstitutionMap#SubstitutionMap(Map)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void SubstitutionMap.<init>(Map)"})
-  public void testNewSubstitutionMap_whenHashMap_thenReturnTypesEmpty() {
-    // Arrange, Act and Assert
-    Collection<JavaType> types = (new SubstitutionMap(new HashMap<>())).getTypes();
-    assertTrue(types instanceof Set);
-    assertTrue(types.isEmpty());
-  }
-
-  /**
-   * Test {@link SubstitutionMap#getSubstitutedName(Object)}.
-   * <ul>
-   *   <li>Given {@link CollectionLikeType} {@link JavaType#isTypeOrSuperTypeOf(Class)} return {@code false}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SubstitutionMap#getSubstitutedName(Object)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"String SubstitutionMap.getSubstitutedName(Object)"})
-  public void testGetSubstitutedName_givenCollectionLikeTypeIsTypeOrSuperTypeOfReturnFalse() {
-    // Arrange
-    CollectionLikeType collectionLikeType = mock(CollectionLikeType.class);
-    when(collectionLikeType.isTypeOrSuperTypeOf(Mockito.<Class<Object>>any())).thenReturn(false);
-
-    HashMap<JavaType, String> typeToNameMap = new HashMap<>();
-    typeToNameMap.put(collectionLikeType, "foo");
-
-    // Act
-    String actualSubstitutedName = (new SubstitutionMap(typeToNameMap)).getSubstitutedName("Object");
-
-    // Assert
-    verify(collectionLikeType).isTypeOrSuperTypeOf(isA(Class.class));
-    assertNull(actualSubstitutedName);
-  }
-
-  /**
-   * Test {@link SubstitutionMap#getSubstitutedName(Object)}.
-   * <ul>
-   *   <li>Given {@link CollectionLikeType} {@link JavaType#isTypeOrSuperTypeOf(Class)} return {@code true}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SubstitutionMap#getSubstitutedName(Object)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"String SubstitutionMap.getSubstitutedName(Object)"})
-  public void testGetSubstitutedName_givenCollectionLikeTypeIsTypeOrSuperTypeOfReturnTrue() {
-    // Arrange
-    CollectionLikeType collectionLikeType = mock(CollectionLikeType.class);
-    when(collectionLikeType.isTypeOrSuperTypeOf(Mockito.<Class<Object>>any())).thenReturn(true);
-
-    HashMap<JavaType, String> typeToNameMap = new HashMap<>();
-    typeToNameMap.put(collectionLikeType, "foo");
-
-    // Act
-    String actualSubstitutedName = (new SubstitutionMap(typeToNameMap)).getSubstitutedName("Object");
-
-    // Assert
-    verify(collectionLikeType).isTypeOrSuperTypeOf(isA(Class.class));
-    assertEquals("foo", actualSubstitutedName);
-  }
-
-  /**
-   * Test {@link SubstitutionMap#getSubstitutedName(Object)}.
-   * <ul>
-   *   <li>Given {@link HashMap#HashMap()} {@link PlaceholderForType#PlaceholderForType(int)} with ordinal is one is {@code foo}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SubstitutionMap#getSubstitutedName(Object)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"String SubstitutionMap.getSubstitutedName(Object)"})
-  public void testGetSubstitutedName_givenHashMapPlaceholderForTypeWithOrdinalIsOneIsFoo() {
-    // Arrange
-    HashMap<JavaType, String> typeToNameMap = new HashMap<>();
-    typeToNameMap.put(new PlaceholderForType(1), "foo");
-
-    // Act and Assert
-    assertEquals("foo", (new SubstitutionMap(typeToNameMap)).getSubstitutedName("Object"));
-  }
-
-  /**
-   * Test {@link SubstitutionMap#getSubstitutedName(Object)}.
-   * <ul>
-   *   <li>When {@code null}.</li>
-   *   <li>Then return {@code null}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SubstitutionMap#getSubstitutedName(Object)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"String SubstitutionMap.getSubstitutedName(Object)"})
-  public void testGetSubstitutedName_whenNull_thenReturnNull() {
-    // Arrange, Act and Assert
-    assertNull((new SubstitutionMap(new HashMap<>())).getSubstitutedName(null));
-  }
-
-  /**
-   * Test {@link SubstitutionMap#getSubstitutedName(Object)}.
-   * <ul>
-   *   <li>When {@code Object}.</li>
-   *   <li>Then return {@code null}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SubstitutionMap#getSubstitutedName(Object)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"String SubstitutionMap.getSubstitutedName(Object)"})
-  public void testGetSubstitutedName_whenObject_thenReturnNull() {
-    // Arrange, Act and Assert
-    assertNull((new SubstitutionMap(new HashMap<>())).getSubstitutedName("Object"));
-  }
-
-  /**
-   * Test {@link SubstitutionMap#getTypes()}.
-   * <p>
-   * Method under test: {@link SubstitutionMap#getTypes()}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"Collection SubstitutionMap.getTypes()"})
-  public void testGetTypes() {
-    // Arrange and Act
-    Collection<JavaType> actualTypes = (new SubstitutionMap(new HashMap<>())).getTypes();
-
-    // Assert
-    assertTrue(actualTypes instanceof Set);
-    assertTrue(actualTypes.isEmpty());
-  }
-
-  /**
-   * Test {@link SubstitutionMap#getName(JavaType)}.
-   * <p>
-   * Method under test: {@link SubstitutionMap#getName(JavaType)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"String SubstitutionMap.getName(JavaType)"})
-  public void testGetName() {
-    // Arrange
-    SubstitutionMap substitutionMap = new SubstitutionMap(new HashMap<>());
-
-    // Act and Assert
-    assertNull(substitutionMap.getName(new PlaceholderForType(1)));
   }
 }

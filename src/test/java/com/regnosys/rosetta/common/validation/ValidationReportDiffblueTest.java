@@ -27,194 +27,21 @@ import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
 import com.regnosys.rosetta.common.merger.BarBuilder;
 import com.rosetta.model.lib.RosettaModelObject;
 import com.rosetta.model.lib.path.RosettaPath;
 import com.rosetta.model.lib.validation.ValidationResult;
-import com.rosetta.model.lib.validation.ValidationResult.ModelValidationResult;
-import com.rosetta.model.lib.validation.ValidationResult.ValidationType;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
 
 public class ValidationReportDiffblueTest {
   /**
-   * Test {@link ValidationReport#ValidationReport(RosettaModelObject, List)}.
-   * <ul>
-   *   <li>Given {@link Optional} with {@code foo}.</li>
-   *   <li>Then return not success.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link ValidationReport#ValidationReport(RosettaModelObject, List)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void ValidationReport.<init>(RosettaModelObject, List)"})
-  public void testNewValidationReport_givenOptionalWithFoo_thenReturnNotSuccess() {
-    // Arrange
-    BarBuilder resultObject = new BarBuilder();
-
-    ArrayList<ValidationResult<?>> validationResults = new ArrayList<>();
-    RosettaPath path = mock(RosettaPath.class);
-    Optional<String> failureReason = Optional.of("foo");
-    validationResults.add(new ModelValidationResult<>("Name", ValidationType.DATA_RULE, "Model Object Name", path,
-        "Definition", failureReason));
-
-    // Act
-    ValidationReport actualValidationReport = new ValidationReport(resultObject, validationResults);
-
-    // Assert
-    assertFalse(actualValidationReport.success());
-    assertSame(validationResults, actualValidationReport.getValidationResults());
-  }
-
-  /**
-   * Test {@link ValidationReport#ValidationReport(RosettaModelObject, List)}.
-   * <ul>
-   *   <li>Then return ValidationResults size is two.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link ValidationReport#ValidationReport(RosettaModelObject, List)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void ValidationReport.<init>(RosettaModelObject, List)"})
-  public void testNewValidationReport_thenReturnValidationResultsSizeIsTwo() {
-    // Arrange
-    BarBuilder resultObject = new BarBuilder();
-
-    ArrayList<ValidationResult<?>> validationResults = new ArrayList<>();
-    RosettaPath path = mock(RosettaPath.class);
-    Optional<String> failureReason = Optional.of("foo");
-    validationResults.add(new ModelValidationResult<>("Name", ValidationType.DATA_RULE, "Model Object Name", path,
-        "Definition", failureReason));
-    RosettaPath path2 = mock(RosettaPath.class);
-    Optional<String> failureReason2 = Optional.of("foo");
-    ModelValidationResult<?> modelValidationResult = new ModelValidationResult<>("Name", ValidationType.DATA_RULE,
-        "Model Object Name", path2, "Definition", failureReason2);
-
-    validationResults.add(modelValidationResult);
-
-    // Act and Assert
-    List<ValidationResult<?>> validationResults2 = (new ValidationReport(resultObject, validationResults))
-        .getValidationResults();
-    assertEquals(2, validationResults2.size());
-    assertSame(modelValidationResult, validationResults2.get(1));
-  }
-
-  /**
-   * Test {@link ValidationReport#ValidationReport(RosettaModelObject, List)}.
-   * <ul>
-   *   <li>When {@link ArrayList#ArrayList()}.</li>
-   *   <li>Then return success.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link ValidationReport#ValidationReport(RosettaModelObject, List)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void ValidationReport.<init>(RosettaModelObject, List)"})
-  public void testNewValidationReport_whenArrayList_thenReturnSuccess() {
-    // Arrange
-    BarBuilder resultObject = new BarBuilder();
-
-    // Act
-    ValidationReport actualValidationReport = new ValidationReport(resultObject, new ArrayList<>());
-
-    // Assert
-    assertTrue(actualValidationReport.success());
-    assertTrue(actualValidationReport.getValidationResults().isEmpty());
-    assertSame(resultObject, actualValidationReport.getResultObject());
-  }
-
-  /**
-   * Test {@link ValidationReport#success()}.
-   * <p>
    * Method under test: {@link ValidationReport#success()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean ValidationReport.success()"})
   public void testSuccess() {
-    // Arrange
-    ArrayList<ValidationResult<?>> validationResults = new ArrayList<>();
-    RosettaPath path = mock(RosettaPath.class);
-    Optional<String> failureReason = Optional.empty();
-    validationResults.add(new ModelValidationResult<>("Name", ValidationType.DATA_RULE, "Model Object Name", path,
-        "Definition", failureReason));
-
-    // Act and Assert
-    assertTrue((new ValidationReport(new BarBuilder(), validationResults)).success());
-  }
-
-  /**
-   * Test {@link ValidationReport#success()}.
-   * <ul>
-   *   <li>Given {@link Optional} with {@code foo}.</li>
-   *   <li>Then return {@code false}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link ValidationReport#success()}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean ValidationReport.success()"})
-  public void testSuccess_givenOptionalWithFoo_thenReturnFalse() {
-    // Arrange
-    ArrayList<ValidationResult<?>> validationResults = new ArrayList<>();
-    RosettaPath path = mock(RosettaPath.class);
-    Optional<String> failureReason = Optional.of("foo");
-    validationResults.add(new ModelValidationResult<>("Name", ValidationType.DATA_RULE, "Model Object Name", path,
-        "Definition", failureReason));
-
-    // Act and Assert
-    assertFalse((new ValidationReport(new BarBuilder(), validationResults)).success());
-  }
-
-  /**
-   * Test {@link ValidationReport#success()}.
-   * <ul>
-   *   <li>Given {@link Optional} with {@code foo}.</li>
-   *   <li>Then return {@code false}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link ValidationReport#success()}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean ValidationReport.success()"})
-  public void testSuccess_givenOptionalWithFoo_thenReturnFalse2() {
-    // Arrange
-    ArrayList<ValidationResult<?>> validationResults = new ArrayList<>();
-    RosettaPath path = mock(RosettaPath.class);
-    Optional<String> failureReason = Optional.of("foo");
-    validationResults.add(new ModelValidationResult<>("Name", ValidationType.DATA_RULE, "Model Object Name", path,
-        "Definition", failureReason));
-    RosettaPath path2 = mock(RosettaPath.class);
-    Optional<String> failureReason2 = Optional.of("foo");
-    validationResults.add(new ModelValidationResult<>("Name", ValidationType.DATA_RULE, "Model Object Name", path2,
-        "Definition", failureReason2));
-
-    // Act and Assert
-    assertFalse((new ValidationReport(new BarBuilder(), validationResults)).success());
-  }
-
-  /**
-   * Test {@link ValidationReport#success()}.
-   * <ul>
-   *   <li>Then return {@code true}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link ValidationReport#success()}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean ValidationReport.success()"})
-  public void testSuccess_thenReturnTrue() {
     // Arrange
     BarBuilder resultObject = new BarBuilder();
 
@@ -223,96 +50,62 @@ public class ValidationReportDiffblueTest {
   }
 
   /**
-   * Test {@link ValidationReport#validationFailures()}.
-   * <p>
-   * Method under test: {@link ValidationReport#validationFailures()}
+   * Method under test: {@link ValidationReport#success()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"List ValidationReport.validationFailures()"})
-  public void testValidationFailures() {
+  public void testSuccess2() {
+    // Arrange
+    ArrayList<ValidationResult<?>> validationResults = new ArrayList<>();
+    RosettaPath path = mock(RosettaPath.class);
+    Optional<String> failureReason = Optional.of("foo");
+    validationResults.add(new ValidationResult.ModelValidationResult<>("Name",
+        ValidationResult.ValidationType.DATA_RULE, "Model Object Name", path, "Definition", failureReason));
+
+    // Act and Assert
+    assertFalse((new ValidationReport(new BarBuilder(), validationResults)).success());
+  }
+
+  /**
+   * Method under test: {@link ValidationReport#success()}
+   */
+  @Test
+  public void testSuccess3() {
+    // Arrange
+    ArrayList<ValidationResult<?>> validationResults = new ArrayList<>();
+    RosettaPath path = mock(RosettaPath.class);
+    Optional<String> failureReason = Optional.of("foo");
+    validationResults.add(new ValidationResult.ModelValidationResult<>("Name",
+        ValidationResult.ValidationType.DATA_RULE, "Model Object Name", path, "Definition", failureReason));
+    RosettaPath path2 = mock(RosettaPath.class);
+    Optional<String> failureReason2 = Optional.of("foo");
+    validationResults.add(new ValidationResult.ModelValidationResult<>("Name",
+        ValidationResult.ValidationType.DATA_RULE, "Model Object Name", path2, "Definition", failureReason2));
+
+    // Act and Assert
+    assertFalse((new ValidationReport(new BarBuilder(), validationResults)).success());
+  }
+
+  /**
+   * Method under test: {@link ValidationReport#success()}
+   */
+  @Test
+  public void testSuccess4() {
     // Arrange
     ArrayList<ValidationResult<?>> validationResults = new ArrayList<>();
     RosettaPath path = mock(RosettaPath.class);
     Optional<String> failureReason = Optional.empty();
-    validationResults.add(new ModelValidationResult<>("Name", ValidationType.DATA_RULE, "Model Object Name", path,
-        "Definition", failureReason));
+    validationResults.add(new ValidationResult.ModelValidationResult<>("Name",
+        ValidationResult.ValidationType.DATA_RULE, "Model Object Name", path, "Definition", failureReason));
 
     // Act and Assert
-    assertTrue((new ValidationReport(new BarBuilder(), validationResults)).validationFailures().isEmpty());
+    assertTrue((new ValidationReport(new BarBuilder(), validationResults)).success());
   }
 
   /**
-   * Test {@link ValidationReport#validationFailures()}.
-   * <ul>
-   *   <li>Given {@link Optional} with {@code foo}.</li>
-   *   <li>Then return {@link ArrayList#ArrayList()}.</li>
-   * </ul>
-   * <p>
    * Method under test: {@link ValidationReport#validationFailures()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"List ValidationReport.validationFailures()"})
-  public void testValidationFailures_givenOptionalWithFoo_thenReturnArrayList() {
-    // Arrange
-    ArrayList<ValidationResult<?>> validationResults = new ArrayList<>();
-    RosettaPath path = mock(RosettaPath.class);
-    Optional<String> failureReason = Optional.of("foo");
-    validationResults.add(new ModelValidationResult<>("Name", ValidationType.DATA_RULE, "Model Object Name", path,
-        "Definition", failureReason));
-
-    // Act and Assert
-    assertEquals(validationResults, (new ValidationReport(new BarBuilder(), validationResults)).validationFailures());
-  }
-
-  /**
-   * Test {@link ValidationReport#validationFailures()}.
-   * <ul>
-   *   <li>Given {@link Optional} with {@code foo}.</li>
-   *   <li>Then return size is two.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link ValidationReport#validationFailures()}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"List ValidationReport.validationFailures()"})
-  public void testValidationFailures_givenOptionalWithFoo_thenReturnSizeIsTwo() {
-    // Arrange
-    ArrayList<ValidationResult<?>> validationResults = new ArrayList<>();
-    RosettaPath path = mock(RosettaPath.class);
-    Optional<String> failureReason = Optional.of("foo");
-    validationResults.add(new ModelValidationResult<>("Name", ValidationType.DATA_RULE, "Model Object Name", path,
-        "Definition", failureReason));
-    RosettaPath path2 = mock(RosettaPath.class);
-    Optional<String> failureReason2 = Optional.of("foo");
-    ModelValidationResult<?> modelValidationResult = new ModelValidationResult<>("Name", ValidationType.DATA_RULE,
-        "Model Object Name", path2, "Definition", failureReason2);
-
-    validationResults.add(modelValidationResult);
-
-    // Act
-    List<ValidationResult<?>> actualValidationFailuresResult = (new ValidationReport(new BarBuilder(),
-        validationResults)).validationFailures();
-
-    // Assert
-    assertEquals(2, actualValidationFailuresResult.size());
-    assertSame(modelValidationResult, actualValidationFailuresResult.get(1));
-  }
-
-  /**
-   * Test {@link ValidationReport#validationFailures()}.
-   * <ul>
-   *   <li>Then return Empty.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link ValidationReport#validationFailures()}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"List ValidationReport.validationFailures()"})
-  public void testValidationFailures_thenReturnEmpty() {
+  public void testValidationFailures() {
     // Arrange
     BarBuilder resultObject = new BarBuilder();
 
@@ -321,36 +114,101 @@ public class ValidationReportDiffblueTest {
   }
 
   /**
-   * Test {@link ValidationReport#results()}.
-   * <p>
-   * Method under test: {@link ValidationReport#results()}
+   * Method under test: {@link ValidationReport#validationFailures()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"List ValidationReport.results()"})
-  public void testResults() {
+  public void testValidationFailures2() {
     // Arrange
-    BarBuilder resultObject = new BarBuilder();
+    ArrayList<ValidationResult<?>> validationResults = new ArrayList<>();
+    RosettaPath path = mock(RosettaPath.class);
+    Optional<String> failureReason = Optional.of("foo");
+    validationResults.add(new ValidationResult.ModelValidationResult<>("Name",
+        ValidationResult.ValidationType.DATA_RULE, "Model Object Name", path, "Definition", failureReason));
 
     // Act and Assert
-    assertTrue((new ValidationReport(resultObject, new ArrayList<>())).results().isEmpty());
+    assertEquals(validationResults, (new ValidationReport(new BarBuilder(), validationResults)).validationFailures());
   }
 
   /**
-   * Test {@link ValidationReport#logReport()}.
-   * <p>
+   * Method under test: {@link ValidationReport#validationFailures()}
+   */
+  @Test
+  public void testValidationFailures3() {
+    // Arrange
+    ArrayList<ValidationResult<?>> validationResults = new ArrayList<>();
+    RosettaPath path = mock(RosettaPath.class);
+    Optional<String> failureReason = Optional.of("foo");
+    validationResults.add(new ValidationResult.ModelValidationResult<>("Name",
+        ValidationResult.ValidationType.DATA_RULE, "Model Object Name", path, "Definition", failureReason));
+    RosettaPath path2 = mock(RosettaPath.class);
+    Optional<String> failureReason2 = Optional.of("foo");
+    validationResults.add(new ValidationResult.ModelValidationResult<>("Name",
+        ValidationResult.ValidationType.DATA_RULE, "Model Object Name", path2, "Definition", failureReason2));
+
+    // Act and Assert
+    assertEquals(validationResults, (new ValidationReport(new BarBuilder(), validationResults)).validationFailures());
+  }
+
+  /**
+   * Method under test: {@link ValidationReport#validationFailures()}
+   */
+  @Test
+  public void testValidationFailures4() {
+    // Arrange
+    ArrayList<ValidationResult<?>> validationResults = new ArrayList<>();
+    RosettaPath path = mock(RosettaPath.class);
+    Optional<String> failureReason = Optional.empty();
+    validationResults.add(new ValidationResult.ModelValidationResult<>("Name",
+        ValidationResult.ValidationType.DATA_RULE, "Model Object Name", path, "Definition", failureReason));
+
+    // Act and Assert
+    assertTrue((new ValidationReport(new BarBuilder(), validationResults)).validationFailures().isEmpty());
+  }
+
+  /**
+   * Method under test: {@link ValidationReport#results()}
+   */
+  @Test
+  public void testResults() {
+    // Arrange
+    BarBuilder resultObject = new BarBuilder();
+    ArrayList<ValidationResult<?>> validationResults = new ArrayList<>();
+
+    // Act
+    List<ValidationResult<?>> actualResultsResult = (new ValidationReport(resultObject, validationResults)).results();
+
+    // Assert
+    assertTrue(actualResultsResult.isEmpty());
+    assertSame(validationResults, actualResultsResult);
+  }
+
+  /**
+   * Method under test: {@link ValidationReport#results()}
+   */
+  @Test
+  public void testResults2() {
+    // Arrange
+    ArrayList<ValidationResult<?>> validationResults = new ArrayList<>();
+    RosettaPath path = mock(RosettaPath.class);
+    Optional<String> failureReason = Optional.of("foo");
+    validationResults.add(new ValidationResult.ModelValidationResult<>("Name",
+        ValidationResult.ValidationType.DATA_RULE, "Model Object Name", path, "Definition", failureReason));
+
+    // Act and Assert
+    assertSame(validationResults, (new ValidationReport(new BarBuilder(), validationResults)).results());
+  }
+
+  /**
    * Method under test: {@link ValidationReport#logReport()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void ValidationReport.logReport()"})
   public void testLogReport() {
     // Arrange
     RosettaPath path = mock(RosettaPath.class);
     when(path.buildPath()).thenReturn("Build Path");
-    Optional<String> failureReason = Optional.empty();
-    ModelValidationResult<?> modelValidationResult = new ModelValidationResult<>("Name", ValidationType.DATA_RULE,
-        "Model Object Name", path, "Definition", failureReason);
+    Optional<String> failureReason = Optional.of("foo");
+    ValidationResult.ModelValidationResult<?> modelValidationResult = new ValidationResult.ModelValidationResult<>(
+        "Name", ValidationResult.ValidationType.DATA_RULE, "Model Object Name", path, "Definition", failureReason);
 
     ArrayList<ValidationResult<?>> validationResults = new ArrayList<>();
     validationResults.add(modelValidationResult);
@@ -363,24 +221,16 @@ public class ValidationReportDiffblueTest {
   }
 
   /**
-   * Test {@link ValidationReport#logReport()}.
-   * <ul>
-   *   <li>Given {@link Optional} with {@code foo}.</li>
-   *   <li>Then calls {@link RosettaPath#buildPath()}.</li>
-   * </ul>
-   * <p>
    * Method under test: {@link ValidationReport#logReport()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void ValidationReport.logReport()"})
-  public void testLogReport_givenOptionalWithFoo_thenCallsBuildPath() {
+  public void testLogReport2() {
     // Arrange
     RosettaPath path = mock(RosettaPath.class);
     when(path.buildPath()).thenReturn("Build Path");
-    Optional<String> failureReason = Optional.of("foo");
-    ModelValidationResult<?> modelValidationResult = new ModelValidationResult<>("Name", ValidationType.DATA_RULE,
-        "Model Object Name", path, "Definition", failureReason);
+    Optional<String> failureReason = Optional.empty();
+    ValidationResult.ModelValidationResult<?> modelValidationResult = new ValidationResult.ModelValidationResult<>(
+        "Name", ValidationResult.ValidationType.DATA_RULE, "Model Object Name", path, "Definition", failureReason);
 
     ArrayList<ValidationResult<?>> validationResults = new ArrayList<>();
     validationResults.add(modelValidationResult);
@@ -393,8 +243,6 @@ public class ValidationReportDiffblueTest {
   }
 
   /**
-   * Test getters and setters.
-   * <p>
    * Methods under test:
    * <ul>
    *   <li>{@link ValidationReport#getResultObject()}
@@ -402,9 +250,6 @@ public class ValidationReportDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"RosettaModelObject ValidationReport.getResultObject()",
-      "List ValidationReport.getValidationResults()"})
   public void testGettersAndSetters() {
     // Arrange
     BarBuilder resultObject = new BarBuilder();
@@ -419,5 +264,78 @@ public class ValidationReportDiffblueTest {
     assertTrue(actualValidationResults.isEmpty());
     assertSame(resultObject, actualResultObject);
     assertSame(validationResults, actualValidationResults);
+  }
+
+  /**
+   * Method under test:
+   * {@link ValidationReport#ValidationReport(RosettaModelObject, List)}
+   */
+  @Test
+  public void testNewValidationReport() {
+    // Arrange
+    BarBuilder resultObject = new BarBuilder();
+    ArrayList<ValidationResult<?>> validationResults = new ArrayList<>();
+
+    // Act
+    ValidationReport actualValidationReport = new ValidationReport(resultObject, validationResults);
+
+    // Assert
+    assertTrue(actualValidationReport.success());
+    List<ValidationResult<?>> validationResults2 = actualValidationReport.getValidationResults();
+    assertTrue(validationResults2.isEmpty());
+    assertSame(resultObject, actualValidationReport.getResultObject());
+    assertSame(validationResults, validationResults2);
+  }
+
+  /**
+   * Method under test:
+   * {@link ValidationReport#ValidationReport(RosettaModelObject, List)}
+   */
+  @Test
+  public void testNewValidationReport2() {
+    // Arrange
+    BarBuilder resultObject = new BarBuilder();
+
+    ArrayList<ValidationResult<?>> validationResults = new ArrayList<>();
+    RosettaPath path = mock(RosettaPath.class);
+    Optional<String> failureReason = Optional.of("foo");
+    validationResults.add(new ValidationResult.ModelValidationResult<>("Name",
+        ValidationResult.ValidationType.DATA_RULE, "Model Object Name", path, "Definition", failureReason));
+
+    // Act
+    ValidationReport actualValidationReport = new ValidationReport(resultObject, validationResults);
+
+    // Assert
+    assertFalse(actualValidationReport.success());
+    assertSame(resultObject, actualValidationReport.getResultObject());
+    assertSame(validationResults, actualValidationReport.getValidationResults());
+  }
+
+  /**
+   * Method under test:
+   * {@link ValidationReport#ValidationReport(RosettaModelObject, List)}
+   */
+  @Test
+  public void testNewValidationReport3() {
+    // Arrange
+    BarBuilder resultObject = new BarBuilder();
+
+    ArrayList<ValidationResult<?>> validationResults = new ArrayList<>();
+    RosettaPath path = mock(RosettaPath.class);
+    Optional<String> failureReason = Optional.of("foo");
+    validationResults.add(new ValidationResult.ModelValidationResult<>("Name",
+        ValidationResult.ValidationType.DATA_RULE, "Model Object Name", path, "Definition", failureReason));
+    RosettaPath path2 = mock(RosettaPath.class);
+    Optional<String> failureReason2 = Optional.of("foo");
+    validationResults.add(new ValidationResult.ModelValidationResult<>("Name",
+        ValidationResult.ValidationType.DATA_RULE, "Model Object Name", path2, "Definition", failureReason2));
+
+    // Act
+    ValidationReport actualValidationReport = new ValidationReport(resultObject, validationResults);
+
+    // Assert
+    assertFalse(actualValidationReport.success());
+    assertSame(resultObject, actualValidationReport.getResultObject());
+    assertSame(validationResults, actualValidationReport.getValidationResults());
   }
 }

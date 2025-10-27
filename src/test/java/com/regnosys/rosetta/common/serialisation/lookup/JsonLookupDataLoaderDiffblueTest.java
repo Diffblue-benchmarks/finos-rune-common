@@ -21,36 +21,46 @@ package com.regnosys.rosetta.common.serialisation.lookup;
  */
 
 import static org.junit.Assert.assertEquals;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
-import com.fasterxml.jackson.databind.json.JsonMapper;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLClassLoader;
+import java.net.URLStreamHandlerFactory;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import javax.management.loading.MLet;
+import org.eclipse.core.internal.boot.PlatformURLHandler;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
+import org.mockito.Mockito;
 
 public class JsonLookupDataLoaderDiffblueTest {
   /**
-   * Test {@link JsonLookupDataLoader#loadInputFiles(LookupDataSet)} with {@code LookupDataSet}.
-   * <p>
    * Method under test: {@link JsonLookupDataLoader#loadInputFiles(LookupDataSet)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"LookupDataSet JsonLookupDataLoader.loadInputFiles(LookupDataSet)"})
-  public void testLoadInputFilesWithLookupDataSet() throws MalformedURLException {
+  public void testLoadInputFiles() throws MalformedURLException {
     // Arrange
-    MLet classLoader = new MLet();
-    JsonMapper rosettaObjectMapper = JsonMapper.builder().findAndAddModules().build();
+    URLStreamHandlerFactory urlStreamHandlerFactory = mock(URLStreamHandlerFactory.class);
+    when(urlStreamHandlerFactory.createURLStreamHandler(Mockito.<String>any())).thenReturn(new PlatformURLHandler());
+    URLClassLoader classLoader = new URLClassLoader(
+        new URL[]{Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toUri().toURL()}, new MLet(),
+        urlStreamHandlerFactory);
+
+    ObjectMapper rosettaObjectMapper = new ObjectMapper();
     URL descriptorPath = Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toUri().toURL();
     JsonLookupDataLoader jsonLookupDataLoader = new JsonLookupDataLoader(classLoader, rosettaObjectMapper,
         descriptorPath, new ArrayList<>());
     LookupDataSet descriptor = new LookupDataSet("Name", "Key Type", "42", new ArrayList<>());
 
-    // Act and Assert
-    assertEquals(descriptor, jsonLookupDataLoader.loadInputFiles(descriptor));
+    // Act
+    LookupDataSet actualLoadInputFilesResult = jsonLookupDataLoader.loadInputFiles(descriptor);
+
+    // Assert
+    verify(urlStreamHandlerFactory).createURLStreamHandler(eq("jar"));
+    assertEquals(descriptor, actualLoadInputFilesResult);
   }
 }

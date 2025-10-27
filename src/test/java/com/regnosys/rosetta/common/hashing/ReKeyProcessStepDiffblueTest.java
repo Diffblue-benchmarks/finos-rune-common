@@ -23,19 +23,23 @@ package com.regnosys.rosetta.common.hashing;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
 import static org.mockito.Mockito.mock;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
-import com.regnosys.rosetta.common.hashing.ReKeyProcessStep.ReKeyPostProcessReport;
 import com.regnosys.rosetta.common.merger.BarBuilder;
 import com.rosetta.model.lib.RosettaModelObjectBuilder;
+import com.rosetta.model.lib.process.Processor;
 import java.util.function.Supplier;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
 
 public class ReKeyProcessStepDiffblueTest {
   /**
-   * Test getters and setters.
-   * <p>
+   * Method under test: {@link ReKeyProcessStep#getPriority()}
+   */
+  @Test
+  public void testGetPriority() {
+    // Arrange, Act and Assert
+    assertEquals(2, (new ReKeyProcessStep(new GlobalKeyProcessStep(mock(Supplier.class)))).getPriority().intValue());
+  }
+
+  /**
    * Methods under test:
    * <ul>
    *   <li>{@link ReKeyProcessStep#ReKeyProcessStep(GlobalKeyProcessStep)}
@@ -43,9 +47,6 @@ public class ReKeyProcessStepDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void ReKeyProcessStep.<init>(GlobalKeyProcessStep)",
-      "java.lang.String ReKeyProcessStep.getName()"})
   public void testGettersAndSetters() {
     // Arrange, Act and Assert
     assertEquals("Re-key PostProcessor",
@@ -53,26 +54,10 @@ public class ReKeyProcessStepDiffblueTest {
   }
 
   /**
-   * Test {@link ReKeyProcessStep#getPriority()}.
-   * <p>
-   * Method under test: {@link ReKeyProcessStep#getPriority()}
+   * Method under test:
+   * {@link ReKeyProcessStep.ReKeyPostProcessReport#getResultObject()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"java.lang.Integer ReKeyProcessStep.getPriority()"})
-  public void testGetPriority() {
-    // Arrange, Act and Assert
-    assertEquals(2, (new ReKeyProcessStep(new GlobalKeyProcessStep(mock(Supplier.class)))).getPriority().intValue());
-  }
-
-  /**
-   * Test ReKeyPostProcessReport {@link ReKeyPostProcessReport#getResultObject()}.
-   * <p>
-   * Method under test: {@link ReKeyPostProcessReport#getResultObject()}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"RosettaModelObjectBuilder ReKeyPostProcessReport.getResultObject()"})
   public void testReKeyPostProcessReportGetResultObject() {
     // Arrange
     ReKeyProcessStep reKeyProcessStep = new ReKeyProcessStep(new GlobalKeyProcessStep(mock(Supplier.class)));
@@ -83,13 +68,10 @@ public class ReKeyProcessStepDiffblueTest {
   }
 
   /**
-   * Test ReKeyPostProcessReport {@link ReKeyPostProcessReport#ReKeyPostProcessReport(ReKeyProcessStep, RosettaModelObjectBuilder)}.
-   * <p>
-   * Method under test: {@link ReKeyPostProcessReport#ReKeyPostProcessReport(ReKeyProcessStep, RosettaModelObjectBuilder)}
+   * Method under test:
+   * {@link ReKeyProcessStep.ReKeyPostProcessReport#ReKeyPostProcessReport(ReKeyProcessStep, RosettaModelObjectBuilder)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void ReKeyPostProcessReport.<init>(ReKeyProcessStep, RosettaModelObjectBuilder)"})
   public void testReKeyPostProcessReportNewReKeyPostProcessReport() {
     // Arrange
     ReKeyProcessStep reKeyProcessStep = new ReKeyProcessStep(new GlobalKeyProcessStep(mock(Supplier.class)));

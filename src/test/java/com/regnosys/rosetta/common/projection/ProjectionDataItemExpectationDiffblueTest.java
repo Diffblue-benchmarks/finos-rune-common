@@ -22,18 +22,29 @@ package com.regnosys.rosetta.common.projection;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
 
 public class ProjectionDataItemExpectationDiffblueTest {
   /**
-   * Test getters and setters.
-   * <p>
+   * Method under test:
+   * {@link ProjectionDataItemExpectation#compareTo(ProjectionDataItemExpectation)}
+   */
+  @Test
+  public void testCompareTo() {
+    // Arrange
+    ProjectionDataItemExpectation projectionDataItemExpectation = new ProjectionDataItemExpectation("Input File", "42",
+        "Output File", 1, true, true);
+
+    // Act and Assert
+    assertEquals(0, projectionDataItemExpectation
+        .compareTo(new ProjectionDataItemExpectation("Input File", "42", "Output File", 1, true, true)));
+  }
+
+  /**
    * Methods under test:
    * <ul>
-   *   <li>{@link ProjectionDataItemExpectation#ProjectionDataItemExpectation(String, String, String, int, boolean, boolean)}
+   *   <li>
+   * {@link ProjectionDataItemExpectation#ProjectionDataItemExpectation(String, String, String, int, boolean, boolean)}
    *   <li>{@link ProjectionDataItemExpectation#setError(boolean)}
    *   <li>{@link ProjectionDataItemExpectation#setInputFile(String)}
    *   <li>{@link ProjectionDataItemExpectation#setKeyValueFile(String)}
@@ -49,17 +60,6 @@ public class ProjectionDataItemExpectationDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void ProjectionDataItemExpectation.<init>(String, String, String, int, boolean, boolean)",
-      "String ProjectionDataItemExpectation.getInputFile()", "String ProjectionDataItemExpectation.getKeyValueFile()",
-      "String ProjectionDataItemExpectation.getOutputFile()",
-      "int ProjectionDataItemExpectation.getValidationFailures()", "boolean ProjectionDataItemExpectation.isError()",
-      "boolean ProjectionDataItemExpectation.isValidXml()", "void ProjectionDataItemExpectation.setError(boolean)",
-      "void ProjectionDataItemExpectation.setInputFile(String)",
-      "void ProjectionDataItemExpectation.setKeyValueFile(String)",
-      "void ProjectionDataItemExpectation.setOutputFile(String)",
-      "void ProjectionDataItemExpectation.setValidXml(boolean)",
-      "void ProjectionDataItemExpectation.setValidationFailures(int)"})
   public void testGettersAndSetters() {
     // Arrange and Act
     ProjectionDataItemExpectation actualProjectionDataItemExpectation = new ProjectionDataItemExpectation("Input File",
@@ -76,33 +76,12 @@ public class ProjectionDataItemExpectationDiffblueTest {
     int actualValidationFailures = actualProjectionDataItemExpectation.getValidationFailures();
     boolean actualIsErrorResult = actualProjectionDataItemExpectation.isError();
 
-    // Assert
+    // Assert that nothing has changed
     assertEquals("42", actualKeyValueFile);
     assertEquals("Input File", actualInputFile);
     assertEquals("Output File", actualOutputFile);
     assertEquals(1, actualValidationFailures);
     assertTrue(actualIsErrorResult);
     assertTrue(actualProjectionDataItemExpectation.isValidXml());
-  }
-
-  /**
-   * Test {@link ProjectionDataItemExpectation#compareTo(ProjectionDataItemExpectation)} with {@code ProjectionDataItemExpectation}.
-   * <ul>
-   *   <li>Then return zero.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link ProjectionDataItemExpectation#compareTo(ProjectionDataItemExpectation)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"int ProjectionDataItemExpectation.compareTo(ProjectionDataItemExpectation)"})
-  public void testCompareToWithProjectionDataItemExpectation_thenReturnZero() {
-    // Arrange
-    ProjectionDataItemExpectation projectionDataItemExpectation = new ProjectionDataItemExpectation("Input File", "42",
-        "Output File", 1, true, true);
-
-    // Act and Assert
-    assertEquals(0, projectionDataItemExpectation
-        .compareTo(new ProjectionDataItemExpectation("Input File", "42", "Output File", 1, true, true)));
   }
 }

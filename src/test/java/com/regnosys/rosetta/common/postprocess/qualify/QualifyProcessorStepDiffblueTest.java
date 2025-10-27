@@ -21,28 +21,19 @@ package com.regnosys.rosetta.common.postprocess.qualify;
  */
 
 import static org.junit.Assert.assertEquals;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
 
 public class QualifyProcessorStepDiffblueTest {
   /**
-   * Test {@link QualifyProcessorStep#getPriority()}.
-   * <p>
    * Method under test: {@link QualifyProcessorStep#getPriority()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"java.lang.Integer QualifyProcessorStep.getPriority()"})
   public void testGetPriority() {
     // Arrange, Act and Assert
     assertEquals(2, (new QualifyProcessorStep()).getPriority().intValue());
   }
 
   /**
-   * Test getters and setters.
-   * <p>
    * Methods under test:
    * <ul>
    *   <li>default or parameterless constructor of {@link QualifyProcessorStep}
@@ -50,8 +41,6 @@ public class QualifyProcessorStepDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void QualifyProcessorStep.<init>()", "java.lang.String QualifyProcessorStep.getName()"})
   public void testGettersAndSetters() {
     // Arrange, Act and Assert
     assertEquals("Qualification PostProcessor", (new QualifyProcessorStep()).getName());

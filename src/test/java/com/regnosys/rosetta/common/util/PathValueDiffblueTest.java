@@ -24,44 +24,11 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNull;
 import static org.mockito.Mockito.mock;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
 import com.rosetta.model.lib.path.RosettaPath;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
 
 public class PathValueDiffblueTest {
   /**
-   * Test getters and setters.
-   * <p>
-   * Methods under test:
-   * <ul>
-   *   <li>{@link PathValue#PathValue(RosettaPath, String)}
-   *   <li>{@link PathValue#getHierarchicalPath()}
-   *   <li>{@link PathValue#getValue()}
-   * </ul>
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void PathValue.<init>(RosettaPath, String)", "RosettaPath PathValue.getHierarchicalPath()",
-      "String PathValue.getValue()", "String PathValue.toString()"})
-  public void testGettersAndSetters() {
-    // Arrange and Act
-    PathValue actualPathValue = new PathValue(null, "42");
-    RosettaPath actualHierarchicalPath = actualPathValue.getHierarchicalPath();
-
-    // Assert
-    assertEquals("42", actualPathValue.getValue());
-    assertNull(actualHierarchicalPath);
-  }
-
-  /**
-   * Test {@link PathValue#equals(Object)}, and {@link PathValue#hashCode()}.
-   * <ul>
-   *   <li>When other is equal.</li>
-   *   <li>Then return equal.</li>
-   * </ul>
-   * <p>
    * Methods under test:
    * <ul>
    *   <li>{@link PathValue#equals(Object)}
@@ -69,8 +36,6 @@ public class PathValueDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean PathValue.equals(Object)", "int PathValue.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
     // Arrange
     PathValue pathValue = PathValue.EMPTY;
@@ -83,12 +48,6 @@ public class PathValueDiffblueTest {
   }
 
   /**
-   * Test {@link PathValue#equals(Object)}, and {@link PathValue#hashCode()}.
-   * <ul>
-   *   <li>When other is equal.</li>
-   *   <li>Then return equal.</li>
-   * </ul>
-   * <p>
    * Methods under test:
    * <ul>
    *   <li>{@link PathValue#equals(Object)}
@@ -96,8 +55,6 @@ public class PathValueDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean PathValue.equals(Object)", "int PathValue.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual2() {
     // Arrange
     PathValue pathValue = new PathValue(null, "42");
@@ -110,12 +67,6 @@ public class PathValueDiffblueTest {
   }
 
   /**
-   * Test {@link PathValue#equals(Object)}, and {@link PathValue#hashCode()}.
-   * <ul>
-   *   <li>When other is equal.</li>
-   *   <li>Then return equal.</li>
-   * </ul>
-   * <p>
    * Methods under test:
    * <ul>
    *   <li>{@link PathValue#equals(Object)}
@@ -123,8 +74,6 @@ public class PathValueDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean PathValue.equals(Object)", "int PathValue.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual3() {
     // Arrange
     PathValue pathValue = new PathValue(null, null);
@@ -137,12 +86,6 @@ public class PathValueDiffblueTest {
   }
 
   /**
-   * Test {@link PathValue#equals(Object)}, and {@link PathValue#hashCode()}.
-   * <ul>
-   *   <li>When other is same.</li>
-   *   <li>Then return equal.</li>
-   * </ul>
-   * <p>
    * Methods under test:
    * <ul>
    *   <li>{@link PathValue#equals(Object)}
@@ -150,8 +93,6 @@ public class PathValueDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean PathValue.equals(Object)", "int PathValue.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
     PathValue pathValue = PathValue.EMPTY;
@@ -163,52 +104,20 @@ public class PathValueDiffblueTest {
   }
 
   /**
-   * Test {@link PathValue#equals(Object)}.
-   * <ul>
-   *   <li>When other is different.</li>
-   *   <li>Then return not equal.</li>
-   * </ul>
-   * <p>
    * Method under test: {@link PathValue#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean PathValue.equals(Object)", "int PathValue.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(new PathValue(null, "42"), PathValue.EMPTY);
-  }
-
-  /**
-   * Test {@link PathValue#equals(Object)}.
-   * <ul>
-   *   <li>When other is different.</li>
-   *   <li>Then return not equal.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link PathValue#equals(Object)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean PathValue.equals(Object)", "int PathValue.hashCode()"})
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual2() {
-    // Arrange, Act and Assert
     assertNotEquals(new PathValue(mock(RosettaPath.class), "42"), PathValue.EMPTY);
   }
 
   /**
-   * Test {@link PathValue#equals(Object)}.
-   * <ul>
-   *   <li>When other is different.</li>
-   *   <li>Then return not equal.</li>
-   * </ul>
-   * <p>
    * Method under test: {@link PathValue#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean PathValue.equals(Object)", "int PathValue.hashCode()"})
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual3() {
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual2() {
     // Arrange
     PathValue pathValue = new PathValue(null, null);
 
@@ -217,36 +126,39 @@ public class PathValueDiffblueTest {
   }
 
   /**
-   * Test {@link PathValue#equals(Object)}.
-   * <ul>
-   *   <li>When other is {@code null}.</li>
-   *   <li>Then return not equal.</li>
-   * </ul>
-   * <p>
    * Method under test: {@link PathValue#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean PathValue.equals(Object)", "int PathValue.hashCode()"})
   public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(PathValue.EMPTY, null);
   }
 
   /**
-   * Test {@link PathValue#equals(Object)}.
-   * <ul>
-   *   <li>When other is wrong type.</li>
-   *   <li>Then return not equal.</li>
-   * </ul>
-   * <p>
    * Method under test: {@link PathValue#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean PathValue.equals(Object)", "int PathValue.hashCode()"})
   public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(PathValue.EMPTY, "Different type to PathValue");
+  }
+
+  /**
+   * Methods under test:
+   * <ul>
+   *   <li>{@link PathValue#PathValue(RosettaPath, String)}
+   *   <li>{@link PathValue#getHierarchicalPath()}
+   *   <li>{@link PathValue#getValue()}
+   * </ul>
+   */
+  @Test
+  public void testGettersAndSetters() {
+    // Arrange and Act
+    PathValue actualPathValue = new PathValue(null, "42");
+    RosettaPath actualHierarchicalPath = actualPathValue.getHierarchicalPath();
+
+    // Assert
+    assertEquals("42", actualPathValue.getValue());
+    assertNull(actualHierarchicalPath);
   }
 }

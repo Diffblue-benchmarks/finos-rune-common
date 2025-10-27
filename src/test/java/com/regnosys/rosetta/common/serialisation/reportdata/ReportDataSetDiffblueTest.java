@@ -25,18 +25,93 @@ import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
+import static org.mockito.Mockito.mock;
+import com.regnosys.rosetta.common.serialisation.projectiondata.ProjectionDataSet;
 import com.rosetta.model.lib.ModelReportId;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
 
 public class ReportDataSetDiffblueTest {
   /**
-   * Test getters and setters.
-   * <p>
+   * Methods under test:
+   * <ul>
+   *   <li>{@link ReportDataSet#equals(Object)}
+   *   <li>{@link ReportDataSet#hashCode()}
+   * </ul>
+   */
+  @Test
+  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
+    // Arrange
+    ReportDataSet reportDataSet = new ReportDataSet();
+    ReportDataSet reportDataSet2 = new ReportDataSet();
+
+    // Act and Assert
+    assertEquals(reportDataSet, reportDataSet2);
+    int expectedHashCodeResult = reportDataSet.hashCode();
+    assertEquals(expectedHashCodeResult, reportDataSet2.hashCode());
+  }
+
+  /**
+   * Methods under test:
+   * <ul>
+   *   <li>{@link ReportDataSet#equals(Object)}
+   *   <li>{@link ReportDataSet#hashCode()}
+   * </ul>
+   */
+  @Test
+  public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
+    // Arrange
+    ReportDataSet reportDataSet = new ReportDataSet();
+
+    // Act and Assert
+    assertEquals(reportDataSet, reportDataSet);
+    int expectedHashCodeResult = reportDataSet.hashCode();
+    assertEquals(expectedHashCodeResult, reportDataSet.hashCode());
+  }
+
+  /**
+   * Method under test: {@link ReportDataSet#equals(Object)}
+   */
+  @Test
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
+    // Arrange
+    ArrayList<ModelReportId> applicableReports = new ArrayList<>();
+    ReportDataSet reportDataSet = new ReportDataSet("Data Set Name", "Input Type", applicableReports,
+        new ArrayList<>());
+
+    // Act and Assert
+    assertNotEquals(reportDataSet, new ReportDataSet());
+  }
+
+  /**
+   * Method under test: {@link ReportDataSet#equals(Object)}
+   */
+  @Test
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual2() {
+    // Arrange, Act and Assert
+    assertNotEquals(new ReportDataSet(), mock(ProjectionDataSet.class));
+  }
+
+  /**
+   * Method under test: {@link ReportDataSet#equals(Object)}
+   */
+  @Test
+  public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
+    // Arrange, Act and Assert
+    assertNotEquals(new ReportDataSet(), null);
+  }
+
+  /**
+   * Method under test: {@link ReportDataSet#equals(Object)}
+   */
+  @Test
+  public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
+    // Arrange, Act and Assert
+    assertNotEquals(new ReportDataSet(), "Different type to ReportDataSet");
+  }
+
+  /**
    * Methods under test:
    * <ul>
    *   <li>{@link ReportDataSet#ReportDataSet()}
@@ -45,9 +120,6 @@ public class ReportDataSetDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void ReportDataSet.<init>()", "List ReportDataSet.getApplicableReports()",
-      "String ReportDataSet.toString()"})
   public void testGettersAndSetters() {
     // Arrange and Act
     ReportDataSet actualReportDataSet = new ReportDataSet();
@@ -67,268 +139,167 @@ public class ReportDataSetDiffblueTest {
   }
 
   /**
-   * Test {@link ReportDataSet#ReportDataSet(String, String, List, List)}.
-   * <ul>
-   *   <li>Given {@code null}.</li>
-   *   <li>Then return ApplicableReports is {@link ArrayList#ArrayList()}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link ReportDataSet#ReportDataSet(String, String, List, List)}
+   * Method under test:
+   * {@link ReportDataSet#ReportDataSet(String, String, List, List)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void ReportDataSet.<init>(String, String, List, List)"})
-  public void testNewReportDataSet_givenNull_thenReturnApplicableReportsIsArrayList() {
+  public void testNewReportDataSet() {
     // Arrange
     ArrayList<ModelReportId> applicableReports = new ArrayList<>();
-    applicableReports.add(null);
+    ArrayList<ReportDataItem> data = new ArrayList<>();
 
     // Act
-    ReportDataSet actualReportDataSet = new ReportDataSet("Data Set Name", "Input Type", applicableReports,
-        new ArrayList<>());
+    ReportDataSet actualReportDataSet = new ReportDataSet("Data Set Name", "Input Type", applicableReports, data);
 
     // Assert
     assertEquals("Data Set Name", actualReportDataSet.getDataSetName());
     assertEquals("Data Set Name", actualReportDataSet.getDataSetShortName());
-    assertTrue(actualReportDataSet.getData().isEmpty());
-    assertSame(applicableReports, actualReportDataSet.getApplicableReports());
+    assertEquals("Input Type", actualReportDataSet.getInputType());
+    assertEquals("com.regnosys.rosetta.common.serialisation.reportdata.ExpectedResult",
+        actualReportDataSet.getExpectedType());
+    List<ReportDataItem> data2 = actualReportDataSet.getData();
+    assertTrue(data2.isEmpty());
+    List<ModelReportId> applicableReports2 = actualReportDataSet.getApplicableReports();
+    assertTrue(applicableReports2.isEmpty());
+    assertSame(data, data2);
+    assertSame(applicableReports, applicableReports2);
   }
 
   /**
-   * Test {@link ReportDataSet#ReportDataSet(String, String, List, List)}.
-   * <ul>
-   *   <li>Given {@link ReportDataItem#ReportDataItem()}.</li>
-   *   <li>Then return Data is {@link ArrayList#ArrayList()}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link ReportDataSet#ReportDataSet(String, String, List, List)}
+   * Method under test:
+   * {@link ReportDataSet#ReportDataSet(String, String, List, List)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void ReportDataSet.<init>(String, String, List, List)"})
-  public void testNewReportDataSet_givenReportDataItem_thenReturnDataIsArrayList() {
+  public void testNewReportDataSet2() {
     // Arrange
     ArrayList<ModelReportId> applicableReports = new ArrayList<>();
-
     ArrayList<ReportDataItem> data = new ArrayList<>();
-    data.add(new ReportDataItem());
-
-    // Act and Assert
-    assertSame(data, (new ReportDataSet("Data Set Name", "Input Type", applicableReports, data)).getData());
-  }
-
-  /**
-   * Test {@link ReportDataSet#ReportDataSet(String, String, List, List)}.
-   * <ul>
-   *   <li>Given {@link ReportDataItem#ReportDataItem()}.</li>
-   *   <li>Then return Data size is two.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link ReportDataSet#ReportDataSet(String, String, List, List)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void ReportDataSet.<init>(String, String, List, List)"})
-  public void testNewReportDataSet_givenReportDataItem_thenReturnDataSizeIsTwo() {
-    // Arrange
-    ArrayList<ModelReportId> applicableReports = new ArrayList<>();
-
-    ArrayList<ReportDataItem> data = new ArrayList<>();
-    data.add(new ReportDataItem());
-    ReportDataItem reportDataItem = new ReportDataItem();
-    data.add(reportDataItem);
-
-    // Act and Assert
-    List<ReportDataItem> data2 = (new ReportDataSet("Data Set Name", "Input Type", applicableReports, data)).getData();
-    assertEquals(2, data2.size());
-    assertSame(reportDataItem, data2.get(1));
-  }
-
-  /**
-   * Test {@link ReportDataSet#ReportDataSet(String, String, List, List)}.
-   * <ul>
-   *   <li>When {@code Data Set Name}.</li>
-   *   <li>Then return {@code Data Set Name}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link ReportDataSet#ReportDataSet(String, String, List, List)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void ReportDataSet.<init>(String, String, List, List)"})
-  public void testNewReportDataSet_whenDataSetName_thenReturnDataSetName() {
-    // Arrange
-    ArrayList<ModelReportId> applicableReports = new ArrayList<>();
 
     // Act
-    ReportDataSet actualReportDataSet = new ReportDataSet("Data Set Name", "Input Type", applicableReports,
-        new ArrayList<>());
+    ReportDataSet actualReportDataSet = new ReportDataSet(null, "Input Type", applicableReports, data);
 
     // Assert
-    assertEquals("Data Set Name", actualReportDataSet.getDataSetName());
-    assertEquals("Data Set Name", actualReportDataSet.getDataSetShortName());
-    assertTrue(actualReportDataSet.getData().isEmpty());
-    assertTrue(actualReportDataSet.getApplicableReports().isEmpty());
+    assertEquals("Input Type", actualReportDataSet.getInputType());
+    assertEquals("com.regnosys.rosetta.common.serialisation.reportdata.ExpectedResult",
+        actualReportDataSet.getExpectedType());
+    assertNull(actualReportDataSet.getDataSetName());
+    assertNull(actualReportDataSet.getDataSetShortName());
+    List<ReportDataItem> data2 = actualReportDataSet.getData();
+    assertTrue(data2.isEmpty());
+    List<ModelReportId> applicableReports2 = actualReportDataSet.getApplicableReports();
+    assertTrue(applicableReports2.isEmpty());
+    assertSame(data, data2);
+    assertSame(applicableReports, applicableReports2);
   }
 
   /**
-   * Test {@link ReportDataSet#ReportDataSet(String, String, List, List)}.
-   * <ul>
-   *   <li>When empty string.</li>
-   *   <li>Then return DataSetName is empty string.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link ReportDataSet#ReportDataSet(String, String, List, List)}
+   * Method under test:
+   * {@link ReportDataSet#ReportDataSet(String, String, List, List)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void ReportDataSet.<init>(String, String, List, List)"})
-  public void testNewReportDataSet_whenEmptyString_thenReturnDataSetNameIsEmptyString() {
+  public void testNewReportDataSet3() {
     // Arrange
     ArrayList<ModelReportId> applicableReports = new ArrayList<>();
+    ArrayList<ReportDataItem> data = new ArrayList<>();
 
     // Act
-    ReportDataSet actualReportDataSet = new ReportDataSet("", "Input Type", applicableReports, new ArrayList<>());
+    ReportDataSet actualReportDataSet = new ReportDataSet("", "Input Type", applicableReports, data);
 
     // Assert
     assertEquals("", actualReportDataSet.getDataSetName());
     assertEquals("", actualReportDataSet.getDataSetShortName());
-    assertTrue(actualReportDataSet.getData().isEmpty());
-    assertTrue(actualReportDataSet.getApplicableReports().isEmpty());
+    assertEquals("Input Type", actualReportDataSet.getInputType());
+    assertEquals("com.regnosys.rosetta.common.serialisation.reportdata.ExpectedResult",
+        actualReportDataSet.getExpectedType());
+    List<ReportDataItem> data2 = actualReportDataSet.getData();
+    assertTrue(data2.isEmpty());
+    List<ModelReportId> applicableReports2 = actualReportDataSet.getApplicableReports();
+    assertTrue(applicableReports2.isEmpty());
+    assertSame(data, data2);
+    assertSame(applicableReports, applicableReports2);
   }
 
   /**
-   * Test {@link ReportDataSet#ReportDataSet(String, String, List, List)}.
-   * <ul>
-   *   <li>When {@code null}.</li>
-   *   <li>Then return DataSetName is {@code null}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link ReportDataSet#ReportDataSet(String, String, List, List)}
+   * Method under test:
+   * {@link ReportDataSet#ReportDataSet(String, String, List, List)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void ReportDataSet.<init>(String, String, List, List)"})
-  public void testNewReportDataSet_whenNull_thenReturnDataSetNameIsNull() {
+  public void testNewReportDataSet4() {
     // Arrange
     ArrayList<ModelReportId> applicableReports = new ArrayList<>();
+
+    ArrayList<ReportDataItem> data = new ArrayList<>();
+    data.add(new ReportDataItem());
 
     // Act
-    ReportDataSet actualReportDataSet = new ReportDataSet(null, "Input Type", applicableReports, new ArrayList<>());
+    ReportDataSet actualReportDataSet = new ReportDataSet("Data Set Name", "Input Type", applicableReports, data);
 
     // Assert
-    assertNull(actualReportDataSet.getDataSetName());
-    assertNull(actualReportDataSet.getDataSetShortName());
-    assertTrue(actualReportDataSet.getData().isEmpty());
-    assertTrue(actualReportDataSet.getApplicableReports().isEmpty());
+    assertEquals("Data Set Name", actualReportDataSet.getDataSetName());
+    assertEquals("Data Set Name", actualReportDataSet.getDataSetShortName());
+    assertEquals("Input Type", actualReportDataSet.getInputType());
+    assertEquals("com.regnosys.rosetta.common.serialisation.reportdata.ExpectedResult",
+        actualReportDataSet.getExpectedType());
+    List<ModelReportId> applicableReports2 = actualReportDataSet.getApplicableReports();
+    assertTrue(applicableReports2.isEmpty());
+    assertSame(data, actualReportDataSet.getData());
+    assertSame(applicableReports, applicableReports2);
   }
 
   /**
-   * Test {@link ReportDataSet#equals(Object)}, and {@link ReportDataSet#hashCode()}.
-   * <ul>
-   *   <li>When other is equal.</li>
-   *   <li>Then return equal.</li>
-   * </ul>
-   * <p>
-   * Methods under test:
-   * <ul>
-   *   <li>{@link ReportDataSet#equals(Object)}
-   *   <li>{@link ReportDataSet#hashCode()}
-   * </ul>
+   * Method under test:
+   * {@link ReportDataSet#ReportDataSet(String, String, List, List)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean ReportDataSet.equals(Object)", "int ReportDataSet.hashCode()"})
-  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
-    // Arrange
-    ReportDataSet reportDataSet = new ReportDataSet();
-    ReportDataSet reportDataSet2 = new ReportDataSet();
-
-    // Act and Assert
-    assertEquals(reportDataSet, reportDataSet2);
-    int expectedHashCodeResult = reportDataSet.hashCode();
-    assertEquals(expectedHashCodeResult, reportDataSet2.hashCode());
-  }
-
-  /**
-   * Test {@link ReportDataSet#equals(Object)}, and {@link ReportDataSet#hashCode()}.
-   * <ul>
-   *   <li>When other is same.</li>
-   *   <li>Then return equal.</li>
-   * </ul>
-   * <p>
-   * Methods under test:
-   * <ul>
-   *   <li>{@link ReportDataSet#equals(Object)}
-   *   <li>{@link ReportDataSet#hashCode()}
-   * </ul>
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean ReportDataSet.equals(Object)", "int ReportDataSet.hashCode()"})
-  public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
-    // Arrange
-    ReportDataSet reportDataSet = new ReportDataSet();
-
-    // Act and Assert
-    assertEquals(reportDataSet, reportDataSet);
-    int expectedHashCodeResult = reportDataSet.hashCode();
-    assertEquals(expectedHashCodeResult, reportDataSet.hashCode());
-  }
-
-  /**
-   * Test {@link ReportDataSet#equals(Object)}.
-   * <ul>
-   *   <li>When other is different.</li>
-   *   <li>Then return not equal.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link ReportDataSet#equals(Object)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean ReportDataSet.equals(Object)", "int ReportDataSet.hashCode()"})
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
+  public void testNewReportDataSet5() {
     // Arrange
     ArrayList<ModelReportId> applicableReports = new ArrayList<>();
-    ReportDataSet reportDataSet = new ReportDataSet("Data Set Name", "Input Type", applicableReports,
-        new ArrayList<>());
 
-    // Act and Assert
-    assertNotEquals(reportDataSet, new ReportDataSet());
+    ArrayList<ReportDataItem> data = new ArrayList<>();
+    data.add(new ReportDataItem());
+    data.add(new ReportDataItem());
+
+    // Act
+    ReportDataSet actualReportDataSet = new ReportDataSet("Data Set Name", "Input Type", applicableReports, data);
+
+    // Assert
+    assertEquals("Data Set Name", actualReportDataSet.getDataSetName());
+    assertEquals("Data Set Name", actualReportDataSet.getDataSetShortName());
+    assertEquals("Input Type", actualReportDataSet.getInputType());
+    assertEquals("com.regnosys.rosetta.common.serialisation.reportdata.ExpectedResult",
+        actualReportDataSet.getExpectedType());
+    List<ModelReportId> applicableReports2 = actualReportDataSet.getApplicableReports();
+    assertTrue(applicableReports2.isEmpty());
+    assertSame(data, actualReportDataSet.getData());
+    assertSame(applicableReports, applicableReports2);
   }
 
   /**
-   * Test {@link ReportDataSet#equals(Object)}.
-   * <ul>
-   *   <li>When other is {@code null}.</li>
-   *   <li>Then return not equal.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link ReportDataSet#equals(Object)}
+   * Method under test:
+   * {@link ReportDataSet#ReportDataSet(String, String, List, List)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean ReportDataSet.equals(Object)", "int ReportDataSet.hashCode()"})
-  public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
-    // Arrange, Act and Assert
-    assertNotEquals(new ReportDataSet(), null);
-  }
+  public void testNewReportDataSet6() {
+    // Arrange
+    ArrayList<ModelReportId> applicableReports = new ArrayList<>();
+    applicableReports.add(null);
+    ArrayList<ReportDataItem> data = new ArrayList<>();
 
-  /**
-   * Test {@link ReportDataSet#equals(Object)}.
-   * <ul>
-   *   <li>When other is wrong type.</li>
-   *   <li>Then return not equal.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link ReportDataSet#equals(Object)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean ReportDataSet.equals(Object)", "int ReportDataSet.hashCode()"})
-  public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
-    // Arrange, Act and Assert
-    assertNotEquals(new ReportDataSet(), "Different type to ReportDataSet");
+    // Act
+    ReportDataSet actualReportDataSet = new ReportDataSet("Data Set Name", "Input Type", applicableReports, data);
+
+    // Assert
+    assertEquals("Data Set Name", actualReportDataSet.getDataSetName());
+    assertEquals("Data Set Name", actualReportDataSet.getDataSetShortName());
+    assertEquals("Input Type", actualReportDataSet.getInputType());
+    assertEquals("com.regnosys.rosetta.common.serialisation.reportdata.ExpectedResult",
+        actualReportDataSet.getExpectedType());
+    List<ModelReportId> applicableReports2 = actualReportDataSet.getApplicableReports();
+    assertEquals(1, applicableReports2.size());
+    assertNull(applicableReports2.get(0));
+    List<ReportDataItem> data2 = actualReportDataSet.getData();
+    assertTrue(data2.isEmpty());
+    assertSame(data, data2);
+    assertSame(applicableReports, applicableReports2);
   }
 }

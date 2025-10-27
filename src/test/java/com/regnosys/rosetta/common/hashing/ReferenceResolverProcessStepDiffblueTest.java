@@ -21,42 +21,31 @@ package com.regnosys.rosetta.common.hashing;
  */
 
 import static org.junit.Assert.assertEquals;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
 
 public class ReferenceResolverProcessStepDiffblueTest {
   /**
-   * Test getters and setters.
-   * <p>
-   * Methods under test:
-   * <ul>
-   *   <li>{@link ReferenceResolverProcessStep#ReferenceResolverProcessStep(ReferenceConfig)}
-   *   <li>{@link ReferenceResolverProcessStep#getName()}
-   * </ul>
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void ReferenceResolverProcessStep.<init>(ReferenceConfig)",
-      "java.lang.String ReferenceResolverProcessStep.getName()"})
-  public void testGettersAndSetters() {
-    // Arrange, Act and Assert
-    assertEquals("Reference Resolver",
-        (new ReferenceResolverProcessStep(ReferenceConfig.noScopeOrExcludedPaths())).getName());
-  }
-
-  /**
-   * Test {@link ReferenceResolverProcessStep#getPriority()}.
-   * <p>
    * Method under test: {@link ReferenceResolverProcessStep#getPriority()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"java.lang.Integer ReferenceResolverProcessStep.getPriority()"})
   public void testGetPriority() {
     // Arrange, Act and Assert
     assertEquals(2,
         (new ReferenceResolverProcessStep(ReferenceConfig.noScopeOrExcludedPaths())).getPriority().intValue());
+  }
+
+  /**
+   * Methods under test:
+   * <ul>
+   *   <li>
+   * {@link ReferenceResolverProcessStep#ReferenceResolverProcessStep(ReferenceConfig)}
+   *   <li>{@link ReferenceResolverProcessStep#getName()}
+   * </ul>
+   */
+  @Test
+  public void testGettersAndSetters() {
+    // Arrange, Act and Assert
+    assertEquals("Reference Resolver",
+        (new ReferenceResolverProcessStep(ReferenceConfig.noScopeOrExcludedPaths())).getName());
   }
 }

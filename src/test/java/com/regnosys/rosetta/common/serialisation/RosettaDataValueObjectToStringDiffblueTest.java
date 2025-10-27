@@ -21,45 +21,20 @@ package com.regnosys.rosetta.common.serialisation;
  */
 
 import static org.junit.Assert.assertEquals;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.time.LocalDate;
 import java.time.ZoneOffset;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
 
 public class RosettaDataValueObjectToStringDiffblueTest {
   /**
-   * Test {@link RosettaDataValueObjectToString#toValueString(Object)}.
-   * <ul>
-   *   <li>Then return {@code 1970-01-01T00:00:00Z}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link RosettaDataValueObjectToString#toValueString(Object)}
+   * Method under test:
+   * {@link RosettaDataValueObjectToString#toValueString(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"java.lang.String RosettaDataValueObjectToString.toValueString(Object)"})
-  public void testToValueString_thenReturn19700101t000000z() {
-    // Arrange, Act and Assert
-    assertEquals("1970-01-01T00:00:00Z",
-        RosettaDataValueObjectToString.toValueString(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC)));
-  }
-
-  /**
-   * Test {@link RosettaDataValueObjectToString#toValueString(Object)}.
-   * <ul>
-   *   <li>When {@code Object}.</li>
-   *   <li>Then return {@code Object}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link RosettaDataValueObjectToString#toValueString(Object)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"java.lang.String RosettaDataValueObjectToString.toValueString(Object)"})
-  public void testToValueString_whenObject_thenReturnObject() {
+  public void testToValueString() {
     // Arrange, Act and Assert
     assertEquals("Object", RosettaDataValueObjectToString.toValueString("Object"));
+    assertEquals("1970-01-01T00:00:00Z",
+        RosettaDataValueObjectToString.toValueString(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC)));
   }
 }

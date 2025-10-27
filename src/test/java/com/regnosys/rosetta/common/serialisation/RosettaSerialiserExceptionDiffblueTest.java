@@ -22,20 +22,14 @@ package com.regnosys.rosetta.common.serialisation;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
 
 public class RosettaSerialiserExceptionDiffblueTest {
   /**
-   * Test {@link RosettaSerialiserException#RosettaSerialiserException(String, Throwable)}.
-   * <p>
-   * Method under test: {@link RosettaSerialiserException#RosettaSerialiserException(String, Throwable)}
+   * Method under test:
+   * {@link RosettaSerialiserException#RosettaSerialiserException(String, Throwable)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void RosettaSerialiserException.<init>(String, Throwable)"})
   public void testNewRosettaSerialiserException() {
     // Arrange
     Throwable cause = new Throwable();

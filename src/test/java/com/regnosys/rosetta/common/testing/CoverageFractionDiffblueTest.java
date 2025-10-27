@@ -21,20 +21,14 @@ package com.regnosys.rosetta.common.testing;
  */
 
 import static org.junit.Assert.assertEquals;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
 
 public class CoverageFractionDiffblueTest {
   /**
-   * Test new {@link CoverageFraction} (default constructor).
-   * <p>
-   * Method under test: default or parameterless constructor of {@link CoverageFraction}
+   * Method under test: default or parameterless constructor of
+   * {@link CoverageFraction}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void CoverageFraction.<init>()"})
   public void testNewCoverageFraction() {
     // Arrange and Act
     CoverageFraction actualCoverageFraction = new CoverageFraction();

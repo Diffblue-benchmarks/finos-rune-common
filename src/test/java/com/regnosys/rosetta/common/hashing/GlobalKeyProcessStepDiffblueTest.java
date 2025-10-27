@@ -22,80 +22,40 @@ package com.regnosys.rosetta.common.hashing;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
-import com.regnosys.rosetta.common.hashing.GlobalKeyProcessStep.KeyPostProcessReport;
-import com.regnosys.rosetta.common.hashing.GlobalKeyProcessStep.ReKeyProcessor;
 import com.regnosys.rosetta.common.merger.BarBuilder;
 import com.regnosys.rosetta.common.serialisation.json.preannotation.testpojo.Price;
-import com.regnosys.rosetta.common.serialisation.json.preannotation.testpojo.Price.PriceBuilderImpl;
 import com.regnosys.rosetta.common.serialisation.json.preannotation.testpojo.PriceQuantity;
-import com.regnosys.rosetta.common.serialisation.json.preannotation.testpojo.PriceQuantity.PriceQuantityBuilderImpl;
 import com.regnosys.rosetta.common.serialisation.json.preannotation.testpojo.metafields.FieldWithMetaPrice;
-import com.regnosys.rosetta.common.serialisation.json.preannotation.testpojo.metafields.FieldWithMetaPrice.FieldWithMetaPriceBuilder;
-import com.regnosys.rosetta.common.serialisation.json.preannotation.testpojo.metafields.FieldWithMetaPrice.FieldWithMetaPriceBuilderImpl;
 import com.regnosys.rosetta.common.serialisation.json.preannotation.testpojo.metafields.MetaFields;
-import com.regnosys.rosetta.common.serialisation.json.preannotation.testpojo.metafields.MetaFields.MetaFieldsBuilder;
-import com.regnosys.rosetta.common.serialisation.json.preannotation.testpojo.metafields.MetaFields.MetaFieldsBuilderImpl;
 import com.rosetta.model.lib.RosettaModelObject;
 import com.rosetta.model.lib.RosettaModelObjectBuilder;
 import com.rosetta.model.lib.meta.Key;
-import com.rosetta.model.lib.meta.Key.KeyBuilder;
-import com.rosetta.model.lib.meta.Key.KeyBuilderImpl;
 import com.rosetta.model.lib.meta.Reference;
-import com.rosetta.model.lib.meta.Reference.ReferenceBuilderImpl;
-import com.rosetta.model.lib.meta.Reference.ReferenceImpl;
 import com.rosetta.model.lib.path.RosettaPath;
 import com.rosetta.model.lib.process.AttributeMeta;
+import com.rosetta.model.lib.process.Processor;
 import java.util.HashMap;
-import java.util.List;
 import java.util.function.Supplier;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
 
 public class GlobalKeyProcessStepDiffblueTest {
   /**
-   * Test getters and setters.
-   * <p>
-   * Methods under test:
-   * <ul>
-   *   <li>{@link GlobalKeyProcessStep#GlobalKeyProcessStep(Supplier)}
-   *   <li>{@link GlobalKeyProcessStep#getName()}
-   * </ul>
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void GlobalKeyProcessStep.<init>(Supplier)", "java.lang.String GlobalKeyProcessStep.getName()"})
-  public void testGettersAndSetters() {
-    // Arrange, Act and Assert
-    assertEquals("GlobalKey postProcessor", (new GlobalKeyProcessStep(mock(Supplier.class))).getName());
-  }
-
-  /**
-   * Test {@link GlobalKeyProcessStep#getPriority()}.
-   * <p>
    * Method under test: {@link GlobalKeyProcessStep#getPriority()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"java.lang.Integer GlobalKeyProcessStep.getPriority()"})
   public void testGetPriority() {
     // Arrange, Act and Assert
     assertEquals(1, (new GlobalKeyProcessStep(mock(Supplier.class))).getPriority().intValue());
   }
 
   /**
-   * Test KeyPostProcessReport {@link KeyPostProcessReport#getResultObject()}.
-   * <p>
-   * Method under test: {@link KeyPostProcessReport#getResultObject()}
+   * Method under test:
+   * {@link GlobalKeyProcessStep.KeyPostProcessReport#getResultObject()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"RosettaModelObjectBuilder KeyPostProcessReport.getResultObject()"})
   public void testKeyPostProcessReportGetResultObject() {
     // Arrange
     GlobalKeyProcessStep globalKeyProcessStep = new GlobalKeyProcessStep(mock(Supplier.class));
@@ -106,20 +66,16 @@ public class GlobalKeyProcessStepDiffblueTest {
   }
 
   /**
-   * Test ReKeyProcessor {@link ReKeyProcessor#processRosetta(RosettaPath, Class, RosettaModelObjectBuilder, RosettaModelObjectBuilder, AttributeMeta[])} with {@code path}, {@code rosettaType}, {@code builder}, {@code parent}, {@code metas}.
-   * <p>
-   * Method under test: {@link ReKeyProcessor#processRosetta(RosettaPath, Class, RosettaModelObjectBuilder, RosettaModelObjectBuilder, AttributeMeta[])}
+   * Method under test:
+   * {@link GlobalKeyProcessStep.ReKeyProcessor#processRosetta(RosettaPath, Class, RosettaModelObjectBuilder, RosettaModelObjectBuilder, AttributeMeta[])}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({
-      "boolean ReKeyProcessor.processRosetta(RosettaPath, Class, RosettaModelObjectBuilder, RosettaModelObjectBuilder, AttributeMeta[])"})
-  public void testReKeyProcessorProcessRosettaWithPathRosettaTypeBuilderParentMetas() {
+  public void testReKeyProcessorProcessRosetta() {
     // Arrange
     GlobalKeyProcessStep globalKeyProcessStep = new GlobalKeyProcessStep(mock(Supplier.class));
     GlobalKeyProcessStep globalKeyProcessStep2 = new GlobalKeyProcessStep(mock(Supplier.class));
     BarBuilder result = new BarBuilder();
-    ReKeyProcessor reKeyProcessor = globalKeyProcessStep.new ReKeyProcessor(
+    GlobalKeyProcessStep.ReKeyProcessor reKeyProcessor = globalKeyProcessStep.new ReKeyProcessor(
         globalKeyProcessStep2.new KeyPostProcessReport(result, new HashMap<>()));
     RosettaPath path = mock(RosettaPath.class);
     Class<RosettaModelObject> rosettaType = RosettaModelObject.class;
@@ -130,20 +86,36 @@ public class GlobalKeyProcessStepDiffblueTest {
   }
 
   /**
-   * Test ReKeyProcessor {@link ReKeyProcessor#processRosetta(RosettaPath, Class, RosettaModelObjectBuilder, RosettaModelObjectBuilder, AttributeMeta[])} with {@code path}, {@code rosettaType}, {@code builder}, {@code parent}, {@code metas}.
-   * <p>
-   * Method under test: {@link ReKeyProcessor#processRosetta(RosettaPath, Class, RosettaModelObjectBuilder, RosettaModelObjectBuilder, AttributeMeta[])}
+   * Method under test:
+   * {@link GlobalKeyProcessStep.ReKeyProcessor#processRosetta(RosettaPath, Class, RosettaModelObjectBuilder, RosettaModelObjectBuilder, AttributeMeta[])}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({
-      "boolean ReKeyProcessor.processRosetta(RosettaPath, Class, RosettaModelObjectBuilder, RosettaModelObjectBuilder, AttributeMeta[])"})
-  public void testReKeyProcessorProcessRosettaWithPathRosettaTypeBuilderParentMetas2() {
+  public void testReKeyProcessorProcessRosetta2() {
     // Arrange
     GlobalKeyProcessStep globalKeyProcessStep = new GlobalKeyProcessStep(mock(Supplier.class));
     GlobalKeyProcessStep globalKeyProcessStep2 = new GlobalKeyProcessStep(mock(Supplier.class));
     BarBuilder result = new BarBuilder();
-    ReKeyProcessor reKeyProcessor = globalKeyProcessStep.new ReKeyProcessor(
+    GlobalKeyProcessStep.ReKeyProcessor reKeyProcessor = globalKeyProcessStep.new ReKeyProcessor(
+        globalKeyProcessStep2.new KeyPostProcessReport(result, new HashMap<>()));
+    RosettaPath path = mock(RosettaPath.class);
+    Class<RosettaModelObject> rosettaType = RosettaModelObject.class;
+
+    // Act and Assert
+    assertFalse(reKeyProcessor.processRosetta(path, rosettaType, (RosettaModelObjectBuilder) null, new BarBuilder(),
+        AttributeMeta.META));
+  }
+
+  /**
+   * Method under test:
+   * {@link GlobalKeyProcessStep.ReKeyProcessor#processRosetta(RosettaPath, Class, RosettaModelObjectBuilder, RosettaModelObjectBuilder, AttributeMeta[])}
+   */
+  @Test
+  public void testReKeyProcessorProcessRosetta3() {
+    // Arrange
+    GlobalKeyProcessStep globalKeyProcessStep = new GlobalKeyProcessStep(mock(Supplier.class));
+    GlobalKeyProcessStep globalKeyProcessStep2 = new GlobalKeyProcessStep(mock(Supplier.class));
+    BarBuilder result = new BarBuilder();
+    GlobalKeyProcessStep.ReKeyProcessor reKeyProcessor = globalKeyProcessStep.new ReKeyProcessor(
         globalKeyProcessStep2.new KeyPostProcessReport(result, new HashMap<>()));
     RosettaPath path = mock(RosettaPath.class);
     Class<RosettaModelObject> rosettaType = RosettaModelObject.class;
@@ -156,306 +128,234 @@ public class GlobalKeyProcessStepDiffblueTest {
   }
 
   /**
-   * Test ReKeyProcessor {@link ReKeyProcessor#processRosetta(RosettaPath, Class, RosettaModelObjectBuilder, RosettaModelObjectBuilder, AttributeMeta[])} with {@code path}, {@code rosettaType}, {@code builder}, {@code parent}, {@code metas}.
-   * <ul>
-   *   <li>When {@code null}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link ReKeyProcessor#processRosetta(RosettaPath, Class, RosettaModelObjectBuilder, RosettaModelObjectBuilder, AttributeMeta[])}
+   * Method under test:
+   * {@link GlobalKeyProcessStep#runProcessStep(Class, RosettaModelObject)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({
-      "boolean ReKeyProcessor.processRosetta(RosettaPath, Class, RosettaModelObjectBuilder, RosettaModelObjectBuilder, AttributeMeta[])"})
-  public void testReKeyProcessorProcessRosettaWithPathRosettaTypeBuilderParentMetas_whenNull() {
+  public void testRunProcessStep() {
     // Arrange
     GlobalKeyProcessStep globalKeyProcessStep = new GlobalKeyProcessStep(mock(Supplier.class));
-    GlobalKeyProcessStep globalKeyProcessStep2 = new GlobalKeyProcessStep(mock(Supplier.class));
-    BarBuilder result = new BarBuilder();
-    ReKeyProcessor reKeyProcessor = globalKeyProcessStep.new ReKeyProcessor(
-        globalKeyProcessStep2.new KeyPostProcessReport(result, new HashMap<>()));
-    RosettaPath path = mock(RosettaPath.class);
-    Class<RosettaModelObject> rosettaType = RosettaModelObject.class;
+    Class<RosettaModelObject> topClass = RosettaModelObject.class;
+    Key.KeyBuilderImpl keyBuilderImpl = new Key.KeyBuilderImpl();
 
-    // Act and Assert
-    assertFalse(reKeyProcessor.processRosetta(path, rosettaType, (RosettaModelObjectBuilder) null, new BarBuilder(),
-        AttributeMeta.META));
+    // Act
+    GlobalKeyProcessStep.KeyPostProcessReport actualRunProcessStepResult = globalKeyProcessStep.runProcessStep(topClass,
+        keyBuilderImpl);
+
+    // Assert
+    assertTrue(actualRunProcessStepResult.getKeyMap().isEmpty());
+    assertSame(keyBuilderImpl, actualRunProcessStepResult.getResultObject());
   }
 
   /**
-   * Test {@link GlobalKeyProcessStep#runProcessStep(Class, RosettaModelObject)}.
-   * <ul>
-   *   <li>Given {@link KeyBuilderImpl} (default constructor).</li>
-   *   <li>Then return ResultObject Key size is one.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link GlobalKeyProcessStep#runProcessStep(Class, RosettaModelObject)}
+   * Method under test:
+   * {@link GlobalKeyProcessStep#runProcessStep(Class, RosettaModelObject)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"KeyPostProcessReport GlobalKeyProcessStep.runProcessStep(Class, RosettaModelObject)"})
-  public void testRunProcessStep_givenKeyBuilderImpl_thenReturnResultObjectKeySizeIsOne() {
+  public void testRunProcessStep2() {
     // Arrange
     GlobalKeyProcessStep globalKeyProcessStep = new GlobalKeyProcessStep(mock(Supplier.class));
     Class<RosettaModelObject> topClass = RosettaModelObject.class;
 
-    MetaFieldsBuilderImpl metaFieldsBuilderImpl = new MetaFieldsBuilderImpl();
-    KeyBuilderImpl key = new KeyBuilderImpl();
-    metaFieldsBuilderImpl.addKey(key);
+    // Act
+    GlobalKeyProcessStep.KeyPostProcessReport actualRunProcessStepResult = globalKeyProcessStep.runProcessStep(topClass,
+        new Reference.ReferenceImpl("method toBuilder in BarBuilder has not been implemented",
+            "alice.liddell@example.org", "method toBuilder in BarBuilder has not been implemented"));
 
-    // Act and Assert
-    RosettaModelObjectBuilder resultObject = globalKeyProcessStep.runProcessStep(topClass, metaFieldsBuilderImpl)
-        .getResultObject();
-    assertTrue(resultObject instanceof MetaFieldsBuilderImpl);
-    List<? extends KeyBuilder> key2 = ((MetaFieldsBuilderImpl) resultObject).getKey();
-    assertEquals(1, key2.size());
-    assertSame(key, key2.get(0));
-  }
-
-  /**
-   * Test {@link GlobalKeyProcessStep#runProcessStep(Class, RosettaModelObject)}.
-   * <ul>
-   *   <li>Given {@link KeyBuilderImpl} (default constructor).</li>
-   *   <li>Then return ResultObject Key size is two.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link GlobalKeyProcessStep#runProcessStep(Class, RosettaModelObject)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"KeyPostProcessReport GlobalKeyProcessStep.runProcessStep(Class, RosettaModelObject)"})
-  public void testRunProcessStep_givenKeyBuilderImpl_thenReturnResultObjectKeySizeIsTwo() {
-    // Arrange
-    GlobalKeyProcessStep globalKeyProcessStep = new GlobalKeyProcessStep(mock(Supplier.class));
-    Class<RosettaModelObject> topClass = RosettaModelObject.class;
-
-    MetaFieldsBuilderImpl metaFieldsBuilderImpl = new MetaFieldsBuilderImpl();
-    metaFieldsBuilderImpl.addKey(new KeyBuilderImpl());
-    KeyBuilderImpl key = new KeyBuilderImpl();
-    metaFieldsBuilderImpl.addKey(key);
-
-    // Act and Assert
-    RosettaModelObjectBuilder resultObject = globalKeyProcessStep.runProcessStep(topClass, metaFieldsBuilderImpl)
-        .getResultObject();
-    assertTrue(resultObject instanceof MetaFieldsBuilderImpl);
-    List<? extends KeyBuilder> key2 = ((MetaFieldsBuilderImpl) resultObject).getKey();
-    assertEquals(2, key2.size());
-    assertSame(key, key2.get(1));
-  }
-
-  /**
-   * Test {@link GlobalKeyProcessStep#runProcessStep(Class, RosettaModelObject)}.
-   * <ul>
-   *   <li>Given two.</li>
-   *   <li>Then return ResultObject Key size is four.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link GlobalKeyProcessStep#runProcessStep(Class, RosettaModelObject)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"KeyPostProcessReport GlobalKeyProcessStep.runProcessStep(Class, RosettaModelObject)"})
-  public void testRunProcessStep_givenTwo_thenReturnResultObjectKeySizeIsFour() {
-    // Arrange
-    GlobalKeyProcessStep globalKeyProcessStep = new GlobalKeyProcessStep(mock(Supplier.class));
-    Class<RosettaModelObject> topClass = RosettaModelObject.class;
-
-    MetaFieldsBuilderImpl metaFieldsBuilderImpl = new MetaFieldsBuilderImpl();
-    KeyBuilderImpl key = new KeyBuilderImpl();
-    metaFieldsBuilderImpl.addKey(key, 2);
-    KeyBuilderImpl key2 = new KeyBuilderImpl();
-    metaFieldsBuilderImpl.addKey(key2);
-
-    // Act and Assert
-    RosettaModelObjectBuilder resultObject = globalKeyProcessStep.runProcessStep(topClass, metaFieldsBuilderImpl)
-        .getResultObject();
-    assertTrue(resultObject instanceof MetaFieldsBuilderImpl);
-    List<? extends KeyBuilder> key3 = ((MetaFieldsBuilderImpl) resultObject).getKey();
-    assertEquals(4, key3.size());
-    assertNull(key3.get(0));
-    assertNull(key3.get(1));
-    assertSame(key, key3.get(2));
-    assertSame(key2, key3.get(3));
-  }
-
-  /**
-   * Test {@link GlobalKeyProcessStep#runProcessStep(Class, RosettaModelObject)}.
-   * <ul>
-   *   <li>Then ResultObject return {@link PriceQuantity.PriceQuantityBuilderImpl}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link GlobalKeyProcessStep#runProcessStep(Class, RosettaModelObject)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"KeyPostProcessReport GlobalKeyProcessStep.runProcessStep(Class, RosettaModelObject)"})
-  public void testRunProcessStep_thenResultObjectReturnPriceQuantityBuilderImpl() {
-    // Arrange
-    GlobalKeyProcessStep globalKeyProcessStep = new GlobalKeyProcessStep(mock(Supplier.class));
-    Class<RosettaModelObject> topClass = RosettaModelObject.class;
-
-    // Act and Assert
-    RosettaModelObjectBuilder resultObject = globalKeyProcessStep
-        .runProcessStep(topClass, new PriceQuantityBuilderImpl())
-        .getResultObject();
-    assertTrue(resultObject instanceof PriceQuantityBuilderImpl);
-    FieldWithMetaPriceBuilder orCreatePrice = ((PriceQuantityBuilderImpl) resultObject).getOrCreatePrice();
-    assertTrue(orCreatePrice instanceof FieldWithMetaPriceBuilderImpl);
-    MetaFieldsBuilder meta = orCreatePrice.getMeta();
-    assertTrue(meta instanceof MetaFieldsBuilderImpl);
-    List<? extends KeyBuilder> key = meta.getKey();
-    assertEquals(1, key.size());
-    KeyBuilder getResult = key.get(0);
-    assertTrue(getResult instanceof KeyBuilderImpl);
-    assertEquals("DOCUMENT", getResult.getScope());
-    assertNull(getResult.getKeyValue());
-    assertFalse(getResult.hasData());
-    Class<Key> expectedType = Key.class;
-    assertEquals(expectedType, getResult.getType());
-  }
-
-  /**
-   * Test {@link GlobalKeyProcessStep#runProcessStep(Class, RosettaModelObject)}.
-   * <ul>
-   *   <li>Then ResultObject return {@link ReferenceBuilderImpl}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link GlobalKeyProcessStep#runProcessStep(Class, RosettaModelObject)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"KeyPostProcessReport GlobalKeyProcessStep.runProcessStep(Class, RosettaModelObject)"})
-  public void testRunProcessStep_thenResultObjectReturnReferenceBuilderImpl() {
-    // Arrange
-    GlobalKeyProcessStep globalKeyProcessStep = new GlobalKeyProcessStep(mock(Supplier.class));
-    Class<RosettaModelObject> topClass = RosettaModelObject.class;
-
-    // Act and Assert
-    RosettaModelObjectBuilder resultObject = globalKeyProcessStep
-        .runProcessStep(topClass,
-            new ReferenceImpl("method toBuilder in BarBuilder has not been implemented", "alice.liddell@example.org",
-                "method toBuilder in BarBuilder has not been implemented"))
-        .getResultObject();
-    assertTrue(resultObject instanceof ReferenceBuilderImpl);
-    assertEquals("alice.liddell@example.org", ((ReferenceBuilderImpl) resultObject).getPointsTo());
+    // Assert
+    RosettaModelObjectBuilder resultObject = actualRunProcessStepResult.getResultObject();
+    assertTrue(resultObject instanceof Reference.ReferenceBuilderImpl);
+    assertEquals("alice.liddell@example.org", ((Reference.ReferenceBuilderImpl) resultObject).getPointsTo());
     assertEquals("method toBuilder in BarBuilder has not been implemented",
-        ((ReferenceBuilderImpl) resultObject).getReference());
+        ((Reference.ReferenceBuilderImpl) resultObject).getReference());
     assertEquals("method toBuilder in BarBuilder has not been implemented",
-        ((ReferenceBuilderImpl) resultObject).getScope());
+        ((Reference.ReferenceBuilderImpl) resultObject).getScope());
     assertTrue(resultObject.hasData());
+    assertTrue(actualRunProcessStepResult.getKeyMap().isEmpty());
     Class<Reference> expectedType = Reference.class;
     assertEquals(expectedType, resultObject.getType());
   }
 
   /**
-   * Test {@link GlobalKeyProcessStep#runProcessStep(Class, RosettaModelObject)}.
-   * <ul>
-   *   <li>Then return ResultObject is {@link FieldWithMetaPrice.FieldWithMetaPriceBuilderImpl} (default constructor).</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link GlobalKeyProcessStep#runProcessStep(Class, RosettaModelObject)}
+   * Method under test:
+   * {@link GlobalKeyProcessStep#runProcessStep(Class, RosettaModelObject)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"KeyPostProcessReport GlobalKeyProcessStep.runProcessStep(Class, RosettaModelObject)"})
-  public void testRunProcessStep_thenReturnResultObjectIsFieldWithMetaPriceBuilderImpl() {
+  public void testRunProcessStep3() {
     // Arrange
     GlobalKeyProcessStep globalKeyProcessStep = new GlobalKeyProcessStep(mock(Supplier.class));
     Class<RosettaModelObject> topClass = RosettaModelObject.class;
-    FieldWithMetaPriceBuilderImpl fieldWithMetaPriceBuilderImpl = new FieldWithMetaPriceBuilderImpl();
+    Price.PriceBuilderImpl priceBuilderImpl = new Price.PriceBuilderImpl();
 
-    // Act and Assert
-    assertSame(fieldWithMetaPriceBuilderImpl,
-        globalKeyProcessStep.runProcessStep(topClass, fieldWithMetaPriceBuilderImpl).getResultObject());
+    // Act
+    GlobalKeyProcessStep.KeyPostProcessReport actualRunProcessStepResult = globalKeyProcessStep.runProcessStep(topClass,
+        priceBuilderImpl);
+
+    // Assert
+    assertTrue(actualRunProcessStepResult.getKeyMap().isEmpty());
+    assertSame(priceBuilderImpl, actualRunProcessStepResult.getResultObject());
   }
 
   /**
-   * Test {@link GlobalKeyProcessStep#runProcessStep(Class, RosettaModelObject)}.
-   * <ul>
-   *   <li>Then return ResultObject is {@link MetaFieldsBuilderImpl} (default constructor).</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link GlobalKeyProcessStep#runProcessStep(Class, RosettaModelObject)}
+   * Method under test:
+   * {@link GlobalKeyProcessStep#runProcessStep(Class, RosettaModelObject)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"KeyPostProcessReport GlobalKeyProcessStep.runProcessStep(Class, RosettaModelObject)"})
-  public void testRunProcessStep_thenReturnResultObjectIsMetaFieldsBuilderImpl() {
+  public void testRunProcessStep4() {
     // Arrange
     GlobalKeyProcessStep globalKeyProcessStep = new GlobalKeyProcessStep(mock(Supplier.class));
     Class<RosettaModelObject> topClass = RosettaModelObject.class;
-    MetaFieldsBuilderImpl metaFieldsBuilderImpl = new MetaFieldsBuilderImpl();
+    PriceQuantity.PriceQuantityBuilderImpl priceQuantityBuilderImpl = new PriceQuantity.PriceQuantityBuilderImpl();
 
-    // Act and Assert
-    assertSame(metaFieldsBuilderImpl,
-        globalKeyProcessStep.runProcessStep(topClass, metaFieldsBuilderImpl).getResultObject());
+    // Act
+    GlobalKeyProcessStep.KeyPostProcessReport actualRunProcessStepResult = globalKeyProcessStep.runProcessStep(topClass,
+        priceQuantityBuilderImpl);
+
+    // Assert
+    assertTrue(actualRunProcessStepResult.getKeyMap().isEmpty());
+    assertSame(priceQuantityBuilderImpl, actualRunProcessStepResult.getResultObject());
   }
 
   /**
-   * Test {@link GlobalKeyProcessStep#runProcessStep(Class, RosettaModelObject)}.
-   * <ul>
-   *   <li>Then return ResultObject is {@link PriceQuantity.PriceQuantityBuilderImpl} (default constructor).</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link GlobalKeyProcessStep#runProcessStep(Class, RosettaModelObject)}
+   * Method under test:
+   * {@link GlobalKeyProcessStep#runProcessStep(Class, RosettaModelObject)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"KeyPostProcessReport GlobalKeyProcessStep.runProcessStep(Class, RosettaModelObject)"})
-  public void testRunProcessStep_thenReturnResultObjectIsPriceQuantityBuilderImpl() {
+  public void testRunProcessStep5() {
     // Arrange
     GlobalKeyProcessStep globalKeyProcessStep = new GlobalKeyProcessStep(mock(Supplier.class));
     Class<RosettaModelObject> topClass = RosettaModelObject.class;
+    FieldWithMetaPrice.FieldWithMetaPriceBuilderImpl fieldWithMetaPriceBuilderImpl = new FieldWithMetaPrice.FieldWithMetaPriceBuilderImpl();
 
-    PriceQuantityBuilderImpl priceQuantityBuilderImpl = new PriceQuantityBuilderImpl();
-    priceQuantityBuilderImpl.setPrice(new FieldWithMetaPriceBuilderImpl());
+    // Act
+    GlobalKeyProcessStep.KeyPostProcessReport actualRunProcessStepResult = globalKeyProcessStep.runProcessStep(topClass,
+        fieldWithMetaPriceBuilderImpl);
 
-    // Act and Assert
-    assertSame(priceQuantityBuilderImpl,
-        globalKeyProcessStep.runProcessStep(topClass, priceQuantityBuilderImpl).getResultObject());
+    // Assert
+    assertTrue(actualRunProcessStepResult.getKeyMap().isEmpty());
+    assertSame(fieldWithMetaPriceBuilderImpl, actualRunProcessStepResult.getResultObject());
   }
 
   /**
-   * Test {@link GlobalKeyProcessStep#runProcessStep(Class, RosettaModelObject)}.
-   * <ul>
-   *   <li>When {@link KeyBuilderImpl} (default constructor).</li>
-   *   <li>Then return ResultObject is {@link KeyBuilderImpl} (default constructor).</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link GlobalKeyProcessStep#runProcessStep(Class, RosettaModelObject)}
+   * Method under test:
+   * {@link GlobalKeyProcessStep#runProcessStep(Class, RosettaModelObject)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"KeyPostProcessReport GlobalKeyProcessStep.runProcessStep(Class, RosettaModelObject)"})
-  public void testRunProcessStep_whenKeyBuilderImpl_thenReturnResultObjectIsKeyBuilderImpl() {
+  public void testRunProcessStep6() {
     // Arrange
     GlobalKeyProcessStep globalKeyProcessStep = new GlobalKeyProcessStep(mock(Supplier.class));
     Class<RosettaModelObject> topClass = RosettaModelObject.class;
-    KeyBuilderImpl keyBuilderImpl = new KeyBuilderImpl();
 
-    // Act and Assert
-    assertSame(keyBuilderImpl, globalKeyProcessStep.runProcessStep(topClass, keyBuilderImpl).getResultObject());
+    PriceQuantity.PriceQuantityBuilderImpl priceQuantityBuilderImpl = new PriceQuantity.PriceQuantityBuilderImpl();
+    priceQuantityBuilderImpl.setPrice(new FieldWithMetaPrice.FieldWithMetaPriceBuilderImpl());
+
+    // Act
+    GlobalKeyProcessStep.KeyPostProcessReport actualRunProcessStepResult = globalKeyProcessStep.runProcessStep(topClass,
+        priceQuantityBuilderImpl);
+
+    // Assert
+    assertTrue(actualRunProcessStepResult.getKeyMap().isEmpty());
+    assertSame(priceQuantityBuilderImpl, actualRunProcessStepResult.getResultObject());
   }
 
   /**
-   * Test {@link GlobalKeyProcessStep#runProcessStep(Class, RosettaModelObject)}.
-   * <ul>
-   *   <li>When {@link Price.PriceBuilderImpl} (default constructor).</li>
-   *   <li>Then return ResultObject is {@link Price.PriceBuilderImpl} (default constructor).</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link GlobalKeyProcessStep#runProcessStep(Class, RosettaModelObject)}
+   * Method under test:
+   * {@link GlobalKeyProcessStep#runProcessStep(Class, RosettaModelObject)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"KeyPostProcessReport GlobalKeyProcessStep.runProcessStep(Class, RosettaModelObject)"})
-  public void testRunProcessStep_whenPriceBuilderImpl_thenReturnResultObjectIsPriceBuilderImpl() {
+  public void testRunProcessStep7() {
     // Arrange
     GlobalKeyProcessStep globalKeyProcessStep = new GlobalKeyProcessStep(mock(Supplier.class));
     Class<RosettaModelObject> topClass = RosettaModelObject.class;
-    PriceBuilderImpl priceBuilderImpl = new PriceBuilderImpl();
+    MetaFields.MetaFieldsBuilderImpl metaFieldsBuilderImpl = new MetaFields.MetaFieldsBuilderImpl();
 
-    // Act and Assert
-    assertSame(priceBuilderImpl, globalKeyProcessStep.runProcessStep(topClass, priceBuilderImpl).getResultObject());
+    // Act
+    GlobalKeyProcessStep.KeyPostProcessReport actualRunProcessStepResult = globalKeyProcessStep.runProcessStep(topClass,
+        metaFieldsBuilderImpl);
+
+    // Assert
+    assertTrue(actualRunProcessStepResult.getKeyMap().isEmpty());
+    assertSame(metaFieldsBuilderImpl, actualRunProcessStepResult.getResultObject());
+  }
+
+  /**
+   * Method under test:
+   * {@link GlobalKeyProcessStep#runProcessStep(Class, RosettaModelObject)}
+   */
+  @Test
+  public void testRunProcessStep8() {
+    // Arrange
+    GlobalKeyProcessStep globalKeyProcessStep = new GlobalKeyProcessStep(mock(Supplier.class));
+    Class<RosettaModelObject> topClass = RosettaModelObject.class;
+
+    MetaFields.MetaFieldsBuilderImpl metaFieldsBuilderImpl = new MetaFields.MetaFieldsBuilderImpl();
+    metaFieldsBuilderImpl.addKey(new Key.KeyBuilderImpl());
+
+    // Act
+    GlobalKeyProcessStep.KeyPostProcessReport actualRunProcessStepResult = globalKeyProcessStep.runProcessStep(topClass,
+        metaFieldsBuilderImpl);
+
+    // Assert
+    assertTrue(actualRunProcessStepResult.getKeyMap().isEmpty());
+    assertSame(metaFieldsBuilderImpl, actualRunProcessStepResult.getResultObject());
+  }
+
+  /**
+   * Method under test:
+   * {@link GlobalKeyProcessStep#runProcessStep(Class, RosettaModelObject)}
+   */
+  @Test
+  public void testRunProcessStep9() {
+    // Arrange
+    GlobalKeyProcessStep globalKeyProcessStep = new GlobalKeyProcessStep(mock(Supplier.class));
+    Class<RosettaModelObject> topClass = RosettaModelObject.class;
+
+    MetaFields.MetaFieldsBuilderImpl metaFieldsBuilderImpl = new MetaFields.MetaFieldsBuilderImpl();
+    metaFieldsBuilderImpl.addKey(new Key.KeyBuilderImpl());
+    metaFieldsBuilderImpl.addKey(new Key.KeyBuilderImpl());
+
+    // Act
+    GlobalKeyProcessStep.KeyPostProcessReport actualRunProcessStepResult = globalKeyProcessStep.runProcessStep(topClass,
+        metaFieldsBuilderImpl);
+
+    // Assert
+    assertTrue(actualRunProcessStepResult.getKeyMap().isEmpty());
+    assertSame(metaFieldsBuilderImpl, actualRunProcessStepResult.getResultObject());
+  }
+
+  /**
+   * Method under test:
+   * {@link GlobalKeyProcessStep#runProcessStep(Class, RosettaModelObject)}
+   */
+  @Test
+  public void testRunProcessStep10() {
+    // Arrange
+    GlobalKeyProcessStep globalKeyProcessStep = new GlobalKeyProcessStep(mock(Supplier.class));
+    Class<RosettaModelObject> topClass = RosettaModelObject.class;
+
+    MetaFields.MetaFieldsBuilderImpl metaFieldsBuilderImpl = new MetaFields.MetaFieldsBuilderImpl();
+    metaFieldsBuilderImpl.addKey(new Key.KeyBuilderImpl(), 2);
+    metaFieldsBuilderImpl.addKey(new Key.KeyBuilderImpl());
+
+    // Act
+    GlobalKeyProcessStep.KeyPostProcessReport actualRunProcessStepResult = globalKeyProcessStep.runProcessStep(topClass,
+        metaFieldsBuilderImpl);
+
+    // Assert
+    assertTrue(actualRunProcessStepResult.getKeyMap().isEmpty());
+    assertSame(metaFieldsBuilderImpl, actualRunProcessStepResult.getResultObject());
+  }
+
+  /**
+   * Methods under test:
+   * <ul>
+   *   <li>{@link GlobalKeyProcessStep#GlobalKeyProcessStep(Supplier)}
+   *   <li>{@link GlobalKeyProcessStep#getName()}
+   * </ul>
+   */
+  @Test
+  public void testGettersAndSetters() {
+    // Arrange, Act and Assert
+    assertEquals("GlobalKey postProcessor", (new GlobalKeyProcessStep(mock(Supplier.class))).getName());
   }
 }

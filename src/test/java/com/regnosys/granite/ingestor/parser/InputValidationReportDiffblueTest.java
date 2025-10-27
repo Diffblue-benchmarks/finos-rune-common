@@ -22,17 +22,12 @@ package com.regnosys.granite.ingestor.parser;
 
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
 
 public class InputValidationReportDiffblueTest {
   /**
-   * Test getters and setters.
-   * <p>
    * Methods under test:
    * <ul>
    *   <li>{@link InputValidationReport#InputValidationReport(List)}
@@ -40,8 +35,6 @@ public class InputValidationReportDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void InputValidationReport.<init>(List)", "List InputValidationReport.getErrors()"})
   public void testGettersAndSetters() {
     // Arrange
     ArrayList<String> errors = new ArrayList<>();

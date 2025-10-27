@@ -22,44 +22,33 @@ package com.regnosys.rosetta.common.translation;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.awt.Component;
-import java.awt.Component.BaselineResizeBehavior;
 import java.util.HashMap;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
 
 public class SynonymToEnumMapDiffblueTest {
   /**
-   * Test {@link SynonymToEnumMap#getEnumValue(Class, String)}.
-   * <p>
    * Method under test: {@link SynonymToEnumMap#getEnumValue(Class, String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"java.lang.Enum SynonymToEnumMap.getEnumValue(Class, String)"})
   public void testGetEnumValue() {
     // Arrange
     SynonymToEnumMap synonymToEnumMap = new SynonymToEnumMap(new HashMap<>());
-    Class<BaselineResizeBehavior> enumClass = BaselineResizeBehavior.class;
+    Class<Component.BaselineResizeBehavior> enumClass = Component.BaselineResizeBehavior.class;
 
     // Act and Assert
     assertNull(synonymToEnumMap.getEnumValue(enumClass, "42"));
   }
 
   /**
-   * Test {@link SynonymToEnumMap#getEnumValueOptional(Class, String)}.
-   * <p>
-   * Method under test: {@link SynonymToEnumMap#getEnumValueOptional(Class, String)}
+   * Method under test:
+   * {@link SynonymToEnumMap#getEnumValueOptional(Class, String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"java.util.Optional SynonymToEnumMap.getEnumValueOptional(Class, String)"})
   public void testGetEnumValueOptional() {
     // Arrange
     SynonymToEnumMap synonymToEnumMap = new SynonymToEnumMap(new HashMap<>());
-    Class<BaselineResizeBehavior> enumClass = BaselineResizeBehavior.class;
+    Class<Component.BaselineResizeBehavior> enumClass = Component.BaselineResizeBehavior.class;
 
     // Act and Assert
     assertFalse(synonymToEnumMap.getEnumValueOptional(enumClass, "42").isPresent());

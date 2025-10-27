@@ -24,17 +24,135 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
+import static org.mockito.Mockito.mock;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.BiFunction;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
 
 public class MappingCoverageDiffblueTest {
   /**
-   * Test getters and setters.
-   * <p>
+   * Methods under test:
+   * <ul>
+   *   <li>{@link MappingCoverage#equals(Object)}
+   *   <li>{@link MappingCoverage#hashCode()}
+   * </ul>
+   */
+  @Test
+  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
+    // Arrange
+    MappingCoverage mappingCoverage = new MappingCoverage("Ingestion Environment", new HashMap<>(), 10.0d);
+    MappingCoverage mappingCoverage2 = new MappingCoverage("Ingestion Environment", new HashMap<>(), 10.0d);
+
+    // Act and Assert
+    assertEquals(mappingCoverage, mappingCoverage2);
+    int expectedHashCodeResult = mappingCoverage.hashCode();
+    assertEquals(expectedHashCodeResult, mappingCoverage2.hashCode());
+  }
+
+  /**
+   * Methods under test:
+   * <ul>
+   *   <li>{@link MappingCoverage#equals(Object)}
+   *   <li>{@link MappingCoverage#hashCode()}
+   * </ul>
+   */
+  @Test
+  public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
+    // Arrange
+    MappingCoverage mappingCoverage = new MappingCoverage("Ingestion Environment", new HashMap<>(), 10.0d);
+
+    // Act and Assert
+    assertEquals(mappingCoverage, mappingCoverage);
+    int expectedHashCodeResult = mappingCoverage.hashCode();
+    assertEquals(expectedHashCodeResult, mappingCoverage.hashCode());
+  }
+
+  /**
+   * Method under test: {@link MappingCoverage#compareTo(MappingCoverage)}
+   */
+  @Test
+  public void testCompareTo() {
+    // Arrange
+    MappingCoverage mappingCoverage = new MappingCoverage(MappingCoverage.ENV, new HashMap<>(), 10.0d);
+
+    // Act and Assert
+    assertEquals(28, mappingCoverage.compareTo(new MappingCoverage("Ingestion Environment", new HashMap<>(), 10.0d)));
+  }
+
+  /**
+   * Method under test: {@link MappingCoverage#equals(Object)}
+   */
+  @Test
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
+    // Arrange
+    MappingCoverage mappingCoverage = new MappingCoverage(null, new HashMap<>(), 10.0d);
+
+    // Act and Assert
+    assertNotEquals(mappingCoverage, new MappingCoverage("Ingestion Environment", new HashMap<>(), 10.0d));
+  }
+
+  /**
+   * Method under test: {@link MappingCoverage#equals(Object)}
+   */
+  @Test
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual2() {
+    // Arrange
+    HashMap<String, String> schema = new HashMap<>();
+    schema.put("foo", "foo");
+    MappingCoverage mappingCoverage = new MappingCoverage("Ingestion Environment", schema, 10.0d);
+
+    // Act and Assert
+    assertNotEquals(mappingCoverage, new MappingCoverage("Ingestion Environment", new HashMap<>(), 10.0d));
+  }
+
+  /**
+   * Method under test: {@link MappingCoverage#equals(Object)}
+   */
+  @Test
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual3() {
+    // Arrange
+    HashMap<String, String> schema = new HashMap<>();
+    schema.computeIfPresent("foo", mock(BiFunction.class));
+    schema.put("foo", "foo");
+    MappingCoverage mappingCoverage = new MappingCoverage("Ingestion Environment", schema, 10.0d);
+
+    // Act and Assert
+    assertNotEquals(mappingCoverage, new MappingCoverage("Ingestion Environment", new HashMap<>(), 10.0d));
+  }
+
+  /**
+   * Method under test: {@link MappingCoverage#equals(Object)}
+   */
+  @Test
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual4() {
+    // Arrange
+    MappingCoverage mappingCoverage = new MappingCoverage("Ingestion Environment", new HashMap<>(), 0.5d);
+
+    // Act and Assert
+    assertNotEquals(mappingCoverage, new MappingCoverage("Ingestion Environment", new HashMap<>(), 10.0d));
+  }
+
+  /**
+   * Method under test: {@link MappingCoverage#equals(Object)}
+   */
+  @Test
+  public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
+    // Arrange, Act and Assert
+    assertNotEquals(new MappingCoverage("Ingestion Environment", new HashMap<>(), 10.0d), null);
+  }
+
+  /**
+   * Method under test: {@link MappingCoverage#equals(Object)}
+   */
+  @Test
+  public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
+    // Arrange, Act and Assert
+    assertNotEquals(new MappingCoverage("Ingestion Environment", new HashMap<>(), 10.0d),
+        "Different type to MappingCoverage");
+  }
+
+  /**
    * Methods under test:
    * <ul>
    *   <li>{@link MappingCoverage#MappingCoverage(String, Map, double)}
@@ -45,10 +163,6 @@ public class MappingCoverageDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void MappingCoverage.<init>(String, Map, double)",
-      "String MappingCoverage.getIngestionEnvironment()", "double MappingCoverage.getMappingCoverage()",
-      "Map MappingCoverage.getSchema()", "String MappingCoverage.toString()"})
   public void testGettersAndSetters() {
     // Arrange
     HashMap<String, String> schema = new HashMap<>();
@@ -67,174 +181,5 @@ public class MappingCoverageDiffblueTest {
     assertEquals(10.0d, actualMappingCoverage2, 0.0);
     assertTrue(actualSchema.isEmpty());
     assertSame(schema, actualSchema);
-  }
-
-  /**
-   * Test {@link MappingCoverage#equals(Object)}, and {@link MappingCoverage#hashCode()}.
-   * <ul>
-   *   <li>When other is equal.</li>
-   *   <li>Then return equal.</li>
-   * </ul>
-   * <p>
-   * Methods under test:
-   * <ul>
-   *   <li>{@link MappingCoverage#equals(Object)}
-   *   <li>{@link MappingCoverage#hashCode()}
-   * </ul>
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean MappingCoverage.equals(Object)", "int MappingCoverage.hashCode()"})
-  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
-    // Arrange
-    MappingCoverage mappingCoverage = new MappingCoverage("Ingestion Environment", new HashMap<>(), 10.0d);
-    MappingCoverage mappingCoverage2 = new MappingCoverage("Ingestion Environment", new HashMap<>(), 10.0d);
-
-    // Act and Assert
-    assertEquals(mappingCoverage, mappingCoverage2);
-    int expectedHashCodeResult = mappingCoverage.hashCode();
-    assertEquals(expectedHashCodeResult, mappingCoverage2.hashCode());
-  }
-
-  /**
-   * Test {@link MappingCoverage#equals(Object)}, and {@link MappingCoverage#hashCode()}.
-   * <ul>
-   *   <li>When other is same.</li>
-   *   <li>Then return equal.</li>
-   * </ul>
-   * <p>
-   * Methods under test:
-   * <ul>
-   *   <li>{@link MappingCoverage#equals(Object)}
-   *   <li>{@link MappingCoverage#hashCode()}
-   * </ul>
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean MappingCoverage.equals(Object)", "int MappingCoverage.hashCode()"})
-  public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
-    // Arrange
-    MappingCoverage mappingCoverage = new MappingCoverage("Ingestion Environment", new HashMap<>(), 10.0d);
-
-    // Act and Assert
-    assertEquals(mappingCoverage, mappingCoverage);
-    int expectedHashCodeResult = mappingCoverage.hashCode();
-    assertEquals(expectedHashCodeResult, mappingCoverage.hashCode());
-  }
-
-  /**
-   * Test {@link MappingCoverage#equals(Object)}.
-   * <ul>
-   *   <li>When other is different.</li>
-   *   <li>Then return not equal.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link MappingCoverage#equals(Object)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean MappingCoverage.equals(Object)", "int MappingCoverage.hashCode()"})
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
-    // Arrange
-    MappingCoverage mappingCoverage = new MappingCoverage(null, new HashMap<>(), 10.0d);
-
-    // Act and Assert
-    assertNotEquals(mappingCoverage, new MappingCoverage("Ingestion Environment", new HashMap<>(), 10.0d));
-  }
-
-  /**
-   * Test {@link MappingCoverage#equals(Object)}.
-   * <ul>
-   *   <li>When other is different.</li>
-   *   <li>Then return not equal.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link MappingCoverage#equals(Object)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean MappingCoverage.equals(Object)", "int MappingCoverage.hashCode()"})
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual2() {
-    // Arrange
-    HashMap<String, String> schema = new HashMap<>();
-    schema.put("foo", "foo");
-    MappingCoverage mappingCoverage = new MappingCoverage("Ingestion Environment", schema, 10.0d);
-
-    // Act and Assert
-    assertNotEquals(mappingCoverage, new MappingCoverage("Ingestion Environment", new HashMap<>(), 10.0d));
-  }
-
-  /**
-   * Test {@link MappingCoverage#equals(Object)}.
-   * <ul>
-   *   <li>When other is different.</li>
-   *   <li>Then return not equal.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link MappingCoverage#equals(Object)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean MappingCoverage.equals(Object)", "int MappingCoverage.hashCode()"})
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual3() {
-    // Arrange
-    MappingCoverage mappingCoverage = new MappingCoverage("Ingestion Environment", new HashMap<>(), 0.5d);
-
-    // Act and Assert
-    assertNotEquals(mappingCoverage, new MappingCoverage("Ingestion Environment", new HashMap<>(), 10.0d));
-  }
-
-  /**
-   * Test {@link MappingCoverage#equals(Object)}.
-   * <ul>
-   *   <li>When other is {@code null}.</li>
-   *   <li>Then return not equal.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link MappingCoverage#equals(Object)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean MappingCoverage.equals(Object)", "int MappingCoverage.hashCode()"})
-  public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
-    // Arrange, Act and Assert
-    assertNotEquals(new MappingCoverage("Ingestion Environment", new HashMap<>(), 10.0d), null);
-  }
-
-  /**
-   * Test {@link MappingCoverage#equals(Object)}.
-   * <ul>
-   *   <li>When other is wrong type.</li>
-   *   <li>Then return not equal.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link MappingCoverage#equals(Object)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean MappingCoverage.equals(Object)", "int MappingCoverage.hashCode()"})
-  public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
-    // Arrange, Act and Assert
-    assertNotEquals(new MappingCoverage("Ingestion Environment", new HashMap<>(), 10.0d),
-        "Different type to MappingCoverage");
-  }
-
-  /**
-   * Test {@link MappingCoverage#compareTo(MappingCoverage)} with {@code MappingCoverage}.
-   * <ul>
-   *   <li>Then return twenty-eight.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link MappingCoverage#compareTo(MappingCoverage)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"int MappingCoverage.compareTo(MappingCoverage)"})
-  public void testCompareToWithMappingCoverage_thenReturnTwentyEight() {
-    // Arrange
-    MappingCoverage mappingCoverage = new MappingCoverage(MappingCoverage.ENV, new HashMap<>(), 10.0d);
-
-    // Act and Assert
-    assertEquals(28, mappingCoverage.compareTo(new MappingCoverage("Ingestion Environment", new HashMap<>(), 10.0d)));
   }
 }

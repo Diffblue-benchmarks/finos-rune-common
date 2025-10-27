@@ -22,20 +22,13 @@ package com.regnosys.rosetta.common.util;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
 
 public class PairDiffblueTest {
   /**
-   * Test {@link Pair#of(Object, Object)}.
-   * <p>
    * Method under test: {@link Pair#of(Object, Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"Pair Pair.of(Object, Object)"})
   public void testOf() {
     // Arrange and Act
     Pair<Object, Object> actualOfResult = Pair.of("Left", "Right");
@@ -46,39 +39,6 @@ public class PairDiffblueTest {
   }
 
   /**
-   * Test getters and setters.
-   * <p>
-   * Methods under test:
-   * <ul>
-   *   <li>{@link Pair#toString()}
-   *   <li>{@link Pair#left()}
-   *   <li>{@link Pair#right()}
-   * </ul>
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"Object Pair.left()", "Object Pair.right()", "String Pair.toString()"})
-  public void testGettersAndSetters() {
-    // Arrange
-    Pair<Object, Object> ofResult = Pair.of("Left", "Right");
-
-    // Act
-    String actualToStringResult = ofResult.toString();
-    Object actualLeftResult = ofResult.left();
-
-    // Assert
-    assertEquals("(Left,Right)", actualToStringResult);
-    assertEquals("Left", actualLeftResult);
-    assertEquals("Right", ofResult.right());
-  }
-
-  /**
-   * Test {@link Pair#equals(Object)}, and {@link Pair#hashCode()}.
-   * <ul>
-   *   <li>When other is equal.</li>
-   *   <li>Then return equal.</li>
-   * </ul>
-   * <p>
    * Methods under test:
    * <ul>
    *   <li>{@link Pair#equals(Object)}
@@ -86,8 +46,6 @@ public class PairDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean Pair.equals(Object)", "int Pair.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
     // Arrange
     Pair<Object, Object> ofResult = Pair.of("Left", "Right");
@@ -100,12 +58,6 @@ public class PairDiffblueTest {
   }
 
   /**
-   * Test {@link Pair#equals(Object)}, and {@link Pair#hashCode()}.
-   * <ul>
-   *   <li>When other is same.</li>
-   *   <li>Then return equal.</li>
-   * </ul>
-   * <p>
    * Methods under test:
    * <ul>
    *   <li>{@link Pair#equals(Object)}
@@ -113,8 +65,6 @@ public class PairDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean Pair.equals(Object)", "int Pair.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
     Pair<Object, Object> ofResult = Pair.of("Left", "Right");
@@ -126,17 +76,9 @@ public class PairDiffblueTest {
   }
 
   /**
-   * Test {@link Pair#equals(Object)}.
-   * <ul>
-   *   <li>When other is different.</li>
-   *   <li>Then return not equal.</li>
-   * </ul>
-   * <p>
    * Method under test: {@link Pair#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean Pair.equals(Object)", "int Pair.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange
     Pair<Object, Object> ofResult = Pair.<Object, Object>of(1, "Right");
@@ -147,17 +89,9 @@ public class PairDiffblueTest {
   }
 
   /**
-   * Test {@link Pair#equals(Object)}.
-   * <ul>
-   *   <li>When other is different.</li>
-   *   <li>Then return not equal.</li>
-   * </ul>
-   * <p>
    * Method under test: {@link Pair#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean Pair.equals(Object)", "int Pair.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual2() {
     // Arrange
     Pair<Object, Object> ofResult = Pair.of("Left", "Right");
@@ -169,17 +103,9 @@ public class PairDiffblueTest {
   }
 
   /**
-   * Test {@link Pair#equals(Object)}.
-   * <ul>
-   *   <li>When other is different.</li>
-   *   <li>Then return not equal.</li>
-   * </ul>
-   * <p>
    * Method under test: {@link Pair#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean Pair.equals(Object)", "int Pair.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual3() {
     // Arrange
     Pair<Object, Object> ofResult = Pair.<Object, Object>of("Left", 1);
@@ -190,17 +116,9 @@ public class PairDiffblueTest {
   }
 
   /**
-   * Test {@link Pair#equals(Object)}.
-   * <ul>
-   *   <li>When other is different.</li>
-   *   <li>Then return not equal.</li>
-   * </ul>
-   * <p>
    * Method under test: {@link Pair#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean Pair.equals(Object)", "int Pair.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual4() {
     // Arrange
     Pair<Object, Object> ofResult = Pair.of("Left", "Right");
@@ -212,17 +130,9 @@ public class PairDiffblueTest {
   }
 
   /**
-   * Test {@link Pair#equals(Object)}.
-   * <ul>
-   *   <li>When other is {@code null}.</li>
-   *   <li>Then return not equal.</li>
-   * </ul>
-   * <p>
    * Method under test: {@link Pair#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean Pair.equals(Object)", "int Pair.hashCode()"})
   public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange
     Pair<Object, Object> ofResult = Pair.of("Left", "Right");
@@ -232,22 +142,37 @@ public class PairDiffblueTest {
   }
 
   /**
-   * Test {@link Pair#equals(Object)}.
-   * <ul>
-   *   <li>When other is wrong type.</li>
-   *   <li>Then return not equal.</li>
-   * </ul>
-   * <p>
    * Method under test: {@link Pair#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean Pair.equals(Object)", "int Pair.hashCode()"})
   public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange
     Pair<Object, Object> ofResult = Pair.of("Left", "Right");
 
     // Act and Assert
     assertNotEquals(ofResult, "Different type to Pair");
+  }
+
+  /**
+   * Methods under test:
+   * <ul>
+   *   <li>{@link Pair#toString()}
+   *   <li>{@link Pair#left()}
+   *   <li>{@link Pair#right()}
+   * </ul>
+   */
+  @Test
+  public void testGettersAndSetters() {
+    // Arrange
+    Pair<Object, Object> ofResult = Pair.of("Left", "Right");
+
+    // Act
+    String actualToStringResult = ofResult.toString();
+    Object actualLeftResult = ofResult.left();
+
+    // Assert
+    assertEquals("(Left,Right)", actualToStringResult);
+    assertEquals("Left", actualLeftResult);
+    assertEquals("Right", ofResult.right());
   }
 }

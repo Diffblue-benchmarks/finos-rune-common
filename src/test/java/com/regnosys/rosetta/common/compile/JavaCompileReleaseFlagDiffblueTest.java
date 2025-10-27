@@ -21,20 +21,13 @@ package com.regnosys.rosetta.common.compile;
  */
 
 import static org.junit.Assert.assertEquals;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
 
 public class JavaCompileReleaseFlagDiffblueTest {
   /**
-   * Test {@link JavaCompileReleaseFlag#getVersion()}.
-   * <p>
    * Method under test: {@link JavaCompileReleaseFlag#getVersion()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"java.lang.String JavaCompileReleaseFlag.getVersion()"})
   public void testGetVersion() {
     // Arrange, Act and Assert
     assertEquals("8", JavaCompileReleaseFlag.valueOf("JAVA_8").getVersion());

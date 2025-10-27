@@ -24,104 +24,23 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
+import static org.mockito.Mockito.mock;
 import com.regnosys.granite.ingestor.parser.InputValidationReport;
 import com.regnosys.rosetta.common.merger.BarBuilder;
 import com.regnosys.rosetta.common.validation.ValidationReport;
 import com.rosetta.model.lib.RosettaModelObject;
+import com.rosetta.model.lib.path.RosettaPath;
+import com.rosetta.model.lib.validation.ValidationResult;
 import java.util.ArrayList;
+import java.util.Optional;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
 
 public class ProjectionReportDiffblueTest {
   /**
-   * Test {@link ProjectionReport#ProjectionReport(RosettaModelObject, Object, String, InputValidationReport, ValidationReport)}.
-   * <ul>
-   *   <li>When {@link InputValidationReport#SUCCESS}.</li>
-   *   <li>Then return {@code Projected Instance As String}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link ProjectionReport#ProjectionReport(RosettaModelObject, Object, String, InputValidationReport, ValidationReport)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({
-      "void ProjectionReport.<init>(RosettaModelObject, Object, String, InputValidationReport, ValidationReport)"})
-  public void testNewProjectionReport_whenSuccess_thenReturnProjectedInstanceAsString() {
-    // Arrange
-    BarBuilder barBuilder = new BarBuilder();
-    InputValidationReport inputValidation = InputValidationReport.SUCCESS;
-    BarBuilder resultObject = new BarBuilder();
-    ValidationReport validationReport = new ValidationReport(resultObject, new ArrayList<>());
-
-    // Act
-    ProjectionReport<RosettaModelObject, Object> actualProjectionReport = new ProjectionReport<>(barBuilder,
-        "Projected Instance", "Projected Instance As String", inputValidation, validationReport);
-
-    // Assert
-    assertEquals("Projected Instance As String", actualProjectionReport.getProjectedInstanceAsString());
-    assertEquals("Projected Instance", actualProjectionReport.getProjectedInstance());
-    assertTrue(actualProjectionReport.isSuccess());
-    InputValidationReport inputValidation2 = actualProjectionReport.getInputValidation();
-    assertTrue(inputValidation2.getErrors().isEmpty());
-    assertSame(barBuilder, actualProjectionReport.getRosettaModelInstance());
-    assertSame(validationReport, actualProjectionReport.getValidationReport());
-    assertSame(inputValidation.SUCCESS, inputValidation2);
-  }
-
-  /**
-   * Test {@link ProjectionReport#isSuccess()}.
-   * <p>
    * Method under test: {@link ProjectionReport#isSuccess()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean ProjectionReport.isSuccess()"})
   public void testIsSuccess() {
-    // Arrange
-    BarBuilder barBuilder = new BarBuilder();
-    BarBuilder resultObject = new BarBuilder();
-    ProjectionReport<RosettaModelObject, Object> projectionReport = new ProjectionReport<>(barBuilder, null,
-        "Projected Instance As String", InputValidationReport.SUCCESS,
-        new ValidationReport(resultObject, new ArrayList<>()));
-
-    // Act and Assert
-    assertFalse(projectionReport.isSuccess());
-  }
-
-  /**
-   * Test {@link ProjectionReport#isSuccess()}.
-   * <p>
-   * Method under test: {@link ProjectionReport#isSuccess()}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean ProjectionReport.isSuccess()"})
-  public void testIsSuccess2() {
-    // Arrange
-    BarBuilder barBuilder = new BarBuilder();
-    BarBuilder resultObject = new BarBuilder();
-    ProjectionReport<RosettaModelObject, Object> projectionReport = new ProjectionReport<>(barBuilder,
-        "Projected Instance", null, InputValidationReport.SUCCESS,
-        new ValidationReport(resultObject, new ArrayList<>()));
-
-    // Act and Assert
-    assertFalse(projectionReport.isSuccess());
-  }
-
-  /**
-   * Test {@link ProjectionReport#isSuccess()}.
-   * <ul>
-   *   <li>Then return {@code true}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link ProjectionReport#isSuccess()}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean ProjectionReport.isSuccess()"})
-  public void testIsSuccess_thenReturnTrue() {
     // Arrange
     BarBuilder barBuilder = new BarBuilder();
     BarBuilder resultObject = new BarBuilder();
@@ -134,8 +53,58 @@ public class ProjectionReportDiffblueTest {
   }
 
   /**
-   * Test getters and setters.
-   * <p>
+   * Method under test: {@link ProjectionReport#isSuccess()}
+   */
+  @Test
+  public void testIsSuccess2() {
+    // Arrange
+    BarBuilder barBuilder = new BarBuilder();
+    BarBuilder resultObject = new BarBuilder();
+    ProjectionReport<RosettaModelObject, Object> projectionReport = new ProjectionReport<>(barBuilder, null,
+        "Projected Instance As String", InputValidationReport.SUCCESS,
+        new ValidationReport(resultObject, new ArrayList<>()));
+
+    // Act and Assert
+    assertFalse(projectionReport.isSuccess());
+  }
+
+  /**
+   * Method under test: {@link ProjectionReport#isSuccess()}
+   */
+  @Test
+  public void testIsSuccess3() {
+    // Arrange
+    BarBuilder barBuilder = new BarBuilder();
+    BarBuilder resultObject = new BarBuilder();
+    ProjectionReport<RosettaModelObject, Object> projectionReport = new ProjectionReport<>(barBuilder,
+        "Projected Instance", null, InputValidationReport.SUCCESS,
+        new ValidationReport(resultObject, new ArrayList<>()));
+
+    // Act and Assert
+    assertFalse(projectionReport.isSuccess());
+  }
+
+  /**
+   * Method under test: {@link ProjectionReport#isSuccess()}
+   */
+  @Test
+  public void testIsSuccess4() {
+    // Arrange
+    ArrayList<ValidationResult<?>> validationResults = new ArrayList<>();
+    RosettaPath path = mock(RosettaPath.class);
+    Optional<String> failureReason = Optional.of("foo");
+    validationResults.add(new ValidationResult.ModelValidationResult<>("Name",
+        ValidationResult.ValidationType.DATA_RULE, "Model Object Name", path, "Definition", failureReason));
+    ValidationReport validationReport = new ValidationReport(new BarBuilder(), validationResults);
+
+    ProjectionReport<RosettaModelObject, Object> projectionReport = new ProjectionReport<>(new BarBuilder(),
+        "Projected Instance", "Projected Instance As String", InputValidationReport.SUCCESS, validationReport);
+
+    // Act and Assert
+    assertTrue(projectionReport.isSuccess());
+  }
+
+  /**
    * Methods under test:
    * <ul>
    *   <li>{@link ProjectionReport#getInputValidation()}
@@ -145,10 +114,6 @@ public class ProjectionReportDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"InputValidationReport ProjectionReport.getInputValidation()",
-      "Object ProjectionReport.getProjectedInstance()", "String ProjectionReport.getProjectedInstanceAsString()",
-      "ValidationReport ProjectionReport.getValidationReport()"})
   public void testGettersAndSetters() {
     // Arrange
     BarBuilder barBuilder = new BarBuilder();
@@ -168,5 +133,63 @@ public class ProjectionReportDiffblueTest {
     assertEquals("Projected Instance", actualProjectedInstance);
     assertSame(validationReport, projectionReport.getValidationReport());
     assertSame(actualInputValidation.SUCCESS, actualInputValidation);
+  }
+
+  /**
+   * Method under test:
+   * {@link ProjectionReport#ProjectionReport(RosettaModelObject, Object, String, InputValidationReport, ValidationReport)}
+   */
+  @Test
+  public void testNewProjectionReport() {
+    // Arrange
+    BarBuilder barBuilder = new BarBuilder();
+    InputValidationReport inputValidation = InputValidationReport.SUCCESS;
+    BarBuilder resultObject = new BarBuilder();
+    ValidationReport validationReport = new ValidationReport(resultObject, new ArrayList<>());
+
+    // Act
+    ProjectionReport<RosettaModelObject, Object> actualProjectionReport = new ProjectionReport<>(barBuilder,
+        "Projected Instance", "Projected Instance As String", inputValidation, validationReport);
+
+    // Assert
+    assertEquals("Projected Instance As String", actualProjectionReport.getProjectedInstanceAsString());
+    assertEquals("Projected Instance", actualProjectionReport.getProjectedInstance());
+    assertTrue(actualProjectionReport.isSuccess());
+    assertSame(barBuilder, actualProjectionReport.getRosettaModelInstance());
+    assertSame(validationReport, actualProjectionReport.getValidationReport());
+    InputValidationReport expectedInputValidation = inputValidation.SUCCESS;
+    assertSame(expectedInputValidation, actualProjectionReport.getInputValidation());
+  }
+
+  /**
+   * Method under test:
+   * {@link ProjectionReport#ProjectionReport(RosettaModelObject, Object, String, InputValidationReport, ValidationReport)}
+   */
+  @Test
+  public void testNewProjectionReport2() {
+    // Arrange
+    BarBuilder barBuilder = new BarBuilder();
+    InputValidationReport inputValidation = InputValidationReport.SUCCESS;
+
+    ArrayList<ValidationResult<?>> validationResults = new ArrayList<>();
+    RosettaPath path = mock(RosettaPath.class);
+    Optional<String> failureReason = Optional.of("foo");
+    validationResults.add(new ValidationResult.ModelValidationResult<>("Name",
+        ValidationResult.ValidationType.DATA_RULE, "Model Object Name", path, "Definition", failureReason));
+    ValidationReport validationReport = new ValidationReport(new BarBuilder(), validationResults);
+
+    // Act
+    ProjectionReport<RosettaModelObject, Object> actualProjectionReport = new ProjectionReport<>(barBuilder,
+        "Projected Instance", "Projected Instance As String", inputValidation, validationReport);
+
+    // Assert
+    assertEquals("Projected Instance As String", actualProjectionReport.getProjectedInstanceAsString());
+    assertEquals("Projected Instance", actualProjectionReport.getProjectedInstance());
+    assertTrue(actualProjectionReport.isSuccess());
+    InputValidationReport inputValidation2 = actualProjectionReport.getInputValidation();
+    assertTrue(inputValidation2.getErrors().isEmpty());
+    assertSame(barBuilder, actualProjectionReport.getRosettaModelInstance());
+    assertSame(validationReport, actualProjectionReport.getValidationReport());
+    assertSame(inputValidation.SUCCESS, inputValidation2);
   }
 }

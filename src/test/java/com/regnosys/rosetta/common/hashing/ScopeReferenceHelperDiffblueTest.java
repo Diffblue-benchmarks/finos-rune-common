@@ -25,70 +25,20 @@ import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
 import com.regnosys.rosetta.common.translation.Path;
 import com.rosetta.model.lib.path.RosettaPath;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.function.Supplier;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
 
 public class ScopeReferenceHelperDiffblueTest {
   /**
-   * Test getters and setters.
-   * <p>
-   * Methods under test:
-   * <ul>
-   *   <li>{@link ScopeReferenceHelper#ScopeReferenceHelper(ReferenceConfig, Supplier)}
-   *   <li>{@link ScopeReferenceHelper#getScopeToDataMap()}
-   * </ul>
+   * Method under test:
+   * {@link ScopeReferenceHelper#collectScopePath(RosettaPath, Class)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void ScopeReferenceHelper.<init>(ReferenceConfig, Supplier)",
-      "java.util.Map ScopeReferenceHelper.getScopeToDataMap()"})
-  public void testGettersAndSetters() {
-    // Arrange and Act
-    ScopeReferenceHelper<Object> actualScopeReferenceHelper = new ScopeReferenceHelper<>(
-        ReferenceConfig.noScopeOrExcludedPaths(), mock(Supplier.class));
-
-    // Assert
-    assertTrue(actualScopeReferenceHelper.getScopeToDataMap().isEmpty());
-  }
-
-  /**
-   * Test {@link ScopeReferenceHelper#collectScopePath(RosettaPath, Class)}.
-   * <p>
-   * Method under test: {@link ScopeReferenceHelper#collectScopePath(RosettaPath, Class)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void ScopeReferenceHelper.collectScopePath(RosettaPath, Class)"})
   public void testCollectScopePath() {
-    // Arrange
-    ScopeReferenceHelper<Object> scopeReferenceHelper = new ScopeReferenceHelper<>(
-        ReferenceConfig.noScopeOrExcludedPaths(), mock(Supplier.class));
-    RosettaPath path = mock(RosettaPath.class);
-    Class<Object> rosettaType = Object.class;
-
-    // Act
-    scopeReferenceHelper.collectScopePath(path, rosettaType);
-
-    // Assert that nothing has changed
-    assertTrue(scopeReferenceHelper.getScopeToDataMap().isEmpty());
-  }
-
-  /**
-   * Test {@link ScopeReferenceHelper#collectScopePath(RosettaPath, Class)}.
-   * <p>
-   * Method under test: {@link ScopeReferenceHelper#collectScopePath(RosettaPath, Class)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void ScopeReferenceHelper.collectScopePath(RosettaPath, Class)"})
-  public void testCollectScopePath2() {
     // Arrange
     Supplier<Object> newDataStructureSupplier = mock(Supplier.class);
     when(newDataStructureSupplier.get()).thenReturn("Get");
@@ -109,13 +59,9 @@ public class ScopeReferenceHelperDiffblueTest {
   }
 
   /**
-   * Test {@link ScopeReferenceHelper#getDataForModelPath(Path)}.
-   * <p>
    * Method under test: {@link ScopeReferenceHelper#getDataForModelPath(Path)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"Object ScopeReferenceHelper.getDataForModelPath(Path)"})
   public void testGetDataForModelPath() {
     // Arrange
     Supplier<Object> newDataStructureSupplier = mock(Supplier.class);
@@ -130,5 +76,23 @@ public class ScopeReferenceHelperDiffblueTest {
     verify(newDataStructureSupplier).get();
     assertEquals("Get", actualDataForModelPath);
     assertEquals(1, scopeReferenceHelper.getScopeToDataMap().size());
+  }
+
+  /**
+   * Methods under test:
+   * <ul>
+   *   <li>
+   * {@link ScopeReferenceHelper#ScopeReferenceHelper(ReferenceConfig, Supplier)}
+   *   <li>{@link ScopeReferenceHelper#getScopeToDataMap()}
+   * </ul>
+   */
+  @Test
+  public void testGettersAndSetters() {
+    // Arrange and Act
+    ScopeReferenceHelper<Object> actualScopeReferenceHelper = new ScopeReferenceHelper<>(
+        ReferenceConfig.noScopeOrExcludedPaths(), mock(Supplier.class));
+
+    // Assert
+    assertTrue(actualScopeReferenceHelper.getScopeToDataMap().isEmpty());
   }
 }

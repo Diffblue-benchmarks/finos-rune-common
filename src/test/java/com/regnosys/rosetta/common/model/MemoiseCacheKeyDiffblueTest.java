@@ -22,19 +22,10 @@ package com.regnosys.rosetta.common.model;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
 
 public class MemoiseCacheKeyDiffblueTest {
   /**
-   * Test {@link MemoiseCacheKey#equals(Object)}, and {@link MemoiseCacheKey#hashCode()}.
-   * <ul>
-   *   <li>When other is equal.</li>
-   *   <li>Then return equal.</li>
-   * </ul>
-   * <p>
    * Methods under test:
    * <ul>
    *   <li>{@link MemoiseCacheKey#equals(Object)}
@@ -42,8 +33,6 @@ public class MemoiseCacheKeyDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean MemoiseCacheKey.equals(Object)", "int MemoiseCacheKey.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
     // Arrange
     MemoiseCacheKey createResult = MemoiseCacheKey.create("Name", "Arguments");
@@ -56,12 +45,6 @@ public class MemoiseCacheKeyDiffblueTest {
   }
 
   /**
-   * Test {@link MemoiseCacheKey#equals(Object)}, and {@link MemoiseCacheKey#hashCode()}.
-   * <ul>
-   *   <li>When other is same.</li>
-   *   <li>Then return equal.</li>
-   * </ul>
-   * <p>
    * Methods under test:
    * <ul>
    *   <li>{@link MemoiseCacheKey#equals(Object)}
@@ -69,8 +52,6 @@ public class MemoiseCacheKeyDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean MemoiseCacheKey.equals(Object)", "int MemoiseCacheKey.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
     MemoiseCacheKey createResult = MemoiseCacheKey.create("Name", "Arguments");
@@ -82,17 +63,9 @@ public class MemoiseCacheKeyDiffblueTest {
   }
 
   /**
-   * Test {@link MemoiseCacheKey#equals(Object)}.
-   * <ul>
-   *   <li>When other is different.</li>
-   *   <li>Then return not equal.</li>
-   * </ul>
-   * <p>
    * Method under test: {@link MemoiseCacheKey#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean MemoiseCacheKey.equals(Object)", "int MemoiseCacheKey.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange
     MemoiseCacheKey createResult = MemoiseCacheKey.create(null, "Arguments");
@@ -102,17 +75,9 @@ public class MemoiseCacheKeyDiffblueTest {
   }
 
   /**
-   * Test {@link MemoiseCacheKey#equals(Object)}.
-   * <ul>
-   *   <li>When other is different.</li>
-   *   <li>Then return not equal.</li>
-   * </ul>
-   * <p>
    * Method under test: {@link MemoiseCacheKey#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean MemoiseCacheKey.equals(Object)", "int MemoiseCacheKey.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual2() {
     // Arrange
     MemoiseCacheKey createResult = MemoiseCacheKey.create("Name", 1);
@@ -122,17 +87,9 @@ public class MemoiseCacheKeyDiffblueTest {
   }
 
   /**
-   * Test {@link MemoiseCacheKey#equals(Object)}.
-   * <ul>
-   *   <li>When other is different.</li>
-   *   <li>Then return not equal.</li>
-   * </ul>
-   * <p>
    * Method under test: {@link MemoiseCacheKey#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean MemoiseCacheKey.equals(Object)", "int MemoiseCacheKey.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual3() {
     // Arrange
     MemoiseCacheKey createResult = MemoiseCacheKey.create("Name", MemoiseCacheKey.create("Name", "Arguments"));
@@ -142,34 +99,18 @@ public class MemoiseCacheKeyDiffblueTest {
   }
 
   /**
-   * Test {@link MemoiseCacheKey#equals(Object)}.
-   * <ul>
-   *   <li>When other is {@code null}.</li>
-   *   <li>Then return not equal.</li>
-   * </ul>
-   * <p>
    * Method under test: {@link MemoiseCacheKey#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean MemoiseCacheKey.equals(Object)", "int MemoiseCacheKey.hashCode()"})
   public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(MemoiseCacheKey.create("Name", "Arguments"), null);
   }
 
   /**
-   * Test {@link MemoiseCacheKey#equals(Object)}.
-   * <ul>
-   *   <li>When other is wrong type.</li>
-   *   <li>Then return not equal.</li>
-   * </ul>
-   * <p>
    * Method under test: {@link MemoiseCacheKey#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean MemoiseCacheKey.equals(Object)", "int MemoiseCacheKey.hashCode()"})
   public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(MemoiseCacheKey.create("Name", "Arguments"), "Different type to MemoiseCacheKey");

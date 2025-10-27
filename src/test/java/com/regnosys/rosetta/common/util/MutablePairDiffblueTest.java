@@ -21,32 +21,10 @@ package com.regnosys.rosetta.common.util;
  */
 
 import static org.junit.Assert.assertEquals;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
 
 public class MutablePairDiffblueTest {
   /**
-   * Test {@link MutablePair#of(Object, Object)}.
-   * <p>
-   * Method under test: {@link MutablePair#of(Object, Object)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"MutablePair MutablePair.of(Object, Object)"})
-  public void testOf() {
-    // Arrange and Act
-    MutablePair<Object, Object> actualOfResult = MutablePair.of("Left", "Right");
-
-    // Assert
-    assertEquals("Left", actualOfResult.getLeft());
-    assertEquals("Right", actualOfResult.getRight());
-  }
-
-  /**
-   * Test getters and setters.
-   * <p>
    * Methods under test:
    * <ul>
    *   <li>{@link MutablePair#MutablePair(Object, Object)}
@@ -57,9 +35,6 @@ public class MutablePairDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void MutablePair.<init>(Object, Object)", "Object MutablePair.getLeft()",
-      "Object MutablePair.getRight()", "void MutablePair.setLeft(Object)", "void MutablePair.setRight(Object)"})
   public void testGettersAndSetters() {
     // Arrange and Act
     MutablePair<Object, Object> actualMutablePair = new MutablePair<>("Left", "Right");
@@ -67,19 +42,28 @@ public class MutablePairDiffblueTest {
     actualMutablePair.setRight("Right");
     Object actualLeft = actualMutablePair.getLeft();
 
-    // Assert
+    // Assert that nothing has changed
     assertEquals("Left", actualLeft);
     assertEquals("Right", actualMutablePair.getRight());
   }
 
   /**
-   * Test {@link MutablePair#setValue(Object)}.
-   * <p>
+   * Method under test: {@link MutablePair#of(Object, Object)}
+   */
+  @Test
+  public void testOf() {
+    // Arrange and Act
+    MutablePair<Object, Object> actualOfResult = MutablePair.of("Left", "Right");
+
+    // Assert
+    assertEquals("Left", actualOfResult.getLeft());
+    assertEquals("Right", actualOfResult.getRight());
+  }
+
+  /**
    * Method under test: {@link MutablePair#setValue(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"Object MutablePair.setValue(Object)"})
   public void testSetValue() {
     // Arrange
     MutablePair<Object, Object> ofResult = MutablePair.of("Left", "Right");

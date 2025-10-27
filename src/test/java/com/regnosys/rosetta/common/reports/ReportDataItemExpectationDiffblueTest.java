@@ -21,15 +21,23 @@ package com.regnosys.rosetta.common.reports;
  */
 
 import static org.junit.Assert.assertEquals;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
 
 public class ReportDataItemExpectationDiffblueTest {
   /**
-   * Test getters and setters.
-   * <p>
+   * Method under test:
+   * {@link ReportDataItemExpectation#compareTo(ReportDataItemExpectation)}
+   */
+  @Test
+  public void testCompareTo() {
+    // Arrange
+    ReportDataItemExpectation reportDataItemExpectation = new ReportDataItemExpectation("foo.txt", 1);
+
+    // Act and Assert
+    assertEquals(0, reportDataItemExpectation.compareTo(new ReportDataItemExpectation("foo.txt", 1)));
+  }
+
+  /**
    * Methods under test:
    * <ul>
    *   <li>{@link ReportDataItemExpectation#ReportDataItemExpectation(String, int)}
@@ -40,11 +48,6 @@ public class ReportDataItemExpectationDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void ReportDataItemExpectation.<init>(String, int)",
-      "String ReportDataItemExpectation.getFileName()", "int ReportDataItemExpectation.getValidationFailures()",
-      "void ReportDataItemExpectation.setFileName(String)",
-      "void ReportDataItemExpectation.setValidationFailures(int)"})
   public void testGettersAndSetters() {
     // Arrange and Act
     ReportDataItemExpectation actualReportDataItemExpectation = new ReportDataItemExpectation("foo.txt", 1);
@@ -52,27 +55,8 @@ public class ReportDataItemExpectationDiffblueTest {
     actualReportDataItemExpectation.setValidationFailures(1);
     String actualFileName = actualReportDataItemExpectation.getFileName();
 
-    // Assert
+    // Assert that nothing has changed
     assertEquals("foo.txt", actualFileName);
     assertEquals(1, actualReportDataItemExpectation.getValidationFailures());
-  }
-
-  /**
-   * Test {@link ReportDataItemExpectation#compareTo(ReportDataItemExpectation)} with {@code ReportDataItemExpectation}.
-   * <ul>
-   *   <li>Then return zero.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link ReportDataItemExpectation#compareTo(ReportDataItemExpectation)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"int ReportDataItemExpectation.compareTo(ReportDataItemExpectation)"})
-  public void testCompareToWithReportDataItemExpectation_thenReturnZero() {
-    // Arrange
-    ReportDataItemExpectation reportDataItemExpectation = new ReportDataItemExpectation("foo.txt", 1);
-
-    // Act and Assert
-    assertEquals(0, reportDataItemExpectation.compareTo(new ReportDataItemExpectation("foo.txt", 1)));
   }
 }

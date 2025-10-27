@@ -23,45 +23,15 @@ package com.regnosys.rosetta.common.projection;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertSame;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.io.File;
 import java.nio.file.Path;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
 
 public class RegProjectionPathsDiffblueTest {
   /**
-   * Test {@link RegProjectionPaths#RegProjectionPaths(Path, Path, Path, Path, Path)}.
-   * <p>
-   * Method under test: {@link RegProjectionPaths#RegProjectionPaths(Path, Path, Path, Path, Path)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void RegProjectionPaths.<init>(Path, Path, Path, Path, Path)"})
-  public void testNewRegProjectionPaths() {
-    // Arrange and Act
-    RegProjectionPaths actualRegProjectionPaths = new RegProjectionPaths(RegProjectionPaths.ISO20022_PATH,
-        RegProjectionPaths.ISO20022_PATH, RegProjectionPaths.ISO20022_PATH, RegProjectionPaths.ISO20022_PATH,
-        RegProjectionPaths.ISO20022_PATH);
-
-    // Assert
-    Path path = actualRegProjectionPaths.ISO20022_PATH;
-    assertSame(path, actualRegProjectionPaths.getConfigRelativePath());
-    assertSame(path, actualRegProjectionPaths.getInputRelativePath());
-    assertSame(path, actualRegProjectionPaths.getLookupRelativePath());
-    assertSame(path, actualRegProjectionPaths.getOutputRelativePath());
-    assertSame(path, actualRegProjectionPaths.getRootRelativePath());
-  }
-
-  /**
-   * Test {@link RegProjectionPaths#getProjectionPath()}.
-   * <p>
    * Method under test: {@link RegProjectionPaths#getProjectionPath()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"RegProjectionPaths RegProjectionPaths.getProjectionPath()"})
   public void testGetProjectionPath() {
     // Arrange and Act
     RegProjectionPaths actualProjectionPath = RegProjectionPaths.getProjectionPath();
@@ -82,5 +52,25 @@ public class RegProjectionPathsDiffblueTest {
     assertFalse(toFileResult4.isAbsolute());
     assertFalse(toFileResult5.isAbsolute());
     assertFalse(toFileResult3.isAbsolute());
+  }
+
+  /**
+   * Method under test:
+   * {@link RegProjectionPaths#RegProjectionPaths(Path, Path, Path, Path, Path)}
+   */
+  @Test
+  public void testNewRegProjectionPaths() {
+    // Arrange and Act
+    RegProjectionPaths actualRegProjectionPaths = new RegProjectionPaths(RegProjectionPaths.ISO20022_PATH,
+        RegProjectionPaths.ISO20022_PATH, RegProjectionPaths.ISO20022_PATH, RegProjectionPaths.ISO20022_PATH,
+        RegProjectionPaths.ISO20022_PATH);
+
+    // Assert
+    Path path = actualRegProjectionPaths.ISO20022_PATH;
+    assertSame(path, actualRegProjectionPaths.getConfigRelativePath());
+    assertSame(path, actualRegProjectionPaths.getInputRelativePath());
+    assertSame(path, actualRegProjectionPaths.getLookupRelativePath());
+    assertSame(path, actualRegProjectionPaths.getOutputRelativePath());
+    assertSame(path, actualRegProjectionPaths.getRootRelativePath());
   }
 }

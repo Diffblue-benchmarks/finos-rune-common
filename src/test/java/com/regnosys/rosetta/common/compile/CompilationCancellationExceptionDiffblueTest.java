@@ -22,20 +22,14 @@ package com.regnosys.rosetta.common.compile;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
 
 public class CompilationCancellationExceptionDiffblueTest {
   /**
-   * Test {@link CompilationCancellationException#CompilationCancellationException(String)}.
-   * <p>
-   * Method under test: {@link CompilationCancellationException#CompilationCancellationException(String)}
+   * Method under test:
+   * {@link CompilationCancellationException#CompilationCancellationException(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void CompilationCancellationException.<init>(String)"})
   public void testNewCompilationCancellationException() {
     // Arrange and Act
     CompilationCancellationException actualCompilationCancellationException = new CompilationCancellationException(

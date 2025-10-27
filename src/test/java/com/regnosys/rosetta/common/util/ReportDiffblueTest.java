@@ -21,17 +21,12 @@ package com.regnosys.rosetta.common.util;
  */
 
 import static org.junit.Assert.assertSame;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
 import com.regnosys.rosetta.common.merger.BarBuilder;
 import com.rosetta.model.lib.RosettaModelObject;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
 
 public class ReportDiffblueTest {
   /**
-   * Test getters and setters.
-   * <p>
    * Methods under test:
    * <ul>
    *   <li>{@link Report#Report(RosettaModelObject)}
@@ -39,8 +34,6 @@ public class ReportDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void Report.<init>(RosettaModelObject)", "RosettaModelObject Report.getRosettaModelInstance()"})
   public void testGettersAndSetters() {
     // Arrange
     BarBuilder barBuilder = new BarBuilder();

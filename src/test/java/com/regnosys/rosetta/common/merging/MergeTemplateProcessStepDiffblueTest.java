@@ -22,48 +22,38 @@ package com.regnosys.rosetta.common.merging;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
 import com.regnosys.rosetta.common.util.RosettaModelObjectSupplier;
+import com.rosetta.model.lib.RosettaModelObjectBuilder;
 import com.rosetta.model.lib.process.BuilderMerger;
 import java.util.function.Consumer;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
 
 public class MergeTemplateProcessStepDiffblueTest {
   /**
-   * Test getters and setters.
-   * <p>
-   * Methods under test:
-   * <ul>
-   *   <li>{@link MergeTemplateProcessStep#MergeTemplateProcessStep(BuilderMerger, RosettaModelObjectSupplier, Consumer)}
-   *   <li>{@link MergeTemplateProcessStep#getName()}
-   * </ul>
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void MergeTemplateProcessStep.<init>(BuilderMerger, RosettaModelObjectSupplier, Consumer)",
-      "java.lang.String MergeTemplateProcessStep.getName()"})
-  public void testGettersAndSetters() {
-    // Arrange, Act and Assert
-    assertEquals("Merge Template Post Processor",
-        (new MergeTemplateProcessStep(new SimpleMerger(), mock(RosettaModelObjectSupplier.class), mock(Consumer.class)))
-            .getName());
-  }
-
-  /**
-   * Test {@link MergeTemplateProcessStep#getPriority()}.
-   * <p>
    * Method under test: {@link MergeTemplateProcessStep#getPriority()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"java.lang.Integer MergeTemplateProcessStep.getPriority()"})
   public void testGetPriority() {
     // Arrange, Act and Assert
     assertEquals(1,
         (new MergeTemplateProcessStep(new SimpleMerger(), mock(RosettaModelObjectSupplier.class), mock(Consumer.class)))
             .getPriority()
             .intValue());
+  }
+
+  /**
+   * Methods under test:
+   * <ul>
+   *   <li>
+   * {@link MergeTemplateProcessStep#MergeTemplateProcessStep(BuilderMerger, RosettaModelObjectSupplier, Consumer)}
+   *   <li>{@link MergeTemplateProcessStep#getName()}
+   * </ul>
+   */
+  @Test
+  public void testGettersAndSetters() {
+    // Arrange, Act and Assert
+    assertEquals("Merge Template Post Processor",
+        (new MergeTemplateProcessStep(new SimpleMerger(), mock(RosettaModelObjectSupplier.class), mock(Consumer.class)))
+            .getName());
   }
 }

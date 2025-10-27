@@ -21,80 +21,64 @@ package com.regnosys.rosetta.common.serialisation.reportdata;
  */
 
 import static org.junit.Assert.assertEquals;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
-import com.fasterxml.jackson.databind.json.JsonMapper;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rosetta.model.lib.ModelReportId;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLClassLoader;
+import java.net.URLStreamHandlerFactory;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import javax.management.loading.MLet;
+import org.eclipse.core.internal.boot.PlatformURLHandler;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
+import org.mockito.Mockito;
 
 public class JsonReportDataLoaderDiffblueTest {
   /**
-   * Test {@link JsonReportDataLoader#loadInputFiles(ReportDataSet)} with {@code ReportDataSet}.
-   * <p>
    * Method under test: {@link JsonReportDataLoader#loadInputFiles(ReportDataSet)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"ReportDataSet JsonReportDataLoader.loadInputFiles(ReportDataSet)"})
-  public void testLoadInputFilesWithReportDataSet() throws MalformedURLException {
+  public void testLoadInputFiles() throws MalformedURLException {
     // Arrange
-    MLet classLoader = new MLet();
-    JsonMapper rosettaObjectMapper = JsonMapper.builder().findAndAddModules().build();
+    URLStreamHandlerFactory urlStreamHandlerFactory = mock(URLStreamHandlerFactory.class);
+    when(urlStreamHandlerFactory.createURLStreamHandler(Mockito.<String>any())).thenReturn(new PlatformURLHandler());
+    URLClassLoader classLoader = new URLClassLoader(
+        new URL[]{Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toUri().toURL()}, new MLet(),
+        urlStreamHandlerFactory);
+
+    ObjectMapper rosettaObjectMapper = new ObjectMapper();
     URL descriptorPath = Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toUri().toURL();
     JsonReportDataLoader jsonReportDataLoader = new JsonReportDataLoader(classLoader, rosettaObjectMapper,
         descriptorPath, new ArrayList<>());
     ArrayList<ModelReportId> applicableReports = new ArrayList<>();
     ReportDataSet descriptor = new ReportDataSet("Data Set Name", "Input Type", applicableReports, new ArrayList<>());
 
-    // Act and Assert
-    assertEquals(descriptor, jsonReportDataLoader.loadInputFiles(descriptor));
+    // Act
+    ReportDataSet actualLoadInputFilesResult = jsonReportDataLoader.loadInputFiles(descriptor);
+
+    // Assert
+    verify(urlStreamHandlerFactory).createURLStreamHandler(eq("jar"));
+    assertEquals(descriptor, actualLoadInputFilesResult);
   }
 
   /**
-   * Test {@link JsonReportDataLoader#loadInputFiles(ReportDataSet)} with {@code ReportDataSet}.
-   * <p>
    * Method under test: {@link JsonReportDataLoader#loadInputFiles(ReportDataSet)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"ReportDataSet JsonReportDataLoader.loadInputFiles(ReportDataSet)"})
-  public void testLoadInputFilesWithReportDataSet2() throws MalformedURLException {
+  public void testLoadInputFiles2() throws MalformedURLException {
     // Arrange
-    MLet classLoader = new MLet();
-    JsonMapper rosettaObjectMapper = JsonMapper.builder().findAndAddModules().build();
-    URL descriptorPath = Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toUri().toURL();
-    JsonReportDataLoader jsonReportDataLoader = new JsonReportDataLoader(classLoader, rosettaObjectMapper,
-        descriptorPath, new ArrayList<>());
-    ArrayList<ModelReportId> applicableReports = new ArrayList<>();
-    ReportDataSet descriptor = new ReportDataSet("", "Input Type", applicableReports, new ArrayList<>());
+    URLStreamHandlerFactory urlStreamHandlerFactory = mock(URLStreamHandlerFactory.class);
+    when(urlStreamHandlerFactory.createURLStreamHandler(Mockito.<String>any())).thenReturn(new PlatformURLHandler());
+    URLClassLoader classLoader = new URLClassLoader(
+        new URL[]{Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toUri().toURL()}, new MLet(),
+        urlStreamHandlerFactory);
 
-    // Act and Assert
-    assertEquals(descriptor, jsonReportDataLoader.loadInputFiles(descriptor));
-  }
-
-  /**
-   * Test {@link JsonReportDataLoader#loadInputFiles(ReportDataSet)} with {@code ReportDataSet}.
-   * <ul>
-   *   <li>Given {@link ArrayList#ArrayList()}.</li>
-   *   <li>Then return {@link ReportDataSet#ReportDataSet()}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link JsonReportDataLoader#loadInputFiles(ReportDataSet)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"ReportDataSet JsonReportDataLoader.loadInputFiles(ReportDataSet)"})
-  public void testLoadInputFilesWithReportDataSet_givenArrayList_thenReturnReportDataSet()
-      throws MalformedURLException {
-    // Arrange
-    MLet classLoader = new MLet();
-    JsonMapper rosettaObjectMapper = JsonMapper.builder().findAndAddModules().build();
+    ObjectMapper rosettaObjectMapper = new ObjectMapper();
     URL descriptorPath = Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toUri().toURL();
     JsonReportDataLoader jsonReportDataLoader = new JsonReportDataLoader(classLoader, rosettaObjectMapper,
         descriptorPath, new ArrayList<>());
@@ -102,35 +86,67 @@ public class JsonReportDataLoaderDiffblueTest {
     ReportDataSet descriptor = new ReportDataSet();
     descriptor.setData(new ArrayList<>());
 
-    // Act and Assert
-    assertEquals(descriptor, jsonReportDataLoader.loadInputFiles(descriptor));
+    // Act
+    ReportDataSet actualLoadInputFilesResult = jsonReportDataLoader.loadInputFiles(descriptor);
+
+    // Assert
+    verify(urlStreamHandlerFactory).createURLStreamHandler(eq("jar"));
+    assertEquals(descriptor, actualLoadInputFilesResult);
   }
 
   /**
-   * Test {@link JsonReportDataLoader#loadInputFiles(ReportDataSet)} with {@code ReportDataSet}.
-   * <ul>
-   *   <li>Then return Data is {@link ArrayList#ArrayList()}.</li>
-   * </ul>
-   * <p>
    * Method under test: {@link JsonReportDataLoader#loadInputFiles(ReportDataSet)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"ReportDataSet JsonReportDataLoader.loadInputFiles(ReportDataSet)"})
-  public void testLoadInputFilesWithReportDataSet_thenReturnDataIsArrayList() throws MalformedURLException {
+  public void testLoadInputFiles3() throws MalformedURLException {
     // Arrange
-    MLet classLoader = new MLet();
-    JsonMapper rosettaObjectMapper = JsonMapper.builder().findAndAddModules().build();
+    URLStreamHandlerFactory urlStreamHandlerFactory = mock(URLStreamHandlerFactory.class);
+    when(urlStreamHandlerFactory.createURLStreamHandler(Mockito.<String>any())).thenReturn(new PlatformURLHandler());
+    URLClassLoader classLoader = new URLClassLoader(
+        new URL[]{Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toUri().toURL()}, new MLet(),
+        urlStreamHandlerFactory);
+
+    ObjectMapper rosettaObjectMapper = new ObjectMapper();
+    URL descriptorPath = Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toUri().toURL();
+    JsonReportDataLoader jsonReportDataLoader = new JsonReportDataLoader(classLoader, rosettaObjectMapper,
+        descriptorPath, new ArrayList<>());
+    ArrayList<ModelReportId> applicableReports = new ArrayList<>();
+    ReportDataSet descriptor = new ReportDataSet("", "Input Type", applicableReports, new ArrayList<>());
+
+    // Act
+    ReportDataSet actualLoadInputFilesResult = jsonReportDataLoader.loadInputFiles(descriptor);
+
+    // Assert
+    verify(urlStreamHandlerFactory).createURLStreamHandler(eq("jar"));
+    assertEquals(descriptor, actualLoadInputFilesResult);
+  }
+
+  /**
+   * Method under test: {@link JsonReportDataLoader#loadInputFiles(ReportDataSet)}
+   */
+  @Test
+  public void testLoadInputFiles4() throws MalformedURLException {
+    // Arrange
+    URLStreamHandlerFactory urlStreamHandlerFactory = mock(URLStreamHandlerFactory.class);
+    when(urlStreamHandlerFactory.createURLStreamHandler(Mockito.<String>any())).thenReturn(new PlatformURLHandler());
+    URLClassLoader classLoader = new URLClassLoader(
+        new URL[]{Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toUri().toURL()}, new MLet(),
+        urlStreamHandlerFactory);
+
+    ObjectMapper rosettaObjectMapper = new ObjectMapper();
     URL descriptorPath = Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toUri().toURL();
     JsonReportDataLoader jsonReportDataLoader = new JsonReportDataLoader(classLoader, rosettaObjectMapper,
         descriptorPath, new ArrayList<>());
 
     ArrayList<ReportDataItem> data = new ArrayList<>();
     data.add(new ReportDataItem());
+    ReportDataSet descriptor = new ReportDataSet("Data Set Name", "Input Type", new ArrayList<>(), data);
 
-    // Act and Assert
-    assertEquals(data,
-        jsonReportDataLoader.loadInputFiles(new ReportDataSet("Data Set Name", "Input Type", new ArrayList<>(), data))
-            .getData());
+    // Act
+    ReportDataSet actualLoadInputFilesResult = jsonReportDataLoader.loadInputFiles(descriptor);
+
+    // Assert
+    verify(urlStreamHandlerFactory).createURLStreamHandler(eq("jar"));
+    assertEquals(descriptor, actualLoadInputFilesResult);
   }
 }

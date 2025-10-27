@@ -22,32 +22,42 @@ package com.regnosys.rosetta.common.serialisation.projectiondata;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
-import com.fasterxml.jackson.databind.json.JsonMapper;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.regnosys.rosetta.common.serialisation.reportdata.ReportDataItem;
 import com.rosetta.model.lib.ModelReportId;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLClassLoader;
+import java.net.URLStreamHandlerFactory;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.List;
 import javax.management.loading.MLet;
+import org.eclipse.core.internal.boot.PlatformURLHandler;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
+import org.mockito.Mockito;
 
 public class JsonProjectionDataLoaderDiffblueTest {
   /**
-   * Test {@link JsonProjectionDataLoader#loadInputFiles(ProjectionDataSet)} with {@code ProjectionDataSet}.
-   * <p>
-   * Method under test: {@link JsonProjectionDataLoader#loadInputFiles(ProjectionDataSet)}
+   * Method under test:
+   * {@link JsonProjectionDataLoader#loadInputFiles(ProjectionDataSet)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"ProjectionDataSet JsonProjectionDataLoader.loadInputFiles(ProjectionDataSet)"})
-  public void testLoadInputFilesWithProjectionDataSet() throws MalformedURLException {
+  public void testLoadInputFiles() throws MalformedURLException {
     // Arrange
-    MLet classLoader = new MLet();
-    JsonMapper rosettaObjectMapper = JsonMapper.builder().findAndAddModules().build();
+    URLStreamHandlerFactory urlStreamHandlerFactory = mock(URLStreamHandlerFactory.class);
+    when(urlStreamHandlerFactory.createURLStreamHandler(Mockito.<String>any())).thenReturn(new PlatformURLHandler());
+    URLClassLoader classLoader = new URLClassLoader(
+        new URL[]{Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toUri().toURL()}, new MLet(),
+        urlStreamHandlerFactory);
+
+    ObjectMapper rosettaObjectMapper = new ObjectMapper();
     URL descriptorPath = Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toUri().toURL();
     JsonProjectionDataLoader jsonProjectionDataLoader = new JsonProjectionDataLoader(classLoader, rosettaObjectMapper,
         descriptorPath, new ArrayList<>());
@@ -56,56 +66,28 @@ public class JsonProjectionDataLoaderDiffblueTest {
     ProjectionDataSet descriptor = new ProjectionDataSet("Data Set Name", "Data Set Short Name", "Input Type",
         applicableProjections, applicableReports, new ArrayList<>());
 
-    // Act and Assert
-    assertEquals(descriptor, jsonProjectionDataLoader.loadInputFiles(descriptor));
+    // Act
+    ProjectionDataSet actualLoadInputFilesResult = jsonProjectionDataLoader.loadInputFiles(descriptor);
+
+    // Assert
+    verify(urlStreamHandlerFactory).createURLStreamHandler(eq("jar"));
+    assertEquals(descriptor, actualLoadInputFilesResult);
   }
 
   /**
-   * Test {@link JsonProjectionDataLoader#loadInputFiles(ProjectionDataSet)} with {@code ProjectionDataSet}.
-   * <ul>
-   *   <li>Then return Data is {@link ArrayList#ArrayList()}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link JsonProjectionDataLoader#loadInputFiles(ProjectionDataSet)}
+   * Method under test:
+   * {@link JsonProjectionDataLoader#loadInputFiles(ProjectionDataSet)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"ProjectionDataSet JsonProjectionDataLoader.loadInputFiles(ProjectionDataSet)"})
-  public void testLoadInputFilesWithProjectionDataSet_thenReturnDataIsArrayList() throws MalformedURLException {
+  public void testLoadInputFiles2() throws MalformedURLException {
     // Arrange
-    MLet classLoader = new MLet();
-    JsonMapper rosettaObjectMapper = JsonMapper.builder().findAndAddModules().build();
-    URL descriptorPath = Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toUri().toURL();
-    JsonProjectionDataLoader jsonProjectionDataLoader = new JsonProjectionDataLoader(classLoader, rosettaObjectMapper,
-        descriptorPath, new ArrayList<>());
+    URLStreamHandlerFactory urlStreamHandlerFactory = mock(URLStreamHandlerFactory.class);
+    when(urlStreamHandlerFactory.createURLStreamHandler(Mockito.<String>any())).thenReturn(new PlatformURLHandler());
+    URLClassLoader classLoader = new URLClassLoader(
+        new URL[]{Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toUri().toURL()}, new MLet(),
+        urlStreamHandlerFactory);
 
-    ArrayList<ReportDataItem> data = new ArrayList<>();
-    data.add(new ReportDataItem());
-    ArrayList<String> applicableProjections = new ArrayList<>();
-
-    // Act and Assert
-    assertEquals(data,
-        jsonProjectionDataLoader
-            .loadInputFiles(new ProjectionDataSet("Data Set Name", "Data Set Short Name", "Input Type",
-                applicableProjections, new ArrayList<>(), data))
-            .getData());
-  }
-
-  /**
-   * Test {@link JsonProjectionDataLoader#loadInputFiles(ProjectionDataSet)} with {@code ProjectionDataSet}.
-   * <ul>
-   *   <li>Then return DataSetName is {@code null}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link JsonProjectionDataLoader#loadInputFiles(ProjectionDataSet)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"ProjectionDataSet JsonProjectionDataLoader.loadInputFiles(ProjectionDataSet)"})
-  public void testLoadInputFilesWithProjectionDataSet_thenReturnDataSetNameIsNull() throws MalformedURLException {
-    // Arrange
-    MLet classLoader = new MLet();
-    JsonMapper rosettaObjectMapper = JsonMapper.builder().findAndAddModules().build();
+    ObjectMapper rosettaObjectMapper = new ObjectMapper();
     URL descriptorPath = Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toUri().toURL();
     JsonProjectionDataLoader jsonProjectionDataLoader = new JsonProjectionDataLoader(classLoader, rosettaObjectMapper,
         descriptorPath, new ArrayList<>());
@@ -117,8 +99,47 @@ public class JsonProjectionDataLoaderDiffblueTest {
     ProjectionDataSet actualLoadInputFilesResult = jsonProjectionDataLoader.loadInputFiles(descriptor);
 
     // Assert
+    verify(urlStreamHandlerFactory).createURLStreamHandler(eq("jar"));
+    assertEquals("com.regnosys.rosetta.common.serialisation.reportdata.ExpectedResult",
+        actualLoadInputFilesResult.getExpectedType());
     assertNull(actualLoadInputFilesResult.getDataSetName());
     assertNull(actualLoadInputFilesResult.getDataSetShortName());
     assertNull(actualLoadInputFilesResult.getInputType());
+    assertTrue(actualLoadInputFilesResult.getData().isEmpty());
+    List<String> applicableProjections = actualLoadInputFilesResult.getApplicableProjections();
+    assertTrue(applicableProjections.isEmpty());
+    assertSame(applicableProjections, actualLoadInputFilesResult.getApplicableReports());
+  }
+
+  /**
+   * Method under test:
+   * {@link JsonProjectionDataLoader#loadInputFiles(ProjectionDataSet)}
+   */
+  @Test
+  public void testLoadInputFiles3() throws MalformedURLException {
+    // Arrange
+    URLStreamHandlerFactory urlStreamHandlerFactory = mock(URLStreamHandlerFactory.class);
+    when(urlStreamHandlerFactory.createURLStreamHandler(Mockito.<String>any())).thenReturn(new PlatformURLHandler());
+    URLClassLoader classLoader = new URLClassLoader(
+        new URL[]{Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toUri().toURL()}, new MLet(),
+        urlStreamHandlerFactory);
+
+    ObjectMapper rosettaObjectMapper = new ObjectMapper();
+    URL descriptorPath = Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toUri().toURL();
+    JsonProjectionDataLoader jsonProjectionDataLoader = new JsonProjectionDataLoader(classLoader, rosettaObjectMapper,
+        descriptorPath, new ArrayList<>());
+
+    ArrayList<ReportDataItem> data = new ArrayList<>();
+    data.add(new ReportDataItem());
+    ArrayList<String> applicableProjections = new ArrayList<>();
+    ProjectionDataSet descriptor = new ProjectionDataSet("Data Set Name", "Data Set Short Name", "Input Type",
+        applicableProjections, new ArrayList<>(), data);
+
+    // Act
+    ProjectionDataSet actualLoadInputFilesResult = jsonProjectionDataLoader.loadInputFiles(descriptor);
+
+    // Assert
+    verify(urlStreamHandlerFactory).createURLStreamHandler(eq("jar"));
+    assertEquals(descriptor, actualLoadInputFilesResult);
   }
 }

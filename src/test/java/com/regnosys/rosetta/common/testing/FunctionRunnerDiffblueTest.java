@@ -25,43 +25,31 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertSame;
 import static org.mockito.Mockito.mock;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.json.JsonMapper;
-import com.regnosys.rosetta.common.testing.FunctionRunner.FunctionRunnerResult;
-import com.regnosys.rosetta.common.testing.FunctionRunner.InstanceLoader;
 import javax.management.loading.MLet;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
 
 public class FunctionRunnerDiffblueTest {
   /**
-   * Test FunctionRunnerResult getters and setters.
-   * <p>
    * Methods under test:
    * <ul>
-   *   <li>{@link FunctionRunnerResult#getActualOutput()}
-   *   <li>{@link FunctionRunnerResult#getExpectedOutput()}
-   *   <li>{@link FunctionRunnerResult#getInput()}
-   *   <li>{@link FunctionRunnerResult#getJsonActual()}
-   *   <li>{@link FunctionRunnerResult#getJsonExpected()}
-   *   <li>{@link FunctionRunnerResult#isSuccess()}
+   *   <li>{@link FunctionRunner.FunctionRunnerResult#getActualOutput()}
+   *   <li>{@link FunctionRunner.FunctionRunnerResult#getExpectedOutput()}
+   *   <li>{@link FunctionRunner.FunctionRunnerResult#getInput()}
+   *   <li>{@link FunctionRunner.FunctionRunnerResult#getJsonActual()}
+   *   <li>{@link FunctionRunner.FunctionRunnerResult#getJsonExpected()}
+   *   <li>{@link FunctionRunner.FunctionRunnerResult#isSuccess()}
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"Object FunctionRunnerResult.getActualOutput()", "Object FunctionRunnerResult.getExpectedOutput()",
-      "Object FunctionRunnerResult.getInput()", "String FunctionRunnerResult.getJsonActual()",
-      "String FunctionRunnerResult.getJsonExpected()", "boolean FunctionRunnerResult.isSuccess()"})
   public void testFunctionRunnerResultGettersAndSetters() {
     // Arrange
     ExecutionDescriptor executionDescriptor = new ExecutionDescriptor();
-    InstanceLoader instanceLoader = mock(InstanceLoader.class);
+    FunctionRunner.InstanceLoader instanceLoader = mock(FunctionRunner.InstanceLoader.class);
     MLet classLoader = new MLet();
-    FunctionRunnerResult<Object, Object> functionRunnerResult = (new FunctionRunner(executionDescriptor, instanceLoader,
-        classLoader, JsonMapper.builder().findAndAddModules().build())).new FunctionRunnerResult<>("Input",
-            "Expected Output", "Actual Output", "Json Actual", "Json Expected");
+    FunctionRunner.FunctionRunnerResult<Object, Object> functionRunnerResult = (new FunctionRunner(executionDescriptor,
+        instanceLoader, classLoader, new ObjectMapper())).new FunctionRunnerResult("Input", "Expected Output",
+            "Actual Output", "Json Actual", "Json Expected");
 
     // Act
     Object actualActualOutput = functionRunnerResult.getActualOutput();
@@ -80,23 +68,20 @@ public class FunctionRunnerDiffblueTest {
   }
 
   /**
-   * Test FunctionRunnerResult {@link FunctionRunnerResult#FunctionRunnerResult(FunctionRunner, Object, Object, Object, String, String)}.
-   * <p>
-   * Method under test: {@link FunctionRunnerResult#FunctionRunnerResult(FunctionRunner, Object, Object, Object, String, String)}
+   * Method under test:
+   * {@link FunctionRunner.FunctionRunnerResult#FunctionRunnerResult(FunctionRunner, Object, Object, Object, String, String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void FunctionRunnerResult.<init>(FunctionRunner, Object, Object, Object, String, String)"})
   public void testFunctionRunnerResultNewFunctionRunnerResult() {
     // Arrange
     ExecutionDescriptor executionDescriptor = new ExecutionDescriptor();
-    InstanceLoader instanceLoader = mock(InstanceLoader.class);
+    FunctionRunner.InstanceLoader instanceLoader = mock(FunctionRunner.InstanceLoader.class);
     MLet classLoader = new MLet();
 
     // Act
-    FunctionRunnerResult<Object, Object> actualFunctionRunnerResult = (new FunctionRunner(executionDescriptor,
-        instanceLoader, classLoader, JsonMapper.builder().findAndAddModules().build())).new FunctionRunnerResult<>(
-            "Input", "Expected Output", "Actual Output", "Json Actual", "Json Expected");
+    FunctionRunner.FunctionRunnerResult<Object, Object> actualFunctionRunnerResult = (new FunctionRunner(
+        executionDescriptor, instanceLoader, classLoader, new ObjectMapper())).new FunctionRunnerResult("Input",
+            "Expected Output", "Actual Output", "Json Actual", "Json Expected");
 
     // Assert
     assertEquals("Actual Output", actualFunctionRunnerResult.getActualOutput());
@@ -108,27 +93,23 @@ public class FunctionRunnerDiffblueTest {
   }
 
   /**
-   * Test getters and setters.
-   * <p>
    * Methods under test:
    * <ul>
-   *   <li>{@link FunctionRunner#FunctionRunner(ExecutionDescriptor, InstanceLoader, ClassLoader, ObjectMapper)}
+   *   <li>
+   * {@link FunctionRunner#FunctionRunner(ExecutionDescriptor, FunctionRunner.InstanceLoader, ClassLoader, ObjectMapper)}
    *   <li>{@link FunctionRunner#getClassLoader()}
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void FunctionRunner.<init>(ExecutionDescriptor, InstanceLoader, ClassLoader, ObjectMapper)",
-      "ClassLoader FunctionRunner.getClassLoader()"})
   public void testGettersAndSetters() {
     // Arrange
     ExecutionDescriptor executionDescriptor = new ExecutionDescriptor();
-    InstanceLoader instanceLoader = mock(InstanceLoader.class);
+    FunctionRunner.InstanceLoader instanceLoader = mock(FunctionRunner.InstanceLoader.class);
     MLet classLoader = new MLet();
 
     // Act
     ClassLoader actualClassLoader = (new FunctionRunner(executionDescriptor, instanceLoader, classLoader,
-        JsonMapper.builder().findAndAddModules().build())).getClassLoader();
+        new ObjectMapper())).getClassLoader();
 
     // Assert
     assertNotNull(actualClassLoader);

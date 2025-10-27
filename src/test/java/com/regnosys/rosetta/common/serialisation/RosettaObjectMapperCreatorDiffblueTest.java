@@ -21,454 +21,1649 @@ package com.regnosys.rosetta.common.serialisation;
  */
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
+import static org.mockito.Mockito.mock;
+import com.ctc.wstx.api.ReaderConfig;
+import com.ctc.wstx.api.WriterConfig;
+import com.ctc.wstx.stax.WstxInputFactory;
+import com.ctc.wstx.stax.WstxOutputFactory;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonSetter;
+import com.fasterxml.jackson.annotation.Nulls;
+import com.fasterxml.jackson.core.Base64Variant;
+import com.fasterxml.jackson.core.FormatFeature;
 import com.fasterxml.jackson.core.JsonFactory;
+import com.fasterxml.jackson.core.Version;
+import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
+import com.fasterxml.jackson.databind.AnnotationIntrospector;
+import com.fasterxml.jackson.databind.DeserializationConfig;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.MappingJsonFactory;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationConfig;
+import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.cfg.CacheProvider;
+import com.fasterxml.jackson.databind.cfg.ContextAttributes;
+import com.fasterxml.jackson.databind.cfg.DefaultCacheProvider;
+import com.fasterxml.jackson.databind.cfg.DeserializerFactoryConfig;
+import com.fasterxml.jackson.databind.cfg.SerializerFactoryConfig;
+import com.fasterxml.jackson.databind.deser.BeanDeserializerFactory;
 import com.fasterxml.jackson.databind.deser.DefaultDeserializationContext;
-import com.fasterxml.jackson.databind.deser.std.JsonLocationInstantiator;
+import com.fasterxml.jackson.databind.deser.DeserializerFactory;
+import com.fasterxml.jackson.databind.deser.Deserializers;
+import com.fasterxml.jackson.databind.introspect.AccessorNamingStrategy;
+import com.fasterxml.jackson.databind.introspect.AnnotationIntrospectorPair;
+import com.fasterxml.jackson.databind.introspect.BasicClassIntrospector;
+import com.fasterxml.jackson.databind.introspect.ClassIntrospector;
+import com.fasterxml.jackson.databind.introspect.DefaultAccessorNamingStrategy;
 import com.fasterxml.jackson.databind.introspect.VisibilityChecker;
-import com.fasterxml.jackson.databind.introspect.VisibilityChecker.Std;
-import com.fasterxml.jackson.databind.json.JsonMapper;
+import com.fasterxml.jackson.databind.jsontype.PolymorphicTypeValidator;
+import com.fasterxml.jackson.databind.jsontype.SubtypeResolver;
 import com.fasterxml.jackson.databind.jsontype.impl.LaissezFaireSubTypeValidator;
 import com.fasterxml.jackson.databind.jsontype.impl.StdSubtypeResolver;
-import com.fasterxml.jackson.databind.module.SimpleAbstractTypeResolver;
+import com.fasterxml.jackson.databind.module.SimpleDeserializers;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.databind.module.SimpleSerializers;
+import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.ser.BeanSerializerFactory;
 import com.fasterxml.jackson.databind.ser.DefaultSerializerProvider;
-import com.fasterxml.jackson.databind.ser.DefaultSerializerProvider.Impl;
+import com.fasterxml.jackson.databind.ser.FilterProvider;
+import com.fasterxml.jackson.databind.ser.SerializerFactory;
+import com.fasterxml.jackson.databind.ser.Serializers;
+import com.fasterxml.jackson.databind.ser.impl.FailingSerializer;
+import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
+import com.fasterxml.jackson.databind.ser.std.NullSerializer;
+import com.fasterxml.jackson.databind.type.TypeFactory;
+import com.fasterxml.jackson.databind.util.ArrayIterator;
 import com.fasterxml.jackson.databind.util.StdDateFormat;
 import com.fasterxml.jackson.dataformat.xml.JacksonXmlModule;
+import com.fasterxml.jackson.dataformat.xml.XmlFactory;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
+import com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser;
 import com.fasterxml.jackson.dataformat.xml.deser.XmlDeserializationContext;
+import com.fasterxml.jackson.dataformat.xml.ser.ToXmlGenerator;
 import com.fasterxml.jackson.dataformat.xml.ser.XmlSerializerProvider;
+import com.fasterxml.jackson.dataformat.xml.util.DefaultXmlPrettyPrinter;
 import com.regnosys.rosetta.common.serialisation.mixin.RosettaDateModule;
-import com.regnosys.rosetta.common.serialisation.xml.RosettaBeanDeserializerModifier;
-import com.regnosys.rosetta.common.serialisation.xml.RosettaBeanSerializerModifier;
 import com.regnosys.rosetta.common.serialisation.xml.RosettaSerialiserFactory;
+import com.rosetta.model.lib.ModelSymbolId;
 import com.rosetta.util.serialisation.RosettaXMLConfiguration;
-import java.util.ArrayList;
+import com.rosetta.util.serialisation.TypeXMLConfiguration;
+import java.text.DateFormat;
 import java.util.HashMap;
+import java.util.Locale;
+import java.util.MissingResourceException;
+import java.util.Set;
+import java.util.TimeZone;
+import java.util.function.BiFunction;
+import javax.xml.stream.XMLInputFactory;
+import javax.xml.stream.XMLOutputFactory;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
 
 public class RosettaObjectMapperCreatorDiffblueTest {
   /**
-   * Test {@link RosettaObjectMapperCreator#forJSON()}.
-   * <p>
    * Method under test: {@link RosettaObjectMapperCreator#forJSON()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"RosettaObjectMapperCreator RosettaObjectMapperCreator.forJSON()"})
-  public void testForJSON() {
+  public void testForJSON() throws MissingResourceException {
     // Arrange and Act
     ObjectMapper actualCreateResult = RosettaObjectMapperCreator.forJSON().create();
 
     // Assert
+    SerializationConfig serializationConfig = actualCreateResult.getSerializationConfig();
+    assertTrue(serializationConfig.getDefaultPrettyPrinter() instanceof DefaultPrettyPrinter);
     JsonFactory factory = actualCreateResult.getFactory();
     assertTrue(factory instanceof MappingJsonFactory);
-    assertTrue(actualCreateResult.getDeserializationContext() instanceof DefaultDeserializationContext.Impl);
-    assertTrue(actualCreateResult.getVisibilityChecker() instanceof Std);
-    assertTrue(actualCreateResult.getPolymorphicTypeValidator() instanceof LaissezFaireSubTypeValidator);
-    assertTrue(actualCreateResult.getSubtypeResolver() instanceof StdSubtypeResolver);
-    assertTrue(actualCreateResult.getSerializerFactory() instanceof BeanSerializerFactory);
-    assertTrue(actualCreateResult.getSerializerProvider() instanceof Impl);
-    assertTrue(actualCreateResult.getSerializerProviderInstance() instanceof Impl);
-    assertTrue(actualCreateResult.getDateFormat() instanceof StdDateFormat);
+    DeserializationConfig deserializationConfig = actualCreateResult.getDeserializationConfig();
+    ContextAttributes attributes = deserializationConfig.getAttributes();
+    assertTrue(attributes instanceof ContextAttributes.Impl);
+    CacheProvider cacheProvider = deserializationConfig.getCacheProvider();
+    assertTrue(cacheProvider instanceof DefaultCacheProvider);
+    DeserializationContext deserializationContext = actualCreateResult.getDeserializationContext();
+    DeserializerFactory factory2 = deserializationContext.getFactory();
+    assertTrue(factory2 instanceof BeanDeserializerFactory);
+    assertTrue(deserializationContext instanceof DefaultDeserializationContext.Impl);
+    AnnotationIntrospector annotationIntrospector = deserializationConfig.getAnnotationIntrospector();
+    assertTrue(annotationIntrospector instanceof AnnotationIntrospectorPair);
+    AnnotationIntrospector annotationIntrospector2 = serializationConfig.getAnnotationIntrospector();
+    assertTrue(annotationIntrospector2 instanceof AnnotationIntrospectorPair);
+    ClassIntrospector classIntrospector = deserializationConfig.getClassIntrospector();
+    assertTrue(classIntrospector instanceof BasicClassIntrospector);
+    AccessorNamingStrategy.Provider accessorNaming = deserializationConfig.getAccessorNaming();
+    assertTrue(accessorNaming instanceof DefaultAccessorNamingStrategy.Provider);
+    VisibilityChecker<?> visibilityChecker = actualCreateResult.getVisibilityChecker();
+    assertTrue(visibilityChecker instanceof VisibilityChecker.Std);
+    PolymorphicTypeValidator polymorphicTypeValidator = actualCreateResult.getPolymorphicTypeValidator();
+    assertTrue(polymorphicTypeValidator instanceof LaissezFaireSubTypeValidator);
+    SubtypeResolver subtypeResolver = actualCreateResult.getSubtypeResolver();
+    assertTrue(subtypeResolver instanceof StdSubtypeResolver);
+    DeserializerFactoryConfig factoryConfig = ((BeanDeserializerFactory) factory2).getFactoryConfig();
+    Iterable<Deserializers> deserializersResult = factoryConfig.deserializers();
+    assertTrue(((ArrayIterator<Deserializers>) deserializersResult).next() instanceof SimpleDeserializers);
+    assertTrue(((ArrayIterator<Deserializers>) deserializersResult).next() instanceof SimpleDeserializers);
+    SerializerFactory serializerFactory = actualCreateResult.getSerializerFactory();
+    SerializerFactoryConfig factoryConfig2 = ((BeanSerializerFactory) serializerFactory).getFactoryConfig();
+    Iterable<Serializers> serializersResult = factoryConfig2.serializers();
+    assertTrue(((ArrayIterator<Serializers>) serializersResult).next() instanceof SimpleSerializers);
+    assertTrue(((ArrayIterator<Serializers>) serializersResult).next() instanceof SimpleSerializers);
+    assertTrue(serializerFactory instanceof BeanSerializerFactory);
+    SerializerProvider serializerProvider = actualCreateResult.getSerializerProvider();
+    assertTrue(serializerProvider instanceof DefaultSerializerProvider.Impl);
+    SerializerProvider serializerProviderInstance = actualCreateResult.getSerializerProviderInstance();
+    assertTrue(serializerProviderInstance instanceof DefaultSerializerProvider.Impl);
+    JsonSerializer<Object> defaultNullKeySerializer = serializerProvider.getDefaultNullKeySerializer();
+    assertTrue(defaultNullKeySerializer instanceof FailingSerializer);
+    FilterProvider filterProvider = serializationConfig.getFilterProvider();
+    assertTrue(filterProvider instanceof SimpleFilterProvider);
+    JsonSerializer<Object> defaultNullValueSerializer = serializerProvider.getDefaultNullValueSerializer();
+    assertTrue(defaultNullValueSerializer instanceof NullSerializer);
+    assertTrue(deserializersResult instanceof ArrayIterator);
+    assertTrue(serializersResult instanceof ArrayIterator);
+    DateFormat dateFormat = actualCreateResult.getDateFormat();
+    assertTrue(dateFormat instanceof StdDateFormat);
+    assertEquals(" ", factory.getRootValueSeparator());
+    Version versionResult = annotationIntrospector.version();
+    assertEquals("", versionResult.getArtifactId());
+    assertEquals("", versionResult.getGroupId());
+    Locale locale = deserializationConfig.getLocale();
+    assertEquals("", locale.getCountry());
+    assertEquals("", locale.getDisplayCountry());
+    assertEquals("", locale.getDisplayScript());
+    assertEquals("", locale.getDisplayVariant());
+    assertEquals("", locale.getISO3Country());
+    assertEquals("", locale.getScript());
+    assertEquals("", locale.getVariant());
+    assertEquals("//0.0.0", versionResult.toFullString());
+    TimeZone timeZone = deserializationConfig.getTimeZone();
+    assertEquals("Coordinated Universal Time", timeZone.getDisplayName());
+    assertEquals("English", locale.getDisplayLanguage());
+    assertEquals("English", locale.getDisplayName());
+    assertEquals("JSON", factory.getFormatName());
+    Base64Variant base64Variant = deserializationConfig.getBase64Variant();
+    assertEquals("MIME-NO-LINEFEEDS", base64Variant.getName());
+    assertEquals("MIME-NO-LINEFEEDS", base64Variant.toString());
+    assertEquals("UTC", timeZone.getID());
+    assertEquals("[one of: 'yyyy-MM-dd'T'HH:mm:ss.SSSX', 'EEE, dd MMM yyyy HH:mm:ss zzz' (lenient)]",
+        ((StdDateFormat) dateFormat).toPattern());
+    Version versionResult2 = factory.version();
+    assertEquals("com.fasterxml.jackson.core", versionResult2.getGroupId());
+    Version versionResult3 = actualCreateResult.version();
+    assertEquals("com.fasterxml.jackson.core", versionResult3.getGroupId());
+    assertEquals("com.fasterxml.jackson.core/jackson-core/2.17.1", versionResult2.toFullString());
+    assertEquals("com.fasterxml.jackson.core/jackson-databind/2.17.1", versionResult3.toFullString());
+    assertEquals("en", locale.getLanguage());
+    assertEquals("eng", locale.getISO3Language());
+    assertEquals("jackson-core", versionResult2.getArtifactId());
+    assertEquals("jackson-databind", versionResult3.getArtifactId());
+    assertEquals('=', base64Variant.getPaddingChar());
+    assertNull(serializerProvider.getGenerator());
+    assertNull(serializerProviderInstance.getGenerator());
+    assertNull(deserializationContext.getParser());
+    assertNull(factory.getCharacterEscapes());
+    assertNull(factory.getInputDecorator());
+    assertNull(factory.getOutputDecorator());
+    assertNull(deserializationContext.getConfig());
     assertNull(actualCreateResult.getInjectableValues());
+    assertNull(deserializationContext.getContextualType());
+    assertNull(defaultNullKeySerializer.getDelegatee());
+    assertNull(defaultNullValueSerializer.getDelegatee());
+    assertNull(deserializationConfig.getFullRootName());
+    assertNull(serializationConfig.getFullRootName());
     assertNull(actualCreateResult.getPropertyNamingStrategy());
+    assertNull(deserializationConfig.getPropertyNamingStrategy());
+    assertNull(serializationConfig.getPropertyNamingStrategy());
+    assertNull(serializerProvider.getConfig());
+    assertNull(deserializationConfig.getHandlerInstantiator());
+    assertNull(serializationConfig.getHandlerInstantiator());
+    assertNull(((SimpleFilterProvider) filterProvider).getDefaultFilter());
+    assertNull(deserializationConfig.getProblemHandlers());
+    assertNull(deserializationConfig.getDefaultMergeable());
+    assertNull(serializationConfig.getDefaultMergeable());
+    assertNull(factory.getFormatReadFeatureType());
+    assertNull(factory.getFormatWriteFeatureType());
+    JsonInclude.Value defaultPropertyInclusion = deserializationConfig.getDefaultPropertyInclusion();
+    assertNull(defaultPropertyInclusion.getContentFilter());
+    assertNull(defaultPropertyInclusion.getValueFilter());
+    assertNull(deserializationContext.getActiveView());
+    assertNull(serializerProvider.getActiveView());
+    assertNull(serializerProviderInstance.getActiveView());
+    assertNull(deserializationConfig.getActiveView());
+    assertNull(serializationConfig.getActiveView());
+    TypeFactory typeFactory = actualCreateResult.getTypeFactory();
+    assertNull(typeFactory.getClassLoader());
+    assertNull(deserializationConfig.getRootName());
+    assertNull(serializationConfig.getRootName());
+    assertNull(dateFormat.getNumberFormat());
+    assertNull(dateFormat.getCalendar());
+    assertNull(dateFormat.getTimeZone());
+    assertEquals(0, factory.getFormatGeneratorFeatures());
+    assertEquals(0, factory.getFormatParserFeatures());
+    assertEquals(0, versionResult.getMajorVersion());
+    assertEquals(0, versionResult.getMinorVersion());
+    assertEquals(0, versionResult.getPatchLevel());
+    assertEquals(0, deserializationContext.getDeserializationFeatures());
+    assertEquals(0, timeZone.getDSTSavings());
+    assertEquals(1, factory.getParserFeatures());
+    assertEquals(1, versionResult2.getPatchLevel());
+    assertEquals(1, versionResult3.getPatchLevel());
+    assertEquals(17, versionResult2.getMinorVersion());
+    assertEquals(17, versionResult3.getMinorVersion());
+    assertEquals(2, versionResult2.getMajorVersion());
+    assertEquals(2, versionResult3.getMajorVersion());
+    assertEquals(21766460, serializationConfig.getSerializationFeatures());
+    assertEquals(2207, factory.getGeneratorFeatures());
+    assertEquals(31, factory.getFactoryFeatures());
+    assertEquals(339780737, deserializationConfig.getDeserializationFeatures());
     assertEquals(7, actualCreateResult.getRegisteredModuleIds().size());
+    JsonNodeFactory nodeFactory = actualCreateResult.getNodeFactory();
+    assertEquals(9999, nodeFactory.getMaxElementIndexForInsert());
+    assertEquals(JsonInclude.Include.NON_EMPTY, defaultPropertyInclusion.getContentInclusion());
+    assertEquals(JsonInclude.Include.NON_EMPTY, defaultPropertyInclusion.getValueInclusion());
+    assertEquals(JsonInclude.Include.NON_EMPTY, serializationConfig.getSerializationInclusion());
+    JsonSetter.Value defaultSetterInfo = deserializationConfig.getDefaultSetterInfo();
+    assertEquals(Nulls.DEFAULT, defaultSetterInfo.getContentNulls());
+    assertEquals(Nulls.DEFAULT, defaultSetterInfo.getValueNulls());
+    assertFalse(versionResult2.isSnapshot());
+    assertFalse(versionResult.isSnapshot());
+    assertFalse(versionResult3.isSnapshot());
+    assertFalse(versionResult2.isUknownVersion());
+    assertFalse(versionResult3.isUknownVersion());
+    assertFalse(versionResult2.isUnknownVersion());
+    assertFalse(versionResult3.isUnknownVersion());
+    assertFalse(defaultNullKeySerializer.isUnwrappingSerializer());
+    assertFalse(defaultNullValueSerializer.isUnwrappingSerializer());
+    assertFalse(factoryConfig.hasAbstractTypeResolvers());
+    assertFalse(deserializationConfig.hasExplicitTimeZone());
+    assertFalse(serializationConfig.hasExplicitTimeZone());
+    assertFalse(locale.hasExtensions());
+    assertTrue(versionResult.isUknownVersion());
+    assertTrue(versionResult.isUnknownVersion());
+    assertTrue(factoryConfig.hasDeserializerModifiers());
+    assertTrue(factoryConfig.hasDeserializers());
+    assertTrue(factoryConfig.hasKeyDeserializers());
+    assertTrue(factoryConfig.hasValueInstantiators());
+    assertTrue(deserializationConfig.isAnnotationProcessingEnabled());
+    assertTrue(serializationConfig.isAnnotationProcessingEnabled());
+    assertTrue(factoryConfig2.hasKeySerializers());
+    assertTrue(factoryConfig2.hasSerializerModifiers());
+    assertTrue(factoryConfig2.hasSerializers());
+    assertTrue(((ArrayIterator<Deserializers>) deserializersResult).hasNext());
+    assertTrue(((ArrayIterator<Serializers>) serializersResult).hasNext());
+    assertTrue(((StdDateFormat) dateFormat).isColonIncludedInTimeZone());
+    assertTrue(dateFormat.isLenient());
+    Set<Character> extensionKeys = locale.getExtensionKeys();
+    assertTrue(extensionKeys.isEmpty());
+    assertEquals(Integer.MAX_VALUE, base64Variant.getMaxLineLength());
+    assertEquals('=', base64Variant.getPaddingByte());
+    assertSame(versionResult, annotationIntrospector2.version());
+    assertSame(nodeFactory, deserializationConfig.getNodeFactory());
+    assertSame(serializationConfig, serializerProviderInstance.getConfig());
+    assertSame(typeFactory, serializerProviderInstance.getTypeFactory());
+    assertSame(typeFactory, deserializationConfig.getTypeFactory());
+    assertSame(typeFactory, serializationConfig.getTypeFactory());
+    assertSame(base64Variant, serializationConfig.getBase64Variant());
+    assertSame(locale, serializerProviderInstance.getLocale());
+    assertSame(locale, serializationConfig.getLocale());
+    assertSame(timeZone, serializerProviderInstance.getTimeZone());
+    assertSame(timeZone, serializationConfig.getTimeZone());
+    assertSame(defaultPropertyInclusion, serializationConfig.getDefaultPropertyInclusion());
+    assertSame(defaultSetterInfo, serializationConfig.getDefaultSetterInfo());
+    assertSame(actualCreateResult, factory.getCodec());
+    assertSame(extensionKeys, locale.getUnicodeLocaleAttributes());
+    assertSame(extensionKeys, locale.getUnicodeLocaleKeys());
     assertSame(factory, actualCreateResult.getJsonFactory());
+    assertSame(attributes, serializationConfig.getAttributes());
+    assertSame(cacheProvider, serializationConfig.getCacheProvider());
+    assertSame(annotationIntrospector2, serializerProviderInstance.getAnnotationIntrospector());
+    assertSame(classIntrospector, serializationConfig.getClassIntrospector());
+    assertSame(accessorNaming, serializationConfig.getAccessorNaming());
+    assertSame(visibilityChecker, deserializationConfig.getDefaultVisibilityChecker());
+    assertSame(visibilityChecker, serializationConfig.getDefaultVisibilityChecker());
+    assertSame(polymorphicTypeValidator, deserializationConfig.getPolymorphicTypeValidator());
+    assertSame(polymorphicTypeValidator, serializationConfig.getPolymorphicTypeValidator());
+    assertSame(subtypeResolver, deserializationConfig.getSubtypeResolver());
+    assertSame(subtypeResolver, serializationConfig.getSubtypeResolver());
+    assertSame(defaultNullKeySerializer, serializerProviderInstance.getDefaultNullKeySerializer());
+    assertSame(filterProvider, serializerProviderInstance.getFilterProvider());
+    assertSame(defaultNullValueSerializer, serializerProviderInstance.getDefaultNullValueSerializer());
+    assertSame(dateFormat, deserializationConfig.getDateFormat());
+    assertSame(dateFormat, serializationConfig.getDateFormat());
   }
 
   /**
-   * Test {@link RosettaObjectMapperCreator#forXML()}.
-   * <p>
    * Method under test: {@link RosettaObjectMapperCreator#forXML()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"RosettaObjectMapperCreator RosettaObjectMapperCreator.forXML()"})
-  public void testForXML() {
+  public void testForXML() throws MissingResourceException {
     // Arrange and Act
     ObjectMapper actualCreateResult = RosettaObjectMapperCreator.forXML().create();
 
     // Assert
-    assertTrue(actualCreateResult.getVisibilityChecker() instanceof Std);
-    assertTrue(actualCreateResult.getPolymorphicTypeValidator() instanceof LaissezFaireSubTypeValidator);
-    assertTrue(actualCreateResult.getSubtypeResolver() instanceof StdSubtypeResolver);
-    assertTrue(actualCreateResult.getDateFormat() instanceof StdDateFormat);
+    JsonFactory factory = actualCreateResult.getFactory();
+    XMLInputFactory xMLInputFactory = ((XmlFactory) factory).getXMLInputFactory();
+    assertTrue(xMLInputFactory instanceof WstxInputFactory);
+    XMLOutputFactory xMLOutputFactory = ((XmlFactory) factory).getXMLOutputFactory();
+    assertTrue(xMLOutputFactory instanceof WstxOutputFactory);
+    DeserializationConfig deserializationConfig = actualCreateResult.getDeserializationConfig();
+    ContextAttributes attributes = deserializationConfig.getAttributes();
+    assertTrue(attributes instanceof ContextAttributes.Impl);
+    CacheProvider cacheProvider = deserializationConfig.getCacheProvider();
+    assertTrue(cacheProvider instanceof DefaultCacheProvider);
+    DeserializationContext deserializationContext = actualCreateResult.getDeserializationContext();
+    DeserializerFactory factory2 = deserializationContext.getFactory();
+    assertTrue(factory2 instanceof BeanDeserializerFactory);
+    AnnotationIntrospector annotationIntrospector = deserializationConfig.getAnnotationIntrospector();
+    assertTrue(annotationIntrospector instanceof AnnotationIntrospectorPair);
+    SerializationConfig serializationConfig = actualCreateResult.getSerializationConfig();
+    AnnotationIntrospector annotationIntrospector2 = serializationConfig.getAnnotationIntrospector();
+    assertTrue(annotationIntrospector2 instanceof AnnotationIntrospectorPair);
+    ClassIntrospector classIntrospector = deserializationConfig.getClassIntrospector();
+    assertTrue(classIntrospector instanceof BasicClassIntrospector);
+    AccessorNamingStrategy.Provider accessorNaming = deserializationConfig.getAccessorNaming();
+    assertTrue(accessorNaming instanceof DefaultAccessorNamingStrategy.Provider);
+    VisibilityChecker<?> visibilityChecker = actualCreateResult.getVisibilityChecker();
+    assertTrue(visibilityChecker instanceof VisibilityChecker.Std);
+    PolymorphicTypeValidator polymorphicTypeValidator = actualCreateResult.getPolymorphicTypeValidator();
+    assertTrue(polymorphicTypeValidator instanceof LaissezFaireSubTypeValidator);
+    SubtypeResolver subtypeResolver = actualCreateResult.getSubtypeResolver();
+    assertTrue(subtypeResolver instanceof StdSubtypeResolver);
+    DeserializerFactoryConfig factoryConfig = ((BeanDeserializerFactory) factory2).getFactoryConfig();
+    Iterable<Deserializers> deserializersResult = factoryConfig.deserializers();
+    assertTrue(((ArrayIterator<Deserializers>) deserializersResult).next() instanceof SimpleDeserializers);
+    assertTrue(((ArrayIterator<Deserializers>) deserializersResult).next() instanceof SimpleDeserializers);
+    SerializerFactory serializerFactory = actualCreateResult.getSerializerFactory();
+    SerializerFactoryConfig factoryConfig2 = ((RosettaSerialiserFactory) serializerFactory).getFactoryConfig();
+    Iterable<Serializers> serializersResult = factoryConfig2.serializers();
+    assertTrue(((ArrayIterator<Serializers>) serializersResult).next() instanceof SimpleSerializers);
+    assertTrue(((ArrayIterator<Serializers>) serializersResult).next() instanceof SimpleSerializers);
+    SerializerProvider serializerProvider = actualCreateResult.getSerializerProvider();
+    JsonSerializer<Object> defaultNullKeySerializer = serializerProvider.getDefaultNullKeySerializer();
+    assertTrue(defaultNullKeySerializer instanceof FailingSerializer);
+    FilterProvider filterProvider = serializationConfig.getFilterProvider();
+    assertTrue(filterProvider instanceof SimpleFilterProvider);
+    JsonSerializer<Object> defaultNullValueSerializer = serializerProvider.getDefaultNullValueSerializer();
+    assertTrue(defaultNullValueSerializer instanceof NullSerializer);
+    assertTrue(deserializersResult instanceof ArrayIterator);
+    assertTrue(serializersResult instanceof ArrayIterator);
+    DateFormat dateFormat = actualCreateResult.getDateFormat();
+    assertTrue(dateFormat instanceof StdDateFormat);
     assertTrue(actualCreateResult instanceof XmlMapper);
-    assertTrue(actualCreateResult.getDeserializationContext() instanceof XmlDeserializationContext);
-    assertTrue(actualCreateResult.getSerializerProvider() instanceof XmlSerializerProvider);
-    assertTrue(actualCreateResult.getSerializerProviderInstance() instanceof XmlSerializerProvider);
-    assertTrue(actualCreateResult.getSerializerFactory() instanceof RosettaSerialiserFactory);
+    assertTrue(deserializationContext instanceof XmlDeserializationContext);
+    assertTrue(serializerProvider instanceof XmlSerializerProvider);
+    SerializerProvider serializerProviderInstance = actualCreateResult.getSerializerProviderInstance();
+    assertTrue(serializerProviderInstance instanceof XmlSerializerProvider);
+    assertTrue(serializationConfig.getDefaultPrettyPrinter() instanceof DefaultXmlPrettyPrinter);
+    assertTrue(serializerFactory instanceof RosettaSerialiserFactory);
+    assertEquals(" ", factory.getRootValueSeparator());
+    Locale locale = deserializationConfig.getLocale();
+    assertEquals("", locale.getCountry());
+    assertEquals("", locale.getDisplayCountry());
+    assertEquals("", locale.getDisplayScript());
+    assertEquals("", locale.getDisplayVariant());
+    assertEquals("", locale.getISO3Country());
+    assertEquals("", locale.getScript());
+    assertEquals("", locale.getVariant());
+    TimeZone timeZone = deserializationConfig.getTimeZone();
+    assertEquals("Coordinated Universal Time", timeZone.getDisplayName());
+    assertEquals("English", locale.getDisplayLanguage());
+    assertEquals("English", locale.getDisplayName());
+    Base64Variant base64Variant = deserializationConfig.getBase64Variant();
+    assertEquals("MIME", base64Variant.getName());
+    assertEquals("MIME", base64Variant.toString());
+    assertEquals("UTC", timeZone.getID());
+    assertEquals("XML", factory.getFormatName());
+    assertEquals("[one of: 'yyyy-MM-dd'T'HH:mm:ss.SSSX', 'EEE, dd MMM yyyy HH:mm:ss zzz' (lenient)]",
+        ((StdDateFormat) dateFormat).toPattern());
+    Version versionResult = annotationIntrospector.version();
+    assertEquals("com.fasterxml.jackson.core", versionResult.getGroupId());
+    assertEquals("com.fasterxml.jackson.core/jackson-databind/2.17.1", versionResult.toFullString());
+    Version versionResult2 = actualCreateResult.version();
+    assertEquals("com.fasterxml.jackson.dataformat", versionResult2.getGroupId());
+    assertEquals("com.fasterxml.jackson.dataformat/jackson-dataformat-xml/2.17.1", versionResult2.toFullString());
+    assertEquals("en", locale.getLanguage());
+    assertEquals("eng", locale.getISO3Language());
+    assertEquals("jackson-databind", versionResult.getArtifactId());
+    assertEquals("jackson-dataformat-xml", versionResult2.getArtifactId());
+    WriterConfig config = ((WstxOutputFactory) xMLOutputFactory).getConfig();
+    assertEquals("wstxns", config.getAutomaticNsPrefix());
+    assertEquals('=', base64Variant.getPaddingChar());
+    assertNull(config.getEmptyElementHandler());
+    assertNull(config.getInvalidCharHandler());
+    ReaderConfig config2 = ((WstxInputFactory) xMLInputFactory).getConfig();
+    assertNull(config2.getDTDEventListener());
+    assertNull(config2.getSymbols());
+    assertNull(serializerProvider.getGenerator());
+    assertNull(serializerProviderInstance.getGenerator());
+    assertNull(deserializationContext.getParser());
+    assertNull(factory.getCharacterEscapes());
+    assertNull(factory.getInputDecorator());
+    assertNull(factory.getOutputDecorator());
+    assertNull(deserializationContext.getConfig());
     assertNull(actualCreateResult.getInjectableValues());
+    assertNull(deserializationContext.getContextualType());
+    assertNull(defaultNullKeySerializer.getDelegatee());
+    assertNull(defaultNullValueSerializer.getDelegatee());
+    assertNull(deserializationConfig.getFullRootName());
+    assertNull(serializationConfig.getFullRootName());
     assertNull(actualCreateResult.getPropertyNamingStrategy());
+    assertNull(deserializationConfig.getPropertyNamingStrategy());
+    assertNull(serializationConfig.getPropertyNamingStrategy());
+    assertNull(serializerProvider.getConfig());
+    assertNull(deserializationConfig.getHandlerInstantiator());
+    assertNull(serializationConfig.getHandlerInstantiator());
+    assertNull(((SimpleFilterProvider) filterProvider).getDefaultFilter());
+    assertNull(deserializationConfig.getProblemHandlers());
+    assertNull(deserializationConfig.getDefaultMergeable());
+    assertNull(serializationConfig.getDefaultMergeable());
+    JsonInclude.Value defaultPropertyInclusion = deserializationConfig.getDefaultPropertyInclusion();
+    assertNull(defaultPropertyInclusion.getContentFilter());
+    assertNull(defaultPropertyInclusion.getValueFilter());
+    assertNull(deserializationContext.getActiveView());
+    assertNull(serializerProvider.getActiveView());
+    assertNull(serializerProviderInstance.getActiveView());
+    assertNull(deserializationConfig.getActiveView());
+    assertNull(serializationConfig.getActiveView());
+    TypeFactory typeFactory = actualCreateResult.getTypeFactory();
+    assertNull(typeFactory.getClassLoader());
+    assertNull(deserializationConfig.getRootName());
+    assertNull(serializationConfig.getRootName());
+    assertNull(((XmlFactory) factory).getXMLTextElementName());
+    assertNull(config2.getBaseURL());
+    assertNull(dateFormat.getNumberFormat());
+    assertNull(dateFormat.getCalendar());
+    assertNull(dateFormat.getTimeZone());
+    assertNull(config2.getXMLReporter());
+    assertNull(config.getProblemReporter());
+    assertNull(xMLInputFactory.getXMLReporter());
+    assertNull(config2.getDtdResolver());
+    assertNull(config2.getEntityResolver());
+    assertNull(config2.getUndeclaredEntityResolver());
+    assertNull(config2.getXMLResolver());
+    assertNull(xMLInputFactory.getXMLResolver());
+    assertNull(xMLInputFactory.getEventAllocator());
+    assertNull(config.getAttrValueEscaperFactory());
+    assertNull(config.getTextEscaperFactory());
+    assertNull(config2.getDTDOverride());
+    assertEquals(0, factory.getFormatGeneratorFeatures());
+    assertEquals(0, deserializationContext.getDeserializationFeatures());
+    assertEquals(0, timeZone.getDSTSavings());
+    assertEquals(1, factory.getParserFeatures());
+    assertEquals(1, versionResult.getPatchLevel());
+    assertEquals(1, versionResult2.getPatchLevel());
+    assertEquals(1000, config2.getMaxAttributesPerElement());
+    assertEquals(1000, config2.getMaxElementDepth());
+    assertEquals(100000L, config2.getMaxEntityCount());
+    assertEquals(12, config2.getDtdCacheSize());
+    assertEquals(17, versionResult.getMinorVersion());
+    assertEquals(17, versionResult2.getMinorVersion());
+    assertEquals(2, versionResult.getMajorVersion());
+    assertEquals(2, versionResult2.getMajorVersion());
+    assertEquals(2147483647L, config2.getMaxTextLength());
+    assertEquals(21766460, serializationConfig.getSerializationFeatures());
+    assertEquals(2207, factory.getGeneratorFeatures());
+    assertEquals(2973191, config2.getConfigFlags());
+    assertEquals(31, factory.getFactoryFeatures());
+    assertEquals(340829313, deserializationConfig.getDeserializationFeatures());
+    assertEquals(4, factory.getFormatParserFeatures());
+    assertEquals(4000, config2.getInputBufferLength());
+    assertEquals(500, config2.getMaxDtdDepth());
+    assertEquals(500, config2.getMaxEntityDepth());
+    assertEquals(524288, config2.getMaxAttributeSize());
     assertEquals(7, actualCreateResult.getRegisteredModuleIds().size());
+    assertEquals(76, base64Variant.getMaxLineLength());
+    assertEquals(935, config.getConfigFlags());
+    JsonNodeFactory nodeFactory = actualCreateResult.getNodeFactory();
+    assertEquals(9999, nodeFactory.getMaxElementIndexForInsert());
+    assertEquals(JsonInclude.Include.NON_EMPTY, defaultPropertyInclusion.getContentInclusion());
+    assertEquals(JsonInclude.Include.NON_EMPTY, defaultPropertyInclusion.getValueInclusion());
+    assertEquals(JsonInclude.Include.NON_EMPTY, serializationConfig.getSerializationInclusion());
+    JsonSetter.Value defaultSetterInfo = deserializationConfig.getDefaultSetterInfo();
+    assertEquals(Nulls.DEFAULT, defaultSetterInfo.getContentNulls());
+    assertEquals(Nulls.DEFAULT, defaultSetterInfo.getValueNulls());
+    assertFalse(config2.isXml11());
+    assertFalse(versionResult.isSnapshot());
+    assertFalse(versionResult2.isSnapshot());
+    assertFalse(versionResult.isUknownVersion());
+    assertFalse(versionResult2.isUknownVersion());
+    assertFalse(versionResult.isUnknownVersion());
+    assertFalse(versionResult2.isUnknownVersion());
+    assertFalse(defaultNullKeySerializer.isUnwrappingSerializer());
+    assertFalse(defaultNullValueSerializer.isUnwrappingSerializer());
+    assertFalse(factoryConfig.hasAbstractTypeResolvers());
+    assertFalse(deserializationConfig.hasExplicitTimeZone());
+    assertFalse(serializationConfig.hasExplicitTimeZone());
+    assertFalse(locale.hasExtensions());
+    assertTrue(factoryConfig.hasDeserializerModifiers());
+    assertTrue(factoryConfig.hasDeserializers());
+    assertTrue(factoryConfig.hasKeyDeserializers());
+    assertTrue(factoryConfig.hasValueInstantiators());
+    assertTrue(deserializationConfig.isAnnotationProcessingEnabled());
+    assertTrue(serializationConfig.isAnnotationProcessingEnabled());
+    assertTrue(factoryConfig2.hasKeySerializers());
+    assertTrue(factoryConfig2.hasSerializerModifiers());
+    assertTrue(factoryConfig2.hasSerializers());
+    assertTrue(((ArrayIterator<Deserializers>) deserializersResult).hasNext());
+    assertTrue(((ArrayIterator<Serializers>) serializersResult).hasNext());
+    assertTrue(((StdDateFormat) dateFormat).isColonIncludedInTimeZone());
+    assertTrue(dateFormat.isLenient());
+    assertTrue(config2.getCustomInternalEntities().isEmpty());
+    Set<Character> extensionKeys = locale.getExtensionKeys();
+    assertTrue(extensionKeys.isEmpty());
+    Class<FromXmlParser.Feature> expectedFormatReadFeatureType = FromXmlParser.Feature.class;
+    assertEquals(expectedFormatReadFeatureType, factory.getFormatReadFeatureType());
+    Class<ToXmlGenerator.Feature> expectedFormatWriteFeatureType = ToXmlGenerator.Feature.class;
+    assertEquals(expectedFormatWriteFeatureType, factory.getFormatWriteFeatureType());
+    assertEquals(Double.SIZE, config2.getShortestReportedTextSegment());
+    assertEquals(Integer.MAX_VALUE, config2.getMaxChildrenPerElement());
+    assertEquals(Long.MAX_VALUE, config2.getMaxCharacters());
+    assertEquals(Long.MAX_VALUE, config2.getMaxElementCount());
+    assertEquals('=', base64Variant.getPaddingByte());
+    assertSame(versionResult, annotationIntrospector2.version());
+    assertSame(factory, actualCreateResult.getJsonFactory());
+    assertSame(nodeFactory, deserializationConfig.getNodeFactory());
+    assertSame(serializationConfig, serializerProviderInstance.getConfig());
+    assertSame(typeFactory, serializerProviderInstance.getTypeFactory());
+    assertSame(typeFactory, deserializationConfig.getTypeFactory());
+    assertSame(typeFactory, serializationConfig.getTypeFactory());
+    assertSame(versionResult2, factory.version());
+    assertSame(base64Variant, serializationConfig.getBase64Variant());
+    assertSame(locale, serializerProviderInstance.getLocale());
+    assertSame(locale, serializationConfig.getLocale());
+    assertSame(timeZone, serializerProviderInstance.getTimeZone());
+    assertSame(timeZone, serializationConfig.getTimeZone());
+    assertSame(defaultPropertyInclusion, serializationConfig.getDefaultPropertyInclusion());
+    assertSame(defaultSetterInfo, serializationConfig.getDefaultSetterInfo());
+    assertSame(actualCreateResult, factory.getCodec());
+    assertSame(extensionKeys, locale.getUnicodeLocaleAttributes());
+    assertSame(extensionKeys, locale.getUnicodeLocaleKeys());
+    assertSame(attributes, serializationConfig.getAttributes());
+    assertSame(cacheProvider, serializationConfig.getCacheProvider());
+    assertSame(annotationIntrospector2, serializerProviderInstance.getAnnotationIntrospector());
+    assertSame(classIntrospector, serializationConfig.getClassIntrospector());
+    assertSame(accessorNaming, serializationConfig.getAccessorNaming());
+    assertSame(visibilityChecker, deserializationConfig.getDefaultVisibilityChecker());
+    assertSame(visibilityChecker, serializationConfig.getDefaultVisibilityChecker());
+    assertSame(polymorphicTypeValidator, deserializationConfig.getPolymorphicTypeValidator());
+    assertSame(polymorphicTypeValidator, serializationConfig.getPolymorphicTypeValidator());
+    assertSame(subtypeResolver, deserializationConfig.getSubtypeResolver());
+    assertSame(subtypeResolver, serializationConfig.getSubtypeResolver());
+    assertSame(defaultNullKeySerializer, serializerProviderInstance.getDefaultNullKeySerializer());
+    assertSame(filterProvider, serializerProviderInstance.getFilterProvider());
+    assertSame(defaultNullValueSerializer, serializerProviderInstance.getDefaultNullValueSerializer());
+    assertSame(dateFormat, deserializationConfig.getDateFormat());
+    assertSame(dateFormat, serializationConfig.getDateFormat());
   }
 
   /**
-   * Test {@link RosettaObjectMapperCreator#forXML(RosettaXMLConfiguration)} with {@code config}.
-   * <p>
-   * Method under test: {@link RosettaObjectMapperCreator#forXML(RosettaXMLConfiguration)}
+   * Method under test:
+   * {@link RosettaObjectMapperCreator#forXML(RosettaXMLConfiguration)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"RosettaObjectMapperCreator RosettaObjectMapperCreator.forXML(RosettaXMLConfiguration)"})
-  public void testForXMLWithConfig() {
+  public void testForXML2() throws MissingResourceException {
     // Arrange and Act
     ObjectMapper actualCreateResult = RosettaObjectMapperCreator.forXML(new RosettaXMLConfiguration(new HashMap<>()))
         .create();
 
     // Assert
-    assertTrue(actualCreateResult.getVisibilityChecker() instanceof Std);
-    assertTrue(actualCreateResult.getPolymorphicTypeValidator() instanceof LaissezFaireSubTypeValidator);
-    assertTrue(actualCreateResult.getSubtypeResolver() instanceof StdSubtypeResolver);
-    assertTrue(actualCreateResult.getDateFormat() instanceof StdDateFormat);
+    JsonFactory factory = actualCreateResult.getFactory();
+    XMLInputFactory xMLInputFactory = ((XmlFactory) factory).getXMLInputFactory();
+    assertTrue(xMLInputFactory instanceof WstxInputFactory);
+    XMLOutputFactory xMLOutputFactory = ((XmlFactory) factory).getXMLOutputFactory();
+    assertTrue(xMLOutputFactory instanceof WstxOutputFactory);
+    DeserializationConfig deserializationConfig = actualCreateResult.getDeserializationConfig();
+    ContextAttributes attributes = deserializationConfig.getAttributes();
+    assertTrue(attributes instanceof ContextAttributes.Impl);
+    CacheProvider cacheProvider = deserializationConfig.getCacheProvider();
+    assertTrue(cacheProvider instanceof DefaultCacheProvider);
+    DeserializationContext deserializationContext = actualCreateResult.getDeserializationContext();
+    DeserializerFactory factory2 = deserializationContext.getFactory();
+    assertTrue(factory2 instanceof BeanDeserializerFactory);
+    AnnotationIntrospector annotationIntrospector = deserializationConfig.getAnnotationIntrospector();
+    assertTrue(annotationIntrospector instanceof AnnotationIntrospectorPair);
+    SerializationConfig serializationConfig = actualCreateResult.getSerializationConfig();
+    AnnotationIntrospector annotationIntrospector2 = serializationConfig.getAnnotationIntrospector();
+    assertTrue(annotationIntrospector2 instanceof AnnotationIntrospectorPair);
+    ClassIntrospector classIntrospector = deserializationConfig.getClassIntrospector();
+    assertTrue(classIntrospector instanceof BasicClassIntrospector);
+    AccessorNamingStrategy.Provider accessorNaming = deserializationConfig.getAccessorNaming();
+    assertTrue(accessorNaming instanceof DefaultAccessorNamingStrategy.Provider);
+    VisibilityChecker<?> visibilityChecker = actualCreateResult.getVisibilityChecker();
+    assertTrue(visibilityChecker instanceof VisibilityChecker.Std);
+    PolymorphicTypeValidator polymorphicTypeValidator = actualCreateResult.getPolymorphicTypeValidator();
+    assertTrue(polymorphicTypeValidator instanceof LaissezFaireSubTypeValidator);
+    SubtypeResolver subtypeResolver = actualCreateResult.getSubtypeResolver();
+    assertTrue(subtypeResolver instanceof StdSubtypeResolver);
+    DeserializerFactoryConfig factoryConfig = ((BeanDeserializerFactory) factory2).getFactoryConfig();
+    Iterable<Deserializers> deserializersResult = factoryConfig.deserializers();
+    assertTrue(((ArrayIterator<Deserializers>) deserializersResult).next() instanceof SimpleDeserializers);
+    assertTrue(((ArrayIterator<Deserializers>) deserializersResult).next() instanceof SimpleDeserializers);
+    SerializerFactory serializerFactory = actualCreateResult.getSerializerFactory();
+    SerializerFactoryConfig factoryConfig2 = ((RosettaSerialiserFactory) serializerFactory).getFactoryConfig();
+    Iterable<Serializers> serializersResult = factoryConfig2.serializers();
+    assertTrue(((ArrayIterator<Serializers>) serializersResult).next() instanceof SimpleSerializers);
+    assertTrue(((ArrayIterator<Serializers>) serializersResult).next() instanceof SimpleSerializers);
+    SerializerProvider serializerProvider = actualCreateResult.getSerializerProvider();
+    JsonSerializer<Object> defaultNullKeySerializer = serializerProvider.getDefaultNullKeySerializer();
+    assertTrue(defaultNullKeySerializer instanceof FailingSerializer);
+    FilterProvider filterProvider = serializationConfig.getFilterProvider();
+    assertTrue(filterProvider instanceof SimpleFilterProvider);
+    JsonSerializer<Object> defaultNullValueSerializer = serializerProvider.getDefaultNullValueSerializer();
+    assertTrue(defaultNullValueSerializer instanceof NullSerializer);
+    assertTrue(deserializersResult instanceof ArrayIterator);
+    assertTrue(serializersResult instanceof ArrayIterator);
+    DateFormat dateFormat = actualCreateResult.getDateFormat();
+    assertTrue(dateFormat instanceof StdDateFormat);
     assertTrue(actualCreateResult instanceof XmlMapper);
-    assertTrue(actualCreateResult.getDeserializationContext() instanceof XmlDeserializationContext);
-    assertTrue(actualCreateResult.getSerializerProvider() instanceof XmlSerializerProvider);
-    assertTrue(actualCreateResult.getSerializerProviderInstance() instanceof XmlSerializerProvider);
-    assertTrue(actualCreateResult.getSerializerFactory() instanceof RosettaSerialiserFactory);
+    assertTrue(deserializationContext instanceof XmlDeserializationContext);
+    assertTrue(serializerProvider instanceof XmlSerializerProvider);
+    SerializerProvider serializerProviderInstance = actualCreateResult.getSerializerProviderInstance();
+    assertTrue(serializerProviderInstance instanceof XmlSerializerProvider);
+    assertTrue(serializationConfig.getDefaultPrettyPrinter() instanceof DefaultXmlPrettyPrinter);
+    assertTrue(serializerFactory instanceof RosettaSerialiserFactory);
+    assertEquals(" ", factory.getRootValueSeparator());
+    Locale locale = deserializationConfig.getLocale();
+    assertEquals("", locale.getCountry());
+    assertEquals("", locale.getDisplayCountry());
+    assertEquals("", locale.getDisplayScript());
+    assertEquals("", locale.getDisplayVariant());
+    assertEquals("", locale.getISO3Country());
+    assertEquals("", locale.getScript());
+    assertEquals("", locale.getVariant());
+    TimeZone timeZone = deserializationConfig.getTimeZone();
+    assertEquals("Coordinated Universal Time", timeZone.getDisplayName());
+    assertEquals("English", locale.getDisplayLanguage());
+    assertEquals("English", locale.getDisplayName());
+    Base64Variant base64Variant = deserializationConfig.getBase64Variant();
+    assertEquals("MIME", base64Variant.getName());
+    assertEquals("MIME", base64Variant.toString());
+    assertEquals("UTC", timeZone.getID());
+    assertEquals("XML", factory.getFormatName());
+    assertEquals("[one of: 'yyyy-MM-dd'T'HH:mm:ss.SSSX', 'EEE, dd MMM yyyy HH:mm:ss zzz' (lenient)]",
+        ((StdDateFormat) dateFormat).toPattern());
+    Version versionResult = annotationIntrospector.version();
+    assertEquals("com.fasterxml.jackson.core", versionResult.getGroupId());
+    assertEquals("com.fasterxml.jackson.core/jackson-databind/2.17.1", versionResult.toFullString());
+    Version versionResult2 = actualCreateResult.version();
+    assertEquals("com.fasterxml.jackson.dataformat", versionResult2.getGroupId());
+    assertEquals("com.fasterxml.jackson.dataformat/jackson-dataformat-xml/2.17.1", versionResult2.toFullString());
+    assertEquals("en", locale.getLanguage());
+    assertEquals("eng", locale.getISO3Language());
+    assertEquals("jackson-databind", versionResult.getArtifactId());
+    assertEquals("jackson-dataformat-xml", versionResult2.getArtifactId());
+    WriterConfig config = ((WstxOutputFactory) xMLOutputFactory).getConfig();
+    assertEquals("wstxns", config.getAutomaticNsPrefix());
+    assertEquals('=', base64Variant.getPaddingChar());
+    assertNull(config.getEmptyElementHandler());
+    assertNull(config.getInvalidCharHandler());
+    ReaderConfig config2 = ((WstxInputFactory) xMLInputFactory).getConfig();
+    assertNull(config2.getDTDEventListener());
+    assertNull(config2.getSymbols());
+    assertNull(serializerProvider.getGenerator());
+    assertNull(serializerProviderInstance.getGenerator());
+    assertNull(deserializationContext.getParser());
+    assertNull(factory.getCharacterEscapes());
+    assertNull(factory.getInputDecorator());
+    assertNull(factory.getOutputDecorator());
+    assertNull(deserializationContext.getConfig());
     assertNull(actualCreateResult.getInjectableValues());
+    assertNull(deserializationContext.getContextualType());
+    assertNull(defaultNullKeySerializer.getDelegatee());
+    assertNull(defaultNullValueSerializer.getDelegatee());
+    assertNull(deserializationConfig.getFullRootName());
+    assertNull(serializationConfig.getFullRootName());
     assertNull(actualCreateResult.getPropertyNamingStrategy());
+    assertNull(deserializationConfig.getPropertyNamingStrategy());
+    assertNull(serializationConfig.getPropertyNamingStrategy());
+    assertNull(serializerProvider.getConfig());
+    assertNull(deserializationConfig.getHandlerInstantiator());
+    assertNull(serializationConfig.getHandlerInstantiator());
+    assertNull(((SimpleFilterProvider) filterProvider).getDefaultFilter());
+    assertNull(deserializationConfig.getProblemHandlers());
+    assertNull(deserializationConfig.getDefaultMergeable());
+    assertNull(serializationConfig.getDefaultMergeable());
+    JsonInclude.Value defaultPropertyInclusion = deserializationConfig.getDefaultPropertyInclusion();
+    assertNull(defaultPropertyInclusion.getContentFilter());
+    assertNull(defaultPropertyInclusion.getValueFilter());
+    assertNull(deserializationContext.getActiveView());
+    assertNull(serializerProvider.getActiveView());
+    assertNull(serializerProviderInstance.getActiveView());
+    assertNull(deserializationConfig.getActiveView());
+    assertNull(serializationConfig.getActiveView());
+    TypeFactory typeFactory = actualCreateResult.getTypeFactory();
+    assertNull(typeFactory.getClassLoader());
+    assertNull(deserializationConfig.getRootName());
+    assertNull(serializationConfig.getRootName());
+    assertNull(((XmlFactory) factory).getXMLTextElementName());
+    assertNull(config2.getBaseURL());
+    assertNull(dateFormat.getNumberFormat());
+    assertNull(dateFormat.getCalendar());
+    assertNull(dateFormat.getTimeZone());
+    assertNull(config2.getXMLReporter());
+    assertNull(config.getProblemReporter());
+    assertNull(xMLInputFactory.getXMLReporter());
+    assertNull(config2.getDtdResolver());
+    assertNull(config2.getEntityResolver());
+    assertNull(config2.getUndeclaredEntityResolver());
+    assertNull(config2.getXMLResolver());
+    assertNull(xMLInputFactory.getXMLResolver());
+    assertNull(xMLInputFactory.getEventAllocator());
+    assertNull(config.getAttrValueEscaperFactory());
+    assertNull(config.getTextEscaperFactory());
+    assertNull(config2.getDTDOverride());
+    assertEquals(0, factory.getFormatGeneratorFeatures());
+    assertEquals(0, deserializationContext.getDeserializationFeatures());
+    assertEquals(0, timeZone.getDSTSavings());
+    assertEquals(1, factory.getParserFeatures());
+    assertEquals(1, versionResult.getPatchLevel());
+    assertEquals(1, versionResult2.getPatchLevel());
+    assertEquals(1000, config2.getMaxAttributesPerElement());
+    assertEquals(1000, config2.getMaxElementDepth());
+    assertEquals(100000L, config2.getMaxEntityCount());
+    assertEquals(12, config2.getDtdCacheSize());
+    assertEquals(17, versionResult.getMinorVersion());
+    assertEquals(17, versionResult2.getMinorVersion());
+    assertEquals(2, versionResult.getMajorVersion());
+    assertEquals(2, versionResult2.getMajorVersion());
+    assertEquals(2147483647L, config2.getMaxTextLength());
+    assertEquals(21766460, serializationConfig.getSerializationFeatures());
+    assertEquals(2207, factory.getGeneratorFeatures());
+    assertEquals(2973191, config2.getConfigFlags());
+    assertEquals(31, factory.getFactoryFeatures());
+    assertEquals(340829313, deserializationConfig.getDeserializationFeatures());
+    assertEquals(4, factory.getFormatParserFeatures());
+    assertEquals(4000, config2.getInputBufferLength());
+    assertEquals(500, config2.getMaxDtdDepth());
+    assertEquals(500, config2.getMaxEntityDepth());
+    assertEquals(524288, config2.getMaxAttributeSize());
     assertEquals(7, actualCreateResult.getRegisteredModuleIds().size());
+    assertEquals(76, base64Variant.getMaxLineLength());
+    assertEquals(935, config.getConfigFlags());
+    JsonNodeFactory nodeFactory = actualCreateResult.getNodeFactory();
+    assertEquals(9999, nodeFactory.getMaxElementIndexForInsert());
+    assertEquals(JsonInclude.Include.NON_EMPTY, defaultPropertyInclusion.getContentInclusion());
+    assertEquals(JsonInclude.Include.NON_EMPTY, defaultPropertyInclusion.getValueInclusion());
+    assertEquals(JsonInclude.Include.NON_EMPTY, serializationConfig.getSerializationInclusion());
+    JsonSetter.Value defaultSetterInfo = deserializationConfig.getDefaultSetterInfo();
+    assertEquals(Nulls.DEFAULT, defaultSetterInfo.getContentNulls());
+    assertEquals(Nulls.DEFAULT, defaultSetterInfo.getValueNulls());
+    assertFalse(config2.isXml11());
+    assertFalse(versionResult.isSnapshot());
+    assertFalse(versionResult2.isSnapshot());
+    assertFalse(versionResult.isUknownVersion());
+    assertFalse(versionResult2.isUknownVersion());
+    assertFalse(versionResult.isUnknownVersion());
+    assertFalse(versionResult2.isUnknownVersion());
+    assertFalse(defaultNullKeySerializer.isUnwrappingSerializer());
+    assertFalse(defaultNullValueSerializer.isUnwrappingSerializer());
+    assertFalse(factoryConfig.hasAbstractTypeResolvers());
+    assertFalse(deserializationConfig.hasExplicitTimeZone());
+    assertFalse(serializationConfig.hasExplicitTimeZone());
+    assertFalse(locale.hasExtensions());
+    assertTrue(factoryConfig.hasDeserializerModifiers());
+    assertTrue(factoryConfig.hasDeserializers());
+    assertTrue(factoryConfig.hasKeyDeserializers());
+    assertTrue(factoryConfig.hasValueInstantiators());
+    assertTrue(deserializationConfig.isAnnotationProcessingEnabled());
+    assertTrue(serializationConfig.isAnnotationProcessingEnabled());
+    assertTrue(factoryConfig2.hasKeySerializers());
+    assertTrue(factoryConfig2.hasSerializerModifiers());
+    assertTrue(factoryConfig2.hasSerializers());
+    assertTrue(((ArrayIterator<Deserializers>) deserializersResult).hasNext());
+    assertTrue(((ArrayIterator<Serializers>) serializersResult).hasNext());
+    assertTrue(((StdDateFormat) dateFormat).isColonIncludedInTimeZone());
+    assertTrue(dateFormat.isLenient());
+    assertTrue(config2.getCustomInternalEntities().isEmpty());
+    Set<Character> extensionKeys = locale.getExtensionKeys();
+    assertTrue(extensionKeys.isEmpty());
+    Class<FromXmlParser.Feature> expectedFormatReadFeatureType = FromXmlParser.Feature.class;
+    assertEquals(expectedFormatReadFeatureType, factory.getFormatReadFeatureType());
+    Class<ToXmlGenerator.Feature> expectedFormatWriteFeatureType = ToXmlGenerator.Feature.class;
+    assertEquals(expectedFormatWriteFeatureType, factory.getFormatWriteFeatureType());
+    assertEquals(Double.SIZE, config2.getShortestReportedTextSegment());
+    assertEquals(Integer.MAX_VALUE, config2.getMaxChildrenPerElement());
+    assertEquals(Long.MAX_VALUE, config2.getMaxCharacters());
+    assertEquals(Long.MAX_VALUE, config2.getMaxElementCount());
+    assertEquals('=', base64Variant.getPaddingByte());
+    assertSame(versionResult, annotationIntrospector2.version());
+    assertSame(factory, actualCreateResult.getJsonFactory());
+    assertSame(nodeFactory, deserializationConfig.getNodeFactory());
+    assertSame(serializationConfig, serializerProviderInstance.getConfig());
+    assertSame(typeFactory, serializerProviderInstance.getTypeFactory());
+    assertSame(typeFactory, deserializationConfig.getTypeFactory());
+    assertSame(typeFactory, serializationConfig.getTypeFactory());
+    assertSame(versionResult2, factory.version());
+    assertSame(base64Variant, serializationConfig.getBase64Variant());
+    assertSame(locale, serializerProviderInstance.getLocale());
+    assertSame(locale, serializationConfig.getLocale());
+    assertSame(timeZone, serializerProviderInstance.getTimeZone());
+    assertSame(timeZone, serializationConfig.getTimeZone());
+    assertSame(defaultPropertyInclusion, serializationConfig.getDefaultPropertyInclusion());
+    assertSame(defaultSetterInfo, serializationConfig.getDefaultSetterInfo());
+    assertSame(actualCreateResult, factory.getCodec());
+    assertSame(extensionKeys, locale.getUnicodeLocaleAttributes());
+    assertSame(extensionKeys, locale.getUnicodeLocaleKeys());
+    assertSame(attributes, serializationConfig.getAttributes());
+    assertSame(cacheProvider, serializationConfig.getCacheProvider());
+    assertSame(annotationIntrospector2, serializerProviderInstance.getAnnotationIntrospector());
+    assertSame(classIntrospector, serializationConfig.getClassIntrospector());
+    assertSame(accessorNaming, serializationConfig.getAccessorNaming());
+    assertSame(visibilityChecker, deserializationConfig.getDefaultVisibilityChecker());
+    assertSame(visibilityChecker, serializationConfig.getDefaultVisibilityChecker());
+    assertSame(polymorphicTypeValidator, deserializationConfig.getPolymorphicTypeValidator());
+    assertSame(polymorphicTypeValidator, serializationConfig.getPolymorphicTypeValidator());
+    assertSame(subtypeResolver, deserializationConfig.getSubtypeResolver());
+    assertSame(subtypeResolver, serializationConfig.getSubtypeResolver());
+    assertSame(defaultNullKeySerializer, serializerProviderInstance.getDefaultNullKeySerializer());
+    assertSame(filterProvider, serializerProviderInstance.getFilterProvider());
+    assertSame(defaultNullValueSerializer, serializerProviderInstance.getDefaultNullValueSerializer());
+    assertSame(dateFormat, deserializationConfig.getDateFormat());
+    assertSame(dateFormat, serializationConfig.getDateFormat());
   }
 
   /**
-   * Test {@link RosettaObjectMapperCreator#create()}.
-   * <p>
-   * Method under test: {@link RosettaObjectMapperCreator#create()}
+   * Method under test:
+   * {@link RosettaObjectMapperCreator#forXML(RosettaXMLConfiguration)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"ObjectMapper RosettaObjectMapperCreator.create()"})
-  public void testCreate() {
+  public void testForXML3() throws MissingResourceException {
     // Arrange
-    RosettaDateModule rosettaModule = new RosettaDateModule();
+    HashMap<ModelSymbolId, TypeXMLConfiguration> typeConfigMap = new HashMap<>();
+    typeConfigMap.computeIfPresent(ModelSymbolId.fromQualifiedName("ReferenceFilter"), mock(BiFunction.class));
 
     // Act
-    ObjectMapper actualCreateResult = (new RosettaObjectMapperCreator(rosettaModule,
-        JsonMapper.builder().findAndAddModules().build())).create();
+    ObjectMapper actualCreateResult = RosettaObjectMapperCreator.forXML(new RosettaXMLConfiguration(typeConfigMap))
+        .create();
 
     // Assert
-    assertTrue(actualCreateResult instanceof JsonMapper);
-    assertTrue(actualCreateResult.getSerializerProviderInstance() instanceof Impl);
+    JsonFactory factory = actualCreateResult.getFactory();
+    XMLInputFactory xMLInputFactory = ((XmlFactory) factory).getXMLInputFactory();
+    assertTrue(xMLInputFactory instanceof WstxInputFactory);
+    XMLOutputFactory xMLOutputFactory = ((XmlFactory) factory).getXMLOutputFactory();
+    assertTrue(xMLOutputFactory instanceof WstxOutputFactory);
+    DeserializationConfig deserializationConfig = actualCreateResult.getDeserializationConfig();
+    ContextAttributes attributes = deserializationConfig.getAttributes();
+    assertTrue(attributes instanceof ContextAttributes.Impl);
+    CacheProvider cacheProvider = deserializationConfig.getCacheProvider();
+    assertTrue(cacheProvider instanceof DefaultCacheProvider);
+    DeserializationContext deserializationContext = actualCreateResult.getDeserializationContext();
+    DeserializerFactory factory2 = deserializationContext.getFactory();
+    assertTrue(factory2 instanceof BeanDeserializerFactory);
+    AnnotationIntrospector annotationIntrospector = deserializationConfig.getAnnotationIntrospector();
+    assertTrue(annotationIntrospector instanceof AnnotationIntrospectorPair);
+    SerializationConfig serializationConfig = actualCreateResult.getSerializationConfig();
+    AnnotationIntrospector annotationIntrospector2 = serializationConfig.getAnnotationIntrospector();
+    assertTrue(annotationIntrospector2 instanceof AnnotationIntrospectorPair);
+    ClassIntrospector classIntrospector = deserializationConfig.getClassIntrospector();
+    assertTrue(classIntrospector instanceof BasicClassIntrospector);
+    AccessorNamingStrategy.Provider accessorNaming = deserializationConfig.getAccessorNaming();
+    assertTrue(accessorNaming instanceof DefaultAccessorNamingStrategy.Provider);
+    VisibilityChecker<?> visibilityChecker = actualCreateResult.getVisibilityChecker();
+    assertTrue(visibilityChecker instanceof VisibilityChecker.Std);
+    PolymorphicTypeValidator polymorphicTypeValidator = actualCreateResult.getPolymorphicTypeValidator();
+    assertTrue(polymorphicTypeValidator instanceof LaissezFaireSubTypeValidator);
+    SubtypeResolver subtypeResolver = actualCreateResult.getSubtypeResolver();
+    assertTrue(subtypeResolver instanceof StdSubtypeResolver);
+    DeserializerFactoryConfig factoryConfig = ((BeanDeserializerFactory) factory2).getFactoryConfig();
+    Iterable<Deserializers> deserializersResult = factoryConfig.deserializers();
+    assertTrue(((ArrayIterator<Deserializers>) deserializersResult).next() instanceof SimpleDeserializers);
+    assertTrue(((ArrayIterator<Deserializers>) deserializersResult).next() instanceof SimpleDeserializers);
+    SerializerFactory serializerFactory = actualCreateResult.getSerializerFactory();
+    SerializerFactoryConfig factoryConfig2 = ((RosettaSerialiserFactory) serializerFactory).getFactoryConfig();
+    Iterable<Serializers> serializersResult = factoryConfig2.serializers();
+    assertTrue(((ArrayIterator<Serializers>) serializersResult).next() instanceof SimpleSerializers);
+    assertTrue(((ArrayIterator<Serializers>) serializersResult).next() instanceof SimpleSerializers);
+    SerializerProvider serializerProvider = actualCreateResult.getSerializerProvider();
+    JsonSerializer<Object> defaultNullKeySerializer = serializerProvider.getDefaultNullKeySerializer();
+    assertTrue(defaultNullKeySerializer instanceof FailingSerializer);
+    FilterProvider filterProvider = serializationConfig.getFilterProvider();
+    assertTrue(filterProvider instanceof SimpleFilterProvider);
+    JsonSerializer<Object> defaultNullValueSerializer = serializerProvider.getDefaultNullValueSerializer();
+    assertTrue(defaultNullValueSerializer instanceof NullSerializer);
+    assertTrue(deserializersResult instanceof ArrayIterator);
+    assertTrue(serializersResult instanceof ArrayIterator);
+    DateFormat dateFormat = actualCreateResult.getDateFormat();
+    assertTrue(dateFormat instanceof StdDateFormat);
+    assertTrue(actualCreateResult instanceof XmlMapper);
+    assertTrue(deserializationContext instanceof XmlDeserializationContext);
+    assertTrue(serializerProvider instanceof XmlSerializerProvider);
+    SerializerProvider serializerProviderInstance = actualCreateResult.getSerializerProviderInstance();
+    assertTrue(serializerProviderInstance instanceof XmlSerializerProvider);
+    assertTrue(serializationConfig.getDefaultPrettyPrinter() instanceof DefaultXmlPrettyPrinter);
+    assertTrue(serializerFactory instanceof RosettaSerialiserFactory);
+    assertEquals(" ", factory.getRootValueSeparator());
+    Locale locale = deserializationConfig.getLocale();
+    assertEquals("", locale.getCountry());
+    assertEquals("", locale.getDisplayCountry());
+    assertEquals("", locale.getDisplayScript());
+    assertEquals("", locale.getDisplayVariant());
+    assertEquals("", locale.getISO3Country());
+    assertEquals("", locale.getScript());
+    assertEquals("", locale.getVariant());
+    TimeZone timeZone = deserializationConfig.getTimeZone();
+    assertEquals("Coordinated Universal Time", timeZone.getDisplayName());
+    assertEquals("English", locale.getDisplayLanguage());
+    assertEquals("English", locale.getDisplayName());
+    Base64Variant base64Variant = deserializationConfig.getBase64Variant();
+    assertEquals("MIME", base64Variant.getName());
+    assertEquals("MIME", base64Variant.toString());
+    assertEquals("UTC", timeZone.getID());
+    assertEquals("XML", factory.getFormatName());
+    assertEquals("[one of: 'yyyy-MM-dd'T'HH:mm:ss.SSSX', 'EEE, dd MMM yyyy HH:mm:ss zzz' (lenient)]",
+        ((StdDateFormat) dateFormat).toPattern());
+    Version versionResult = annotationIntrospector.version();
+    assertEquals("com.fasterxml.jackson.core", versionResult.getGroupId());
+    assertEquals("com.fasterxml.jackson.core/jackson-databind/2.17.1", versionResult.toFullString());
+    Version versionResult2 = actualCreateResult.version();
+    assertEquals("com.fasterxml.jackson.dataformat", versionResult2.getGroupId());
+    assertEquals("com.fasterxml.jackson.dataformat/jackson-dataformat-xml/2.17.1", versionResult2.toFullString());
+    assertEquals("en", locale.getLanguage());
+    assertEquals("eng", locale.getISO3Language());
+    assertEquals("jackson-databind", versionResult.getArtifactId());
+    assertEquals("jackson-dataformat-xml", versionResult2.getArtifactId());
+    WriterConfig config = ((WstxOutputFactory) xMLOutputFactory).getConfig();
+    assertEquals("wstxns", config.getAutomaticNsPrefix());
+    assertEquals('=', base64Variant.getPaddingChar());
+    assertNull(config.getEmptyElementHandler());
+    assertNull(config.getInvalidCharHandler());
+    ReaderConfig config2 = ((WstxInputFactory) xMLInputFactory).getConfig();
+    assertNull(config2.getDTDEventListener());
+    assertNull(config2.getSymbols());
+    assertNull(serializerProvider.getGenerator());
+    assertNull(serializerProviderInstance.getGenerator());
+    assertNull(deserializationContext.getParser());
+    assertNull(factory.getCharacterEscapes());
+    assertNull(factory.getInputDecorator());
+    assertNull(factory.getOutputDecorator());
+    assertNull(deserializationContext.getConfig());
+    assertNull(actualCreateResult.getInjectableValues());
+    assertNull(deserializationContext.getContextualType());
+    assertNull(defaultNullKeySerializer.getDelegatee());
+    assertNull(defaultNullValueSerializer.getDelegatee());
+    assertNull(deserializationConfig.getFullRootName());
+    assertNull(serializationConfig.getFullRootName());
+    assertNull(actualCreateResult.getPropertyNamingStrategy());
+    assertNull(deserializationConfig.getPropertyNamingStrategy());
+    assertNull(serializationConfig.getPropertyNamingStrategy());
+    assertNull(serializerProvider.getConfig());
+    assertNull(deserializationConfig.getHandlerInstantiator());
+    assertNull(serializationConfig.getHandlerInstantiator());
+    assertNull(((SimpleFilterProvider) filterProvider).getDefaultFilter());
+    assertNull(deserializationConfig.getProblemHandlers());
+    assertNull(deserializationConfig.getDefaultMergeable());
+    assertNull(serializationConfig.getDefaultMergeable());
+    JsonInclude.Value defaultPropertyInclusion = deserializationConfig.getDefaultPropertyInclusion();
+    assertNull(defaultPropertyInclusion.getContentFilter());
+    assertNull(defaultPropertyInclusion.getValueFilter());
+    assertNull(deserializationContext.getActiveView());
+    assertNull(serializerProvider.getActiveView());
+    assertNull(serializerProviderInstance.getActiveView());
+    assertNull(deserializationConfig.getActiveView());
+    assertNull(serializationConfig.getActiveView());
+    TypeFactory typeFactory = actualCreateResult.getTypeFactory();
+    assertNull(typeFactory.getClassLoader());
+    assertNull(deserializationConfig.getRootName());
+    assertNull(serializationConfig.getRootName());
+    assertNull(((XmlFactory) factory).getXMLTextElementName());
+    assertNull(config2.getBaseURL());
+    assertNull(dateFormat.getNumberFormat());
+    assertNull(dateFormat.getCalendar());
+    assertNull(dateFormat.getTimeZone());
+    assertNull(config2.getXMLReporter());
+    assertNull(config.getProblemReporter());
+    assertNull(xMLInputFactory.getXMLReporter());
+    assertNull(config2.getDtdResolver());
+    assertNull(config2.getEntityResolver());
+    assertNull(config2.getUndeclaredEntityResolver());
+    assertNull(config2.getXMLResolver());
+    assertNull(xMLInputFactory.getXMLResolver());
+    assertNull(xMLInputFactory.getEventAllocator());
+    assertNull(config.getAttrValueEscaperFactory());
+    assertNull(config.getTextEscaperFactory());
+    assertNull(config2.getDTDOverride());
+    assertEquals(0, factory.getFormatGeneratorFeatures());
+    assertEquals(0, deserializationContext.getDeserializationFeatures());
+    assertEquals(0, timeZone.getDSTSavings());
+    assertEquals(1, factory.getParserFeatures());
+    assertEquals(1, versionResult.getPatchLevel());
+    assertEquals(1, versionResult2.getPatchLevel());
+    assertEquals(1000, config2.getMaxAttributesPerElement());
+    assertEquals(1000, config2.getMaxElementDepth());
+    assertEquals(100000L, config2.getMaxEntityCount());
+    assertEquals(12, config2.getDtdCacheSize());
+    assertEquals(17, versionResult.getMinorVersion());
+    assertEquals(17, versionResult2.getMinorVersion());
+    assertEquals(2, versionResult.getMajorVersion());
+    assertEquals(2, versionResult2.getMajorVersion());
+    assertEquals(2147483647L, config2.getMaxTextLength());
+    assertEquals(21766460, serializationConfig.getSerializationFeatures());
+    assertEquals(2207, factory.getGeneratorFeatures());
+    assertEquals(2973191, config2.getConfigFlags());
+    assertEquals(31, factory.getFactoryFeatures());
+    assertEquals(340829313, deserializationConfig.getDeserializationFeatures());
+    assertEquals(4, factory.getFormatParserFeatures());
+    assertEquals(4000, config2.getInputBufferLength());
+    assertEquals(500, config2.getMaxDtdDepth());
+    assertEquals(500, config2.getMaxEntityDepth());
+    assertEquals(524288, config2.getMaxAttributeSize());
+    assertEquals(7, actualCreateResult.getRegisteredModuleIds().size());
+    assertEquals(76, base64Variant.getMaxLineLength());
+    assertEquals(935, config.getConfigFlags());
+    JsonNodeFactory nodeFactory = actualCreateResult.getNodeFactory();
+    assertEquals(9999, nodeFactory.getMaxElementIndexForInsert());
+    assertEquals(JsonInclude.Include.NON_EMPTY, defaultPropertyInclusion.getContentInclusion());
+    assertEquals(JsonInclude.Include.NON_EMPTY, defaultPropertyInclusion.getValueInclusion());
+    assertEquals(JsonInclude.Include.NON_EMPTY, serializationConfig.getSerializationInclusion());
+    JsonSetter.Value defaultSetterInfo = deserializationConfig.getDefaultSetterInfo();
+    assertEquals(Nulls.DEFAULT, defaultSetterInfo.getContentNulls());
+    assertEquals(Nulls.DEFAULT, defaultSetterInfo.getValueNulls());
+    assertFalse(config2.isXml11());
+    assertFalse(versionResult.isSnapshot());
+    assertFalse(versionResult2.isSnapshot());
+    assertFalse(versionResult.isUknownVersion());
+    assertFalse(versionResult2.isUknownVersion());
+    assertFalse(versionResult.isUnknownVersion());
+    assertFalse(versionResult2.isUnknownVersion());
+    assertFalse(defaultNullKeySerializer.isUnwrappingSerializer());
+    assertFalse(defaultNullValueSerializer.isUnwrappingSerializer());
+    assertFalse(factoryConfig.hasAbstractTypeResolvers());
+    assertFalse(deserializationConfig.hasExplicitTimeZone());
+    assertFalse(serializationConfig.hasExplicitTimeZone());
+    assertFalse(locale.hasExtensions());
+    assertTrue(factoryConfig.hasDeserializerModifiers());
+    assertTrue(factoryConfig.hasDeserializers());
+    assertTrue(factoryConfig.hasKeyDeserializers());
+    assertTrue(factoryConfig.hasValueInstantiators());
+    assertTrue(deserializationConfig.isAnnotationProcessingEnabled());
+    assertTrue(serializationConfig.isAnnotationProcessingEnabled());
+    assertTrue(factoryConfig2.hasKeySerializers());
+    assertTrue(factoryConfig2.hasSerializerModifiers());
+    assertTrue(factoryConfig2.hasSerializers());
+    assertTrue(((ArrayIterator<Deserializers>) deserializersResult).hasNext());
+    assertTrue(((ArrayIterator<Serializers>) serializersResult).hasNext());
+    assertTrue(((StdDateFormat) dateFormat).isColonIncludedInTimeZone());
+    assertTrue(dateFormat.isLenient());
+    assertTrue(config2.getCustomInternalEntities().isEmpty());
+    Set<Character> extensionKeys = locale.getExtensionKeys();
+    assertTrue(extensionKeys.isEmpty());
+    Class<FromXmlParser.Feature> expectedFormatReadFeatureType = FromXmlParser.Feature.class;
+    assertEquals(expectedFormatReadFeatureType, factory.getFormatReadFeatureType());
+    Class<ToXmlGenerator.Feature> expectedFormatWriteFeatureType = ToXmlGenerator.Feature.class;
+    assertEquals(expectedFormatWriteFeatureType, factory.getFormatWriteFeatureType());
+    assertEquals(Double.SIZE, config2.getShortestReportedTextSegment());
+    assertEquals(Integer.MAX_VALUE, config2.getMaxChildrenPerElement());
+    assertEquals(Long.MAX_VALUE, config2.getMaxCharacters());
+    assertEquals(Long.MAX_VALUE, config2.getMaxElementCount());
+    assertEquals('=', base64Variant.getPaddingByte());
+    assertSame(versionResult, annotationIntrospector2.version());
+    assertSame(factory, actualCreateResult.getJsonFactory());
+    assertSame(nodeFactory, deserializationConfig.getNodeFactory());
+    assertSame(serializationConfig, serializerProviderInstance.getConfig());
+    assertSame(typeFactory, serializerProviderInstance.getTypeFactory());
+    assertSame(typeFactory, deserializationConfig.getTypeFactory());
+    assertSame(typeFactory, serializationConfig.getTypeFactory());
+    assertSame(versionResult2, factory.version());
+    assertSame(base64Variant, serializationConfig.getBase64Variant());
+    assertSame(locale, serializerProviderInstance.getLocale());
+    assertSame(locale, serializationConfig.getLocale());
+    assertSame(timeZone, serializerProviderInstance.getTimeZone());
+    assertSame(timeZone, serializationConfig.getTimeZone());
+    assertSame(defaultPropertyInclusion, serializationConfig.getDefaultPropertyInclusion());
+    assertSame(defaultSetterInfo, serializationConfig.getDefaultSetterInfo());
+    assertSame(actualCreateResult, factory.getCodec());
+    assertSame(extensionKeys, locale.getUnicodeLocaleAttributes());
+    assertSame(extensionKeys, locale.getUnicodeLocaleKeys());
+    assertSame(attributes, serializationConfig.getAttributes());
+    assertSame(cacheProvider, serializationConfig.getCacheProvider());
+    assertSame(annotationIntrospector2, serializerProviderInstance.getAnnotationIntrospector());
+    assertSame(classIntrospector, serializationConfig.getClassIntrospector());
+    assertSame(accessorNaming, serializationConfig.getAccessorNaming());
+    assertSame(visibilityChecker, deserializationConfig.getDefaultVisibilityChecker());
+    assertSame(visibilityChecker, serializationConfig.getDefaultVisibilityChecker());
+    assertSame(polymorphicTypeValidator, deserializationConfig.getPolymorphicTypeValidator());
+    assertSame(polymorphicTypeValidator, serializationConfig.getPolymorphicTypeValidator());
+    assertSame(subtypeResolver, deserializationConfig.getSubtypeResolver());
+    assertSame(subtypeResolver, serializationConfig.getSubtypeResolver());
+    assertSame(defaultNullKeySerializer, serializerProviderInstance.getDefaultNullKeySerializer());
+    assertSame(filterProvider, serializerProviderInstance.getFilterProvider());
+    assertSame(defaultNullValueSerializer, serializerProviderInstance.getDefaultNullValueSerializer());
+    assertSame(dateFormat, deserializationConfig.getDateFormat());
+    assertSame(dateFormat, serializationConfig.getDateFormat());
   }
 
   /**
-   * Test {@link RosettaObjectMapperCreator#create()}.
-   * <p>
    * Method under test: {@link RosettaObjectMapperCreator#create()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"ObjectMapper RosettaObjectMapperCreator.create()"})
-  public void testCreate2() {
-    // Arrange
-    SimpleModule rosettaModule = new SimpleModule();
-
-    // Act
-    ObjectMapper actualCreateResult = (new RosettaObjectMapperCreator(rosettaModule,
-        JsonMapper.builder().findAndAddModules().build())).create();
-
-    // Assert
-    assertTrue(actualCreateResult instanceof JsonMapper);
-    assertTrue(actualCreateResult.getSerializerProviderInstance() instanceof Impl);
-  }
-
-  /**
-   * Test {@link RosettaObjectMapperCreator#create()}.
-   * <p>
-   * Method under test: {@link RosettaObjectMapperCreator#create()}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"ObjectMapper RosettaObjectMapperCreator.create()"})
-  public void testCreate3() {
-    // Arrange
-    JacksonXmlModule rosettaModule = new JacksonXmlModule();
-
-    // Act
-    ObjectMapper actualCreateResult = (new RosettaObjectMapperCreator(rosettaModule,
-        JsonMapper.builder().findAndAddModules().build())).create();
-
-    // Assert
-    assertTrue(actualCreateResult instanceof JsonMapper);
-    assertTrue(actualCreateResult.getSerializerProviderInstance() instanceof Impl);
-  }
-
-  /**
-   * Test {@link RosettaObjectMapperCreator#create()}.
-   * <p>
-   * Method under test: {@link RosettaObjectMapperCreator#create()}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"ObjectMapper RosettaObjectMapperCreator.create()"})
-  public void testCreate4() {
-    // Arrange
-    SimpleModule rosettaModule = new SimpleModule();
-    rosettaModule.setDeserializerModifier(new RosettaBeanDeserializerModifier());
-    Class<Object> beanType = Object.class;
-    rosettaModule.addValueInstantiator(beanType, new JsonLocationInstantiator());
-
-    // Act
-    ObjectMapper actualCreateResult = (new RosettaObjectMapperCreator(rosettaModule,
-        JsonMapper.builder().findAndAddModules().build())).create();
-
-    // Assert
-    assertTrue(actualCreateResult instanceof JsonMapper);
-    assertTrue(actualCreateResult.getSerializerProviderInstance() instanceof Impl);
-  }
-
-  /**
-   * Test {@link RosettaObjectMapperCreator#create()}.
-   * <ul>
-   *   <li>Given array of {@link Class} with {@link Object}.</li>
-   *   <li>Then return {@link JsonMapper}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link RosettaObjectMapperCreator#create()}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"ObjectMapper RosettaObjectMapperCreator.create()"})
-  public void testCreate_givenArrayOfClassWithObject_thenReturnJsonMapper() {
-    // Arrange
-    SimpleModule rosettaModule = new SimpleModule();
-    Class<Object> forNameResult = Object.class;
-    rosettaModule.registerSubtypes(forNameResult);
-    Class<Object> beanType = Object.class;
-    rosettaModule.addValueInstantiator(beanType, new JsonLocationInstantiator());
-
-    // Act
-    ObjectMapper actualCreateResult = (new RosettaObjectMapperCreator(rosettaModule,
-        JsonMapper.builder().findAndAddModules().build())).create();
-
-    // Assert
-    assertTrue(actualCreateResult instanceof JsonMapper);
-    assertTrue(actualCreateResult.getSerializerProviderInstance() instanceof Impl);
-  }
-
-  /**
-   * Test {@link RosettaObjectMapperCreator#create()}.
-   * <ul>
-   *   <li>Given forJSON.</li>
-   *   <li>Then Factory return {@link MappingJsonFactory}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link RosettaObjectMapperCreator#create()}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"ObjectMapper RosettaObjectMapperCreator.create()"})
-  public void testCreate_givenForJSON_thenFactoryReturnMappingJsonFactory() {
+  public void testCreate() throws MissingResourceException {
     // Arrange and Act
     ObjectMapper actualCreateResult = RosettaObjectMapperCreator.forJSON().create();
 
     // Assert
+    SerializationConfig serializationConfig = actualCreateResult.getSerializationConfig();
+    assertTrue(serializationConfig.getDefaultPrettyPrinter() instanceof DefaultPrettyPrinter);
     JsonFactory factory = actualCreateResult.getFactory();
     assertTrue(factory instanceof MappingJsonFactory);
-    assertTrue(actualCreateResult.getSerializerProviderInstance() instanceof Impl);
+    DeserializationConfig deserializationConfig = actualCreateResult.getDeserializationConfig();
+    ContextAttributes attributes = deserializationConfig.getAttributes();
+    assertTrue(attributes instanceof ContextAttributes.Impl);
+    CacheProvider cacheProvider = deserializationConfig.getCacheProvider();
+    assertTrue(cacheProvider instanceof DefaultCacheProvider);
+    DeserializationContext deserializationContext = actualCreateResult.getDeserializationContext();
+    DeserializerFactory factory2 = deserializationContext.getFactory();
+    assertTrue(factory2 instanceof BeanDeserializerFactory);
+    assertTrue(deserializationContext instanceof DefaultDeserializationContext.Impl);
+    AnnotationIntrospector annotationIntrospector = deserializationConfig.getAnnotationIntrospector();
+    assertTrue(annotationIntrospector instanceof AnnotationIntrospectorPair);
+    AnnotationIntrospector annotationIntrospector2 = serializationConfig.getAnnotationIntrospector();
+    assertTrue(annotationIntrospector2 instanceof AnnotationIntrospectorPair);
+    ClassIntrospector classIntrospector = deserializationConfig.getClassIntrospector();
+    assertTrue(classIntrospector instanceof BasicClassIntrospector);
+    AccessorNamingStrategy.Provider accessorNaming = deserializationConfig.getAccessorNaming();
+    assertTrue(accessorNaming instanceof DefaultAccessorNamingStrategy.Provider);
+    VisibilityChecker<?> visibilityChecker = actualCreateResult.getVisibilityChecker();
+    assertTrue(visibilityChecker instanceof VisibilityChecker.Std);
+    PolymorphicTypeValidator polymorphicTypeValidator = actualCreateResult.getPolymorphicTypeValidator();
+    assertTrue(polymorphicTypeValidator instanceof LaissezFaireSubTypeValidator);
+    SubtypeResolver subtypeResolver = actualCreateResult.getSubtypeResolver();
+    assertTrue(subtypeResolver instanceof StdSubtypeResolver);
+    DeserializerFactoryConfig factoryConfig = ((BeanDeserializerFactory) factory2).getFactoryConfig();
+    Iterable<Deserializers> deserializersResult = factoryConfig.deserializers();
+    assertTrue(((ArrayIterator<Deserializers>) deserializersResult).next() instanceof SimpleDeserializers);
+    assertTrue(((ArrayIterator<Deserializers>) deserializersResult).next() instanceof SimpleDeserializers);
+    SerializerFactory serializerFactory = actualCreateResult.getSerializerFactory();
+    SerializerFactoryConfig factoryConfig2 = ((BeanSerializerFactory) serializerFactory).getFactoryConfig();
+    Iterable<Serializers> serializersResult = factoryConfig2.serializers();
+    assertTrue(((ArrayIterator<Serializers>) serializersResult).next() instanceof SimpleSerializers);
+    assertTrue(((ArrayIterator<Serializers>) serializersResult).next() instanceof SimpleSerializers);
+    assertTrue(serializerFactory instanceof BeanSerializerFactory);
+    SerializerProvider serializerProvider = actualCreateResult.getSerializerProvider();
+    assertTrue(serializerProvider instanceof DefaultSerializerProvider.Impl);
+    SerializerProvider serializerProviderInstance = actualCreateResult.getSerializerProviderInstance();
+    assertTrue(serializerProviderInstance instanceof DefaultSerializerProvider.Impl);
+    JsonSerializer<Object> defaultNullKeySerializer = serializerProvider.getDefaultNullKeySerializer();
+    assertTrue(defaultNullKeySerializer instanceof FailingSerializer);
+    FilterProvider filterProvider = serializationConfig.getFilterProvider();
+    assertTrue(filterProvider instanceof SimpleFilterProvider);
+    JsonSerializer<Object> defaultNullValueSerializer = serializerProvider.getDefaultNullValueSerializer();
+    assertTrue(defaultNullValueSerializer instanceof NullSerializer);
+    assertTrue(deserializersResult instanceof ArrayIterator);
+    assertTrue(serializersResult instanceof ArrayIterator);
+    DateFormat dateFormat = actualCreateResult.getDateFormat();
+    assertTrue(dateFormat instanceof StdDateFormat);
+    assertEquals(" ", factory.getRootValueSeparator());
+    Version versionResult = annotationIntrospector.version();
+    assertEquals("", versionResult.getArtifactId());
+    assertEquals("", versionResult.getGroupId());
+    Locale locale = deserializationConfig.getLocale();
+    assertEquals("", locale.getCountry());
+    assertEquals("", locale.getDisplayCountry());
+    assertEquals("", locale.getDisplayScript());
+    assertEquals("", locale.getDisplayVariant());
+    assertEquals("", locale.getISO3Country());
+    assertEquals("", locale.getScript());
+    assertEquals("", locale.getVariant());
+    assertEquals("//0.0.0", versionResult.toFullString());
+    TimeZone timeZone = deserializationConfig.getTimeZone();
+    assertEquals("Coordinated Universal Time", timeZone.getDisplayName());
+    assertEquals("English", locale.getDisplayLanguage());
+    assertEquals("English", locale.getDisplayName());
+    assertEquals("JSON", factory.getFormatName());
+    Base64Variant base64Variant = deserializationConfig.getBase64Variant();
+    assertEquals("MIME-NO-LINEFEEDS", base64Variant.getName());
+    assertEquals("MIME-NO-LINEFEEDS", base64Variant.toString());
+    assertEquals("UTC", timeZone.getID());
+    assertEquals("[one of: 'yyyy-MM-dd'T'HH:mm:ss.SSSX', 'EEE, dd MMM yyyy HH:mm:ss zzz' (lenient)]",
+        ((StdDateFormat) dateFormat).toPattern());
+    Version versionResult2 = factory.version();
+    assertEquals("com.fasterxml.jackson.core", versionResult2.getGroupId());
+    Version versionResult3 = actualCreateResult.version();
+    assertEquals("com.fasterxml.jackson.core", versionResult3.getGroupId());
+    assertEquals("com.fasterxml.jackson.core/jackson-core/2.17.1", versionResult2.toFullString());
+    assertEquals("com.fasterxml.jackson.core/jackson-databind/2.17.1", versionResult3.toFullString());
+    assertEquals("en", locale.getLanguage());
+    assertEquals("eng", locale.getISO3Language());
+    assertEquals("jackson-core", versionResult2.getArtifactId());
+    assertEquals("jackson-databind", versionResult3.getArtifactId());
+    assertEquals('=', base64Variant.getPaddingChar());
+    assertNull(serializerProvider.getGenerator());
+    assertNull(serializerProviderInstance.getGenerator());
+    assertNull(deserializationContext.getParser());
+    assertNull(factory.getCharacterEscapes());
+    assertNull(factory.getInputDecorator());
+    assertNull(factory.getOutputDecorator());
+    assertNull(deserializationContext.getConfig());
+    assertNull(actualCreateResult.getInjectableValues());
+    assertNull(deserializationContext.getContextualType());
+    assertNull(defaultNullKeySerializer.getDelegatee());
+    assertNull(defaultNullValueSerializer.getDelegatee());
+    assertNull(deserializationConfig.getFullRootName());
+    assertNull(serializationConfig.getFullRootName());
+    assertNull(actualCreateResult.getPropertyNamingStrategy());
+    assertNull(deserializationConfig.getPropertyNamingStrategy());
+    assertNull(serializationConfig.getPropertyNamingStrategy());
+    assertNull(serializerProvider.getConfig());
+    assertNull(deserializationConfig.getHandlerInstantiator());
+    assertNull(serializationConfig.getHandlerInstantiator());
+    assertNull(((SimpleFilterProvider) filterProvider).getDefaultFilter());
+    assertNull(deserializationConfig.getProblemHandlers());
+    assertNull(deserializationConfig.getDefaultMergeable());
+    assertNull(serializationConfig.getDefaultMergeable());
+    assertNull(factory.getFormatReadFeatureType());
+    assertNull(factory.getFormatWriteFeatureType());
+    JsonInclude.Value defaultPropertyInclusion = deserializationConfig.getDefaultPropertyInclusion();
+    assertNull(defaultPropertyInclusion.getContentFilter());
+    assertNull(defaultPropertyInclusion.getValueFilter());
+    assertNull(deserializationContext.getActiveView());
+    assertNull(serializerProvider.getActiveView());
+    assertNull(serializerProviderInstance.getActiveView());
+    assertNull(deserializationConfig.getActiveView());
+    assertNull(serializationConfig.getActiveView());
+    TypeFactory typeFactory = actualCreateResult.getTypeFactory();
+    assertNull(typeFactory.getClassLoader());
+    assertNull(deserializationConfig.getRootName());
+    assertNull(serializationConfig.getRootName());
+    assertNull(dateFormat.getNumberFormat());
+    assertNull(dateFormat.getCalendar());
+    assertNull(dateFormat.getTimeZone());
+    assertEquals(0, factory.getFormatGeneratorFeatures());
+    assertEquals(0, factory.getFormatParserFeatures());
+    assertEquals(0, versionResult.getMajorVersion());
+    assertEquals(0, versionResult.getMinorVersion());
+    assertEquals(0, versionResult.getPatchLevel());
+    assertEquals(0, deserializationContext.getDeserializationFeatures());
+    assertEquals(0, timeZone.getDSTSavings());
+    assertEquals(1, factory.getParserFeatures());
+    assertEquals(1, versionResult2.getPatchLevel());
+    assertEquals(1, versionResult3.getPatchLevel());
+    assertEquals(17, versionResult2.getMinorVersion());
+    assertEquals(17, versionResult3.getMinorVersion());
+    assertEquals(2, versionResult2.getMajorVersion());
+    assertEquals(2, versionResult3.getMajorVersion());
+    assertEquals(21766460, serializationConfig.getSerializationFeatures());
+    assertEquals(2207, factory.getGeneratorFeatures());
+    assertEquals(31, factory.getFactoryFeatures());
+    assertEquals(339780737, deserializationConfig.getDeserializationFeatures());
+    assertEquals(7, actualCreateResult.getRegisteredModuleIds().size());
+    JsonNodeFactory nodeFactory = actualCreateResult.getNodeFactory();
+    assertEquals(9999, nodeFactory.getMaxElementIndexForInsert());
+    assertEquals(JsonInclude.Include.NON_EMPTY, defaultPropertyInclusion.getContentInclusion());
+    assertEquals(JsonInclude.Include.NON_EMPTY, defaultPropertyInclusion.getValueInclusion());
+    assertEquals(JsonInclude.Include.NON_EMPTY, serializationConfig.getSerializationInclusion());
+    JsonSetter.Value defaultSetterInfo = deserializationConfig.getDefaultSetterInfo();
+    assertEquals(Nulls.DEFAULT, defaultSetterInfo.getContentNulls());
+    assertEquals(Nulls.DEFAULT, defaultSetterInfo.getValueNulls());
+    assertFalse(versionResult2.isSnapshot());
+    assertFalse(versionResult.isSnapshot());
+    assertFalse(versionResult3.isSnapshot());
+    assertFalse(versionResult2.isUknownVersion());
+    assertFalse(versionResult3.isUknownVersion());
+    assertFalse(versionResult2.isUnknownVersion());
+    assertFalse(versionResult3.isUnknownVersion());
+    assertFalse(defaultNullKeySerializer.isUnwrappingSerializer());
+    assertFalse(defaultNullValueSerializer.isUnwrappingSerializer());
+    assertFalse(factoryConfig.hasAbstractTypeResolvers());
+    assertFalse(deserializationConfig.hasExplicitTimeZone());
+    assertFalse(serializationConfig.hasExplicitTimeZone());
+    assertFalse(locale.hasExtensions());
+    assertTrue(versionResult.isUknownVersion());
+    assertTrue(versionResult.isUnknownVersion());
+    assertTrue(factoryConfig.hasDeserializerModifiers());
+    assertTrue(factoryConfig.hasDeserializers());
+    assertTrue(factoryConfig.hasKeyDeserializers());
+    assertTrue(factoryConfig.hasValueInstantiators());
+    assertTrue(deserializationConfig.isAnnotationProcessingEnabled());
+    assertTrue(serializationConfig.isAnnotationProcessingEnabled());
+    assertTrue(factoryConfig2.hasKeySerializers());
+    assertTrue(factoryConfig2.hasSerializerModifiers());
+    assertTrue(factoryConfig2.hasSerializers());
+    assertTrue(((ArrayIterator<Deserializers>) deserializersResult).hasNext());
+    assertTrue(((ArrayIterator<Serializers>) serializersResult).hasNext());
+    assertTrue(((StdDateFormat) dateFormat).isColonIncludedInTimeZone());
+    assertTrue(dateFormat.isLenient());
+    Set<Character> extensionKeys = locale.getExtensionKeys();
+    assertTrue(extensionKeys.isEmpty());
+    assertEquals(Integer.MAX_VALUE, base64Variant.getMaxLineLength());
+    assertEquals('=', base64Variant.getPaddingByte());
+    assertSame(versionResult, annotationIntrospector2.version());
+    assertSame(nodeFactory, deserializationConfig.getNodeFactory());
+    assertSame(serializationConfig, serializerProviderInstance.getConfig());
+    assertSame(typeFactory, serializerProviderInstance.getTypeFactory());
+    assertSame(typeFactory, deserializationConfig.getTypeFactory());
+    assertSame(typeFactory, serializationConfig.getTypeFactory());
+    assertSame(base64Variant, serializationConfig.getBase64Variant());
+    assertSame(locale, serializerProviderInstance.getLocale());
+    assertSame(locale, serializationConfig.getLocale());
+    assertSame(timeZone, serializerProviderInstance.getTimeZone());
+    assertSame(timeZone, serializationConfig.getTimeZone());
+    assertSame(defaultPropertyInclusion, serializationConfig.getDefaultPropertyInclusion());
+    assertSame(defaultSetterInfo, serializationConfig.getDefaultSetterInfo());
+    assertSame(actualCreateResult, factory.getCodec());
+    assertSame(extensionKeys, locale.getUnicodeLocaleAttributes());
+    assertSame(extensionKeys, locale.getUnicodeLocaleKeys());
     assertSame(factory, actualCreateResult.getJsonFactory());
+    assertSame(attributes, serializationConfig.getAttributes());
+    assertSame(cacheProvider, serializationConfig.getCacheProvider());
+    assertSame(annotationIntrospector2, serializerProviderInstance.getAnnotationIntrospector());
+    assertSame(classIntrospector, serializationConfig.getClassIntrospector());
+    assertSame(accessorNaming, serializationConfig.getAccessorNaming());
+    assertSame(visibilityChecker, deserializationConfig.getDefaultVisibilityChecker());
+    assertSame(visibilityChecker, serializationConfig.getDefaultVisibilityChecker());
+    assertSame(polymorphicTypeValidator, deserializationConfig.getPolymorphicTypeValidator());
+    assertSame(polymorphicTypeValidator, serializationConfig.getPolymorphicTypeValidator());
+    assertSame(subtypeResolver, deserializationConfig.getSubtypeResolver());
+    assertSame(subtypeResolver, serializationConfig.getSubtypeResolver());
+    assertSame(defaultNullKeySerializer, serializerProviderInstance.getDefaultNullKeySerializer());
+    assertSame(filterProvider, serializerProviderInstance.getFilterProvider());
+    assertSame(defaultNullValueSerializer, serializerProviderInstance.getDefaultNullValueSerializer());
+    assertSame(dateFormat, deserializationConfig.getDateFormat());
+    assertSame(dateFormat, serializationConfig.getDateFormat());
   }
 
   /**
-   * Test {@link RosettaObjectMapperCreator#create()}.
-   * <ul>
-   *   <li>Given {@code Object}.</li>
-   *   <li>Then return {@link JsonMapper}.</li>
-   * </ul>
-   * <p>
    * Method under test: {@link RosettaObjectMapperCreator#create()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"ObjectMapper RosettaObjectMapperCreator.create()"})
-  public void testCreate_givenJavaLangObject_thenReturnJsonMapper() {
-    // Arrange
-    SimpleModule rosettaModule = new SimpleModule();
-    Class<Object> beanType = Object.class;
-    rosettaModule.addValueInstantiator(beanType, new JsonLocationInstantiator());
-
-    // Act
-    ObjectMapper actualCreateResult = (new RosettaObjectMapperCreator(rosettaModule,
-        JsonMapper.builder().findAndAddModules().build())).create();
-
-    // Assert
-    assertTrue(actualCreateResult instanceof JsonMapper);
-    assertTrue(actualCreateResult.getSerializerProviderInstance() instanceof Impl);
-  }
-
-  /**
-   * Test {@link RosettaObjectMapperCreator#create()}.
-   * <ul>
-   *   <li>Given {@link SimpleModule#SimpleModule()} KeySerializers is {@link SimpleSerializers#SimpleSerializers()}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link RosettaObjectMapperCreator#create()}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"ObjectMapper RosettaObjectMapperCreator.create()"})
-  public void testCreate_givenSimpleModuleKeySerializersIsSimpleSerializers() {
-    // Arrange
-    SimpleModule rosettaModule = new SimpleModule();
-    rosettaModule.setKeySerializers(new SimpleSerializers());
-    Class<Object> beanType = Object.class;
-    rosettaModule.addValueInstantiator(beanType, new JsonLocationInstantiator());
-
-    // Act
-    ObjectMapper actualCreateResult = (new RosettaObjectMapperCreator(rosettaModule,
-        JsonMapper.builder().findAndAddModules().build())).create();
-
-    // Assert
-    assertTrue(actualCreateResult instanceof JsonMapper);
-    assertTrue(actualCreateResult.getSerializerProviderInstance() instanceof Impl);
-  }
-
-  /**
-   * Test {@link RosettaObjectMapperCreator#create()}.
-   * <ul>
-   *   <li>Given {@link SimpleModule#SimpleModule()} MixInAnnotation {@link Object} is {@link Object}.</li>
-   *   <li>Then return {@link JsonMapper}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link RosettaObjectMapperCreator#create()}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"ObjectMapper RosettaObjectMapperCreator.create()"})
-  public void testCreate_givenSimpleModuleMixInAnnotationObjectIsObject_thenReturnJsonMapper() {
-    // Arrange
-    SimpleModule rosettaModule = new SimpleModule();
-    Class<Object> targetType = Object.class;
-    Class<Object> mixinClass = Object.class;
-    rosettaModule.setMixInAnnotation(targetType, mixinClass);
-    Class<Object> beanType = Object.class;
-    rosettaModule.addValueInstantiator(beanType, new JsonLocationInstantiator());
-
-    // Act
-    ObjectMapper actualCreateResult = (new RosettaObjectMapperCreator(rosettaModule,
-        JsonMapper.builder().findAndAddModules().build())).create();
-
-    // Assert
-    assertTrue(actualCreateResult instanceof JsonMapper);
-    assertTrue(actualCreateResult.getSerializerProviderInstance() instanceof Impl);
-  }
-
-  /**
-   * Test {@link RosettaObjectMapperCreator#create()}.
-   * <ul>
-   *   <li>Given {@link SimpleModule#SimpleModule()} registerSubtypes {@link ArrayList#ArrayList()}.</li>
-   *   <li>Then return {@link JsonMapper}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link RosettaObjectMapperCreator#create()}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"ObjectMapper RosettaObjectMapperCreator.create()"})
-  public void testCreate_givenSimpleModuleRegisterSubtypesArrayList_thenReturnJsonMapper() {
-    // Arrange
-    SimpleModule rosettaModule = new SimpleModule();
-    rosettaModule.registerSubtypes(new ArrayList<>());
-    Class<Object> beanType = Object.class;
-    rosettaModule.addValueInstantiator(beanType, new JsonLocationInstantiator());
-
-    // Act
-    ObjectMapper actualCreateResult = (new RosettaObjectMapperCreator(rosettaModule,
-        JsonMapper.builder().findAndAddModules().build())).create();
-
-    // Assert
-    assertTrue(actualCreateResult instanceof JsonMapper);
-    assertTrue(actualCreateResult.getSerializerProviderInstance() instanceof Impl);
-  }
-
-  /**
-   * Test {@link RosettaObjectMapperCreator#create()}.
-   * <ul>
-   *   <li>Given {@link SimpleModule#SimpleModule()} SerializerModifier is {@link RosettaBeanSerializerModifier} (default constructor).</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link RosettaObjectMapperCreator#create()}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"ObjectMapper RosettaObjectMapperCreator.create()"})
-  public void testCreate_givenSimpleModuleSerializerModifierIsRosettaBeanSerializerModifier() {
-    // Arrange
-    SimpleModule rosettaModule = new SimpleModule();
-    rosettaModule.setSerializerModifier(new RosettaBeanSerializerModifier());
-    Class<Object> beanType = Object.class;
-    rosettaModule.addValueInstantiator(beanType, new JsonLocationInstantiator());
-
-    // Act
-    ObjectMapper actualCreateResult = (new RosettaObjectMapperCreator(rosettaModule,
-        JsonMapper.builder().findAndAddModules().build())).create();
-
-    // Assert
-    assertTrue(actualCreateResult instanceof JsonMapper);
-    assertTrue(actualCreateResult.getSerializerProviderInstance() instanceof Impl);
-  }
-
-  /**
-   * Test {@link RosettaObjectMapperCreator#create()}.
-   * <ul>
-   *   <li>Then DeserializationContext return {@link DefaultDeserializationContext.Impl}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link RosettaObjectMapperCreator#create()}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"ObjectMapper RosettaObjectMapperCreator.create()"})
-  public void testCreate_thenDeserializationContextReturnImpl() {
-    // Arrange
-    SimpleModule rosettaModule = new SimpleModule();
-    rosettaModule.setAbstractTypes(new SimpleAbstractTypeResolver());
-    Class<Object> beanType = Object.class;
-    rosettaModule.addValueInstantiator(beanType, new JsonLocationInstantiator());
-
-    // Act
-    ObjectMapper actualCreateResult = (new RosettaObjectMapperCreator(rosettaModule,
-        JsonMapper.builder().findAndAddModules().build())).create();
-
-    // Assert
-    assertTrue(actualCreateResult.getDeserializationContext() instanceof DefaultDeserializationContext.Impl);
-    assertTrue(actualCreateResult instanceof JsonMapper);
-    assertTrue(actualCreateResult.getSerializerProviderInstance() instanceof Impl);
-  }
-
-  /**
-   * Test {@link RosettaObjectMapperCreator#create()}.
-   * <ul>
-   *   <li>Then return {@link XmlMapper}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link RosettaObjectMapperCreator#create()}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"ObjectMapper RosettaObjectMapperCreator.create()"})
-  public void testCreate_thenReturnXmlMapper() {
+  public void testCreate2() throws MissingResourceException {
     // Arrange and Act
     ObjectMapper actualCreateResult = RosettaObjectMapperCreator.forXML(new RosettaXMLConfiguration(new HashMap<>()))
         .create();
 
     // Assert
+    JsonFactory factory = actualCreateResult.getFactory();
+    XMLInputFactory xMLInputFactory = ((XmlFactory) factory).getXMLInputFactory();
+    assertTrue(xMLInputFactory instanceof WstxInputFactory);
+    XMLOutputFactory xMLOutputFactory = ((XmlFactory) factory).getXMLOutputFactory();
+    assertTrue(xMLOutputFactory instanceof WstxOutputFactory);
+    DeserializationConfig deserializationConfig = actualCreateResult.getDeserializationConfig();
+    ContextAttributes attributes = deserializationConfig.getAttributes();
+    assertTrue(attributes instanceof ContextAttributes.Impl);
+    CacheProvider cacheProvider = deserializationConfig.getCacheProvider();
+    assertTrue(cacheProvider instanceof DefaultCacheProvider);
+    DeserializationContext deserializationContext = actualCreateResult.getDeserializationContext();
+    DeserializerFactory factory2 = deserializationContext.getFactory();
+    assertTrue(factory2 instanceof BeanDeserializerFactory);
+    AnnotationIntrospector annotationIntrospector = deserializationConfig.getAnnotationIntrospector();
+    assertTrue(annotationIntrospector instanceof AnnotationIntrospectorPair);
+    SerializationConfig serializationConfig = actualCreateResult.getSerializationConfig();
+    AnnotationIntrospector annotationIntrospector2 = serializationConfig.getAnnotationIntrospector();
+    assertTrue(annotationIntrospector2 instanceof AnnotationIntrospectorPair);
+    ClassIntrospector classIntrospector = deserializationConfig.getClassIntrospector();
+    assertTrue(classIntrospector instanceof BasicClassIntrospector);
+    AccessorNamingStrategy.Provider accessorNaming = deserializationConfig.getAccessorNaming();
+    assertTrue(accessorNaming instanceof DefaultAccessorNamingStrategy.Provider);
+    VisibilityChecker<?> visibilityChecker = actualCreateResult.getVisibilityChecker();
+    assertTrue(visibilityChecker instanceof VisibilityChecker.Std);
+    PolymorphicTypeValidator polymorphicTypeValidator = actualCreateResult.getPolymorphicTypeValidator();
+    assertTrue(polymorphicTypeValidator instanceof LaissezFaireSubTypeValidator);
+    SubtypeResolver subtypeResolver = actualCreateResult.getSubtypeResolver();
+    assertTrue(subtypeResolver instanceof StdSubtypeResolver);
+    DeserializerFactoryConfig factoryConfig = ((BeanDeserializerFactory) factory2).getFactoryConfig();
+    Iterable<Deserializers> deserializersResult = factoryConfig.deserializers();
+    assertTrue(((ArrayIterator<Deserializers>) deserializersResult).next() instanceof SimpleDeserializers);
+    assertTrue(((ArrayIterator<Deserializers>) deserializersResult).next() instanceof SimpleDeserializers);
+    SerializerFactory serializerFactory = actualCreateResult.getSerializerFactory();
+    SerializerFactoryConfig factoryConfig2 = ((RosettaSerialiserFactory) serializerFactory).getFactoryConfig();
+    Iterable<Serializers> serializersResult = factoryConfig2.serializers();
+    assertTrue(((ArrayIterator<Serializers>) serializersResult).next() instanceof SimpleSerializers);
+    assertTrue(((ArrayIterator<Serializers>) serializersResult).next() instanceof SimpleSerializers);
+    SerializerProvider serializerProvider = actualCreateResult.getSerializerProvider();
+    JsonSerializer<Object> defaultNullKeySerializer = serializerProvider.getDefaultNullKeySerializer();
+    assertTrue(defaultNullKeySerializer instanceof FailingSerializer);
+    FilterProvider filterProvider = serializationConfig.getFilterProvider();
+    assertTrue(filterProvider instanceof SimpleFilterProvider);
+    JsonSerializer<Object> defaultNullValueSerializer = serializerProvider.getDefaultNullValueSerializer();
+    assertTrue(defaultNullValueSerializer instanceof NullSerializer);
+    assertTrue(deserializersResult instanceof ArrayIterator);
+    assertTrue(serializersResult instanceof ArrayIterator);
+    DateFormat dateFormat = actualCreateResult.getDateFormat();
+    assertTrue(dateFormat instanceof StdDateFormat);
     assertTrue(actualCreateResult instanceof XmlMapper);
-    assertTrue(actualCreateResult.getDeserializationContext() instanceof XmlDeserializationContext);
-    assertTrue(actualCreateResult.getSerializerProvider() instanceof XmlSerializerProvider);
-    assertTrue(actualCreateResult.getSerializerProviderInstance() instanceof XmlSerializerProvider);
-    assertTrue(actualCreateResult.getSerializerFactory() instanceof RosettaSerialiserFactory);
+    assertTrue(deserializationContext instanceof XmlDeserializationContext);
+    assertTrue(serializerProvider instanceof XmlSerializerProvider);
+    SerializerProvider serializerProviderInstance = actualCreateResult.getSerializerProviderInstance();
+    assertTrue(serializerProviderInstance instanceof XmlSerializerProvider);
+    assertTrue(serializationConfig.getDefaultPrettyPrinter() instanceof DefaultXmlPrettyPrinter);
+    assertTrue(serializerFactory instanceof RosettaSerialiserFactory);
+    assertEquals(" ", factory.getRootValueSeparator());
+    Locale locale = deserializationConfig.getLocale();
+    assertEquals("", locale.getCountry());
+    assertEquals("", locale.getDisplayCountry());
+    assertEquals("", locale.getDisplayScript());
+    assertEquals("", locale.getDisplayVariant());
+    assertEquals("", locale.getISO3Country());
+    assertEquals("", locale.getScript());
+    assertEquals("", locale.getVariant());
+    TimeZone timeZone = deserializationConfig.getTimeZone();
+    assertEquals("Coordinated Universal Time", timeZone.getDisplayName());
+    assertEquals("English", locale.getDisplayLanguage());
+    assertEquals("English", locale.getDisplayName());
+    Base64Variant base64Variant = deserializationConfig.getBase64Variant();
+    assertEquals("MIME", base64Variant.getName());
+    assertEquals("MIME", base64Variant.toString());
+    assertEquals("UTC", timeZone.getID());
+    assertEquals("XML", factory.getFormatName());
+    assertEquals("[one of: 'yyyy-MM-dd'T'HH:mm:ss.SSSX', 'EEE, dd MMM yyyy HH:mm:ss zzz' (lenient)]",
+        ((StdDateFormat) dateFormat).toPattern());
+    Version versionResult = annotationIntrospector.version();
+    assertEquals("com.fasterxml.jackson.core", versionResult.getGroupId());
+    assertEquals("com.fasterxml.jackson.core/jackson-databind/2.17.1", versionResult.toFullString());
+    Version versionResult2 = actualCreateResult.version();
+    assertEquals("com.fasterxml.jackson.dataformat", versionResult2.getGroupId());
+    assertEquals("com.fasterxml.jackson.dataformat/jackson-dataformat-xml/2.17.1", versionResult2.toFullString());
+    assertEquals("en", locale.getLanguage());
+    assertEquals("eng", locale.getISO3Language());
+    assertEquals("jackson-databind", versionResult.getArtifactId());
+    assertEquals("jackson-dataformat-xml", versionResult2.getArtifactId());
+    WriterConfig config = ((WstxOutputFactory) xMLOutputFactory).getConfig();
+    assertEquals("wstxns", config.getAutomaticNsPrefix());
+    assertEquals('=', base64Variant.getPaddingChar());
+    assertNull(config.getEmptyElementHandler());
+    assertNull(config.getInvalidCharHandler());
+    ReaderConfig config2 = ((WstxInputFactory) xMLInputFactory).getConfig();
+    assertNull(config2.getDTDEventListener());
+    assertNull(config2.getSymbols());
+    assertNull(serializerProvider.getGenerator());
+    assertNull(serializerProviderInstance.getGenerator());
+    assertNull(deserializationContext.getParser());
+    assertNull(factory.getCharacterEscapes());
+    assertNull(factory.getInputDecorator());
+    assertNull(factory.getOutputDecorator());
+    assertNull(deserializationContext.getConfig());
+    assertNull(actualCreateResult.getInjectableValues());
+    assertNull(deserializationContext.getContextualType());
+    assertNull(defaultNullKeySerializer.getDelegatee());
+    assertNull(defaultNullValueSerializer.getDelegatee());
+    assertNull(deserializationConfig.getFullRootName());
+    assertNull(serializationConfig.getFullRootName());
+    assertNull(actualCreateResult.getPropertyNamingStrategy());
+    assertNull(deserializationConfig.getPropertyNamingStrategy());
+    assertNull(serializationConfig.getPropertyNamingStrategy());
+    assertNull(serializerProvider.getConfig());
+    assertNull(deserializationConfig.getHandlerInstantiator());
+    assertNull(serializationConfig.getHandlerInstantiator());
+    assertNull(((SimpleFilterProvider) filterProvider).getDefaultFilter());
+    assertNull(deserializationConfig.getProblemHandlers());
+    assertNull(deserializationConfig.getDefaultMergeable());
+    assertNull(serializationConfig.getDefaultMergeable());
+    JsonInclude.Value defaultPropertyInclusion = deserializationConfig.getDefaultPropertyInclusion();
+    assertNull(defaultPropertyInclusion.getContentFilter());
+    assertNull(defaultPropertyInclusion.getValueFilter());
+    assertNull(deserializationContext.getActiveView());
+    assertNull(serializerProvider.getActiveView());
+    assertNull(serializerProviderInstance.getActiveView());
+    assertNull(deserializationConfig.getActiveView());
+    assertNull(serializationConfig.getActiveView());
+    TypeFactory typeFactory = actualCreateResult.getTypeFactory();
+    assertNull(typeFactory.getClassLoader());
+    assertNull(deserializationConfig.getRootName());
+    assertNull(serializationConfig.getRootName());
+    assertNull(((XmlFactory) factory).getXMLTextElementName());
+    assertNull(config2.getBaseURL());
+    assertNull(dateFormat.getNumberFormat());
+    assertNull(dateFormat.getCalendar());
+    assertNull(dateFormat.getTimeZone());
+    assertNull(config2.getXMLReporter());
+    assertNull(config.getProblemReporter());
+    assertNull(xMLInputFactory.getXMLReporter());
+    assertNull(config2.getDtdResolver());
+    assertNull(config2.getEntityResolver());
+    assertNull(config2.getUndeclaredEntityResolver());
+    assertNull(config2.getXMLResolver());
+    assertNull(xMLInputFactory.getXMLResolver());
+    assertNull(xMLInputFactory.getEventAllocator());
+    assertNull(config.getAttrValueEscaperFactory());
+    assertNull(config.getTextEscaperFactory());
+    assertNull(config2.getDTDOverride());
+    assertEquals(0, factory.getFormatGeneratorFeatures());
+    assertEquals(0, deserializationContext.getDeserializationFeatures());
+    assertEquals(0, timeZone.getDSTSavings());
+    assertEquals(1, factory.getParserFeatures());
+    assertEquals(1, versionResult.getPatchLevel());
+    assertEquals(1, versionResult2.getPatchLevel());
+    assertEquals(1000, config2.getMaxAttributesPerElement());
+    assertEquals(1000, config2.getMaxElementDepth());
+    assertEquals(100000L, config2.getMaxEntityCount());
+    assertEquals(12, config2.getDtdCacheSize());
+    assertEquals(17, versionResult.getMinorVersion());
+    assertEquals(17, versionResult2.getMinorVersion());
+    assertEquals(2, versionResult.getMajorVersion());
+    assertEquals(2, versionResult2.getMajorVersion());
+    assertEquals(2147483647L, config2.getMaxTextLength());
+    assertEquals(21766460, serializationConfig.getSerializationFeatures());
+    assertEquals(2207, factory.getGeneratorFeatures());
+    assertEquals(2973191, config2.getConfigFlags());
+    assertEquals(31, factory.getFactoryFeatures());
+    assertEquals(340829313, deserializationConfig.getDeserializationFeatures());
+    assertEquals(4, factory.getFormatParserFeatures());
+    assertEquals(4000, config2.getInputBufferLength());
+    assertEquals(500, config2.getMaxDtdDepth());
+    assertEquals(500, config2.getMaxEntityDepth());
+    assertEquals(524288, config2.getMaxAttributeSize());
+    assertEquals(7, actualCreateResult.getRegisteredModuleIds().size());
+    assertEquals(76, base64Variant.getMaxLineLength());
+    assertEquals(935, config.getConfigFlags());
+    JsonNodeFactory nodeFactory = actualCreateResult.getNodeFactory();
+    assertEquals(9999, nodeFactory.getMaxElementIndexForInsert());
+    assertEquals(JsonInclude.Include.NON_EMPTY, defaultPropertyInclusion.getContentInclusion());
+    assertEquals(JsonInclude.Include.NON_EMPTY, defaultPropertyInclusion.getValueInclusion());
+    assertEquals(JsonInclude.Include.NON_EMPTY, serializationConfig.getSerializationInclusion());
+    JsonSetter.Value defaultSetterInfo = deserializationConfig.getDefaultSetterInfo();
+    assertEquals(Nulls.DEFAULT, defaultSetterInfo.getContentNulls());
+    assertEquals(Nulls.DEFAULT, defaultSetterInfo.getValueNulls());
+    assertFalse(config2.isXml11());
+    assertFalse(versionResult.isSnapshot());
+    assertFalse(versionResult2.isSnapshot());
+    assertFalse(versionResult.isUknownVersion());
+    assertFalse(versionResult2.isUknownVersion());
+    assertFalse(versionResult.isUnknownVersion());
+    assertFalse(versionResult2.isUnknownVersion());
+    assertFalse(defaultNullKeySerializer.isUnwrappingSerializer());
+    assertFalse(defaultNullValueSerializer.isUnwrappingSerializer());
+    assertFalse(factoryConfig.hasAbstractTypeResolvers());
+    assertFalse(deserializationConfig.hasExplicitTimeZone());
+    assertFalse(serializationConfig.hasExplicitTimeZone());
+    assertFalse(locale.hasExtensions());
+    assertTrue(factoryConfig.hasDeserializerModifiers());
+    assertTrue(factoryConfig.hasDeserializers());
+    assertTrue(factoryConfig.hasKeyDeserializers());
+    assertTrue(factoryConfig.hasValueInstantiators());
+    assertTrue(deserializationConfig.isAnnotationProcessingEnabled());
+    assertTrue(serializationConfig.isAnnotationProcessingEnabled());
+    assertTrue(factoryConfig2.hasKeySerializers());
+    assertTrue(factoryConfig2.hasSerializerModifiers());
+    assertTrue(factoryConfig2.hasSerializers());
+    assertTrue(((ArrayIterator<Deserializers>) deserializersResult).hasNext());
+    assertTrue(((ArrayIterator<Serializers>) serializersResult).hasNext());
+    assertTrue(((StdDateFormat) dateFormat).isColonIncludedInTimeZone());
+    assertTrue(dateFormat.isLenient());
+    assertTrue(config2.getCustomInternalEntities().isEmpty());
+    Set<Character> extensionKeys = locale.getExtensionKeys();
+    assertTrue(extensionKeys.isEmpty());
+    Class<FromXmlParser.Feature> expectedFormatReadFeatureType = FromXmlParser.Feature.class;
+    assertEquals(expectedFormatReadFeatureType, factory.getFormatReadFeatureType());
+    Class<ToXmlGenerator.Feature> expectedFormatWriteFeatureType = ToXmlGenerator.Feature.class;
+    assertEquals(expectedFormatWriteFeatureType, factory.getFormatWriteFeatureType());
+    assertEquals(Double.SIZE, config2.getShortestReportedTextSegment());
+    assertEquals(Integer.MAX_VALUE, config2.getMaxChildrenPerElement());
+    assertEquals(Long.MAX_VALUE, config2.getMaxCharacters());
+    assertEquals(Long.MAX_VALUE, config2.getMaxElementCount());
+    assertEquals('=', base64Variant.getPaddingByte());
+    assertSame(versionResult, annotationIntrospector2.version());
+    assertSame(factory, actualCreateResult.getJsonFactory());
+    assertSame(nodeFactory, deserializationConfig.getNodeFactory());
+    assertSame(serializationConfig, serializerProviderInstance.getConfig());
+    assertSame(typeFactory, serializerProviderInstance.getTypeFactory());
+    assertSame(typeFactory, deserializationConfig.getTypeFactory());
+    assertSame(typeFactory, serializationConfig.getTypeFactory());
+    assertSame(versionResult2, factory.version());
+    assertSame(base64Variant, serializationConfig.getBase64Variant());
+    assertSame(locale, serializerProviderInstance.getLocale());
+    assertSame(locale, serializationConfig.getLocale());
+    assertSame(timeZone, serializerProviderInstance.getTimeZone());
+    assertSame(timeZone, serializationConfig.getTimeZone());
+    assertSame(defaultPropertyInclusion, serializationConfig.getDefaultPropertyInclusion());
+    assertSame(defaultSetterInfo, serializationConfig.getDefaultSetterInfo());
+    assertSame(actualCreateResult, factory.getCodec());
+    assertSame(extensionKeys, locale.getUnicodeLocaleAttributes());
+    assertSame(extensionKeys, locale.getUnicodeLocaleKeys());
+    assertSame(attributes, serializationConfig.getAttributes());
+    assertSame(cacheProvider, serializationConfig.getCacheProvider());
+    assertSame(annotationIntrospector2, serializerProviderInstance.getAnnotationIntrospector());
+    assertSame(classIntrospector, serializationConfig.getClassIntrospector());
+    assertSame(accessorNaming, serializationConfig.getAccessorNaming());
+    assertSame(visibilityChecker, deserializationConfig.getDefaultVisibilityChecker());
+    assertSame(visibilityChecker, serializationConfig.getDefaultVisibilityChecker());
+    assertSame(polymorphicTypeValidator, deserializationConfig.getPolymorphicTypeValidator());
+    assertSame(polymorphicTypeValidator, serializationConfig.getPolymorphicTypeValidator());
+    assertSame(subtypeResolver, deserializationConfig.getSubtypeResolver());
+    assertSame(subtypeResolver, serializationConfig.getSubtypeResolver());
+    assertSame(defaultNullKeySerializer, serializerProviderInstance.getDefaultNullKeySerializer());
+    assertSame(filterProvider, serializerProviderInstance.getFilterProvider());
+    assertSame(defaultNullValueSerializer, serializerProviderInstance.getDefaultNullValueSerializer());
+    assertSame(dateFormat, deserializationConfig.getDateFormat());
+    assertSame(dateFormat, serializationConfig.getDateFormat());
+  }
+
+  /**
+   * Method under test: {@link RosettaObjectMapperCreator#create()}
+   */
+  @Test
+  public void testCreate3() {
+    // Arrange
+    RosettaDateModule rosettaModule = new RosettaDateModule();
+    ObjectMapper baseMapper = new ObjectMapper();
+
+    // Act and Assert
+    assertSame(baseMapper, (new RosettaObjectMapperCreator(rosettaModule, baseMapper)).create());
+  }
+
+  /**
+   * Method under test: {@link RosettaObjectMapperCreator#create()}
+   */
+  @Test
+  public void testCreate4() {
+    // Arrange
+    SimpleModule rosettaModule = new SimpleModule();
+    ObjectMapper baseMapper = new ObjectMapper();
+
+    // Act and Assert
+    assertSame(baseMapper, (new RosettaObjectMapperCreator(rosettaModule, baseMapper)).create());
+  }
+
+  /**
+   * Method under test: {@link RosettaObjectMapperCreator#create()}
+   */
+  @Test
+  public void testCreate5() {
+    // Arrange
+    JacksonXmlModule rosettaModule = new JacksonXmlModule();
+    ObjectMapper baseMapper = new ObjectMapper();
+
+    // Act and Assert
+    assertSame(baseMapper, (new RosettaObjectMapperCreator(rosettaModule, baseMapper)).create());
   }
 }

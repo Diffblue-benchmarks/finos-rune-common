@@ -24,62 +24,13 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
-import com.regnosys.rosetta.common.transform.TestPackModel.SampleModel;
-import com.regnosys.rosetta.common.transform.TestPackModel.SampleModel.Assertions;
+import static org.mockito.Mockito.mock;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
 
 public class TestPackModelDiffblueTest {
   /**
-   * Test getters and setters.
-   * <p>
-   * Methods under test:
-   * <ul>
-   *   <li>{@link TestPackModel#TestPackModel(String, String, String, List)}
-   *   <li>{@link TestPackModel#toString()}
-   *   <li>{@link TestPackModel#getId()}
-   *   <li>{@link TestPackModel#getName()}
-   *   <li>{@link TestPackModel#getPipelineId()}
-   *   <li>{@link TestPackModel#getSamples()}
-   * </ul>
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void TestPackModel.<init>(String, String, String, List)", "String TestPackModel.getId()",
-      "String TestPackModel.getName()", "String TestPackModel.getPipelineId()", "List TestPackModel.getSamples()",
-      "String TestPackModel.toString()"})
-  public void testGettersAndSetters() {
-    // Arrange
-    ArrayList<SampleModel> samples = new ArrayList<>();
-
-    // Act
-    TestPackModel actualTestPackModel = new TestPackModel("42", "42", "Name", samples);
-    String actualToStringResult = actualTestPackModel.toString();
-    String actualId = actualTestPackModel.getId();
-    String actualName = actualTestPackModel.getName();
-    String actualPipelineId = actualTestPackModel.getPipelineId();
-    List<SampleModel> actualSamples = actualTestPackModel.getSamples();
-
-    // Assert
-    assertEquals("42", actualId);
-    assertEquals("42", actualPipelineId);
-    assertEquals("Name", actualName);
-    assertEquals("TestPackModel{id='42', pipelineId='42', name='Name', samples=[]}", actualToStringResult);
-    assertTrue(actualSamples.isEmpty());
-    assertSame(samples, actualSamples);
-  }
-
-  /**
-   * Test {@link TestPackModel#equals(Object)}, and {@link TestPackModel#hashCode()}.
-   * <ul>
-   *   <li>When other is equal.</li>
-   *   <li>Then return equal.</li>
-   * </ul>
-   * <p>
    * Methods under test:
    * <ul>
    *   <li>{@link TestPackModel#equals(Object)}
@@ -87,8 +38,6 @@ public class TestPackModelDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean TestPackModel.equals(Object)", "int TestPackModel.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
     // Arrange
     TestPackModel createTestPackResult = TestPackUtils.createTestPack("Test Pack Name", TransformType.PRE_TRANSLATE,
@@ -103,12 +52,6 @@ public class TestPackModelDiffblueTest {
   }
 
   /**
-   * Test {@link TestPackModel#equals(Object)}, and {@link TestPackModel#hashCode()}.
-   * <ul>
-   *   <li>When other is same.</li>
-   *   <li>Then return equal.</li>
-   * </ul>
-   * <p>
    * Methods under test:
    * <ul>
    *   <li>{@link TestPackModel#equals(Object)}
@@ -116,8 +59,6 @@ public class TestPackModelDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean TestPackModel.equals(Object)", "int TestPackModel.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
     TestPackModel createTestPackResult = TestPackUtils.createTestPack("Test Pack Name", TransformType.PRE_TRANSLATE,
@@ -130,17 +71,9 @@ public class TestPackModelDiffblueTest {
   }
 
   /**
-   * Test {@link TestPackModel#equals(Object)}.
-   * <ul>
-   *   <li>When other is different.</li>
-   *   <li>Then return not equal.</li>
-   * </ul>
-   * <p>
    * Method under test: {@link TestPackModel#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean TestPackModel.equals(Object)", "int TestPackModel.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange
     TestPackModel createTestPackResult = TestPackUtils.createTestPack("config", TransformType.PRE_TRANSLATE,
@@ -152,21 +85,14 @@ public class TestPackModelDiffblueTest {
   }
 
   /**
-   * Test {@link TestPackModel#equals(Object)}.
-   * <ul>
-   *   <li>When other is different.</li>
-   *   <li>Then return not equal.</li>
-   * </ul>
-   * <p>
    * Method under test: {@link TestPackModel#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean TestPackModel.equals(Object)", "int TestPackModel.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual2() {
     // Arrange
-    ArrayList<SampleModel> sampleModels = new ArrayList<>();
-    sampleModels.add(new SampleModel("42", "Name", "Input Path", "Output Path", new Assertions(1, true, true)));
+    ArrayList<TestPackModel.SampleModel> sampleModels = new ArrayList<>();
+    sampleModels.add(new TestPackModel.SampleModel("42", "Name", "Input Path", "Output Path",
+        new TestPackModel.SampleModel.Assertions(1, true, true)));
     TestPackModel createTestPackResult = TestPackUtils.createTestPack("Test Pack Name", TransformType.PRE_TRANSLATE,
         "Formatted Function Name", sampleModels);
 
@@ -176,17 +102,26 @@ public class TestPackModelDiffblueTest {
   }
 
   /**
-   * Test {@link TestPackModel#equals(Object)}.
-   * <ul>
-   *   <li>When other is {@code null}.</li>
-   *   <li>Then return not equal.</li>
-   * </ul>
-   * <p>
    * Method under test: {@link TestPackModel#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean TestPackModel.equals(Object)", "int TestPackModel.hashCode()"})
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual3() {
+    // Arrange
+    ArrayList<TestPackModel.SampleModel> sampleModels = new ArrayList<>();
+    sampleModels.add(new TestPackModel.SampleModel("42", "Name", "Input Path", "Output Path",
+        mock(TestPackModel.SampleModel.Assertions.class)));
+    TestPackModel createTestPackResult = TestPackUtils.createTestPack("Test Pack Name", TransformType.PRE_TRANSLATE,
+        "Formatted Function Name", sampleModels);
+
+    // Act and Assert
+    assertNotEquals(createTestPackResult, TestPackUtils.createTestPack("Test Pack Name", TransformType.PRE_TRANSLATE,
+        "Formatted Function Name", new ArrayList<>()));
+  }
+
+  /**
+   * Method under test: {@link TestPackModel#equals(Object)}
+   */
+  @Test
   public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(TestPackUtils.createTestPack("Test Pack Name", TransformType.PRE_TRANSLATE,
@@ -194,17 +129,9 @@ public class TestPackModelDiffblueTest {
   }
 
   /**
-   * Test {@link TestPackModel#equals(Object)}.
-   * <ul>
-   *   <li>When other is wrong type.</li>
-   *   <li>Then return not equal.</li>
-   * </ul>
-   * <p>
    * Method under test: {@link TestPackModel#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean TestPackModel.equals(Object)", "int TestPackModel.hashCode()"})
   public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(TestPackUtils.createTestPack("Test Pack Name", TransformType.PRE_TRANSLATE,
@@ -212,26 +139,52 @@ public class TestPackModelDiffblueTest {
   }
 
   /**
-   * Test SampleModel {@link SampleModel#equals(Object)}, and {@link SampleModel#hashCode()}.
-   * <ul>
-   *   <li>When other is equal.</li>
-   *   <li>Then return equal.</li>
-   * </ul>
-   * <p>
    * Methods under test:
    * <ul>
-   *   <li>{@link SampleModel#equals(Object)}
-   *   <li>{@link SampleModel#hashCode()}
+   *   <li>{@link TestPackModel#TestPackModel(String, String, String, List)}
+   *   <li>{@link TestPackModel#toString()}
+   *   <li>{@link TestPackModel#getId()}
+   *   <li>{@link TestPackModel#getName()}
+   *   <li>{@link TestPackModel#getPipelineId()}
+   *   <li>{@link TestPackModel#getSamples()}
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean SampleModel.equals(Object)", "int SampleModel.hashCode()"})
+  public void testGettersAndSetters() {
+    // Arrange
+    ArrayList<TestPackModel.SampleModel> samples = new ArrayList<>();
+
+    // Act
+    TestPackModel actualTestPackModel = new TestPackModel("42", "42", "Name", samples);
+    String actualToStringResult = actualTestPackModel.toString();
+    String actualId = actualTestPackModel.getId();
+    String actualName = actualTestPackModel.getName();
+    String actualPipelineId = actualTestPackModel.getPipelineId();
+    List<TestPackModel.SampleModel> actualSamples = actualTestPackModel.getSamples();
+
+    // Assert
+    assertEquals("42", actualId);
+    assertEquals("42", actualPipelineId);
+    assertEquals("Name", actualName);
+    assertEquals("TestPackModel{id='42', pipelineId='42', name='Name', samples=[]}", actualToStringResult);
+    assertTrue(actualSamples.isEmpty());
+    assertSame(samples, actualSamples);
+  }
+
+  /**
+   * Methods under test:
+   * <ul>
+   *   <li>{@link TestPackModel.SampleModel#equals(Object)}
+   *   <li>{@link TestPackModel.SampleModel#hashCode()}
+   * </ul>
+   */
+  @Test
   public void testSampleModelEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
     // Arrange
-    SampleModel sampleModel = new SampleModel("42", "Name", "Input Path", "Output Path", new Assertions(1, true, true));
-    SampleModel sampleModel2 = new SampleModel("42", "Name", "Input Path", "Output Path",
-        new Assertions(1, true, true));
+    TestPackModel.SampleModel sampleModel = new TestPackModel.SampleModel("42", "Name", "Input Path", "Output Path",
+        new TestPackModel.SampleModel.Assertions(1, true, true));
+    TestPackModel.SampleModel sampleModel2 = new TestPackModel.SampleModel("42", "Name", "Input Path", "Output Path",
+        new TestPackModel.SampleModel.Assertions(1, true, true));
 
     // Act and Assert
     assertEquals(sampleModel, sampleModel2);
@@ -240,24 +193,17 @@ public class TestPackModelDiffblueTest {
   }
 
   /**
-   * Test SampleModel {@link SampleModel#equals(Object)}, and {@link SampleModel#hashCode()}.
-   * <ul>
-   *   <li>When other is same.</li>
-   *   <li>Then return equal.</li>
-   * </ul>
-   * <p>
    * Methods under test:
    * <ul>
-   *   <li>{@link SampleModel#equals(Object)}
-   *   <li>{@link SampleModel#hashCode()}
+   *   <li>{@link TestPackModel.SampleModel#equals(Object)}
+   *   <li>{@link TestPackModel.SampleModel#hashCode()}
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean SampleModel.equals(Object)", "int SampleModel.hashCode()"})
   public void testSampleModelEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
-    SampleModel sampleModel = new SampleModel("42", "Name", "Input Path", "Output Path", new Assertions(1, true, true));
+    TestPackModel.SampleModel sampleModel = new TestPackModel.SampleModel("42", "Name", "Input Path", "Output Path",
+        new TestPackModel.SampleModel.Assertions(1, true, true));
 
     // Act and Assert
     assertEquals(sampleModel, sampleModel);
@@ -266,176 +212,135 @@ public class TestPackModelDiffblueTest {
   }
 
   /**
-   * Test SampleModel {@link SampleModel#equals(Object)}.
-   * <ul>
-   *   <li>When other is different.</li>
-   *   <li>Then return not equal.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SampleModel#equals(Object)}
+   * Method under test: {@link TestPackModel.SampleModel#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean SampleModel.equals(Object)", "int SampleModel.hashCode()"})
   public void testSampleModelEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange
-    SampleModel sampleModel = new SampleModel("Id", "Name", "Input Path", "Output Path", new Assertions(1, true, true));
+    TestPackModel.SampleModel sampleModel = new TestPackModel.SampleModel("Id", "Name", "Input Path", "Output Path",
+        new TestPackModel.SampleModel.Assertions(1, true, true));
 
     // Act and Assert
-    assertNotEquals(sampleModel,
-        new SampleModel("42", "Name", "Input Path", "Output Path", new Assertions(1, true, true)));
+    assertNotEquals(sampleModel, new TestPackModel.SampleModel("42", "Name", "Input Path", "Output Path",
+        new TestPackModel.SampleModel.Assertions(1, true, true)));
   }
 
   /**
-   * Test SampleModel {@link SampleModel#equals(Object)}.
-   * <ul>
-   *   <li>When other is different.</li>
-   *   <li>Then return not equal.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SampleModel#equals(Object)}
+   * Method under test: {@link TestPackModel.SampleModel#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean SampleModel.equals(Object)", "int SampleModel.hashCode()"})
   public void testSampleModelEquals_whenOtherIsDifferent_thenReturnNotEqual2() {
     // Arrange
-    SampleModel sampleModel = new SampleModel("42", "com.regnosys.rosetta.common.transform.TestPackModel$SampleModel",
-        "Input Path", "Output Path", new Assertions(1, true, true));
+    TestPackModel.SampleModel sampleModel = new TestPackModel.SampleModel("42",
+        "com.regnosys.rosetta.common.transform.TestPackModel$SampleModel", "Input Path", "Output Path",
+        new TestPackModel.SampleModel.Assertions(1, true, true));
 
     // Act and Assert
-    assertNotEquals(sampleModel,
-        new SampleModel("42", "Name", "Input Path", "Output Path", new Assertions(1, true, true)));
+    assertNotEquals(sampleModel, new TestPackModel.SampleModel("42", "Name", "Input Path", "Output Path",
+        new TestPackModel.SampleModel.Assertions(1, true, true)));
   }
 
   /**
-   * Test SampleModel {@link SampleModel#equals(Object)}.
-   * <ul>
-   *   <li>When other is different.</li>
-   *   <li>Then return not equal.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SampleModel#equals(Object)}
+   * Method under test: {@link TestPackModel.SampleModel#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean SampleModel.equals(Object)", "int SampleModel.hashCode()"})
   public void testSampleModelEquals_whenOtherIsDifferent_thenReturnNotEqual3() {
     // Arrange
-    SampleModel sampleModel = new SampleModel("42", "Name",
+    TestPackModel.SampleModel sampleModel = new TestPackModel.SampleModel("42", "Name",
         "com.regnosys.rosetta.common.transform.TestPackModel$SampleModel", "Output Path",
-        new Assertions(1, true, true));
+        new TestPackModel.SampleModel.Assertions(1, true, true));
 
     // Act and Assert
-    assertNotEquals(sampleModel,
-        new SampleModel("42", "Name", "Input Path", "Output Path", new Assertions(1, true, true)));
+    assertNotEquals(sampleModel, new TestPackModel.SampleModel("42", "Name", "Input Path", "Output Path",
+        new TestPackModel.SampleModel.Assertions(1, true, true)));
   }
 
   /**
-   * Test SampleModel {@link SampleModel#equals(Object)}.
-   * <ul>
-   *   <li>When other is different.</li>
-   *   <li>Then return not equal.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SampleModel#equals(Object)}
+   * Method under test: {@link TestPackModel.SampleModel#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean SampleModel.equals(Object)", "int SampleModel.hashCode()"})
   public void testSampleModelEquals_whenOtherIsDifferent_thenReturnNotEqual4() {
     // Arrange
-    SampleModel sampleModel = new SampleModel("42", "Name", "Input Path",
-        "com.regnosys.rosetta.common.transform.TestPackModel$SampleModel", new Assertions(1, true, true));
+    TestPackModel.SampleModel sampleModel = new TestPackModel.SampleModel("42", "Name", "Input Path",
+        "com.regnosys.rosetta.common.transform.TestPackModel$SampleModel",
+        new TestPackModel.SampleModel.Assertions(1, true, true));
 
     // Act and Assert
-    assertNotEquals(sampleModel,
-        new SampleModel("42", "Name", "Input Path", "Output Path", new Assertions(1, true, true)));
+    assertNotEquals(sampleModel, new TestPackModel.SampleModel("42", "Name", "Input Path", "Output Path",
+        new TestPackModel.SampleModel.Assertions(1, true, true)));
   }
 
   /**
-   * Test SampleModel {@link SampleModel#equals(Object)}.
-   * <ul>
-   *   <li>When other is different.</li>
-   *   <li>Then return not equal.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SampleModel#equals(Object)}
+   * Method under test: {@link TestPackModel.SampleModel#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean SampleModel.equals(Object)", "int SampleModel.hashCode()"})
   public void testSampleModelEquals_whenOtherIsDifferent_thenReturnNotEqual5() {
     // Arrange
-    SampleModel sampleModel = new SampleModel("42", "Name", "Input Path", "Output Path", new Assertions(2, true, true));
+    TestPackModel.SampleModel sampleModel = new TestPackModel.SampleModel("42", "Name", "Input Path", "Output Path",
+        new TestPackModel.SampleModel.Assertions(2, true, true));
 
     // Act and Assert
-    assertNotEquals(sampleModel,
-        new SampleModel("42", "Name", "Input Path", "Output Path", new Assertions(1, true, true)));
+    assertNotEquals(sampleModel, new TestPackModel.SampleModel("42", "Name", "Input Path", "Output Path",
+        new TestPackModel.SampleModel.Assertions(1, true, true)));
   }
 
   /**
-   * Test SampleModel {@link SampleModel#equals(Object)}.
-   * <ul>
-   *   <li>When other is {@code null}.</li>
-   *   <li>Then return not equal.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SampleModel#equals(Object)}
+   * Method under test: {@link TestPackModel.SampleModel#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean SampleModel.equals(Object)", "int SampleModel.hashCode()"})
+  public void testSampleModelEquals_whenOtherIsDifferent_thenReturnNotEqual6() {
+    // Arrange
+    TestPackModel.SampleModel sampleModel = new TestPackModel.SampleModel("42", "Name", "Input Path", "Output Path",
+        mock(TestPackModel.SampleModel.Assertions.class));
+
+    // Act and Assert
+    assertNotEquals(sampleModel, new TestPackModel.SampleModel("42", "Name", "Input Path", "Output Path",
+        new TestPackModel.SampleModel.Assertions(1, true, true)));
+  }
+
+  /**
+   * Method under test: {@link TestPackModel.SampleModel#equals(Object)}
+   */
+  @Test
   public void testSampleModelEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange, Act and Assert
-    assertNotEquals(new SampleModel("42", "Name", "Input Path", "Output Path", new Assertions(1, true, true)), null);
+    assertNotEquals(new TestPackModel.SampleModel("42", "Name", "Input Path", "Output Path",
+        new TestPackModel.SampleModel.Assertions(1, true, true)), null);
   }
 
   /**
-   * Test SampleModel {@link SampleModel#equals(Object)}.
-   * <ul>
-   *   <li>When other is wrong type.</li>
-   *   <li>Then return not equal.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SampleModel#equals(Object)}
+   * Method under test: {@link TestPackModel.SampleModel#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean SampleModel.equals(Object)", "int SampleModel.hashCode()"})
   public void testSampleModelEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange, Act and Assert
-    assertNotEquals(new SampleModel("42", "Name", "Input Path", "Output Path", new Assertions(1, true, true)),
-        "Different type to SampleModel");
+    assertNotEquals(new TestPackModel.SampleModel("42", "Name", "Input Path", "Output Path",
+        new TestPackModel.SampleModel.Assertions(1, true, true)), "Different type to SampleModel");
   }
 
   /**
-   * Test SampleModel getters and setters.
-   * <p>
    * Methods under test:
    * <ul>
-   *   <li>{@link SampleModel#SampleModel(String, String, String, String, Assertions)}
-   *   <li>{@link SampleModel#toString()}
-   *   <li>{@link SampleModel#getAssertions()}
-   *   <li>{@link SampleModel#getId()}
-   *   <li>{@link SampleModel#getInputPath()}
-   *   <li>{@link SampleModel#getName()}
-   *   <li>{@link SampleModel#getOutputPath()}
+   *   <li>
+   * {@link TestPackModel.SampleModel#SampleModel(String, String, String, String, TestPackModel.SampleModel.Assertions)}
+   *   <li>{@link TestPackModel.SampleModel#toString()}
+   *   <li>{@link TestPackModel.SampleModel#getAssertions()}
+   *   <li>{@link TestPackModel.SampleModel#getId()}
+   *   <li>{@link TestPackModel.SampleModel#getInputPath()}
+   *   <li>{@link TestPackModel.SampleModel#getName()}
+   *   <li>{@link TestPackModel.SampleModel#getOutputPath()}
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void SampleModel.<init>(String, String, String, String, Assertions)",
-      "Assertions SampleModel.getAssertions()", "String SampleModel.getId()", "String SampleModel.getInputPath()",
-      "String SampleModel.getName()", "String SampleModel.getOutputPath()", "String SampleModel.toString()"})
   public void testSampleModelGettersAndSetters() {
     // Arrange
-    Assertions assertions = new Assertions(1, true, true);
+    TestPackModel.SampleModel.Assertions assertions = new TestPackModel.SampleModel.Assertions(1, true, true);
 
     // Act
-    SampleModel actualSampleModel = new SampleModel("42", "Name", "Input Path", "Output Path", assertions);
+    TestPackModel.SampleModel actualSampleModel = new TestPackModel.SampleModel("42", "Name", "Input Path",
+        "Output Path", assertions);
     String actualToStringResult = actualSampleModel.toString();
-    Assertions actualAssertions = actualSampleModel.getAssertions();
+    TestPackModel.SampleModel.Assertions actualAssertions = actualSampleModel.getAssertions();
     String actualId = actualSampleModel.getId();
     String actualInputPath = actualSampleModel.getInputPath();
     String actualName = actualSampleModel.getName();
@@ -453,25 +358,17 @@ public class TestPackModelDiffblueTest {
   }
 
   /**
-   * Test SampleModel_Assertions {@link Assertions#equals(Object)}, and {@link Assertions#hashCode()}.
-   * <ul>
-   *   <li>When other is equal.</li>
-   *   <li>Then return equal.</li>
-   * </ul>
-   * <p>
    * Methods under test:
    * <ul>
-   *   <li>{@link Assertions#equals(Object)}
-   *   <li>{@link Assertions#hashCode()}
+   *   <li>{@link TestPackModel.SampleModel.Assertions#equals(Object)}
+   *   <li>{@link TestPackModel.SampleModel.Assertions#hashCode()}
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean Assertions.equals(Object)", "int Assertions.hashCode()"})
   public void testSampleModel_AssertionsEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
     // Arrange
-    Assertions assertions = new Assertions(1, true, true);
-    Assertions assertions2 = new Assertions(1, true, true);
+    TestPackModel.SampleModel.Assertions assertions = new TestPackModel.SampleModel.Assertions(1, true, true);
+    TestPackModel.SampleModel.Assertions assertions2 = new TestPackModel.SampleModel.Assertions(1, true, true);
 
     // Act and Assert
     assertEquals(assertions, assertions2);
@@ -480,24 +377,16 @@ public class TestPackModelDiffblueTest {
   }
 
   /**
-   * Test SampleModel_Assertions {@link Assertions#equals(Object)}, and {@link Assertions#hashCode()}.
-   * <ul>
-   *   <li>When other is same.</li>
-   *   <li>Then return equal.</li>
-   * </ul>
-   * <p>
    * Methods under test:
    * <ul>
-   *   <li>{@link Assertions#equals(Object)}
-   *   <li>{@link Assertions#hashCode()}
+   *   <li>{@link TestPackModel.SampleModel.Assertions#equals(Object)}
+   *   <li>{@link TestPackModel.SampleModel.Assertions#hashCode()}
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean Assertions.equals(Object)", "int Assertions.hashCode()"})
   public void testSampleModel_AssertionsEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
-    Assertions assertions = new Assertions(1, true, true);
+    TestPackModel.SampleModel.Assertions assertions = new TestPackModel.SampleModel.Assertions(1, true, true);
 
     // Act and Assert
     assertEquals(assertions, assertions);
@@ -506,119 +395,79 @@ public class TestPackModelDiffblueTest {
   }
 
   /**
-   * Test SampleModel_Assertions {@link Assertions#equals(Object)}.
-   * <ul>
-   *   <li>When other is different.</li>
-   *   <li>Then return not equal.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link Assertions#equals(Object)}
+   * Method under test:
+   * {@link TestPackModel.SampleModel.Assertions#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean Assertions.equals(Object)", "int Assertions.hashCode()"})
   public void testSampleModel_AssertionsEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange
-    Assertions assertions = new Assertions(2, true, true);
+    TestPackModel.SampleModel.Assertions assertions = new TestPackModel.SampleModel.Assertions(2, true, true);
 
     // Act and Assert
-    assertNotEquals(assertions, new Assertions(1, true, true));
+    assertNotEquals(assertions, new TestPackModel.SampleModel.Assertions(1, true, true));
   }
 
   /**
-   * Test SampleModel_Assertions {@link Assertions#equals(Object)}.
-   * <ul>
-   *   <li>When other is different.</li>
-   *   <li>Then return not equal.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link Assertions#equals(Object)}
+   * Method under test:
+   * {@link TestPackModel.SampleModel.Assertions#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean Assertions.equals(Object)", "int Assertions.hashCode()"})
   public void testSampleModel_AssertionsEquals_whenOtherIsDifferent_thenReturnNotEqual2() {
     // Arrange
-    Assertions assertions = new Assertions(1, false, true);
+    TestPackModel.SampleModel.Assertions assertions = new TestPackModel.SampleModel.Assertions(1, false, true);
 
     // Act and Assert
-    assertNotEquals(assertions, new Assertions(1, true, true));
+    assertNotEquals(assertions, new TestPackModel.SampleModel.Assertions(1, true, true));
   }
 
   /**
-   * Test SampleModel_Assertions {@link Assertions#equals(Object)}.
-   * <ul>
-   *   <li>When other is different.</li>
-   *   <li>Then return not equal.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link Assertions#equals(Object)}
+   * Method under test:
+   * {@link TestPackModel.SampleModel.Assertions#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean Assertions.equals(Object)", "int Assertions.hashCode()"})
   public void testSampleModel_AssertionsEquals_whenOtherIsDifferent_thenReturnNotEqual3() {
     // Arrange
-    Assertions assertions = new Assertions(1, true, false);
+    TestPackModel.SampleModel.Assertions assertions = new TestPackModel.SampleModel.Assertions(1, true, false);
 
     // Act and Assert
-    assertNotEquals(assertions, new Assertions(1, true, true));
+    assertNotEquals(assertions, new TestPackModel.SampleModel.Assertions(1, true, true));
   }
 
   /**
-   * Test SampleModel_Assertions {@link Assertions#equals(Object)}.
-   * <ul>
-   *   <li>When other is {@code null}.</li>
-   *   <li>Then return not equal.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link Assertions#equals(Object)}
+   * Method under test:
+   * {@link TestPackModel.SampleModel.Assertions#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean Assertions.equals(Object)", "int Assertions.hashCode()"})
   public void testSampleModel_AssertionsEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange, Act and Assert
-    assertNotEquals(new Assertions(1, true, true), null);
+    assertNotEquals(new TestPackModel.SampleModel.Assertions(1, true, true), null);
   }
 
   /**
-   * Test SampleModel_Assertions {@link Assertions#equals(Object)}.
-   * <ul>
-   *   <li>When other is wrong type.</li>
-   *   <li>Then return not equal.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link Assertions#equals(Object)}
+   * Method under test:
+   * {@link TestPackModel.SampleModel.Assertions#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean Assertions.equals(Object)", "int Assertions.hashCode()"})
   public void testSampleModel_AssertionsEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange, Act and Assert
-    assertNotEquals(new Assertions(1, true, true), "Different type to Assertions");
+    assertNotEquals(new TestPackModel.SampleModel.Assertions(1, true, true), "Different type to Assertions");
   }
 
   /**
-   * Test SampleModel_Assertions getters and setters.
-   * <p>
    * Methods under test:
    * <ul>
-   *   <li>{@link Assertions#Assertions(Integer, Boolean, Boolean)}
-   *   <li>{@link Assertions#toString()}
-   *   <li>{@link Assertions#getModelValidationFailures()}
-   *   <li>{@link Assertions#isRuntimeError()}
-   *   <li>{@link Assertions#isSchemaValidationFailure()}
+   *   <li>
+   * {@link TestPackModel.SampleModel.Assertions#Assertions(Integer, Boolean, Boolean)}
+   *   <li>{@link TestPackModel.SampleModel.Assertions#toString()}
+   *   <li>{@link TestPackModel.SampleModel.Assertions#getModelValidationFailures()}
+   *   <li>{@link TestPackModel.SampleModel.Assertions#isRuntimeError()}
+   *   <li>{@link TestPackModel.SampleModel.Assertions#isSchemaValidationFailure()}
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void Assertions.<init>(Integer, Boolean, Boolean)",
-      "Integer Assertions.getModelValidationFailures()", "Boolean Assertions.isRuntimeError()",
-      "Boolean Assertions.isSchemaValidationFailure()", "String Assertions.toString()"})
   public void testSampleModel_AssertionsGettersAndSetters() {
     // Arrange and Act
-    Assertions actualAssertions = new Assertions(1, true, true);
+    TestPackModel.SampleModel.Assertions actualAssertions = new TestPackModel.SampleModel.Assertions(1, true, true);
     String actualToStringResult = actualAssertions.toString();
     Integer actualModelValidationFailures = actualAssertions.getModelValidationFailures();
     Boolean actualIsRuntimeErrorResult = actualAssertions.isRuntimeError();

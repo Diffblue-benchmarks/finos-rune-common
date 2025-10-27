@@ -21,15 +21,22 @@ package com.regnosys.rosetta.common.reports;
  */
 
 import static org.junit.Assert.assertEquals;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
 
 public class ReportFieldDiffblueTest {
   /**
-   * Test getters and setters.
-   * <p>
+   * Method under test: {@link ReportField#compareTo(ReportField)}
+   */
+  @Test
+  public void testCompareTo() {
+    // Arrange
+    ReportField reportField = new ReportField("Name", "Rule", 1, "42", "Issue");
+
+    // Act and Assert
+    assertEquals(0, reportField.compareTo(new ReportField("Name", "Rule", 1, "42", "Issue")));
+  }
+
+  /**
    * Methods under test:
    * <ul>
    *   <li>{@link ReportField#ReportField(String, String, Integer, String, String)}
@@ -42,10 +49,6 @@ public class ReportFieldDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void ReportField.<init>(String, String, Integer, String, String)",
-      "String ReportField.getIssue()", "String ReportField.getName()", "Integer ReportField.getRepeatableIndex()",
-      "String ReportField.getRule()", "String ReportField.getValue()", "String ReportField.toString()"})
   public void testGettersAndSetters() {
     // Arrange and Act
     ReportField actualReportField = new ReportField("Name", "Rule", 1, "42", "Issue");
@@ -63,24 +66,5 @@ public class ReportFieldDiffblueTest {
         actualToStringResult);
     assertEquals("Rule", actualRule);
     assertEquals(1, actualRepeatableIndex.intValue());
-  }
-
-  /**
-   * Test {@link ReportField#compareTo(ReportField)} with {@code ReportField}.
-   * <ul>
-   *   <li>Then return zero.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link ReportField#compareTo(ReportField)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"int ReportField.compareTo(ReportField)"})
-  public void testCompareToWithReportField_thenReturnZero() {
-    // Arrange
-    ReportField reportField = new ReportField("Name", "Rule", 1, "42", "Issue");
-
-    // Act and Assert
-    assertEquals(0, reportField.compareTo(new ReportField("Name", "Rule", 1, "42", "Issue")));
   }
 }

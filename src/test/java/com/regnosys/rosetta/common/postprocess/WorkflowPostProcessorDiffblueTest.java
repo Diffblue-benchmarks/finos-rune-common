@@ -25,32 +25,22 @@ import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
 import com.regnosys.rosetta.common.hashing.ReferenceConfig;
 import com.regnosys.rosetta.common.postprocess.qualify.QualificationReport;
 import com.regnosys.rosetta.common.postprocess.qualify.QualifyProcessorStep;
 import com.regnosys.rosetta.common.serialisation.json.preannotation.testpojo.Price;
-import com.regnosys.rosetta.common.serialisation.json.preannotation.testpojo.Price.PriceBuilderImpl;
 import com.rosetta.model.lib.RosettaModelObject;
 import com.rosetta.model.lib.RosettaModelObjectBuilder;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
 import org.mockito.Mockito;
 
 public class WorkflowPostProcessorDiffblueTest {
   /**
-   * Test {@link WorkflowPostProcessor#postProcess(Class, RosettaModelObjectBuilder)}.
-   * <ul>
-   *   <li>Then return {@link Price.PriceBuilderImpl} (default constructor).</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link WorkflowPostProcessor#postProcess(Class, RosettaModelObjectBuilder)}
+   * Method under test:
+   * {@link WorkflowPostProcessor#postProcess(Class, RosettaModelObjectBuilder)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"RosettaModelObjectBuilder WorkflowPostProcessor.postProcess(Class, RosettaModelObjectBuilder)"})
-  public void testPostProcess_thenReturnPriceBuilderImpl() {
+  public void testPostProcess() {
     // Arrange
     QualifyProcessorStep qualifyProcessorStep = mock(QualifyProcessorStep.class);
     when(qualifyProcessorStep.runProcessStep(Mockito.<Class<RosettaModelObject>>any(),
@@ -58,7 +48,7 @@ public class WorkflowPostProcessorDiffblueTest {
     WorkflowPostProcessor workflowPostProcessor = new WorkflowPostProcessor(qualifyProcessorStep,
         ReferenceConfig.noScopeOrExcludedPaths());
     Class<RosettaModelObject> rosettaType = RosettaModelObject.class;
-    PriceBuilderImpl instance = new PriceBuilderImpl();
+    Price.PriceBuilderImpl instance = new Price.PriceBuilderImpl();
 
     // Act
     RosettaModelObjectBuilder actualPostProcessResult = workflowPostProcessor.postProcess(rosettaType, instance);

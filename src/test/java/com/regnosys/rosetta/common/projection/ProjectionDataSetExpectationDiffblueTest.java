@@ -23,31 +23,22 @@ package com.regnosys.rosetta.common.projection;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
-import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
 
 public class ProjectionDataSetExpectationDiffblueTest {
   /**
-   * Test getters and setters.
-   * <p>
    * Methods under test:
    * <ul>
-   *   <li>{@link ProjectionDataSetExpectation#ProjectionDataSetExpectation(String, String, List)}
+   *   <li>
+   * {@link ProjectionDataSetExpectation#ProjectionDataSetExpectation(String, String, List)}
    *   <li>{@link ProjectionDataSetExpectation#getDataItemExpectations()}
    *   <li>{@link ProjectionDataSetExpectation#getDataSetName()}
    *   <li>{@link ProjectionDataSetExpectation#getProjectionName()}
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void ProjectionDataSetExpectation.<init>(String, String, List)",
-      "List ProjectionDataSetExpectation.getDataItemExpectations()",
-      "String ProjectionDataSetExpectation.getDataSetName()",
-      "String ProjectionDataSetExpectation.getProjectionName()"})
   public void testGettersAndSetters() {
     // Arrange
     ArrayList<ProjectionDataItemExpectation> dataItemExpectations = new ArrayList<>();
