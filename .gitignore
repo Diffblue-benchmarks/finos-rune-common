@@ -19,3 +19,9 @@ buildNumber.properties
 **/*.classpath
 **/*.project
 **/*.settings
+
+.diffblue/cache
+**.diffblue/cache
+**/.diffblue/cache
+**/**.diffblue/cache
+**/**/.diffblue/cache
