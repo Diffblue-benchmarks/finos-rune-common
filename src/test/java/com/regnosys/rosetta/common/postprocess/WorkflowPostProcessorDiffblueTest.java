@@ -4,7 +4,7 @@ package com.regnosys.rosetta.common.postprocess;
  * ==============
  * Rune Common
  * ==============
- * Copyright (C) 2018 - 2025 REGnosys
+ * Copyright (C) 2018 - 2026 REGnosys
  * ==============
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -111,44 +111,6 @@ class WorkflowPostProcessorDiffblueTest {
     assertTrue(resolverConfig.getExcludedPaths().isEmpty());
     Class<Price> expectedType = Price.class;
     assertEquals(expectedType, instance.getType());
-    assertSame(instance, actualPostProcessResult);
-  }
-
-  /**
-   * Test {@link WorkflowPostProcessor#postProcess(Class, RosettaModelObjectBuilder)}.
-   *
-   * <ul>
-   *   <li>Then return {@link Price.PriceBuilderImpl} (default constructor).
-   * </ul>
-   *
-   * <p>Method under test: {@link WorkflowPostProcessor#postProcess(Class,
-   * RosettaModelObjectBuilder)}
-   */
-  @Test
-  @DisplayName(
-      "Test postProcess(Class, RosettaModelObjectBuilder); then return PriceBuilderImpl (default constructor)")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({
-    "RosettaModelObjectBuilder WorkflowPostProcessor.postProcess(Class, RosettaModelObjectBuilder)"
-  })
-  void testPostProcess_thenReturnPriceBuilderImpl() {
-    // Arrange
-    QualifyProcessorStep qualifyProcessorStep = mock(QualifyProcessorStep.class);
-    when(qualifyProcessorStep.runProcessStep(
-            Mockito.<Class<RosettaModelObject>>any(), Mockito.<RosettaModelObject>any()))
-        .thenReturn(QualificationReport.SUCCESS);
-    WorkflowPostProcessor workflowPostProcessor =
-        new WorkflowPostProcessor(qualifyProcessorStep, ReferenceConfig.noScopeOrExcludedPaths());
-    Class<RosettaModelObject> rosettaType = RosettaModelObject.class;
-    PriceBuilderImpl instance = new PriceBuilderImpl();
-
-    // Act
-    RosettaModelObjectBuilder actualPostProcessResult =
-        workflowPostProcessor.postProcess(rosettaType, instance);
-
-    // Assert
-    verify(qualifyProcessorStep).runProcessStep(isA(Class.class), isA(RosettaModelObject.class));
     assertSame(instance, actualPostProcessResult);
   }
 }

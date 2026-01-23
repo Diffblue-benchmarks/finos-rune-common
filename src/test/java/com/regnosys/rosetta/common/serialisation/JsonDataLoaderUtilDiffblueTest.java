@@ -4,7 +4,7 @@ package com.regnosys.rosetta.common.serialisation;
  * ==============
  * Rune Common
  * ==============
- * Copyright (C) 2018 - 2025 REGnosys
+ * Copyright (C) 2018 - 2026 REGnosys
  * ==============
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -499,38 +499,6 @@ class JsonDataLoaderUtilDiffblueTest {
   @ManagedByDiffblue
   @MethodsUnderTest({"Object JsonDataLoaderUtil.readType(Class, ObjectMapper, URL)"})
   void testReadTypeWithTypeRosettaObjectMapperUrl_whenJavaLangObject()
-      throws MalformedURLException {
-    // Arrange
-    Class<Object> type = Object.class;
-    JsonMapper rosettaObjectMapper = JsonMapper.builder().findAndAddModules().build();
-
-    // Act and Assert
-    assertThrows(
-        RuntimeException.class,
-        () ->
-            JsonDataLoaderUtil.readType(
-                type,
-                rosettaObjectMapper,
-                Paths.get(System.getProperty("java.io.tmpdir"), "").toUri().toURL()));
-  }
-
-  /**
-   * Test {@link JsonDataLoaderUtil#readType(Class, ObjectMapper, URL)} with {@code type}, {@code
-   * rosettaObjectMapper}, {@code url}.
-   *
-   * <ul>
-   *   <li>When {@code Object}.
-   * </ul>
-   *
-   * <p>Method under test: {@link JsonDataLoaderUtil#readType(Class, ObjectMapper, URL)}
-   */
-  @Test
-  @DisplayName(
-      "Test readType(Class, ObjectMapper, URL) with 'type', 'rosettaObjectMapper', 'url'; when 'java.lang.Object'")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Object JsonDataLoaderUtil.readType(Class, ObjectMapper, URL)"})
-  void testReadTypeWithTypeRosettaObjectMapperUrl_whenJavaLangObject2()
       throws MalformedURLException {
     // Arrange
     Class<Object> type = Object.class;

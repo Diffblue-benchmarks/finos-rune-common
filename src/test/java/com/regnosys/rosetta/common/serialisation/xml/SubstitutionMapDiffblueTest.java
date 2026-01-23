@@ -4,7 +4,7 @@ package com.regnosys.rosetta.common.serialisation.xml;
  * ==============
  * Rune Common
  * ==============
- * Copyright (C) 2018 - 2025 REGnosys
+ * Copyright (C) 2018 - 2026 REGnosys
  * ==============
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -118,17 +118,16 @@ class SubstitutionMapDiffblueTest {
    *
    * <ul>
    *   <li>Given empty string.
-   *   <li>Then return Types size is three.
    * </ul>
    *
    * <p>Method under test: {@link SubstitutionMap#SubstitutionMap(Map)}
    */
   @Test
-  @DisplayName("Test new SubstitutionMap(Map); given empty string; then return Types size is three")
+  @DisplayName("Test new SubstitutionMap(Map); given empty string")
   @Tag("ContributionFromDiffblue")
   @ManagedByDiffblue
   @MethodsUnderTest({"void SubstitutionMap.<init>(Map)"})
-  void testNewSubstitutionMap_givenEmptyString_thenReturnTypesSizeIsThree() {
+  void testNewSubstitutionMap_givenEmptyString() {
     // Arrange
     HashMap<JavaType, String> typeToNameMap = new HashMap<>();
     typeToNameMap.put(new PlaceholderForType(1), "");
@@ -146,17 +145,18 @@ class SubstitutionMapDiffblueTest {
    *
    * <ul>
    *   <li>Given {@code String}.
-   *   <li>Then calls {@link ArrayType#getRawClass()}.
+   *   <li>Then return Types size is two.
    * </ul>
    *
    * <p>Method under test: {@link SubstitutionMap#SubstitutionMap(Map)}
    */
   @Test
-  @DisplayName("Test new SubstitutionMap(Map); given 'java.lang.String'; then calls getRawClass()")
+  @DisplayName(
+      "Test new SubstitutionMap(Map); given 'java.lang.String'; then return Types size is two")
   @Tag("ContributionFromDiffblue")
   @ManagedByDiffblue
   @MethodsUnderTest({"void SubstitutionMap.<init>(Map)"})
-  void testNewSubstitutionMap_givenJavaLangString_thenCallsGetRawClass() {
+  void testNewSubstitutionMap_givenJavaLangString_thenReturnTypesSizeIsTwo() {
     // Arrange
     ArrayType arrayType = mock(ArrayType.class);
     Class<String> forNameResult = String.class;
@@ -210,19 +210,17 @@ class SubstitutionMapDiffblueTest {
    * Test {@link SubstitutionMap#SubstitutionMap(Map)}.
    *
    * <ul>
-   *   <li>When {@link HashMap#HashMap()} {@link ArrayType} is {@code Value}.
-   *   <li>Then calls {@link ArrayType#getRawClass()}.
+   *   <li>Then return Types size is two.
    * </ul>
    *
    * <p>Method under test: {@link SubstitutionMap#SubstitutionMap(Map)}
    */
   @Test
-  @DisplayName(
-      "Test new SubstitutionMap(Map); when HashMap() ArrayType is 'Value'; then calls getRawClass()")
+  @DisplayName("Test new SubstitutionMap(Map); then return Types size is two")
   @Tag("ContributionFromDiffblue")
   @ManagedByDiffblue
   @MethodsUnderTest({"void SubstitutionMap.<init>(Map)"})
-  void testNewSubstitutionMap_whenHashMapArrayTypeIsValue_thenCallsGetRawClass() {
+  void testNewSubstitutionMap_thenReturnTypesSizeIsTwo() {
     // Arrange
     ArrayType arrayType = mock(ArrayType.class);
     Class<Object> forNameResult = Object.class;
@@ -245,6 +243,45 @@ class SubstitutionMapDiffblueTest {
     Collection<JavaType> types = actualSubstitutionMap.getTypes();
     assertEquals(2, types.size());
     assertTrue(types instanceof Set);
+  }
+
+  /**
+   * Test {@link SubstitutionMap#SubstitutionMap(Map)}.
+   *
+   * <ul>
+   *   <li>When {@link HashMap#HashMap()} IfAbsent {@link
+   *       PlaceholderForType#PlaceholderForType(int)} with ordinal is one is {@code 42}.
+   * </ul>
+   *
+   * <p>Method under test: {@link SubstitutionMap#SubstitutionMap(Map)}
+   */
+  @Test
+  @DisplayName(
+      "Test new SubstitutionMap(Map); when HashMap() IfAbsent PlaceholderForType(int) with ordinal is one is '42'")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
+  @MethodsUnderTest({"void SubstitutionMap.<init>(Map)"})
+  void testNewSubstitutionMap_whenHashMapIfAbsentPlaceholderForTypeWithOrdinalIsOneIs42() {
+    // Arrange
+    HashMap<JavaType, String> typeToNameMap = new HashMap<>();
+    typeToNameMap.putIfAbsent(new PlaceholderForType(1), "42");
+    Class<JavaType> forNameResult = JavaType.class;
+
+    ArrayType arrayType = mock(ArrayType.class);
+    Mockito.<Class<?>>when(arrayType.getRawClass()).thenReturn(forNameResult);
+    typeToNameMap.put(arrayType, "Value");
+    Class<Object> forNameResult2 = Object.class;
+
+    ArrayType arrayType2 = mock(ArrayType.class);
+    Mockito.<Class<?>>when(arrayType2.getRawClass()).thenReturn(forNameResult2);
+    typeToNameMap.put(arrayType2, "42");
+
+    // Act and Assert
+    Collection<JavaType> types = new SubstitutionMap(typeToNameMap).getTypes();
+    assertTrue(types instanceof Set);
+    assertEquals(3, types.size());
+    verify(arrayType, atLeast(1)).getRawClass();
+    verify(arrayType2, atLeast(1)).getRawClass();
   }
 
   /**

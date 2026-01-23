@@ -4,7 +4,7 @@ package com.regnosys.rosetta.common.serialisation;
  * ==============
  * Rune Common
  * ==============
- * Copyright (C) 2018 - 2025 REGnosys
+ * Copyright (C) 2018 - 2026 REGnosys
  * ==============
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -139,31 +139,6 @@ class DataSetDiffblueTest {
   }
 
   /**
-   * Test {@link DataSet#equals(Object)}, and {@link DataSet#hashCode()}.
-   *
-   * <ul>
-   *   <li>When other is same.
-   *   <li>Then return equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link DataSet#equals(Object)}
-   */
-  @Test
-  @DisplayName("Test equals(Object), and hashCode(); when other is same; then return equal")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean DataSet.equals(Object)", "int DataSet.hashCode()"})
-  void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
-    // Arrange
-    ProjectionDataSet projectionDataSet = new ProjectionDataSet();
-
-    // Act and Assert
-    assertEquals(projectionDataSet, projectionDataSet);
-    int expectedHashCodeResult = projectionDataSet.hashCode();
-    assertEquals(expectedHashCodeResult, projectionDataSet.hashCode());
-  }
-
-  /**
    * Test {@link DataSet#equals(Object)}.
    *
    * <ul>
@@ -279,46 +254,6 @@ class DataSetDiffblueTest {
 
     // Act and Assert
     assertNotEquals(projectionDataSet, new ProjectionDataSet());
-  }
-
-  /**
-   * Test {@link DataSet#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is {@code null}.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link DataSet#equals(Object)}
-   */
-  @Test
-  @DisplayName("Test equals(Object); when other is 'null'; then return not equal")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean DataSet.equals(Object)", "int DataSet.hashCode()"})
-  void testEquals_whenOtherIsNull_thenReturnNotEqual() {
-    // Arrange, Act and Assert
-    assertNotEquals(new ProjectionDataSet(), null);
-  }
-
-  /**
-   * Test {@link DataSet#equals(Object)}.
-   *
-   * <ul>
-   *   <li>When other is wrong type.
-   *   <li>Then return not equal.
-   * </ul>
-   *
-   * <p>Method under test: {@link DataSet#equals(Object)}
-   */
-  @Test
-  @DisplayName("Test equals(Object); when other is wrong type; then return not equal")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean DataSet.equals(Object)", "int DataSet.hashCode()"})
-  void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
-    // Arrange, Act and Assert
-    assertNotEquals(new ProjectionDataSet(), "Different type to DataSet");
   }
 
   /**

@@ -4,7 +4,7 @@ package com.regnosys.rosetta.common.transform;
  * ==============
  * Rune Common
  * ==============
- * Copyright (C) 2018 - 2025 REGnosys
+ * Copyright (C) 2018 - 2026 REGnosys
  * ==============
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -849,32 +849,6 @@ class TestPackUtilsDiffblueTest {
   @ManagedByDiffblue
   @MethodsUnderTest({"Object TestPackUtils.readFile(URL, ObjectMapper, Class)"})
   void testReadFile_whenPropertyIsJavaIoTmpdirIsEmptyStringToUriToURL()
-      throws MalformedURLException {
-    // Arrange
-    URL u = Paths.get(System.getProperty("java.io.tmpdir"), "").toUri().toURL();
-    JsonMapper mapper = JsonMapper.builder().findAndAddModules().build();
-    Class<Object> clazz = Object.class;
-
-    // Act and Assert
-    assertThrows(UncheckedIOException.class, () -> TestPackUtils.readFile(u, mapper, clazz));
-  }
-
-  /**
-   * Test {@link TestPackUtils#readFile(URL, ObjectMapper, Class)}.
-   *
-   * <ul>
-   *   <li>When Property is {@code java.io.tmpdir} is empty string toUri toURL.
-   * </ul>
-   *
-   * <p>Method under test: {@link TestPackUtils#readFile(URL, ObjectMapper, Class)}
-   */
-  @Test
-  @DisplayName(
-      "Test readFile(URL, ObjectMapper, Class); when Property is 'java.io.tmpdir' is empty string toUri toURL")
-  @Tag("ContributionFromDiffblue")
-  @ManagedByDiffblue
-  @MethodsUnderTest({"Object TestPackUtils.readFile(URL, ObjectMapper, Class)"})
-  void testReadFile_whenPropertyIsJavaIoTmpdirIsEmptyStringToUriToURL2()
       throws MalformedURLException {
     // Arrange
     URL u = Paths.get(System.getProperty("java.io.tmpdir"), "").toUri().toURL();
